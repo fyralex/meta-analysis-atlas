@@ -8,3 +8,5 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
+node_modules/
+frontend/dist/

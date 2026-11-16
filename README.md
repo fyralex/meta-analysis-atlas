@@ -39,6 +39,19 @@ The map is generated. All its data is in
 [`spec/build_map.py`](spec/build_map.py); run `python3 spec/build_map.py` to
 regenerate the other files.
 
+## Run the apps locally
+
+With Node 22 or later:
+
+```bash
+npm ci --prefix frontend
+npm --prefix frontend run dev    # then open http://localhost:5173
+```
+
+The apps read the map from `spec/map.json` when they are built. Atlas,
+Pathfinder and Cards are being built for v0.1; for now the home page shows
+the map's pathways by status.
+
 ## How this project is run
 
 Every change starts as an issue and lands through a reviewed pull request,

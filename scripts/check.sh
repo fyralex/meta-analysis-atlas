@@ -29,6 +29,16 @@ if [ -n "$(git status --porcelain -- spec/)" ]; then
   exit 1
 fi
 
+echo "== frontend (lint, types, tests, build)"
+if [ ! -d frontend/node_modules ]; then
+  echo "frontend/node_modules is missing: run 'npm ci --prefix frontend' first." >&2
+  exit 1
+fi
+npm --prefix frontend run -s lint
+npm --prefix frontend run -s typecheck
+npm --prefix frontend run -s test
+npm --prefix frontend run -s build >/dev/null
+
 echo "== private name scan"
 if [ -n "${ATLAS_PRIVATE_SCAN:-}" ]; then
   "$ATLAS_PRIVATE_SCAN"
