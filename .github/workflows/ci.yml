@@ -1,0 +1,33 @@
+# CI runs at releases, not on pull requests (see CLAUDE.md, "Checks").
+# Every pull request is checked locally with scripts/check.sh; this is the release gate.
+name: CI
+
+on:
+  milestone:
+    types: [closed]
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  spec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - name: Checks (the private name scan runs locally only)
+        run: sh scripts/check.sh
+        env:
+          PYTHON: python
