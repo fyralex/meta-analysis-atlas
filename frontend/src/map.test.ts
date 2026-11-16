@@ -27,7 +27,27 @@ describe("spec/map.json as the frontend reads it", () => {
       expect(Object.keys(p).sort()).toEqual(PATHWAY_KEYS);
       expect(STATUSES).toContain(p.status);
       expect(typeof p.verified).toBe("boolean");
+      expect(["v0.2", "v0.3", "v0.4", "Later"]).toContain(p.milestone);
+      for (const f of ["framework", "group", "datatype", "outcome", "model", "method", "metric"] as const) {
+        expect(typeof p[f]).toBe("string");
+      }
       expect(typeof p.added).toBe("boolean");
+    }
+  });
+
+  it("gives every metric and method the fields and types the frontend reads", () => {
+    for (const [code, m] of Object.entries(map.metrics)) {
+      expect(typeof m.label, code).toBe("string");
+      expect(typeof m.call, code).toBe("string");
+      expect(typeof m.src, code).toBe("string");
+      expect(typeof m.verified, code).toBe("boolean");
+      expect(m.only === null || Array.isArray(m.only), code).toBe(true);
+    }
+    for (const [id, m] of Object.entries(map.methods)) {
+      expect(typeof m.label, id).toBe("string");
+      expect(typeof m.fn, id).toBe("string");
+      for (const list of [m.takes, m.models, m.analysis, m.src, m.added_models]) expect(Array.isArray(list), id).toBe(true);
+      expect(m.metrics === null || Array.isArray(m.metrics), id).toBe(true);
     }
   });
 

@@ -2,8 +2,8 @@ import raw from "../../spec/map.json";
 import { STATUSES, type MapData, type Status } from "./types/map";
 
 // Read at build time. The JSON's inferred type is wider than MapData (strings for the
-// statuses, arrays for the tuples), so it is narrowed here; src/map.test.ts checks
-// the real file against MapData field by field.
+// statuses, arrays for the tuples), so it is narrowed here; src/map.test.ts checks the
+// real file's pathways, metrics and methods against these types.
 export const map = raw as unknown as MapData;
 
 export function countByStatus(data: MapData): Record<Status, number> {

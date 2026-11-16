@@ -6,7 +6,7 @@ export default defineConfig(({ command }) => ({
   base: command === "build" ? "/meta-analysis-atlas/" : "/",
   plugins: [react()],
   // The map is read from ../spec/map.json at build time.
-  server: { fs: { allow: [".."] } },
+  server: { fs: { allow: [".", "../spec"] } },
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test-setup.ts"],

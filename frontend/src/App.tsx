@@ -8,6 +8,9 @@ import { ThemeSwitch } from "./ThemeSwitch";
 export function App() {
   return (
     <div className="shell">
+      <a className="skip" href="#main">
+        Skip to content
+      </a>
       <header className="top">
         <NavLink to="/" className="brand">
           Meta-Analysis Atlas
@@ -21,7 +24,7 @@ export function App() {
         </nav>
         <ThemeSwitch />
       </header>
-      <main>
+      <main id="main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           {APPS.map((a) => (
