@@ -15,3 +15,13 @@ extend-exclude = [".venv"]
 select = ["E", "F", "W", "I", "B"]
 # Line length is left to the formatter; long strings in the map data stay on one line.
 ignore = ["E501"]
+
+[tool.mypy]
+strict = true
+python_version = "3.11"
+files = ["spec", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["spec"]
+addopts = "-q"
