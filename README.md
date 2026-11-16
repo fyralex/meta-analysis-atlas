@@ -16,7 +16,10 @@ are marked as such.
 
 ## Status
 
-Early work. Nothing runs analyses yet.
+Early work. Nothing runs analyses yet. Each pathway in the map has a status:
+**planned** (its engine is on the roadmap below), **specified** (confirmed,
+not planned yet) or **to check** (not yet confirmed from a primary source).
+None is runnable yet ([how statuses are set](docs/decisions/0001-pathway-status.md)).
 
 | Release | Scope |
 |---|---|

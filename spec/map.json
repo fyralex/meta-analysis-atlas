@@ -2305,7 +2305,9 @@
    "method": "IV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2316,7 +2318,9 @@
    "method": "IV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2327,7 +2331,9 @@
    "method": "IV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2338,7 +2344,9 @@
    "method": "IV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2349,7 +2357,9 @@
    "method": "IV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2360,7 +2370,9 @@
    "method": "IV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2371,7 +2383,9 @@
    "method": "IV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2382,7 +2396,9 @@
    "method": "IV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2393,7 +2409,9 @@
    "method": "IV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2404,7 +2422,9 @@
    "method": "IV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2415,7 +2435,9 @@
    "method": "IV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2426,7 +2448,9 @@
    "method": "IV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2437,7 +2461,9 @@
    "method": "GLMM",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2448,7 +2474,9 @@
    "method": "GLMM",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2459,7 +2487,9 @@
    "method": "BAYES",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2470,7 +2500,9 @@
    "method": "BAYES",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2481,7 +2513,9 @@
    "method": "BAYES",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2492,7 +2526,9 @@
    "method": "BAYES",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2503,7 +2539,9 @@
    "method": "BAYES",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2514,7 +2552,9 @@
    "method": "BAYES",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2525,7 +2565,9 @@
    "method": "MV",
    "metric": "PR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2536,7 +2578,9 @@
    "method": "MV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2547,7 +2591,9 @@
    "method": "MV",
    "metric": "PLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2558,7 +2604,9 @@
    "method": "MV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2569,7 +2617,9 @@
    "method": "MV",
    "metric": "PLO",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2580,7 +2630,9 @@
    "method": "MV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2591,7 +2643,9 @@
    "method": "MV",
    "metric": "PAS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2602,7 +2656,9 @@
    "method": "MV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2613,7 +2669,9 @@
    "method": "MV",
    "metric": "PFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2624,7 +2682,9 @@
    "method": "MV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2635,7 +2695,9 @@
    "method": "MV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2646,7 +2708,9 @@
    "method": "MV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2657,7 +2721,9 @@
    "method": "IV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2668,7 +2734,9 @@
    "method": "IV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2679,7 +2747,9 @@
    "method": "IV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2690,7 +2760,9 @@
    "method": "IV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2701,7 +2773,9 @@
    "method": "IV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2712,7 +2786,9 @@
    "method": "IV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2723,7 +2799,9 @@
    "method": "BAYES",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2734,7 +2812,9 @@
    "method": "BAYES",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2745,7 +2825,9 @@
    "method": "BAYES",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2756,7 +2838,9 @@
    "method": "MV",
    "metric": "MN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2767,7 +2851,9 @@
    "method": "MV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2778,7 +2864,9 @@
    "method": "MV",
    "metric": "SMN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2789,7 +2877,9 @@
    "method": "MV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2800,7 +2890,9 @@
    "method": "MV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2811,7 +2903,9 @@
    "method": "MV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2822,7 +2916,9 @@
    "method": "IV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2833,7 +2929,9 @@
    "method": "IV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2844,7 +2942,9 @@
    "method": "IV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2855,7 +2955,9 @@
    "method": "IV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2866,7 +2968,9 @@
    "method": "IV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2877,7 +2981,9 @@
    "method": "IV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2888,7 +2994,9 @@
    "method": "IV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2899,7 +3007,9 @@
    "method": "IV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2910,7 +3020,9 @@
    "method": "GLMM",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2921,7 +3033,9 @@
    "method": "GLMM",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2932,7 +3046,9 @@
    "method": "BAYES",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2943,7 +3059,9 @@
    "method": "BAYES",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2954,7 +3072,9 @@
    "method": "BAYES",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2965,7 +3085,9 @@
    "method": "BAYES",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2976,7 +3098,9 @@
    "method": "MV",
    "metric": "IR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2987,7 +3111,9 @@
    "method": "MV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -2998,7 +3124,9 @@
    "method": "MV",
    "metric": "IRLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3009,7 +3137,9 @@
    "method": "MV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3020,7 +3150,9 @@
    "method": "MV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3031,7 +3163,9 @@
    "method": "MV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3042,7 +3176,9 @@
    "method": "MV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3053,7 +3189,9 @@
    "method": "MV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3064,7 +3202,9 @@
    "method": "IV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3075,7 +3215,9 @@
    "method": "IV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3086,7 +3228,9 @@
    "method": "IV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3097,7 +3241,9 @@
    "method": "IV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3108,7 +3254,9 @@
    "method": "IV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3119,7 +3267,9 @@
    "method": "IV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3130,7 +3280,9 @@
    "method": "IV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3141,7 +3293,9 @@
    "method": "IV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3152,7 +3306,9 @@
    "method": "IV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3163,7 +3319,9 @@
    "method": "IV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3174,7 +3332,9 @@
    "method": "IV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3185,7 +3345,9 @@
    "method": "IV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3196,7 +3358,9 @@
    "method": "BAYES",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3207,7 +3371,9 @@
    "method": "BAYES",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3218,7 +3384,9 @@
    "method": "BAYES",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3229,7 +3397,9 @@
    "method": "BAYES",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3240,7 +3410,9 @@
    "method": "BAYES",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3251,7 +3423,9 @@
    "method": "BAYES",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3262,7 +3436,9 @@
    "method": "MV",
    "metric": "PR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3273,7 +3449,9 @@
    "method": "MV",
    "metric": "PR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3284,7 +3462,9 @@
    "method": "MV",
    "metric": "PLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3295,7 +3475,9 @@
    "method": "MV",
    "metric": "PLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3306,7 +3488,9 @@
    "method": "MV",
    "metric": "PLO",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3317,7 +3501,9 @@
    "method": "MV",
    "metric": "PLO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3328,7 +3514,9 @@
    "method": "MV",
    "metric": "PAS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3339,7 +3527,9 @@
    "method": "MV",
    "metric": "PAS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3350,7 +3540,9 @@
    "method": "MV",
    "metric": "PFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3361,7 +3553,9 @@
    "method": "MV",
    "metric": "PFT",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3372,7 +3566,9 @@
    "method": "MV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3383,7 +3579,9 @@
    "method": "MV",
    "metric": "PRZ",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3394,7 +3592,9 @@
    "method": "IV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3405,7 +3605,9 @@
    "method": "IV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3416,7 +3618,9 @@
    "method": "IV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3427,7 +3631,9 @@
    "method": "IV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3438,7 +3644,9 @@
    "method": "IV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3449,7 +3657,9 @@
    "method": "IV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3460,7 +3670,9 @@
    "method": "BAYES",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3471,7 +3683,9 @@
    "method": "BAYES",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3482,7 +3696,9 @@
    "method": "BAYES",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3493,7 +3709,9 @@
    "method": "MV",
    "metric": "MN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3504,7 +3722,9 @@
    "method": "MV",
    "metric": "MN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3515,7 +3735,9 @@
    "method": "MV",
    "metric": "SMN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3526,7 +3748,9 @@
    "method": "MV",
    "metric": "SMN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3537,7 +3761,9 @@
    "method": "MV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3548,7 +3774,9 @@
    "method": "MV",
    "metric": "MNLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3559,7 +3787,9 @@
    "method": "IV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3570,7 +3800,9 @@
    "method": "IV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3581,7 +3813,9 @@
    "method": "IV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3592,7 +3826,9 @@
    "method": "IV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3603,7 +3839,9 @@
    "method": "IV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3614,7 +3852,9 @@
    "method": "IV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3625,7 +3865,9 @@
    "method": "IV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3636,7 +3878,9 @@
    "method": "IV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3647,7 +3891,9 @@
    "method": "BAYES",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3658,7 +3904,9 @@
    "method": "BAYES",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3669,7 +3917,9 @@
    "method": "BAYES",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3680,7 +3930,9 @@
    "method": "BAYES",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3691,7 +3943,9 @@
    "method": "MV",
    "metric": "IR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3702,7 +3956,9 @@
    "method": "MV",
    "metric": "IR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3713,7 +3969,9 @@
    "method": "MV",
    "metric": "IRLN",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3724,7 +3982,9 @@
    "method": "MV",
    "metric": "IRLN",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3735,7 +3995,9 @@
    "method": "MV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3746,7 +4008,9 @@
    "method": "MV",
    "metric": "IRS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3757,7 +4021,9 @@
    "method": "MV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3768,7 +4034,9 @@
    "method": "MV",
    "metric": "IRFT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3779,7 +4047,9 @@
    "method": "IPD1",
    "metric": "I_P",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3790,7 +4060,9 @@
    "method": "IPD1",
    "metric": "I_M",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3801,7 +4073,9 @@
    "method": "IPD1",
    "metric": "I_R",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3812,7 +4086,9 @@
    "method": "IV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3823,7 +4099,9 @@
    "method": "IV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3834,7 +4112,9 @@
    "method": "IV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3845,7 +4125,9 @@
    "method": "IV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3856,7 +4138,9 @@
    "method": "IV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3867,7 +4151,9 @@
    "method": "IV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3878,7 +4164,9 @@
    "method": "IV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3889,7 +4177,9 @@
    "method": "IV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3900,7 +4190,9 @@
    "method": "MH",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3911,7 +4203,9 @@
    "method": "MH",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3922,7 +4216,9 @@
    "method": "MH",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3933,7 +4229,9 @@
    "method": "PETO",
    "metric": "PETO",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3944,7 +4242,9 @@
    "method": "GLMM",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3955,7 +4255,9 @@
    "method": "GLMM",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3966,7 +4268,9 @@
    "method": "LRP",
    "metric": "OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3977,7 +4281,9 @@
    "method": "LRP",
    "metric": "OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3988,7 +4294,9 @@
    "method": "BAYES",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -3999,7 +4307,9 @@
    "method": "BAYES",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4010,7 +4320,9 @@
    "method": "BAYES",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4021,7 +4333,9 @@
    "method": "BAYES",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4032,7 +4346,9 @@
    "method": "MV",
    "metric": "OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4043,7 +4359,9 @@
    "method": "MV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4054,7 +4372,9 @@
    "method": "MV",
    "metric": "RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4065,7 +4385,9 @@
    "method": "MV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4076,7 +4398,9 @@
    "method": "MV",
    "metric": "RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4087,7 +4411,9 @@
    "method": "MV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4098,7 +4424,9 @@
    "method": "MV",
    "metric": "AS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4109,7 +4437,9 @@
    "method": "MV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4120,7 +4450,9 @@
    "method": "IV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4131,7 +4463,9 @@
    "method": "IV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4142,7 +4476,9 @@
    "method": "IV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4153,7 +4489,9 @@
    "method": "IV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4164,7 +4502,9 @@
    "method": "IV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4175,7 +4515,9 @@
    "method": "IV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4186,7 +4528,9 @@
    "method": "IV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4197,7 +4541,9 @@
    "method": "IV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4208,7 +4554,9 @@
    "method": "IV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4219,7 +4567,9 @@
    "method": "IV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4230,7 +4580,9 @@
    "method": "IV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4241,7 +4593,9 @@
    "method": "IV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4252,7 +4606,9 @@
    "method": "BAYES",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4263,7 +4619,9 @@
    "method": "BAYES",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4274,7 +4632,9 @@
    "method": "BAYES",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4285,7 +4645,9 @@
    "method": "BAYES",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4296,7 +4658,9 @@
    "method": "BAYES",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4307,7 +4671,9 @@
    "method": "BAYES",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4318,7 +4684,9 @@
    "method": "MV",
    "metric": "MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4329,7 +4697,9 @@
    "method": "MV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4340,7 +4710,9 @@
    "method": "MV",
    "metric": "SMD_G",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4351,7 +4723,9 @@
    "method": "MV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4362,7 +4736,9 @@
    "method": "MV",
    "metric": "SMD_D",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4373,7 +4749,9 @@
    "method": "MV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4384,7 +4762,9 @@
    "method": "MV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4395,7 +4775,9 @@
    "method": "MV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4406,7 +4788,9 @@
    "method": "MV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4417,7 +4801,9 @@
    "method": "MV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4428,7 +4814,9 @@
    "method": "MV",
    "metric": "ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4439,7 +4827,9 @@
    "method": "MV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4450,7 +4840,9 @@
    "method": "IV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4461,7 +4853,9 @@
    "method": "IV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4472,7 +4866,9 @@
    "method": "IV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4483,7 +4879,9 @@
    "method": "IV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4494,7 +4892,9 @@
    "method": "IV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4505,7 +4905,9 @@
    "method": "IV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4516,7 +4918,9 @@
    "method": "MH",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4527,7 +4931,9 @@
    "method": "MH",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4538,7 +4944,9 @@
    "method": "GLMM",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4549,7 +4957,9 @@
    "method": "GLMM",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4560,7 +4970,9 @@
    "method": "BAYES",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4571,7 +4983,9 @@
    "method": "BAYES",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4582,7 +4996,9 @@
    "method": "BAYES",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4593,7 +5009,9 @@
    "method": "MV",
    "metric": "IRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4604,7 +5022,9 @@
    "method": "MV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4615,7 +5035,9 @@
    "method": "MV",
    "metric": "IRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4626,7 +5048,9 @@
    "method": "MV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4637,7 +5061,9 @@
    "method": "MV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4648,7 +5074,9 @@
    "method": "MV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4659,7 +5087,9 @@
    "method": "IV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4670,7 +5100,9 @@
    "method": "IV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4681,7 +5113,9 @@
    "method": "IV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4692,7 +5126,9 @@
    "method": "IV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4703,7 +5139,9 @@
    "method": "IV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4714,7 +5152,9 @@
    "method": "IV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4725,7 +5165,9 @@
    "method": "IV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4736,7 +5178,9 @@
    "method": "IV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4747,7 +5191,9 @@
    "method": "BAYES",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4758,7 +5204,9 @@
    "method": "BAYES",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4769,7 +5217,9 @@
    "method": "BAYES",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4780,7 +5230,9 @@
    "method": "BAYES",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4791,7 +5243,9 @@
    "method": "MV",
    "metric": "OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4802,7 +5256,9 @@
    "method": "MV",
    "metric": "OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4813,7 +5269,9 @@
    "method": "MV",
    "metric": "RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4824,7 +5282,9 @@
    "method": "MV",
    "metric": "RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4835,7 +5295,9 @@
    "method": "MV",
    "metric": "RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4846,7 +5308,9 @@
    "method": "MV",
    "metric": "RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4857,7 +5321,9 @@
    "method": "MV",
    "metric": "AS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4868,7 +5334,9 @@
    "method": "MV",
    "metric": "AS",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4879,7 +5347,9 @@
    "method": "IV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4890,7 +5360,9 @@
    "method": "IV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4901,7 +5373,9 @@
    "method": "IV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4912,7 +5386,9 @@
    "method": "IV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4923,7 +5399,9 @@
    "method": "IV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4934,7 +5412,9 @@
    "method": "IV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4945,7 +5425,9 @@
    "method": "IV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4956,7 +5438,9 @@
    "method": "IV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4967,7 +5451,9 @@
    "method": "IV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4978,7 +5464,9 @@
    "method": "IV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4989,7 +5477,9 @@
    "method": "IV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5000,7 +5490,9 @@
    "method": "IV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5011,7 +5503,9 @@
    "method": "BAYES",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5022,7 +5516,9 @@
    "method": "BAYES",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5033,7 +5529,9 @@
    "method": "BAYES",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5044,7 +5542,9 @@
    "method": "BAYES",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5055,7 +5555,9 @@
    "method": "BAYES",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5066,7 +5568,9 @@
    "method": "BAYES",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5077,7 +5581,9 @@
    "method": "MV",
    "metric": "MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5088,7 +5594,9 @@
    "method": "MV",
    "metric": "MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5099,7 +5607,9 @@
    "method": "MV",
    "metric": "SMD_G",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5110,7 +5620,9 @@
    "method": "MV",
    "metric": "SMD_G",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5121,7 +5633,9 @@
    "method": "MV",
    "metric": "SMD_D",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5132,7 +5646,9 @@
    "method": "MV",
    "metric": "SMD_D",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5143,7 +5659,9 @@
    "method": "MV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5154,7 +5672,9 @@
    "method": "MV",
    "metric": "SMDH",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5165,7 +5685,9 @@
    "method": "MV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5176,7 +5698,9 @@
    "method": "MV",
    "metric": "SMD1",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5187,7 +5711,9 @@
    "method": "MV",
    "metric": "ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5198,7 +5724,9 @@
    "method": "MV",
    "metric": "ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5209,7 +5737,9 @@
    "method": "IV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5220,7 +5750,9 @@
    "method": "IV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5231,7 +5763,9 @@
    "method": "IV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5242,7 +5776,9 @@
    "method": "IV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5253,7 +5789,9 @@
    "method": "IV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5264,7 +5802,9 @@
    "method": "IV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5275,7 +5815,9 @@
    "method": "BAYES",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5286,7 +5828,9 @@
    "method": "BAYES",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5297,7 +5841,9 @@
    "method": "BAYES",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5308,7 +5854,9 @@
    "method": "MV",
    "metric": "IRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5319,7 +5867,9 @@
    "method": "MV",
    "metric": "IRR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5330,7 +5880,9 @@
    "method": "MV",
    "metric": "IRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5341,7 +5893,9 @@
    "method": "MV",
    "metric": "IRD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5352,7 +5906,9 @@
    "method": "MV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5363,7 +5919,9 @@
    "method": "MV",
    "metric": "IRSD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5374,7 +5932,9 @@
    "method": "IV",
    "metric": "HR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5385,7 +5945,9 @@
    "method": "IV",
    "metric": "HR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5396,7 +5958,9 @@
    "method": "BAYES",
    "metric": "HR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5407,7 +5971,9 @@
    "method": "MV",
    "metric": "HR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5418,7 +5984,9 @@
    "method": "MV",
    "metric": "HR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5429,7 +5997,9 @@
    "method": "IV",
    "metric": "POR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5440,7 +6010,9 @@
    "method": "IV",
    "metric": "POR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5451,7 +6023,9 @@
    "method": "BAYES",
    "metric": "POR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5462,7 +6036,9 @@
    "method": "MV",
    "metric": "POR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5473,7 +6049,9 @@
    "method": "MV",
    "metric": "POR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5484,7 +6062,9 @@
    "method": "OEV",
    "metric": "HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5495,7 +6075,9 @@
    "method": "IPD1",
    "metric": "I_OR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5506,7 +6088,9 @@
    "method": "IPD1",
    "metric": "I_MD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5517,7 +6101,9 @@
    "method": "IPD1",
    "metric": "I_IRR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5528,7 +6114,9 @@
    "method": "IPD1",
    "metric": "I_HR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5539,7 +6127,9 @@
    "method": "IV",
    "metric": "MC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5550,7 +6140,9 @@
    "method": "IV",
    "metric": "MC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5561,7 +6153,9 @@
    "method": "IV",
    "metric": "SMCC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5572,7 +6166,9 @@
    "method": "IV",
    "metric": "SMCC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5583,7 +6179,9 @@
    "method": "IV",
    "metric": "SMCR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5594,7 +6192,9 @@
    "method": "IV",
    "metric": "SMCR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5605,7 +6205,9 @@
    "method": "IV",
    "metric": "ROMC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5616,7 +6218,9 @@
    "method": "IV",
    "metric": "ROMC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5627,7 +6231,9 @@
    "method": "BAYES",
    "metric": "MC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5638,7 +6244,9 @@
    "method": "BAYES",
    "metric": "SMCC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5649,7 +6257,9 @@
    "method": "BAYES",
    "metric": "SMCR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5660,7 +6270,9 @@
    "method": "BAYES",
    "metric": "ROMC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5671,7 +6283,9 @@
    "method": "MV",
    "metric": "MC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5682,7 +6296,9 @@
    "method": "MV",
    "metric": "MC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5693,7 +6309,9 @@
    "method": "MV",
    "metric": "SMCC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5704,7 +6322,9 @@
    "method": "MV",
    "metric": "SMCC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5715,7 +6335,9 @@
    "method": "MV",
    "metric": "SMCR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5726,7 +6348,9 @@
    "method": "MV",
    "metric": "SMCR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5737,7 +6361,9 @@
    "method": "MV",
    "metric": "ROMC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5748,7 +6374,9 @@
    "method": "MV",
    "metric": "ROMC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5759,7 +6387,9 @@
    "method": "IV",
    "metric": "MPRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5770,7 +6400,9 @@
    "method": "IV",
    "metric": "MPRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5781,7 +6413,9 @@
    "method": "IV",
    "metric": "MPOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5792,7 +6426,9 @@
    "method": "IV",
    "metric": "MPOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5803,7 +6439,9 @@
    "method": "IV",
    "metric": "MPRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5814,7 +6452,9 @@
    "method": "IV",
    "metric": "MPRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5825,7 +6465,9 @@
    "method": "IV",
    "metric": "MPORC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5836,7 +6478,9 @@
    "method": "IV",
    "metric": "MPORC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.2",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5847,7 +6491,9 @@
    "method": "BAYES",
    "metric": "MPRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5858,7 +6504,9 @@
    "method": "BAYES",
    "metric": "MPOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5869,7 +6517,9 @@
    "method": "BAYES",
    "metric": "MPRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5880,7 +6530,9 @@
    "method": "BAYES",
    "metric": "MPORC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5891,7 +6543,9 @@
    "method": "MV",
    "metric": "MPRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5902,7 +6556,9 @@
    "method": "MV",
    "metric": "MPRR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5913,7 +6569,9 @@
    "method": "MV",
    "metric": "MPOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5924,7 +6582,9 @@
    "method": "MV",
    "metric": "MPOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5935,7 +6595,9 @@
    "method": "MV",
    "metric": "MPRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5946,7 +6608,9 @@
    "method": "MV",
    "metric": "MPRD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5957,7 +6621,9 @@
    "method": "MV",
    "metric": "MPORC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5968,7 +6634,9 @@
    "method": "MV",
    "metric": "MPORC",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5979,7 +6647,9 @@
    "method": "NM_GT",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -5990,7 +6660,9 @@
    "method": "NM_GT",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6001,7 +6673,9 @@
    "method": "NM_GT",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6012,7 +6686,9 @@
    "method": "NM_GT",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6023,7 +6699,9 @@
    "method": "NM_GT",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6034,7 +6712,9 @@
    "method": "NM_GT",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6045,7 +6725,9 @@
    "method": "NM_GT",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6056,7 +6738,9 @@
    "method": "NM_GT",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6067,7 +6751,9 @@
    "method": "NM_MV",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6078,7 +6764,9 @@
    "method": "NM_MV",
    "metric": "N_OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6089,7 +6777,9 @@
    "method": "NM_MV",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6100,7 +6790,9 @@
    "method": "NM_MV",
    "metric": "N_RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6111,7 +6803,9 @@
    "method": "NM_MV",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6122,7 +6816,9 @@
    "method": "NM_MV",
    "metric": "N_RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6133,7 +6829,9 @@
    "method": "NM_MV",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6144,7 +6842,9 @@
    "method": "NM_MV",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6155,7 +6855,9 @@
    "method": "NM_MH",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6166,7 +6868,9 @@
    "method": "NM_MH",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6177,7 +6881,9 @@
    "method": "NM_MH",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6188,7 +6894,9 @@
    "method": "NM_BAYES",
    "metric": "N_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6199,7 +6907,9 @@
    "method": "NM_BAYES",
    "metric": "N_OR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6210,7 +6920,9 @@
    "method": "NM_BAYES",
    "metric": "N_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6221,7 +6933,9 @@
    "method": "NM_BAYES",
    "metric": "N_RR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6232,7 +6946,9 @@
    "method": "NM_BAYES",
    "metric": "N_RD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6243,7 +6959,9 @@
    "method": "NM_BAYES",
    "metric": "N_RD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6254,7 +6972,9 @@
    "method": "NM_BAYES",
    "metric": "N_ASD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6265,7 +6985,9 @@
    "method": "NM_BAYES",
    "metric": "N_ASD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6276,7 +6998,9 @@
    "method": "NM_GT",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6287,7 +7011,9 @@
    "method": "NM_GT",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6298,7 +7024,9 @@
    "method": "NM_GT",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6309,7 +7037,9 @@
    "method": "NM_GT",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6320,7 +7050,9 @@
    "method": "NM_GT",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6331,7 +7063,9 @@
    "method": "NM_GT",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6342,7 +7076,9 @@
    "method": "NM_MV",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6353,7 +7089,9 @@
    "method": "NM_MV",
    "metric": "N_MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6364,7 +7102,9 @@
    "method": "NM_MV",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6375,7 +7115,9 @@
    "method": "NM_MV",
    "metric": "N_SMD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6386,7 +7128,9 @@
    "method": "NM_MV",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6397,7 +7141,9 @@
    "method": "NM_MV",
    "metric": "N_ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6408,7 +7154,9 @@
    "method": "NM_BAYES",
    "metric": "N_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6419,7 +7167,9 @@
    "method": "NM_BAYES",
    "metric": "N_MD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6430,7 +7180,9 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6441,7 +7193,9 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6452,7 +7206,9 @@
    "method": "NM_BAYES",
    "metric": "N_ROM",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6463,7 +7219,9 @@
    "method": "NM_BAYES",
    "metric": "N_ROM",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6474,7 +7232,9 @@
    "method": "NM_GT",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6485,7 +7245,9 @@
    "method": "NM_GT",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6496,7 +7258,9 @@
    "method": "NM_MV",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6507,7 +7271,9 @@
    "method": "NM_MV",
    "metric": "N_IRR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6518,7 +7284,9 @@
    "method": "NM_BAYES",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6529,7 +7297,9 @@
    "method": "NM_BAYES",
    "metric": "N_IRR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6540,7 +7310,9 @@
    "method": "NM_GT",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6551,7 +7323,9 @@
    "method": "NM_GT",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6562,7 +7336,9 @@
    "method": "NM_GT",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6573,7 +7349,9 @@
    "method": "NM_GT",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6584,7 +7362,9 @@
    "method": "NM_GT",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6595,7 +7375,9 @@
    "method": "NM_GT",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6606,7 +7388,9 @@
    "method": "NM_GT",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6617,7 +7401,9 @@
    "method": "NM_GT",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6628,7 +7414,9 @@
    "method": "NM_MV",
    "metric": "N_OR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6639,7 +7427,9 @@
    "method": "NM_MV",
    "metric": "N_OR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6650,7 +7440,9 @@
    "method": "NM_MV",
    "metric": "N_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6661,7 +7453,9 @@
    "method": "NM_MV",
    "metric": "N_RR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6672,7 +7466,9 @@
    "method": "NM_MV",
    "metric": "N_RD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6683,7 +7479,9 @@
    "method": "NM_MV",
    "metric": "N_RD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6694,7 +7492,9 @@
    "method": "NM_MV",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6705,7 +7505,9 @@
    "method": "NM_MV",
    "metric": "N_ASD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6716,7 +7518,9 @@
    "method": "NM_BAYES",
    "metric": "N_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6727,7 +7531,9 @@
    "method": "NM_BAYES",
    "metric": "N_OR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6738,7 +7544,9 @@
    "method": "NM_BAYES",
    "metric": "N_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6749,7 +7557,9 @@
    "method": "NM_BAYES",
    "metric": "N_RR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6760,7 +7570,9 @@
    "method": "NM_BAYES",
    "metric": "N_RD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6771,7 +7583,9 @@
    "method": "NM_BAYES",
    "metric": "N_RD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6782,7 +7596,9 @@
    "method": "NM_BAYES",
    "metric": "N_ASD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6793,7 +7609,9 @@
    "method": "NM_BAYES",
    "metric": "N_ASD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6804,7 +7622,9 @@
    "method": "NM_GT",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6815,7 +7635,9 @@
    "method": "NM_GT",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6826,7 +7648,9 @@
    "method": "NM_GT",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6837,7 +7661,9 @@
    "method": "NM_GT",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6848,7 +7674,9 @@
    "method": "NM_GT",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6859,7 +7687,9 @@
    "method": "NM_GT",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6870,7 +7700,9 @@
    "method": "NM_MV",
    "metric": "N_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6881,7 +7713,9 @@
    "method": "NM_MV",
    "metric": "N_MD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6892,7 +7726,9 @@
    "method": "NM_MV",
    "metric": "N_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6903,7 +7739,9 @@
    "method": "NM_MV",
    "metric": "N_SMD",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6914,7 +7752,9 @@
    "method": "NM_MV",
    "metric": "N_ROM",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6925,7 +7765,9 @@
    "method": "NM_MV",
    "metric": "N_ROM",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6936,7 +7778,9 @@
    "method": "NM_BAYES",
    "metric": "N_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6947,7 +7791,9 @@
    "method": "NM_BAYES",
    "metric": "N_MD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6958,7 +7804,9 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6969,7 +7817,9 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6980,7 +7830,9 @@
    "method": "NM_BAYES",
    "metric": "N_ROM",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6991,7 +7843,9 @@
    "method": "NM_BAYES",
    "metric": "N_ROM",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7002,7 +7856,9 @@
    "method": "NM_GT",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7013,7 +7869,9 @@
    "method": "NM_GT",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7024,7 +7882,9 @@
    "method": "NM_MV",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7035,7 +7895,9 @@
    "method": "NM_MV",
    "metric": "N_IRR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7046,7 +7908,9 @@
    "method": "NM_BAYES",
    "metric": "N_IRR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7057,7 +7921,9 @@
    "method": "NM_BAYES",
    "metric": "N_IRR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7068,7 +7934,9 @@
    "method": "NM_GT",
    "metric": "N_HR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7079,7 +7947,9 @@
    "method": "NM_GT",
    "metric": "N_HR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7090,7 +7960,9 @@
    "method": "NM_MV",
    "metric": "N_HR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7101,7 +7973,9 @@
    "method": "NM_MV",
    "metric": "N_HR",
    "verified": true,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7112,7 +7986,9 @@
    "method": "NM_BAYES",
    "metric": "N_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7123,7 +7999,9 @@
    "method": "NM_BAYES",
    "metric": "N_HR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "v0.3",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7134,7 +8012,9 @@
    "method": "NM_IPD",
    "metric": "N_OR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7145,7 +8025,9 @@
    "method": "NM_IPD",
    "metric": "N_MD",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7156,7 +8038,9 @@
    "method": "NM_IPD",
    "metric": "N_HR",
    "verified": false,
-   "added": false
+   "added": false,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7167,7 +8051,9 @@
    "method": "BIV",
    "metric": "SESP",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "planned"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7178,7 +8064,9 @@
    "method": "HSROC",
    "metric": "SROC",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7189,7 +8077,9 @@
    "method": "DTA_UNI",
    "metric": "DOR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7200,7 +8090,9 @@
    "method": "DTA_UNI",
    "metric": "DOR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7211,7 +8103,9 @@
    "method": "DTA_UNI",
    "metric": "LRP",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7222,7 +8116,9 @@
    "method": "DTA_UNI",
    "metric": "LRP",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7233,7 +8129,9 @@
    "method": "DTA_UNI",
    "metric": "LRN",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7244,7 +8142,9 @@
    "method": "DTA_UNI",
    "metric": "LRN",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7255,7 +8155,9 @@
    "method": "BIV",
    "metric": "SESP",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -7266,7 +8168,9 @@
    "method": "HSROC",
    "metric": "SROC",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7277,7 +8181,9 @@
    "method": "IV",
    "metric": "PF_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7288,7 +8194,9 @@
    "method": "IV",
    "metric": "PF_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7299,7 +8207,9 @@
    "method": "IV",
    "metric": "PF_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7310,7 +8220,9 @@
    "method": "IV",
    "metric": "PF_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7321,7 +8233,9 @@
    "method": "IV",
    "metric": "PF_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7332,7 +8246,9 @@
    "method": "IV",
    "metric": "PF_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7343,7 +8259,9 @@
    "method": "IV",
    "metric": "PF_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7354,7 +8272,9 @@
    "method": "IV",
    "metric": "PF_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7365,7 +8285,9 @@
    "method": "BAYES",
    "metric": "PF_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7376,7 +8298,9 @@
    "method": "BAYES",
    "metric": "PF_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7387,7 +8311,9 @@
    "method": "BAYES",
    "metric": "PF_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7398,7 +8324,9 @@
    "method": "BAYES",
    "metric": "PF_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7409,7 +8337,9 @@
    "method": "MV",
    "metric": "PF_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7420,7 +8350,9 @@
    "method": "MV",
    "metric": "PF_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7431,7 +8363,9 @@
    "method": "MV",
    "metric": "PF_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7442,7 +8376,9 @@
    "method": "MV",
    "metric": "PF_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7453,7 +8389,9 @@
    "method": "MV",
    "metric": "PF_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7464,7 +8402,9 @@
    "method": "MV",
    "metric": "PF_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7475,7 +8415,9 @@
    "method": "MV",
    "metric": "PF_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7486,7 +8428,9 @@
    "method": "MV",
    "metric": "PF_MD",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "to_check"
   },
   {
    "framework": "3. Prognosis",
@@ -7497,7 +8441,9 @@
    "method": "VAL",
    "metric": "CSTAT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -7508,7 +8454,9 @@
    "method": "VAL",
    "metric": "CSTAT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -7519,7 +8467,9 @@
    "method": "VAL",
    "metric": "OE",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -7530,7 +8480,9 @@
    "method": "VAL",
    "metric": "OE",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "v0.4",
+   "status": "planned"
   },
   {
    "framework": "4. Association",
@@ -7541,7 +8493,9 @@
    "method": "IV",
    "metric": "COR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7552,7 +8506,9 @@
    "method": "IV",
    "metric": "COR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7563,7 +8519,9 @@
    "method": "IV",
    "metric": "UCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7574,7 +8532,9 @@
    "method": "IV",
    "metric": "UCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7585,7 +8545,9 @@
    "method": "IV",
    "metric": "ZCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7596,7 +8558,9 @@
    "method": "IV",
    "metric": "ZCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7607,7 +8571,9 @@
    "method": "IV",
    "metric": "PCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7618,7 +8584,9 @@
    "method": "IV",
    "metric": "PCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7629,7 +8597,9 @@
    "method": "BAYES",
    "metric": "COR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7640,7 +8610,9 @@
    "method": "BAYES",
    "metric": "UCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7651,7 +8623,9 @@
    "method": "BAYES",
    "metric": "ZCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7662,7 +8636,9 @@
    "method": "BAYES",
    "metric": "PCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7673,7 +8649,9 @@
    "method": "MV",
    "metric": "COR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7684,7 +8662,9 @@
    "method": "MV",
    "metric": "COR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7695,7 +8675,9 @@
    "method": "MV",
    "metric": "UCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7706,7 +8688,9 @@
    "method": "MV",
    "metric": "UCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7717,7 +8701,9 @@
    "method": "MV",
    "metric": "ZCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7728,7 +8714,9 @@
    "method": "MV",
    "metric": "ZCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7739,7 +8727,9 @@
    "method": "MV",
    "metric": "PCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7750,7 +8740,9 @@
    "method": "MV",
    "metric": "PCOR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7761,7 +8753,9 @@
    "method": "IV",
    "metric": "RPB",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7772,7 +8766,9 @@
    "method": "IV",
    "metric": "RPB",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7783,7 +8779,9 @@
    "method": "IV",
    "metric": "RBIS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7794,7 +8792,9 @@
    "method": "IV",
    "metric": "RBIS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7805,7 +8805,9 @@
    "method": "BAYES",
    "metric": "RPB",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7816,7 +8818,9 @@
    "method": "BAYES",
    "metric": "RBIS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7827,7 +8831,9 @@
    "method": "MV",
    "metric": "RPB",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7838,7 +8844,9 @@
    "method": "MV",
    "metric": "RPB",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7849,7 +8857,9 @@
    "method": "MV",
    "metric": "RBIS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7860,7 +8870,9 @@
    "method": "MV",
    "metric": "RBIS",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7871,7 +8883,9 @@
    "method": "IV",
    "metric": "PHI",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7882,7 +8896,9 @@
    "method": "IV",
    "metric": "PHI",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7893,7 +8909,9 @@
    "method": "IV",
    "metric": "RTET",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7904,7 +8922,9 @@
    "method": "IV",
    "metric": "RTET",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7915,7 +8935,9 @@
    "method": "BAYES",
    "metric": "PHI",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7926,7 +8948,9 @@
    "method": "BAYES",
    "metric": "RTET",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7937,7 +8961,9 @@
    "method": "MV",
    "metric": "PHI",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7948,7 +8974,9 @@
    "method": "MV",
    "metric": "PHI",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7959,7 +8987,9 @@
    "method": "MV",
    "metric": "RTET",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7970,7 +9000,9 @@
    "method": "MV",
    "metric": "RTET",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -7981,7 +9013,9 @@
    "method": "IV",
    "metric": "EX_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -7992,7 +9026,9 @@
    "method": "IV",
    "metric": "EX_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8003,7 +9039,9 @@
    "method": "IV",
    "metric": "EX_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8014,7 +9052,9 @@
    "method": "IV",
    "metric": "EX_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8025,7 +9065,9 @@
    "method": "IV",
    "metric": "EX_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8036,7 +9078,9 @@
    "method": "IV",
    "metric": "EX_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8047,7 +9091,9 @@
    "method": "BAYES",
    "metric": "EX_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8058,7 +9104,9 @@
    "method": "BAYES",
    "metric": "EX_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8069,7 +9117,9 @@
    "method": "BAYES",
    "metric": "EX_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8080,7 +9130,9 @@
    "method": "MV",
    "metric": "EX_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8091,7 +9143,9 @@
    "method": "MV",
    "metric": "EX_OR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8102,7 +9156,9 @@
    "method": "MV",
    "metric": "EX_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8113,7 +9169,9 @@
    "method": "MV",
    "metric": "EX_RR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8124,7 +9182,9 @@
    "method": "MV",
    "metric": "EX_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8135,7 +9195,9 @@
    "method": "MV",
    "metric": "EX_HR",
    "verified": false,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "to_check"
   },
   {
    "framework": "4. Association",
@@ -8146,7 +9208,9 @@
    "method": "DR",
    "metric": "DR_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -8157,7 +9221,9 @@
    "method": "DR",
    "metric": "DR_RR",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -8168,7 +9234,9 @@
    "method": "DR",
    "metric": "DR_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -8179,7 +9247,9 @@
    "method": "DR",
    "metric": "DR_MD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -8190,7 +9260,9 @@
    "method": "DR",
    "metric": "DR_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -8201,7 +9273,9 @@
    "method": "DR",
    "metric": "DR_SMD",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8212,7 +9286,9 @@
    "method": "IV",
    "metric": "ARAW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8223,7 +9299,9 @@
    "method": "IV",
    "metric": "ARAW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8234,7 +9312,9 @@
    "method": "IV",
    "metric": "AHW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8245,7 +9325,9 @@
    "method": "IV",
    "metric": "AHW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8256,7 +9338,9 @@
    "method": "IV",
    "metric": "ABT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8267,7 +9351,9 @@
    "method": "IV",
    "metric": "ABT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8278,7 +9364,9 @@
    "method": "BAYES",
    "metric": "ARAW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8289,7 +9377,9 @@
    "method": "BAYES",
    "metric": "AHW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8300,7 +9390,9 @@
    "method": "BAYES",
    "metric": "ABT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8311,7 +9403,9 @@
    "method": "MV",
    "metric": "ARAW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8322,7 +9416,9 @@
    "method": "MV",
    "metric": "ARAW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8333,7 +9429,9 @@
    "method": "MV",
    "metric": "AHW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8344,7 +9442,9 @@
    "method": "MV",
    "metric": "AHW",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8355,7 +9455,9 @@
    "method": "MV",
    "metric": "ABT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   },
   {
    "framework": "5. Measurement reliability",
@@ -8366,7 +9468,9 @@
    "method": "MV",
    "metric": "ABT",
    "verified": true,
-   "added": true
+   "added": true,
+   "milestone": "Later",
+   "status": "specified"
   }
  ]
 }
