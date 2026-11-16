@@ -39,8 +39,9 @@ and of claims about any institution's involvement.
    review in about 15 minutes.
 2. **Every PR is audited** by the `auditor` agent (`.claude/agents/auditor.md`)
    for up to three rounds before the owner reviews it (see "Audit loop").
-3. **The owner merges.** Agents never merge, force-push, rewrite published
-   history, or push to `main`.
+3. **Only the owner merges.** Agents never merge, approve, force-push,
+   rewrite published history, or push to `main`. When a PR is ready, the
+   agent tells the owner (see "Ready for review") and waits.
 4. **Commits are real work, as it happens.** Never backdate a commit or make
    up a history.
 5. **The map is the specification.** `spec/build_map.py` holds it. Any change
@@ -72,9 +73,17 @@ Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
 public). Commits are authored with the owner's GitHub noreply address, set in
 the repo's git config.
 
-**Tools needed:** `git`, the GitHub CLI `gh` (logged in with
-`gh auth login`) and `pre-commit`. Run `pre-commit install` once
-per clone.
+**Tools needed:** `git`, Python 3.11 or later, and the GitHub CLI `gh`
+(logged in with `gh auth login`). Once per clone:
+
+```bash
+python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
+.venv/bin/pre-commit install
+export ATLAS_PRIVATE_SCAN=<path to the owner's private scan script>   # e.g. in your shell profile
+```
+
+The private name scan lives outside the repository, because its pattern lists
+the names that must never appear here.
 
 **First commit (once only).** `main` gets a single commit, "Initial
 release", pushed directly while the repository is still empty. Every later
@@ -87,20 +96,38 @@ gh issue create --title "<what and why>" --body-file -      # 1. the issue
 git switch main && git pull --ff-only
 git switch -c feat/<issue>-<slug>                            # 2. the branch
 # ...work, with small commits...
-python3 spec/build_map.py                                    # 3. regenerate, then run the checks
-git grep -n -i -E '<scan pattern from the brief>'            #    must print nothing
+python3 spec/build_map.py                                    # 3. regenerate, then run the local checks
+scripts/check.sh                                             #    (see "Checks"); all must pass
 git push -u origin feat/<issue>-<slug>                       # 4. push the branch
-gh pr create --fill --body-file -                            # 5. the PR: "Closes #<issue>", what, why, how tested
+gh pr create --fill --body-file -                            # 5. the PR: "Closes #<issue>", what, why,
+                                                             #    and the local checks that ran, with results
 # 6. run the auditor (see "Audit loop"); fix and push to the same branch
-# 7. the owner reviews and merges; then delete the branch
+# 7. tell the owner the PR is ready (see "Ready for review") and stop
+# 8. the owner reviews and merges; the branch is deleted after the merge
 ```
 
 - Never push to `main` after the first commit, never force-push, never
   rewrite published history.
-- After PR 1, the owner sets a ruleset on `main`: pull request required,
-  the CI checks required, no force-push, no deletion.
+- After PR 1, the owner sets a ruleset on `main`: pull request required, no
+  force-push, no deletion. CI checks are not required on pull requests,
+  because CI runs only at releases (see "Checks").
 - Pull requests are merged by the owner with "Squash and merge" unless a PR
   says otherwise.
+
+### Ready for review
+
+A PR is ready when the local checks pass, the auditor has approved it (or it
+has the `needs-owner` label), and its description is complete. The agent then
+adds the `ready-for-review` label and tells the owner, with:
+- the PR link;
+- what changed and why, in two or three lines;
+- the local checks that ran and their results;
+- for map changes, the pathway counts by status and what moved;
+- anything left out, and why;
+- what the owner should look at most carefully.
+
+The agent then stops work on that PR until the owner replies. If the owner
+asks for changes, the agent pushes them to the same branch and reports again.
 
 ### Audit loop
 
@@ -182,7 +209,7 @@ Everything is generated from the map. Nothing is written by hand twice.
 | **Cards** | A teaching card for every node and rule, with references, plus a glossary. Shown inside Atlas and Pathfinder | v0.1 |
 | **Workbench** | Upload a CSV, check it against the pathway's data format, run it, and get estimates, heterogeneity, forest and funnel plots, and the exact R code | v0.2 |
 | **Casebook** | Published example datasets, loadable into Workbench in one click; the same datasets are the validation tests | v0.2 |
-| **Proof** | Every pathway with its test, the published value, our value, the tolerance and the CI status | v0.2 |
+| **Proof** | Every pathway with its test, the published value, our value, the tolerance and whether the check passes | v0.2 |
 | **Map history** | How the map changed between releases, each change linked to its issue and PR | v0.2 |
 | **Advisor** | Optional, uses an LLM. See "Methods advisor" | v0.4 |
 
@@ -283,7 +310,7 @@ Errors are JSON with a stable `code`, a message, and field paths where they
 apply. Asking `/run` for a pathway that isn't runnable returns `409
 pathway_not_runnable`, with its status and roadmap milestone. The OpenAPI
 schema is the contract: `frontend/src/types/api.ts` is generated from it and
-committed, and CI checks that it's current.
+committed, and the checks confirm that it's current.
 
 ## Stack and tooling
 
@@ -314,25 +341,35 @@ committed, and CI checks that it's current.
   Cochrane worked examples), with explicit tolerances and the source, table
   or page in each docstring; R tests with testthat.
 
-## CI (GitHub Actions)
+## Checks
 
-`ci.yml` runs on every PR and push to `main`. These checks must pass before a
-PR can merge:
-1. **spec:** ruff, mypy, map tests, and a check that the generated files are
-   current.
-2. **frontend:** lint, typecheck, Vitest, build.
+**On every pull request, locally.** Before pushing a branch, run
+`scripts/check.sh` (pre-commit runs the quick checks on each commit). The PR
+description lists the checks that ran and their results. A PR with a failing
+check isn't opened. The script runs:
+1. **lint and format:** ruff (from PR 2 also mypy `--strict` and the map
+   tests).
+2. **map files current:** regenerating `spec/` changes nothing.
+3. **private name scan:** `$ATLAS_PRIVATE_SCAN` prints nothing. The script
+   fails if it isn't set.
+4. **frontend** (from PR 3): lint, typecheck, Vitest, build.
 
-`pages.yml` deploys the frontend to GitHub Pages from `main`. From v0.2, CI
-adds the backend, `r_service` and validation jobs, and `advisor-eval.yml` runs
-the advisor scenarios when a PR gets the `eval:advisor` label.
+**At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
+same script in a clean environment only when a milestone is closed, a `v*`
+tag is pushed, or it's started by hand (`workflow_dispatch`). It never runs on
+pull requests. The private scan runs locally only. A release isn't published
+until CI passes. From v0.2, CI adds the backend, `r_service` and validation jobs,
+and the advisor scenarios run the same way.
+
+`pages.yml` deploys the frontend to GitHub Pages at each release.
 
 ## Commands
 
 ```bash
 python3 spec/build_map.py                     # regenerate the map files
-cd spec && ruff check . && mypy . && pytest -q
-cd frontend && npm run lint && npm run typecheck && npm test && npm run build
-pre-commit run --all-files
+scripts/check.sh                              # every local check for a PR
+.venv/bin/pre-commit run --all-files          # the quick per-commit checks
+gh workflow run CI                            # start CI by hand (it also runs at releases)
 ```
 
 ## License
