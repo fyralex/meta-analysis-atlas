@@ -18,6 +18,13 @@ method's engine's, following the roadmap in CLAUDE.md:
 | v0.4 | diagnostic accuracy and prognosis |
 | Later | one-stage IPD, O − E and V, penalised logistic regression, association, reliability |
 
+The roadmap names netmeta, `rma.mv`, bayesmeta, diagnostic accuracy and
+prognosis. Placing `netmetabin` (part of netmeta) and gemtc with the networks
+in v0.3, and O − E and V and penalised logistic regression in Later (no R
+implementation chosen), is this record's reading of it. gemtc, O − E and V and
+penalised logistic regression are all still to check, so their milestone
+changes no status today.
+
 **Status.**
 
 | Status | When |
