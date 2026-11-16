@@ -26,4 +26,4 @@ Write "None" otherwise. -->
 
 ## Audit
 
-<!-- Filled in by the audit loop: rounds run, verdict. -->
+<!-- Filled in by the audit loop: rounds run, verdict, non-blocking findings and what was done. Or "Small PR: no audit (CLAUDE.md, Audit loop)". -->

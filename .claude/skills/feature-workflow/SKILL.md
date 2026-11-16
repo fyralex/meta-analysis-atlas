@@ -57,6 +57,11 @@ How tested (paste the check summary), Map changes, Left out.
 
 ## 6. Audit loop (max 3 rounds)
 
+**A small PR skips this step:** it changes only docs or tests, or fewer than
+about 50 lines of code, and nothing in `spec/`. Its local checks are its
+review. Write "Small PR: no audit (CLAUDE.md, Audit loop)" in its description
+and go to 7. A map change is never small.
+
 For round N = 1, 2, 3:
 
 1. Run the `auditor` agent: "Audit PR #<pr>, round N", plus, from round 2 on,
@@ -67,7 +72,10 @@ For round N = 1, 2, 3:
      - Agree: fix it, rerun the local checks, push.
      - Disagree: reply on the PR (`gh pr comment`) with the finding number and
        a concrete reason. Don't change the code for it.
-3. Next round.
+   - Non-blocking findings: fix them or answer them, in the same push, and
+     list them in the PR's Audit section. They never need another round.
+3. Next round, only if a blocking finding was fixed or disputed. Otherwise
+   go to 7.
 
 **Escalate to the owner** when round 3 ends without APPROVE, or the auditor
 upholds a finding you still disagree with:
@@ -94,7 +102,15 @@ report again.
 
 ## 8. After merge
 
-The owner merges. Pull `main`, delete the local branch, and pick up the next
-issue in the milestone. When all of a milestone's issues are closed, the owner
+The owner merges, and GitHub deletes the remote branch. Pull `main`, delete
+the local branch (`git branch -D <branch>`: a squash merge leaves it looking
+unmerged), and pick up the next issue in the milestone.
+
+## Follow-up issues
+
+Work found along the way that is out of scope gets its own issue, from the
+bug template: the first line says where it was found (building or auditing
+#<PR>) and how severe it is, then "What's wrong" with file and line, "What to
+do", and acceptance criteria. When all of a milestone's issues are closed, the owner
 closes the milestone, which runs CI; once CI passes, propose the `v<x.y.0>`
 tag and release notes.

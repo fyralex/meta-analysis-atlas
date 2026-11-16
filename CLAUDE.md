@@ -38,7 +38,8 @@ and of claims about any institution's involvement.
    type `feat`, `fix`, `chore`, `docs` or `ci`. Keep each PR small enough to
    review in about 15 minutes.
 2. **Every PR is audited** by the `auditor` agent (`.claude/agents/auditor.md`)
-   for up to three rounds before the owner reviews it (see "Audit loop").
+   for up to three rounds before the owner reviews it, except a small PR (see
+   "Audit loop"). A change to the map is always audited.
 3. **Only the owner merges.** Agents never merge, approve, force-push,
    rewrite published history, or push to `main`. When a PR is ready, the
    agent tells the owner (see "Ready for review") and waits.
@@ -57,9 +58,10 @@ and of claims about any institution's involvement.
 8. **Teaching content is held to the same standard as code.** Every note,
    "when to use" line and exclusion reason has at least one reference: a
    Cochrane Handbook chapter and section, the documentation of the R function
-   it uses, or a methods paper. Avoid "mandatory", "gold standard" and
-   "always" unless the source says so. Present genuine methodological debate
-   as debate.
+   it uses, or a methods paper. Cite the source by section and state its rule
+   in our own words; never copy its text. Avoid "mandatory", "gold standard"
+   and "always" unless the source says so. Present genuine methodological
+   debate as debate.
 9. **No secrets in git.** Secrets come from environment variables only and
    `.env` files are git-ignored. Before every commit, check the diff for keys,
    tokens and passwords.
@@ -101,9 +103,10 @@ scripts/check.sh                                             #    (see "Checks")
 git push -u origin feat/<issue>-<slug>                       # 4. push the branch
 gh pr create --fill --body-file -                            # 5. the PR: "Closes #<issue>", what, why,
                                                              #    and the local checks that ran, with results
-# 6. run the auditor (see "Audit loop"); fix and push to the same branch
+# 6. run the auditor, unless the PR is small (see "Audit loop"); fix and push to the same branch
 # 7. tell the owner the PR is ready (see "Ready for review") and stop
-# 8. the owner reviews and merges; the branch is deleted after the merge
+# 8. the owner merges; GitHub deletes the branch, and the agent pulls main
+#    and deletes its local copy
 ```
 
 - Never push to `main` after the first commit, never force-push, never
@@ -117,7 +120,8 @@ gh pr create --fill --body-file -                            # 5. the PR: "Close
 ### Ready for review
 
 A PR is ready when the local checks pass, the auditor has approved it (or it
-has the `needs-owner` label), and its description is complete. The agent then
+has the `needs-owner` label, or it is a small PR), and its description is
+complete. The agent then
 adds the `ready-for-review` label and tells the owner, with:
 - the PR link;
 - what changed and why, in two or three lines;
@@ -146,9 +150,21 @@ blocking or non-blocking.
 
 - For each blocking finding, the builder fixes it or disputes it with a
   reason.
+- Another round runs only to check a blocking finding's fix or dispute.
+  A fix to a non-blocking finding is noted on the PR, with no new round.
 - There are at most 3 rounds. On approval the PR gets the `audit:approved`
   label. If round 3 ends without approval, or a dispute is still open, the PR
   gets the `needs-owner` label and the owner decides.
+- A round takes about 15 minutes. The auditor reruns the checks once, and its
+  comment ends with what it did not check.
+
+**Small PRs need no auditor:** a PR that changes only docs or tests, or fewer
+than about 50 lines of code, and nothing in `spec/`. Its local checks are its
+review, and its description says "Small PR: no audit (CLAUDE.md, Audit loop)".
+
+The routine for each step is in the `feature-workflow` and `audit-pr` skills,
+and the history is in GitHub's issues and PRs. Keep this file to the rules,
+and link to those rather than repeating them.
 
 ## The map (`spec/`)
 
