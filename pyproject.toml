@@ -1,0 +1,17 @@
+[project]
+name = "meta-analysis-atlas"
+version = "0.0.0"
+description = "A map of meta-analysis pathways, with sources"
+requires-python = ">=3.11"
+license = "GPL-3.0-or-later"
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+# Errors, undefined names, likely bugs and import order. Style-only rules are left out on purpose.
+select = ["E", "F", "W", "I", "B"]
+# Line length is left to the formatter; long strings in the map data stay on one line.
+ignore = ["E501"]
