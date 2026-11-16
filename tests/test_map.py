@@ -167,3 +167,57 @@ def test_v11_scope_holds_the_kept_and_merged_pathways() -> None:
     """The map's interventional summary-data pathways not marked new are v11's kept ones plus the merged SMDs."""
     in_scope = [p for p in bm.pathways() if p["framework"] == bm.F1 and not p["added"] and p["datatype"] != bm.IPD]
     assert len(in_scope) == bm.V11_KEPT + len(bm.V11_MERGED_INTO)
+
+
+# --- status and milestone --------------------------------------------------------
+
+
+def test_every_pathway_has_a_known_status_and_milestone() -> None:
+    for p in bm.pathways():
+        assert p["status"] in bm.STATUSES, p
+        assert p["milestone"] in (*bm.ROADMAP, bm.LATER), p
+
+
+def test_nothing_is_runnable_in_v0_1() -> None:
+    """A pathway is runnable only with a passing validation test, and v0.1 has none (CLAUDE.md, rule 6)."""
+    assert [p for p in bm.pathways() if p["status"] == "runnable"] == []
+
+
+def test_to_check_means_not_yet_confirmed() -> None:
+    for p in bm.pathways():
+        assert (p["status"] == "to_check") == (not p["verified"]), p
+
+
+def test_confirmed_pathways_are_planned_when_their_engine_is_on_the_roadmap() -> None:
+    for p in bm.pathways():
+        if p["verified"]:
+            expected = "planned" if p["milestone"] in bm.ROADMAP else "specified"
+            assert p["status"] == expected, p
+
+
+def test_every_method_and_framework_has_a_milestone() -> None:
+    assert set(bm.METHOD_MILESTONE) >= {p["method"] for p in bm.pathways() if p["framework"] == bm.F1}
+    assert set(bm.FRAMEWORK_MILESTONE) == {b["fw"] for b in bm.BRANCHES} - {bm.F1}
+
+
+@pytest.mark.parametrize(
+    ("framework", "method", "milestone"),
+    [
+        (bm.F1, "IV", "v0.2"),  # one- and two-group metafor
+        (bm.F1, "GLMM", "v0.2"),
+        (bm.F1, "MV", "v0.3"),  # rma.mv pairwise
+        (bm.F1, "BAYES", "v0.3"),  # bayesmeta
+        (bm.F1, "NM_GT", "v0.3"),  # networks
+        (bm.F1, "IPD1", bm.LATER),  # one-stage IPD
+        (bm.F2, "BIV", "v0.4"),  # diagnostic accuracy
+        (bm.F3, "VAL", "v0.4"),  # prognosis
+        (bm.F4, "IV", bm.LATER),  # association
+        (bm.F5, "IV", bm.LATER),  # reliability
+    ],
+)
+def test_milestones_follow_the_roadmap(framework: str, method: str, milestone: str) -> None:
+    assert bm.milestone_of(framework, method) == milestone
+
+
+def test_the_statuses_are_the_four_claude_md_defines() -> None:
+    assert bm.STATUSES == ("runnable", "planned", "specified", "to_check")

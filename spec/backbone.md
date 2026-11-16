@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 552; interventional 442; interventional, in v11's scope 210; of those, confirmed 183; new, not in v11 342; still to check 99.
+Counts: pathways in total 552; interventional 442; interventional, in v11's scope 210; of those, confirmed 183; new, not in v11 342; still to check 99; status runnable 0; status planned 392; status specified 61; status to_check 99.
 
 ## Branches: framework, group structure, datatype, outcome
 

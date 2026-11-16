@@ -82,6 +82,8 @@ class Pathway(TypedDict):
     metric: str
     verified: bool
     added: bool
+    milestone: str
+    status: str
 
 
 class Node(TypedDict):
@@ -1120,6 +1122,54 @@ for _model in (COMMON, RANDOM):
 
 
 # --------------------------------------------------------------------------
+# Status (docs/decisions/0001-pathway-status.md)
+#
+#   runnable   has a passing validation test (none in v0.1)
+#   planned    confirmed, and its engine is on the roadmap (v0.2 to v0.4)
+#   specified  confirmed, its engine not planned yet ("Later")
+#   to_check   not yet confirmed from a primary source (verified = False)
+#
+# A pathway's milestone is its framework's, or, for interventional
+# pathways, its method's engine's (CLAUDE.md, Roadmap).
+# --------------------------------------------------------------------------
+LATER = "Later"
+ROADMAP = ("v0.2", "v0.3", "v0.4")
+STATUSES = ("runnable", "planned", "specified", "to_check")
+FRAMEWORK_MILESTONE = {F2: "v0.4", F3: "v0.4", F4: LATER, F5: LATER}
+METHOD_MILESTONE = {
+    # metafor's one- and two-group engines
+    "IV": "v0.2",
+    "MH": "v0.2",
+    "PETO": "v0.2",
+    "GLMM": "v0.2",
+    # rma.mv pairwise, bayesmeta and the network engines
+    "MV": "v0.3",
+    "BAYES": "v0.3",
+    "NM_GT": "v0.3",
+    "NM_MV": "v0.3",
+    "NM_MH": "v0.3",
+    "NM_BAYES": "v0.3",
+    # one-stage IPD, and engines with no R implementation chosen
+    "IPD1": LATER,
+    "NM_IPD": LATER,
+    "OEV": LATER,
+    "LRP": LATER,
+}
+
+
+def milestone_of(framework: str, method: str) -> str:
+    if framework == F1:
+        return METHOD_MILESTONE[method]
+    return FRAMEWORK_MILESTONE[framework]
+
+
+def status_of(verified: bool, milestone: str) -> str:
+    if not verified:
+        return "to_check"
+    return "planned" if milestone in ROADMAP else "specified"
+
+
+# --------------------------------------------------------------------------
 # Generation
 # --------------------------------------------------------------------------
 def pathways() -> list[Pathway]:
@@ -1134,6 +1184,8 @@ def pathways() -> list[Pathway]:
                     continue
                 if mt["only"] and mid not in mt["only"]:
                     continue
+                verified = b["verified"] and me["verified"] and mt["verified"]
+                milestone = milestone_of(b["fw"], mid)
                 for model in me["models"]:
                     out.append(
                         Pathway(
@@ -1144,8 +1196,10 @@ def pathways() -> list[Pathway]:
                             model=model,
                             method=mid,
                             metric=code,
-                            verified=b["verified"] and me["verified"] and mt["verified"],
+                            verified=verified,
                             added=b["added"] or me["added"] or mt["added"] or model in me["added_models"],
+                            milestone=milestone,
+                            status=status_of(verified, milestone),
                         )
                     )
     return out
@@ -1461,7 +1515,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         ("of those, confirmed", sum(p["verified"] for p in core)),
         ("new, not in v11", sum(p["added"] for p in paths)),
         ("still to check", sum(not p["verified"] for p in paths)),
-    ]
+    ] + [("status " + st, sum(p["status"] == st for p in paths)) for st in STATUSES]
     stats = "Counts: " + "; ".join("%s %d" % (k, v) for k, v in stats_rows) + "."
     write_tree_md(tree, stats)
     write_backbone_md(paths, stats)
