@@ -7,19 +7,19 @@
 set -eu
 cd "$(git rev-parse --show-toplevel)"
 PY=${PYTHON:-.venv/bin/python}
-GENERATED="spec/map.json spec/backbone.md spec/tree.md spec/map.html"
 
 echo "== lint and format (ruff)"
 "$PY" -m ruff check .
 "$PY" -m ruff format --check .
 
 echo "== generated map files are current"
-before=$(cat $GENERATED | shasum)
+# Regenerate, then compare spec/ with the last commit. This catches stale
+# generated files, regenerated files that weren't committed, and new files.
 "$PY" spec/build_map.py >/dev/null
-after=$(cat $GENERATED | shasum)
-if [ "$before" != "$after" ]; then
-  echo "The generated files in spec/ were out of date and have now been regenerated."
-  echo "Review and commit them, then run the checks again."
+if [ -n "$(git status --porcelain -- spec/)" ]; then
+  git status --short -- spec/
+  echo "spec/ differs from the last commit (listed above)."
+  echo "Commit the source change and the regenerated files, then run the checks again."
   exit 1
 fi
 
