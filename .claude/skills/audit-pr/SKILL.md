@@ -32,6 +32,8 @@ support. Everything else is **non-blocking**.
   not in taxonomy v11 keep `added=True`.
 - Wording avoids "mandatory", "gold standard" and "always" unless the source
   says so; genuine debate is presented as debate.
+- A source is cited by section and its rule put in our own words; no text is
+  copied from a handbook or package documentation.
 
 **Claims**
 - Nothing in the README, docs or UI presents a pathway as runnable unless it
@@ -78,7 +80,18 @@ Post with `gh pr comment <N> --body-file <file>`:
 
 ### Earlier findings            <!-- round 2 and 3 only -->
 - #1 fixed · #2 withdrawn: <reason> · #3 upheld: <reason>
+
+### Not checked
+- What this round didn't cover (a file, a source not opened, a case not run), or "Nothing left out".
 ```
+
+## Bounds
+
+- About 15 minutes a round. Rerun the checks once; don't repeat work the PR's
+  description already shows, unless there's a concrete reason to doubt it.
+- Round 2 and 3 check only the earlier blocking findings' fixes or disputes,
+  against the diff since the last round, and anything that diff introduces.
+- Say plainly what wasn't checked, in the comment's last section.
 
 Then label the round:
 

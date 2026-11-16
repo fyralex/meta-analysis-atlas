@@ -4,14 +4,18 @@ about: Something doesn't work as described.
 labels: [bug]
 ---
 
-## What happened
+> **<area>** · found <building | auditing | using> <#PR or page>, <date> · <blocking | should fix | minor>
 
-## What should have happened
+## What's wrong
+
+<!-- What happened, what should have happened, and where: file and line, or page, browser and version. -->
 
 ## How to reproduce
 
 1.
 
-## Where
+## What to do
 
-<!-- Page or file, browser and version if relevant. -->
+## Acceptance criteria
+
+- [ ]

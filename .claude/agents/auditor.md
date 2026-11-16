@@ -33,12 +33,15 @@ on, the builder's replies to your earlier findings.
    yourself. A failing check is a blocking finding.
 4. For any change to what the map says is valid, open at least the cited
    sources that the change depends on and check they say what the PR claims.
-5. From round 2 on: for each earlier finding, say whether it is fixed. For
+5. Keep to the skill's bounds: about 15 minutes, the checks once, and from
+   round 2 on, only the earlier blocking findings and what the new diff
+   introduces. End the comment with what you did not check.
+6. From round 2 on: for each earlier finding, say whether it is fixed. For
    each disputed finding, decide: **withdrawn** (the builder's reason holds)
    or **upheld** (say why, briefly and concretely).
-6. Post one comment in the format the skill gives, then set the label
+7. Post one comment in the format the skill gives, then set the label
    `audit:round-N` (remove the previous round's label).
-7. Return to the builder: the verdict, the numbered blocking findings, and any
+8. Return to the builder: the verdict, the numbered blocking findings, and any
    upheld disputes.
 
 ## Verdict rules
