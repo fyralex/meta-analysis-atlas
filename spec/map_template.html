@@ -1,0 +1,169 @@
+<title>Meta-Analysis Atlas Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+/* Layout: one reading column; summary and legend first, then the searchable tree, then rules and sources. */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#e9edf1;
+  --ink:#17212b; --ink-2:#4a5866; --ink-3:#768391;
+  --line:#d5dbe2; --accent:#1f5f8b; --accent-soft:#dbe8f1;
+  --new:#7a4b00; --new-bg:#fbeacb; --chk:#9c2f25; --chk-bg:#fbe1dd;
+  --display:'IBM Plex Serif',Georgia,serif;
+  --body:'IBM Plex Sans',-apple-system,'Segoe UI',sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#11161b; --surface:#1a2129; --sunk:#222b34;
+    --ink:#e6ebf0; --ink-2:#a9b4bf; --ink-3:#7b8792;
+    --line:#2f3a45; --accent:#8cc3e6; --accent-soft:#1f3442;
+    --new:#f0c477; --new-bg:#3a2e17; --chk:#ff9d92; --chk-bg:#3d201d;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#11161b; --surface:#1a2129; --sunk:#222b34;
+  --ink:#e6ebf0; --ink-2:#a9b4bf; --ink-3:#7b8792;
+  --line:#2f3a45; --accent:#8cc3e6; --accent-soft:#1f3442;
+  --new:#f0c477; --new-bg:#3a2e17; --chk:#ff9d92; --chk-bg:#3d201d;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5}
+.wrap{max-width:1040px;margin:0 auto;padding-block:32px 80px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:28px}
+h1{font-family:var(--display);font-weight:600;font-size:1.9rem;line-height:1.2;margin:0;text-wrap:balance}
+h2{font-family:var(--display);font-weight:600;font-size:1.2rem;margin:0 0 10px;text-wrap:balance}
+p{margin:0;color:var(--ink-2);max-width:68ch}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent)}
+header{display:flex;flex-direction:column;gap:10px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-variant-numeric:tabular-nums}
+.stat{display:flex;align-items:baseline;gap:6px}
+.stat b{font-family:var(--mono);font-size:17px;font-weight:500}
+.stat span{color:var(--ink-3);font-size:12.5px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:12.5px;color:var(--ink-2);align-items:center}
+.chip{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em;padding:1px 7px;border-radius:10px;flex:none}
+.chip.new{color:var(--new);background:var(--new-bg)}
+.chip.chk{color:var(--chk);background:var(--chk-bg)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#q{flex:1 1 260px;min-width:0;padding:9px 12px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit}
+#q:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+button{font-family:var(--mono);font-size:11.5px;padding:7px 11px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink-2);cursor:pointer}
+button:hover{color:var(--ink);background:var(--sunk)}
+button[aria-pressed="true"]{background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+#count{font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;overflow-x:auto}
+.node>summary{list-style:none;display:flex;align-items:center;gap:8px;padding:4px 6px;border-radius:5px;cursor:pointer}
+.node>summary::-webkit-details-marker{display:none}
+.node>summary::before{content:"\25B8";font-size:10px;color:var(--ink-3);width:10px;flex:none;transition:transform .12s}
+.node[open]>summary::before{transform:rotate(90deg)}
+.node>summary:hover{background:var(--sunk)}
+.tier{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-3);flex:none;width:74px}
+.label{min-width:0}
+.count{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.kids{margin-left:11px;padding-left:16px;border-left:1px solid var(--line)}
+.note{font-size:12.5px;color:var(--ink-2);background:var(--sunk);border-radius:5px;padding:6px 10px;margin:2px 0 6px;max-width:none}
+.t-framework>summary .label{font-family:var(--display);font-weight:600;font-size:16px}
+.t-group>summary .label{font-weight:600}
+.t-datatype>summary .label,.t-outcome>summary .label{font-weight:500}
+.t-model>summary .label{font-style:italic}
+.t-metric>summary .label{font-family:var(--mono);font-size:12.5px}
+.t-metric .note{font-family:var(--mono);font-size:12px}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;vertical-align:top;padding:7px 10px;border-bottom:1px solid var(--line)}
+th{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);font-weight:500}
+tr:last-child td{border-bottom:none}
+td:first-child{font-family:var(--mono);font-size:12px;white-space:nowrap}
+ol{margin:0;padding-left:20px;color:var(--ink-2)}
+ol li{margin-bottom:4px;max-width:72ch}
+@media (max-width:520px){.tier{width:58px}.kids{padding-left:8px;margin-left:6px}}
+@media (prefers-reduced-motion:reduce){.node>summary::before{transition:none}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Draft 2 · generated from spec/build_map.py</div>
+    <h1>The meta-analysis map</h1>
+    <p>Every valid route from a research question to a pooled result, in the order a methodologist asks the questions: framework, group structure, datatype, outcome, then {{ORDER}}. Each entry is tied to a source. The count beside a row is the number of pathways below it.</p>
+    <div class="stats">{{STATS}}</div>
+    <div class="legend">
+      <span><span class="chip new">new</span> not in taxonomy v11; needs a decision on scope</span>
+      <span><span class="chip chk">check</span> not yet confirmed from a primary source</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Search: odds ratio, rma.glmm, network, escalc…" aria-label="Search the tree">
+      <button id="b-new" aria-pressed="false">Hide new</button>
+      <button id="b-chk" aria-pressed="false">Only check</button>
+      <button id="b-open">Expand all</button>
+      <button id="b-close">Collapse</button>
+      <span id="count"></span>
+    </div>
+  </section>
+
+  <section class="tree" id="tree">
+{{TREE}}
+  </section>
+
+  <section>
+    <h2>Rules</h2>
+    <div class="scroll"><table><thead><tr><th>#</th><th>If you have this, you can do this</th><th>Compared with v11</th><th>Source</th></tr></thead><tbody>{{RULES}}</tbody></table></div>
+  </section>
+
+  <section>
+    <h2>Sections that apply across the tree</h2>
+    <div class="scroll"><table><thead><tr><th>Section</th><th>Content</th><th>Source</th></tr></thead><tbody>{{CROSS}}</tbody></table></div>
+  </section>
+
+  <section>
+    <h2>Still to check</h2>
+    <ol>{{TODO}}</ol>
+  </section>
+
+  <section>
+    <h2>Sources</h2>
+    <div class="scroll"><table><thead><tr><th>Key</th><th>Source</th></tr></thead><tbody>{{SOURCES}}</tbody></table></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var nodes=[].slice.call(document.querySelectorAll('#tree details.node'));
+  var q=document.getElementById('q'),bNew=document.getElementById('b-new'),bChk=document.getElementById('b-chk'),count=document.getElementById('count');
+  var initial=nodes.map(function(n){return n.open});
+  function own(n,sel){var s=n.firstElementChild;return !!s.querySelector(sel)}
+  function isLeaf(n){return n.classList.contains('t-metric')||n.classList.contains('t-model')&&!n.querySelector('details')}
+  function apply(){
+    var term=q.value.trim().toLowerCase(),hideNew=bNew.getAttribute('aria-pressed')==='true',onlyChk=bChk.getAttribute('aria-pressed')==='true';
+    var filtering=term||hideNew||onlyChk, show=new Set(), shown=0;
+    nodes.forEach(function(n){
+      if(n.querySelector('details.node'))return;           // decide at the leaves
+      var ok=true,text='',a=n,isNew=false,isChk=false;
+      while(a&&a.classList&&a.classList.contains('node')){
+        text+=' '+a.dataset.l; if(own(a,'.chip.new'))isNew=true; if(own(a,'.chip.chk'))isChk=true;
+        a=a.parentElement.closest('details.node');
+      }
+      if(term&&text.indexOf(term)<0)ok=false;
+      if(hideNew&&isNew)ok=false;
+      if(onlyChk&&!isChk)ok=false;
+      if(ok){shown++;a=n;while(a){show.add(a);a=a.parentElement.closest('details.node')}}
+    });
+    nodes.forEach(function(n,i){
+      n.hidden=!show.has(n);
+      if(term||onlyChk)n.open=show.has(n)&&!!n.querySelector('details.node');
+      else if(!filtering)n.open=initial[i];
+    });
+    count.textContent=filtering?shown+' pathways shown':'';
+  }
+  q.addEventListener('input',apply);
+  [bNew,bChk].forEach(function(b){b.addEventListener('click',function(){
+    b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');apply()})});
+  document.getElementById('b-open').addEventListener('click',function(){nodes.forEach(function(n){n.open=true})});
+  document.getElementById('b-close').addEventListener('click',function(){nodes.forEach(function(n,i){n.open=initial[i]})});
+})();
+</script>
