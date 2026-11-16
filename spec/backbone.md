@@ -225,17 +225,17 @@ Of v11's 226 interventional summary-data pathways, 196 are in the map unchanged 
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
 | Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
 | Multiple groups (network) | Contrast-level estimates | Time-to-event | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |

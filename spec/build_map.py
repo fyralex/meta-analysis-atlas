@@ -1087,7 +1087,7 @@ for _dt in (ARM, CONTRAST):
                     method=_me,
                     metric=_code,
                     v11_metric=_name,
-                    reason='merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM)',
+                    reason="merged into N_SMD with no source recorded; under review in issue #31",
                 )
             )
         V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))

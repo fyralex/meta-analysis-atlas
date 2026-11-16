@@ -18,17 +18,21 @@ def source_keys(field: str) -> list[str]:
     A token that starts with "s" and a digit is a section of the key before it.
     """
     keys = []
-    for token in field.split(","):
-        first = token.strip().split(" ")[0]
-        if SECTION_RE.match(first):
-            continue
-        keys.append(first)
+    for part in field.split(","):
+        words = part.split()
+        if words and not SECTION_RE.match(words[0]):
+            keys.append(words[0])
+            words = words[1:]
+        # whatever follows a key in the same part must be its sections; anything else is read as a key, so it is checked
+        keys += [w for w in words if not SECTION_RE.match(w)]
     return keys
 
 
 def test_source_keys_reads_sections_and_keys() -> None:
     assert source_keys("CH-11 s11.2.2, s11.4.4, NM") == ["CH-11", "NM"]
     assert source_keys("MF-cumul, MF-l1o") == ["MF-cumul", "MF-l1o"]
+    assert source_keys("CH-10 s10.11, s10.14 CH-99") == ["CH-10", "CH-99"]
+    assert source_keys("CH-23 s23.1.4-23.1.6") == ["CH-23"]
 
 
 # --- the lock file -----------------------------------------------------------
@@ -135,7 +139,7 @@ def test_v11_removed_pathways_are_absent_from_the_map() -> None:
 
 def test_v11_removed_pathways_each_have_a_reason() -> None:
     for c in bm.V11_REMOVED:
-        assert re.match(r"^(R\d+: |merged into |no reason recorded; under review in issue #\d+$)", c["reason"]), c
+        assert re.match(r"^(R\d+: |.*; under review in issue #\d+$)", c["reason"]), c
 
 
 def test_v11_removed_reasons_cite_existing_rules() -> None:
