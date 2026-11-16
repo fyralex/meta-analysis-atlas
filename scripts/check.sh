@@ -12,6 +12,12 @@ echo "== lint and format (ruff)"
 "$PY" -m ruff check .
 "$PY" -m ruff format --check .
 
+echo "== types (mypy --strict)"
+"$PY" -m mypy
+
+echo "== map tests (pytest)"
+"$PY" -m pytest
+
 echo "== generated map files are current"
 # Regenerate, then compare spec/ with the last commit. This catches stale
 # generated files, regenerated files that weren't committed, and new files.

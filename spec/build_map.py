@@ -14,18 +14,101 @@ Flags used on every entry:
 
 Change ORDER to redraw the tree with different tiers; the valid
 combinations do not change.
+
+The generated pathways are pinned in spec/pathways.lock.json, which a test
+compares with them. After a change to the map, run with --lock to rewrite
+it, and explain each difference in the pull request.
 """
 
+from __future__ import annotations
+
+import argparse
 import html
 import json
 import pathlib
+from collections.abc import Iterable, Mapping, Sequence
+from typing import Protocol, TypedDict
 
 HERE = pathlib.Path(__file__).parent
+LOCK = HERE / "pathways.lock.json"
 ORDER = ["model", "method", "metric"]  # v11 order. Alternative: metric, method, model
+
+
+class Metric(TypedDict):
+    label: str
+    call: str
+    src: str
+    added: bool
+    verified: bool
+    only: set[str] | None
+
+
+class Method(TypedDict):
+    label: str
+    fn: str
+    domain: str
+    takes: set[str]
+    models: list[str]
+    analysis: list[str]
+    src: list[str]
+    metrics: set[str] | None
+    note: str
+    added: bool
+    verified: bool
+    added_models: set[str]
+
+
+class Branch(TypedDict):
+    fw: str
+    group: str
+    datatype: str
+    kind: str
+    outcome: str
+    inputs: str
+    metrics: list[str]
+    domain: str
+    added: bool
+    verified: bool
+    note: str
+
+
+class Pathway(TypedDict):
+    framework: str
+    group: str
+    datatype: str
+    outcome: str
+    model: str
+    method: str
+    metric: str
+    verified: bool
+    added: bool
+
+
+class Node(TypedDict):
+    """One node of the tree: its children by (tier, value), and the pathway when it is a leaf."""
+
+    kids: dict[tuple[str, str], Node]
+    leaf: Pathway | None
+
+
+class Emit(Protocol):
+    def __call__(
+        self,
+        depth: int,
+        tier: str | None,
+        label: str | None,
+        note: str | None,
+        verified: bool | None,
+        added: bool | None,
+        n: int | None,
+        *,
+        is_leaf: bool | None,
+    ) -> None: ...
+
 
 CH = "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-"
 MF = "https://wviechtb.github.io/metafor/reference/"
-SOURCES = {
+SOURCES: dict[str, tuple[str, str]] = {
     "MF-escalc": ("metafor, escalc()", MF + "escalc.html"),
     "MF-uni": ("metafor, rma.uni()", MF + "rma.uni.html"),
     "MF-mh": ("metafor, rma.mh()", MF + "rma.mh.html"),
@@ -78,12 +161,19 @@ SOURCES = {
 # --------------------------------------------------------------------------
 
 
-def m(label, call, src="MF-escalc", added=False, verified=True, only=None):
-    return dict(label=label, call=call, src=src, added=added, verified=verified, only=only)
+def m(
+    label: str,
+    call: str,
+    src: str = "MF-escalc",
+    added: bool = False,
+    verified: bool = True,
+    only: set[str] | None = None,
+) -> Metric:
+    return Metric(label=label, call=call, src=src, added=added, verified=verified, only=only)
 
 
 E = 'escalc(measure="%s")'
-METRICS = {
+METRICS: dict[str, Metric] = {
     # one group
     "PR": m("Raw proportion", E % "PR"),
     "PLN": m("Log proportion", E % "PLN"),
@@ -194,9 +284,20 @@ STD, SUB, REG, CUM, L1O = "standard", "subgroup", "meta-regression", "cumulative
 
 
 def meth(
-    label, fn, domain, takes, models, analysis, src, metrics=None, note="", added=False, verified=True, added_models=()
-):
-    return dict(
+    label: str,
+    fn: str,
+    domain: str,
+    takes: Iterable[str],
+    models: list[str],
+    analysis: list[str],
+    src: list[str],
+    metrics: set[str] | None = None,
+    note: str = "",
+    added: bool = False,
+    verified: bool = True,
+    added_models: Iterable[str] = (),
+) -> Method:
+    return Method(
         label=label,
         fn=fn,
         domain=domain,
@@ -212,7 +313,7 @@ def meth(
     )
 
 
-METHODS = {
+METHODS: dict[str, Method] = {
     "IV": meth(
         "Inverse variance",
         "metafor::rma.uni()",
@@ -445,12 +546,24 @@ METHODS = {
 # Branches: framework > group > datatype > outcome, with the metrics offered
 # --------------------------------------------------------------------------
 ARM, EST, IPD = "Arm-level summary data", "Precomputed estimate", "Individual participant data"
-BRANCHES = []
+BRANCHES: list[Branch] = []
 
 
-def br(fw, group, datatype, kind, outcome, inputs, metrics, domain="pairwise", added=False, verified=True, note=""):
+def br(
+    fw: str,
+    group: str,
+    datatype: str,
+    kind: str,
+    outcome: str,
+    inputs: str,
+    metrics: list[str],
+    domain: str = "pairwise",
+    added: bool = False,
+    verified: bool = True,
+    note: str = "",
+) -> None:
     BRANCHES.append(
-        dict(
+        Branch(
             fw=fw,
             group=group,
             datatype=datatype,
@@ -474,12 +587,12 @@ G1, G2, G3, G4 = (
     "Multiple groups (network)",
 )
 EST_IN = "estimate with SE, variance or CI"
-one = {
+one: dict[str, tuple[str, list[str]]] = {
     "Binary": ("events, total (xi, ni)", ["PR", "PLN", "PLO", "PAS", "PFT", "PRZ"]),
     "Continuous": ("mean, SD, n (mi, sdi, ni)", ["MN", "SMN", "MNLN"]),
     "Count / person-time": ("events, person-time (xi, ti)", ["IR", "IRLN", "IRS", "IRFT"]),
 }
-two = {
+two: dict[str, tuple[str, list[str]]] = {
     "Binary": ("2x2 table (ai, bi, ci, di)", ["OR", "RR", "RD", "AS", "PETO"]),
     "Continuous": ("mean, SD, n per arm", ["MD", "SMD_G", "SMD_D", "SMDH", "SMD1", "ROM"]),
     "Count / person-time": ("events and person-time per arm (x1i, t1i, x2i, t2i)", ["IRR", "IRD", "IRSD"]),
@@ -525,7 +638,7 @@ br(
     added=True,
 )
 br(F1, G3, ARM, "arm", "Binary", "paired 2x2 table", ["MPRR", "MPOR", "MPRD", "MPORC"], added=True)
-net = {
+net: dict[str, tuple[str, list[str]]] = {
     "Binary": ("events and total per arm", ["N_OR", "N_RR", "N_RD", "N_ASD"]),
     "Continuous": ("mean, SD, n per arm", ["N_MD", "N_SMD", "N_ROM"]),
     "Count / person-time": ("events and person-time per arm", ["N_IRR"]),
@@ -718,7 +831,7 @@ DATATYPE_NOTES = {
 # --------------------------------------------------------------------------
 # Rules, cross-cutting sections, open items
 # --------------------------------------------------------------------------
-RULES = [
+RULES: list[tuple[str, str, str, str]] = [
     (
         "R1",
         "Inverse variance works with every metric, both models, and both arm-level and precomputed data.",
@@ -871,7 +984,7 @@ RULES = [
     ),
 ]
 
-CROSS = [
+CROSS: list[tuple[str, str, str]] = [
     (
         "Analysis types",
         "standard, subgroup, meta-regression, cumulative, leave-one-out, sensitivity. "
@@ -912,10 +1025,105 @@ OPEN = [
 
 
 # --------------------------------------------------------------------------
+# Comparison with taxonomy v11 (the reviewed draft this map started from)
+#
+# v11 itself stays private. What is recorded here is only what the map
+# changed: the interventional summary-data pathways v11 had that the map
+# does not, each with its reason. v11's 25 one-stage IPD pathways are not
+# compared: the map keeps its IPD branches and marks them to check.
+# Each removed pathway is named as the map would name it, so a test can
+# check that it is really absent.
+# --------------------------------------------------------------------------
+V11_SUMMARY_PATHWAYS = 226  # v11's interventional summary-data pathways
+V11_KEPT = 196  # of those, in the map unchanged
+CONTRAST = "Contrast-level estimates"
+COUNT = "Count / person-time"
+
+
+class V11Change(TypedDict):
+    group: str
+    datatype: str
+    outcome: str
+    model: str
+    method: str
+    metric: str  # as the map would code it; codes not in METRICS name a metric the map does not offer
+    v11_metric: str  # as v11 named it
+    reason: str
+
+
+V11_REMOVED: list[V11Change] = []
+# Pathways that replace a merged pair, so not new to the map: (framework, group, datatype, outcome, model, method, metric)
+V11_MERGED_INTO: list[tuple[str, str, str, str, str, str, str]] = []
+
+_RANKING = {"NM_MV": ("PSCORE", "P-score"), "NM_BAYES": ("SUCRA", "SUCRA")}
+_RANK_REASON = "R17: a ranking computed after the network model is fitted, not an effect measure"
+for _dt, _outcomes in (
+    (ARM, ["Binary", "Continuous", COUNT]),
+    (CONTRAST, ["Binary", "Continuous", COUNT, "Time-to-event"]),
+):
+    for _me, (_code, _name) in _RANKING.items():
+        for _o in _outcomes:
+            V11_REMOVED.append(
+                V11Change(
+                    group=G4,
+                    datatype=_dt,
+                    outcome=_o,
+                    model=RANDOM,
+                    method=_me,
+                    metric=_code,
+                    v11_metric=_name,
+                    reason=_RANK_REASON,
+                )
+            )
+for _dt in (ARM, CONTRAST):
+    for _me in ("NM_MV", "NM_BAYES"):
+        for _code, _name in (("N_SMD_D", "Cohen's d"), ("N_SMD_G", "Hedges' g")):
+            V11_REMOVED.append(
+                V11Change(
+                    group=G4,
+                    datatype=_dt,
+                    outcome="Continuous",
+                    model=RANDOM,
+                    method=_me,
+                    metric=_code,
+                    v11_metric=_name,
+                    reason='merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM)',
+                )
+            )
+        V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))
+        V11_REMOVED.append(
+            V11Change(
+                group=G4,
+                datatype=_dt,
+                outcome=COUNT,
+                model=RANDOM,
+                method=_me,
+                metric="N_IRD",
+                v11_metric="IRD",
+                reason="no reason recorded; under review in issue #29",
+            )
+        )
+for _model in (COMMON, RANDOM):
+    for _code in ("RR", "RD"):
+        V11_REMOVED.append(
+            V11Change(
+                group=G2,
+                datatype=ARM,
+                outcome="Binary",
+                model=_model,
+                method="GLMM",
+                metric=_code,
+                v11_metric=_code,
+                reason="R6: GLMM gives OR for 2x2 tables; RR and RD are experimental",
+            )
+        )
+
+
+# --------------------------------------------------------------------------
 # Generation
 # --------------------------------------------------------------------------
-def pathways():
-    out = []
+def pathways() -> list[Pathway]:
+    out: list[Pathway] = []
     for b in BRANCHES:
         for mid, me in METHODS.items():
             if me["domain"] != b["domain"] or b["kind"] not in me["takes"]:
@@ -928,7 +1136,7 @@ def pathways():
                     continue
                 for model in me["models"]:
                     out.append(
-                        dict(
+                        Pathway(
                             framework=b["fw"],
                             group=b["group"],
                             datatype=b["datatype"],
@@ -943,7 +1151,14 @@ def pathways():
     return out
 
 
-def tier_label(tier, value):
+PATHWAY_KEY = ("framework", "group", "datatype", "outcome", "model", "method", "metric")
+
+
+def pathway_key(p: Pathway) -> tuple[str, str, str, str, str, str, str]:
+    return (p["framework"], p["group"], p["datatype"], p["outcome"], p["model"], p["method"], p["metric"])
+
+
+def tier_label(tier: str, value: str) -> str:
     if tier == "method":
         return METHODS[value]["label"]
     if tier == "metric":
@@ -951,26 +1166,27 @@ def tier_label(tier, value):
     return value
 
 
-def build_tree(paths):
-    """Nested dict: framework > group > datatype > outcome > ORDER tiers."""
+def build_tree(paths: list[Pathway]) -> Node:
+    """Nested nodes: framework > group > datatype > outcome > ORDER tiers."""
     tiers = ["framework", "group", "datatype", "outcome"] + ORDER
-    root = {}
+    root = Node(kids={}, leaf=None)
     for p in paths:
+        fields: Mapping[str, object] = p
         node = root
         for t in tiers:
-            node = node.setdefault((t, p[t]), {})
-        node["_leaf"] = p
+            node = node["kids"].setdefault((t, str(fields[t])), Node(kids={}, leaf=None))
+        node["leaf"] = p
     return root
 
 
-def branch_for(fw, group, datatype, outcome):
+def branch_for(fw: str, group: str, datatype: str, outcome: str) -> Branch | None:
     for b in BRANCHES:
         if (b["fw"], b["group"], b["datatype"], b["outcome"]) == (fw, group, datatype, outcome):
             return b
     return None
 
 
-def node_info(tier, value, ctx):
+def node_info(tier: str, value: str, ctx: Mapping[str, str]) -> tuple[str, bool, bool]:
     """Return (note, flags) for a tree node."""
     note, verified, added = "", True, False
     if tier == "framework":
@@ -995,16 +1211,13 @@ def node_info(tier, value, ctx):
     return note.strip(), verified, added
 
 
-def count_leaves(node):
-    return sum(1 if k == "_leaf" else count_leaves(v) for k, v in node.items())
+def count_leaves(node: Node) -> int:
+    return (node["leaf"] is not None) + sum(count_leaves(child) for child in node["kids"].values())
 
 
-def walk(node, depth, ctx, emit):
-    for key, child in node.items():
-        if key == "_leaf":
-            continue
-        tier, value = key
-        ctx2 = dict(ctx, **{tier: value})
+def walk(node: Node, depth: int, ctx: Mapping[str, str], emit: Emit) -> None:
+    for (tier, value), child in node["kids"].items():
+        ctx2 = {**ctx, tier: value}
         note, verified, added = node_info(tier, value, ctx2)
         emit(
             depth,
@@ -1014,13 +1227,13 @@ def walk(node, depth, ctx, emit):
             verified,
             added,
             count_leaves(child),
-            is_leaf=set(child) == {"_leaf"},
+            is_leaf=child["leaf"] is not None and not child["kids"],
         )
         walk(child, depth + 1, ctx2, emit)
         emit(depth, None, None, None, None, None, None, is_leaf=None)  # close
 
 
-def write_tree_md(tree, stats):
+def write_tree_md(tree: Node, stats: str) -> None:
     lines = [
         "# Full tree (generated by spec/build_map.py; do not edit)",
         "",
@@ -1031,9 +1244,20 @@ def write_tree_md(tree, stats):
         "",
     ]
 
-    def emit(depth, tier, label, note, verified, added, n, is_leaf):
+    def emit(
+        depth: int,
+        tier: str | None,
+        label: str | None,
+        note: str | None,
+        verified: bool | None,
+        added: bool | None,
+        n: int | None,
+        *,
+        is_leaf: bool | None,
+    ) -> None:
         if tier is None:
             return
+        assert label is not None and n is not None  # set on every node that opens
         marks = (" [NEW]" if added and tier not in ("framework",) else "") + ("" if verified else " [CHECK]")
         cnt = "" if is_leaf else "  (%d)" % n
         lines.append("%s- %s: %s%s%s" % ("  " * depth, tier, label, marks, cnt))
@@ -1045,17 +1269,17 @@ def write_tree_md(tree, stats):
     (HERE / "tree.md").write_text("\n".join(lines) + "\n")
 
 
-def table(headers, rows):
+def table(headers: Sequence[str], rows: Iterable[Sequence[object]]) -> str:
     out = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
     out += ["| " + " | ".join(str(c).replace("|", "/") for c in r) + " |" for r in rows]
     return "\n".join(out)
 
 
-def flag(d):
+def flag(d: Metric | Method | Branch) -> str:
     return ", ".join(x for x in ["NEW" if d["added"] else "", "" if d["verified"] else "CHECK"] if x) or "OK"
 
 
-def write_backbone_md(paths, stats):
+def write_backbone_md(paths: list[Pathway], stats: str) -> None:
     used_metrics = {p["metric"] for p in paths}
     parts = [
         "# Backbone of the meta-analysis map (generated by spec/build_map.py; do not edit)",
@@ -1108,6 +1332,28 @@ def write_backbone_md(paths, stats):
         "",
         table(["#", "Rule", "Compared with v11", "Source"], RULES),
         "",
+        "## Compared with taxonomy v11",
+        "",
+        "Of v11's %d interventional summary-data pathways, %d are in the map unchanged and %d are not, each "
+        "below with its reason. Merging Cohen's d and Hedges' g gives %d network SMD pathways. v11's one-stage "
+        "IPD pathways are not compared." % (V11_SUMMARY_PATHWAYS, V11_KEPT, len(V11_REMOVED), len(V11_MERGED_INTO)),
+        "",
+        table(
+            ["Group", "Datatype", "Outcome", "Model", "Method", "v11 metric", "Reason"],
+            [
+                (
+                    c["group"],
+                    c["datatype"],
+                    c["outcome"],
+                    c["model"],
+                    METHODS[c["method"]]["label"],
+                    c["v11_metric"],
+                    c["reason"],
+                )
+                for c in V11_REMOVED
+            ],
+        ),
+        "",
         "## Sections that apply across the tree",
         "",
         table(["Section", "Content", "Source"], CROSS),
@@ -1124,15 +1370,26 @@ def write_backbone_md(paths, stats):
     (HERE / "backbone.md").write_text("\n".join(parts))
 
 
-def write_html(tree, stats_rows):
+def write_html(tree: Node, stats_rows: list[tuple[str, int]]) -> None:
     e = html.escape
-    out = []
+    out: list[str] = []
 
-    def emit(depth, tier, label, note, verified, added, n, is_leaf):
+    def emit(
+        depth: int,
+        tier: str | None,
+        label: str | None,
+        note: str | None,
+        verified: bool | None,
+        added: bool | None,
+        n: int | None,
+        *,
+        is_leaf: bool | None,
+    ) -> None:
         if tier is None:
             if is_leaf is None:
                 out.append("</div></details>")
             return
+        assert label is not None and note is not None and n is not None  # set on every node that opens
         chips = ""
         if added and tier != "framework":
             chips += '<span class="chip new">new</span>'
@@ -1170,13 +1427,34 @@ def write_html(tree, stats_rows):
     (HERE / "map.html").write_text(page)
 
 
-def main():
+def _json_default(o: object) -> list[str]:
+    if isinstance(o, set):
+        return sorted(o)
+    raise TypeError("cannot write %r to JSON" % type(o))
+
+
+def lock_rows(paths: Iterable[Pathway]) -> list[Pathway]:
+    """The pathways as the lock file holds them: sorted by their tiers."""
+    return sorted(paths, key=pathway_key)
+
+
+def write_lock(paths: Iterable[Pathway]) -> None:
+    rows = [json.dumps(p, sort_keys=True, ensure_ascii=False) for p in lock_rows(paths)]
+    LOCK.write_text("[\n" + ",\n".join(rows) + "\n]\n")
+
+
+def main(argv: Sequence[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(description="Write the map files from the data in this file.")
+    parser.add_argument("--lock", action="store_true", help="also rewrite spec/pathways.lock.json")
+    args = parser.parse_args(argv)
     paths = pathways()
+    if args.lock:
+        write_lock(paths)
     tree = build_tree(paths)
     n = len(paths)
     f1 = [p for p in paths if p["framework"] == F1]
     core = [p for p in f1 if not p["added"]]
-    stats_rows = [
+    stats_rows: list[tuple[str, int]] = [
         ("pathways in total", n),
         ("interventional", len(f1)),
         ("interventional, in v11's scope", len(core)),
@@ -1200,9 +1478,9 @@ def main():
         methods=METHODS,
         pathways=paths,
     )
-    (HERE / "map.json").write_text(json.dumps(data, indent=1, default=lambda o: sorted(o)))
+    (HERE / "map.json").write_text(json.dumps(data, indent=1, default=_json_default))
     print(stats)
-    by = {}
+    by: dict[tuple[str, str], list[int]] = {}
     for p in paths:
         by.setdefault((p["framework"], p["group"]), [0, 0, 0])
         by[(p["framework"], p["group"])][0] += 1

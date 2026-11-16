@@ -179,6 +179,7 @@ there and run it; never edit the generated files.
 | `spec/backbone.md` | The building blocks and rules as tables |
 | `spec/tree.md` | The full tree as text |
 | `spec/map.html` | A searchable page of the tree (standalone) |
+| `spec/pathways.lock.json` | Every generated pathway, pinned; rewritten only with `--lock` |
 
 **What each entry carries:**
 - a `src` (one or more source keys from `SOURCES`, each with a URL);
@@ -363,8 +364,8 @@ committed, and the checks confirm that it's current.
 `scripts/check.sh` (pre-commit runs the quick checks on each commit). The PR
 description lists the checks that ran and their results. A PR with a failing
 check isn't opened. The script runs:
-1. **lint and format:** ruff (from PR 2 also mypy `--strict` and the map
-   tests).
+1. **lint, format, types and tests:** ruff, mypy `--strict`, and the map
+   tests (pytest).
 2. **map files current:** regenerating `spec/` changes nothing.
 3. **private name scan:** `$ATLAS_PRIVATE_SCAN` prints nothing. The script
    fails if it isn't set.
@@ -383,6 +384,7 @@ and the advisor scenarios run the same way.
 
 ```bash
 python3 spec/build_map.py                     # regenerate the map files
+python3 spec/build_map.py --lock              # also rewrite spec/pathways.lock.json after a map change
 scripts/check.sh                              # every local check for a PR
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
 gh workflow run CI                            # start CI by hand (it also runs at releases)

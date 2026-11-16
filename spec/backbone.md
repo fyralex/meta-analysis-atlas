@@ -205,6 +205,43 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R29 | Trim and fill and selection models work on rma.uni models only (trim and fill: no moderators). | not in v11 | MF-trimfill, MF-selmodel |
 | R30 | Meta-regression is generally not advised with fewer than ten studies. | missing in v11 | CH-10 s10.11.4 |
 
+## Compared with taxonomy v11
+
+Of v11's 226 interventional summary-data pathways, 196 are in the map unchanged and 30 are not, each below with its reason. Merging Cohen's d and Hedges' g gives 4 network SMD pathways. v11's one-stage IPD pathways are not compared.
+
+| Group | Datatype | Outcome | Model | Method | v11 metric | Reason |
+|---|---|---|---|---|---|---|
+| Multiple groups (network) | Arm-level summary data | Binary | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Binary | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Binary | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Time-to-event | Random effects | Frequentist, multivariate | P-score | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Binary | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Contrast-level estimates | Time-to-event | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD: netmeta has one standardized mean difference, sm="SMD" (NM) |
+| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
+| Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
+| Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
+| Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
+| Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
+
 ## Sections that apply across the tree
 
 | Section | Content | Source |
