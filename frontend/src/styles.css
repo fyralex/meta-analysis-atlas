@@ -14,6 +14,7 @@
   --st-to_check: #c47f12;
   --pressed: #e3f0eb;
   --new: #8a3d6b;
+  --check-text: #8a5600;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -31,6 +32,7 @@
     --st-to_check: #e5b04a;
     --pressed: #20352f;
     --new: #e59ac6;
+    --check-text: #e5b04a;
   }
 }
 :root[data-theme="dark"] {
@@ -48,6 +50,7 @@
   --st-to_check: #e5b04a;
   --pressed: #20352f;
   --new: #e59ac6;
+  --check-text: #e5b04a;
 }
 
 * { box-sizing: border-box; }
@@ -136,7 +139,7 @@ button { font: inherit; color: inherit; }
 .seg { min-width: 2px; }
 .badge { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 3px; padding: 0 4px; border: 1px solid currentColor; white-space: nowrap; }
 .badge-new { color: var(--new); }
-.badge-check { color: var(--st-to_check); }
+.badge-check { color: var(--check-text); }
 
 .table-wrap { overflow-x: auto; }
 .pathways { border-collapse: collapse; font-size: 14px; background: var(--surface); border: 1px solid var(--line); }

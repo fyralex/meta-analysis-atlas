@@ -11,6 +11,11 @@ const ORDERS: { value: TierOrder; text: string }[] = [
   { value: "metric-method-model", text: "Metric → Method → Model" },
 ];
 
+/** A method's or metric's own flags: "new" means not in the reviewed draft; "to check", not yet confirmed. */
+function entryFlags(tier: "method" | "metric", value: string): { added: boolean; verified: boolean } | undefined {
+  return tier === "method" ? map.methods[value] : map.metrics[value];
+}
+
 /** Compatible nodes first, then the greyed-out ones; each in the map's order. */
 function compatibleFirst(nodes: NodeSummary[]): NodeSummary[] {
   return [...nodes.filter((n) => n.count > 0), ...nodes.filter((n) => n.count === 0)];
@@ -33,6 +38,7 @@ export function AtlasPage() {
       <p className="lead">
         Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
         node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices.
+        With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer.
       </p>
 
       <div className="atlas-controls">
@@ -73,6 +79,16 @@ export function AtlasPage() {
             <strong>{STATUS_TEXT[s].name}</strong>: {STATUS_TEXT[s].meaning}
           </li>
         ))}
+        <li>
+          <span className="badge badge-new" aria-hidden="true">
+            new
+          </span>{" "}
+          <span className="badge badge-check" aria-hidden="true">
+            to check
+          </span>{" "}
+          on a method or metric: the entry isn&apos;t in the reviewed draft the map started from, or isn&apos;t yet
+          confirmed from a primary source
+        </li>
       </ul>
 
       <div className="summary" role="status">
@@ -87,7 +103,9 @@ export function AtlasPage() {
         </p>
         {dropped.length > 0 && (
           <p className="note">
-            Cleared {dropped.map((t) => TIER_NAMES[t].toLowerCase()).join(" and ")}: that choice matched no pathway.
+            Cleared your {dropped.length === 1 ? "choice" : "choices"} of{" "}
+            {dropped.map((t) => TIER_NAMES[t].toLowerCase()).join(" and ")}: with your other choices and settings,{" "}
+            {dropped.length === 1 ? "it" : "they"} matched no pathway.
           </p>
         )}
       </div>
@@ -110,6 +128,7 @@ export function AtlasPage() {
           name={TIER_NAMES[tier]}
           nodes={compatibleFirst(tierNodes(map.pathways, selection, tier, options))}
           label={(value) => nodeLabel(map, tier, value)}
+          {...(tier === "method" || tier === "metric" ? { flags: (value: string) => entryFlags(tier, value) } : {})}
           onChoose={(value) => {
             update({ selection: toggle(map.pathways, selection, tier, value, options) });
           }}

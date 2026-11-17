@@ -25,7 +25,7 @@ describe("the app shell", () => {
   it("routes /atlas to the Atlas", () => {
     renderAt("/atlas");
     expect(screen.getByRole("heading", { level: 1, name: "Atlas" })).toBeInTheDocument();
-    expect(screen.getByRole("group", { name: "Framework" })).toBeInTheDocument();
+    expect(screen.getByRole("toolbar", { name: "Framework" })).toBeInTheDocument();
   });
 
   it.each([

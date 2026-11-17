@@ -1,10 +1,10 @@
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import lockRaw from "../../../spec/pathways.lock.json";
 import { App } from "../App";
 import { map } from "../map";
-import type { Pathway } from "../types/map";
+import { STATUSES, type Pathway } from "../types/map";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { nodeLabel, TIERS, tiersInOrder, type Selection, type Tier } from "./filter";
 
@@ -27,7 +27,7 @@ function renderAtlas(query = "") {
 }
 
 function layer(tier: Tier): HTMLElement {
-  return screen.getByRole("group", { name: TIER_NAMES[tier] });
+  return screen.getByRole("toolbar", { name: TIER_NAMES[tier] });
 }
 
 function nodes(tier: Tier): HTMLButtonElement[] {
@@ -56,8 +56,21 @@ function summary(): string {
   return screen.getByRole("status").textContent;
 }
 
-/** Every node of every tier shows the lock file's facet count for the selection. */
+/**
+ * Every layer draws exactly the lock file's values (after hiding new entries), every
+ * node shows the lock file's facet count, and the summary's counts by status match.
+ */
 function expectCountsMatchLock(selection: Selection, hideNew = false) {
+  const kept = lock.filter((p) => !(hideNew && p.added));
+  const matching = kept.filter((p) => TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]));
+  for (const status of STATUSES) {
+    const n = matching.filter((p) => p.status === status).length;
+    if (n > 0) expect(summary()).toContain(`${String(n)} ${status === "to_check" ? "to check" : status}`);
+    else expect(summary()).not.toContain(status === "to_check" ? "to check" : status);
+  }
+  for (const tier of TIERS) {
+    expect(new Set(nodes(tier).map((b) => valueOf(tier, b))), tier).toEqual(new Set(kept.map((p) => p[tier])));
+  }
   for (const tier of TIERS) {
     for (const button of nodes(tier)) {
       const rest = Object.fromEntries(Object.entries(selection).filter(([t]) => t !== tier));
@@ -148,13 +161,52 @@ describe("the Atlas's 2D view", () => {
     // Every diagnostic accuracy pathway is new, so hiding new entries leaves the choice matching nothing.
     expect(lockCount({ framework: "2. Diagnostic test accuracy" }, true)).toBe(0);
     renderAtlas(`?framework=${encodeURIComponent("2. Diagnostic test accuracy")}&new=hide`);
-    expect(summary()).toContain("Cleared framework: that choice matched no pathway.");
+    expect(summary()).toContain(
+      "Cleared your choice of framework: with your other choices and settings, it matched no pathway.",
+    );
     expect(summary()).toContain(`${String(lockCount({}, true))} of`);
+  });
+
+  it("says so when ticking 'hide new' clears a choice", () => {
+    renderAtlas(`?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`);
+    expect(summary()).not.toContain("Cleared");
+    fireEvent.click(screen.getByRole("checkbox", { name: /Hide entries marked new/ }));
+    expect(summary()).toContain("Cleared your choice of framework");
+    expect(summary()).toContain(`${String(lockCount({}, true))} of`);
+    fireEvent.click(node("model", "Random effects"));
+    expect(summary()).not.toContain("Cleared");
+  });
+
+  it.each(["method", "metric"] as const)(
+    "marks a %s new or to check from its own entry, whatever is chosen",
+    (tier) => {
+      const entries: Record<string, { added: boolean; verified: boolean }> = tier === "method" ? map.methods : map.metrics;
+      for (const query of ["", `?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`]) {
+        renderAtlas(query);
+        for (const button of nodes(tier)) {
+          const entry = entries[valueOf(tier, button)];
+          expect(entry).toBeDefined();
+          const badges = [...button.querySelectorAll(".badge")].map((b) => b.textContent);
+          expect(badges, valueOf(tier, button)).toEqual([
+            ...(entry?.added ? ["new"] : []),
+            ...(entry?.verified ? [] : ["to check"]),
+          ]);
+        }
+        cleanup();
+      }
+    },
+  );
+
+  it("puts no badge on tiers that aren't entries of their own", () => {
+    renderAtlas(`?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`);
+    for (const tier of ["framework", "group", "datatype", "outcome", "model"] as const) {
+      expect(layer(tier).querySelectorAll(".badge"), tier).toHaveLength(0);
+    }
   });
 
   it("ignores a value in the address that the map doesn't have", () => {
     renderAtlas("?method=nope&model=Common%20effect");
-    expect(summary()).toContain("Cleared method");
+    expect(summary()).toContain("Cleared your choice of method");
     expect(summary()).toContain(`${String(lockCount({ model: "Common effect" }))} of`);
   });
 
