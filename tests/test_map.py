@@ -639,3 +639,7 @@ def test_batch_five_covers_every_paired_measure() -> None:
 def test_paired_binary_cards_defer_to_a_statistician_as_cochrane_does() -> None:
     for c in ("MPRR", "MPOR", "MPRD", "MPORC"):
         assert any(k == "caution" and src == "CH-23 s23.2.5" for k, _, src in bm.TEACH["metric:" + c]), c
+
+
+def test_batch_six_covers_the_other_two_group_measures_and_o_minus_e() -> None:
+    assert {"metric:IRR", "metric:IRD", "metric:IRSD", "metric:HR", "metric:POR", "method:OEV"} <= set(bm.TEACH)
