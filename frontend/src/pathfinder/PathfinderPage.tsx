@@ -353,8 +353,8 @@ export function PathfinderPage() {
             <AdviceOptions
               question={advice}
               onPick={(a) => {
-                // "vary" pre-selects its model; "rare" keeps any model already pre-selected
-                const pick = advice.key === "vary" ? MODEL_FOR[a] : selection.model;
+                // "vary" pre-selects its model; "rare" keeps a model only if "vary" already chose it
+                const pick = advice.key === "vary" ? MODEL_FOR[a] : vary ? selection.model : undefined;
                 update({ selection: pick ? { ...answers, model: pick } : answers, extra: { [advice.key]: a } });
               }}
             />
@@ -419,7 +419,7 @@ export function PathfinderPage() {
               <h3 id="pf-rare">Rare events</h3>
               <p>
                 {rare === "yes" ? "You said the events are rare" : "In case the events are rare"}: this is what
-                the cards of the methods here say about them. No pathway is removed.
+                the cards of the methods that fit your answers say about them. No pathway is removed.
               </p>
               <RareAdvice found={found} />
             </section>
