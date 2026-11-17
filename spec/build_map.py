@@ -2099,8 +2099,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "model:common-effect": [
         (
             "what",
-            "Assumes every study estimates the same true effect, so the studies' results differ by chance alone. "
-            "The pooled estimate is that one effect.",
+            "In its classic reading, it assumes every study estimates the same true effect, so the studies' results "
+            "differ by chance alone, and the pooled estimate is that one effect.",
             "CH-10 s10.3.1, MF-models",
         ),
         (
@@ -2119,8 +2119,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "metafor advises choosing the model before looking at the data, since no test of homogeneity is "
-            "infallible.",
+            "metafor advises deciding which kind of inference is wanted before examining the data, and notes that no "
+            "test can show for certain that the true effects are homogeneous.",
             "MF-models",
         ),
     ],
@@ -2187,12 +2187,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "use",
             "A zero-cell correction is needed only when the same cell is zero in every study.",
-            "CH-10 s10.4.1",
+            "CH-10 s10.4.4.1",
         ),
         (
             "caution",
-            "It has no random-effects version: Cochrane's random-effects method for binary outcomes is inverse "
-            "variance.",
+            "Cochrane lists it among the common-effect methods; the random-effects method it gives for binary "
+            "outcomes is inverse variance.",
             "CH-10 s10.4",
         ),
     ],
@@ -2207,7 +2207,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "use",
             "Works well when events are rare, effects are small (odds ratios near 1) and the arms are of similar "
             "size. With event rates below 1%, it was the least biased and most powerful method in the studies "
-            "Cochrane reviews, under those conditions.",
+            "Cochrane reviews, provided the effects were not very large and the arms not badly unbalanced.",
             "CH-10 s10.4.2, s10.4.4.3",
         ),
         (
@@ -2239,7 +2239,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "caution",
             "Random effects are fitted by maximum likelihood only. Risk ratio and risk difference are experimental "
-            "in rma.glmm() and often fail to converge.",
+            "in rma.glmm() and often run into numerical problems, such as failing to converge.",
             "MF-glmm",
         ),
     ],
