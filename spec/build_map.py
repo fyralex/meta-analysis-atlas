@@ -3632,7 +3632,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "group:two-variables-in-one-group-correlation": [
         (
             "what",
-            "Each study reports how two variables measured in one group are related, usually as a correlation, with its sample size.",
+            "Each study reports how two variables measured in one group are related: the correlation with its sample size, or the data it is computed from, such as group means and standard deviations or a 2x2 table.",
             "MF-escalc",
         ),
     ],
@@ -3663,7 +3663,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "datatype:estimates-at-several-dose-levels-per-study": [
         (
             "what",
-            "For each exposure level, the estimate against the reference level with its variance, standard error or confidence interval. Log relative risks also need the cases and the total (or person-time) at each level.",
+            "For each exposure level, the estimate against the reference level. For log relative risks: its variance, standard error or confidence interval, and the cases and the total (or person-time) at each level. For mean differences and standardized mean differences: the standard deviation and the number at each level.",
             "DOSRES",
         ),
     ],
@@ -3684,14 +3684,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "outcome:calibration": [
         (
             "what",
-            "Assessed here by the total observed:expected ratio, which gives a rough indication of a prediction model's overall calibration.",
+            "Here it is summarised by the total observed:expected ratio, which metamisc presents as a rough guide to how well the model is calibrated overall.",
             "VALMETA",
         ),
     ],
     "outcome:two-continuous-variables": [
         (
             "what",
-            "Both variables are quantitative. The correlation coefficient describes the direction and strength of their linear relationship.",
+            "Both variables are quantitative. A correlation coefficient shows how strongly, and in which direction, they are linearly related.",
             "MF-escalc",
         ),
     ],
@@ -3719,7 +3719,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "outcome:internal-consistency": [
         (
             "what",
-            "Measured by Cronbach's alpha, which metafor treats as a reliability estimate.",
+            "Here the measure is Cronbach's alpha (raw or transformed), which metafor pools as a reliability estimate.",
             "MF-escalc",
         ),
     ],
