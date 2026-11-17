@@ -317,6 +317,33 @@ describe("the Atlas's 2D view", PAGE, () => {
     expect(within(table).getAllByRole("row")).toHaveLength(expected + 1);
   });
 
+  it("shows Status first, and the tiers every matching pathway shares once, above the table", () => {
+    const selection = { framework: F1, group: "One group (single arm)", outcome: "Binary", model: "Random effects" };
+    renderAtlas(`?${new URLSearchParams(selection).toString()}`);
+    const table = screen.getByRole("table", { name: /matching pathways/ });
+    const headers = within(table)
+      .getAllByRole("columnheader")
+      .map((h) => h.textContent);
+    expect(headers[0]).toBe("Status");
+    // The chosen tiers are the same in every row, so they leave the table for the line above it.
+    for (const t of ["framework", "group", "outcome", "model"] as const) expect(headers).not.toContain(TIER_NAMES[t]);
+    const common = document.querySelector(".pathways-common")?.textContent ?? "";
+    expect(common).toContain(`${TIER_NAMES.framework} ${F1}`);
+    expect(common).toContain(`${TIER_NAMES.model} Random effects`);
+    // Every cell names its column, for the card layout on narrow screens.
+    for (const cell of within(table).getAllByRole("cell")) expect(cell.dataset.label).toBeTruthy();
+  });
+
+  it("marks a chosen node with a check as well as its colour, and gives the radio buttons values", () => {
+    renderAtlas(`?framework=${encodeURIComponent(F1)}`);
+    expect(node("framework", F1).querySelector(".node-check")?.textContent).toBe("✓");
+    expect(nodes("framework").filter((b) => b.querySelector(".node-check"))).toHaveLength(1);
+    const radios = screen
+      .getAllByRole<HTMLInputElement>("radio")
+      .filter((r) => r.name === "tier-order" || r.name === "atlas-view");
+    expect(radios.map((r) => r.value)).toEqual(["model-method-metric", "metric-method-model", "2d", "3d"]);
+  });
+
   describe("Why not?", () => {
     const query = `?framework=${encodeURIComponent(F1)}&method=PETO`;
 

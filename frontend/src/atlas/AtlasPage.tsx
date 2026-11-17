@@ -85,15 +85,17 @@ export function AtlasPage() {
     number
   >;
   const chosen = tiers.filter((t) => selection[t] !== undefined);
+  // The table shows only the tiers that differ between the matching pathways; the rest go in one line above it.
+  const varying = tiers.filter((t) => new Set(shown.map((p) => p[t])).size > 1);
+  const common = tiers.filter((t) => !varying.includes(t));
 
   return (
     <section className="page atlas">
       <h1>Atlas</h1>
       <p className="lead">
-        Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
-        node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices: press it to see why.
-        {view === "2d" &&
-          " With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer."}
+        Every pathway in the map, one layer per tier. Choose a node to keep only the pathways through it; its number is
+        how many would remain. A node at 0 doesn&apos;t fit your choices: press it to see why.
+        {view === "2d" && " Tab moves between layers; the arrow keys move within one."}
       </p>
       <p>
         <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>. It keeps your framework,
@@ -102,13 +104,14 @@ export function AtlasPage() {
 
       <div className="atlas-controls">
         <fieldset className="choice">
-          <legend>Order of the last three tiers</legend>
+          <legend>Choose in this order</legend>
           {ORDERS.map((o) => (
             <label key={o.value}>
               <input
                 type="radio"
                 name="tier-order"
                 id={`order-${o.value}`}
+                value={o.value}
                 checked={order === o.value}
                 onChange={() => {
                   update({ order: o.value });
@@ -155,6 +158,7 @@ export function AtlasPage() {
               type="radio"
               name="atlas-view"
               id="view-2d"
+              value="2d"
               checked={view === "2d"}
               onChange={() => {
                 setView("2d");
@@ -167,6 +171,7 @@ export function AtlasPage() {
               type="radio"
               name="atlas-view"
               id="view-3d"
+              value="3d"
               checked={view === "3d"}
               disabled={!can3d}
               onChange={() => {
@@ -236,8 +241,8 @@ export function AtlasPage() {
       {view === "3d" && (
         <section className="atlas-3d-view" aria-label="The map in 3D" ref={region3d} tabIndex={-1}>
           <p className="muted">
-            Drag to turn the layers; click a node to choose it, or a grey node (no pathway fits) to see why. The 2D view
-            shows the same nodes and counts, and works with the keyboard.
+            Drag to turn the layers; click a node to choose it, or a grey one to see why. The 2D view has the same nodes
+            and counts, and works with the keyboard.
           </p>
           <View3DBoundary
             onError={() => {
@@ -315,34 +320,51 @@ export function AtlasPage() {
 
       <h2>Matching pathways</h2>
       {shown.length <= LIST_LIMIT ? (
-        <div className="table-wrap">
-          <table className="pathways">
-            <caption className="sr-only">The {shown.length} matching pathways</caption>
-            <thead>
-              <tr>
-                {tiers.map((t) => (
-                  <th key={t} scope="col">
-                    {TIER_NAMES[t]}
-                  </th>
-                ))}
-                <th scope="col">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {shown.map((p) => (
-                <tr key={tiers.map((t) => p[t]).join("|")}>
-                  {tiers.map((t) => (
-                    <td key={t}>{nodeLabel(map, t, p[t])}</td>
-                  ))}
-                  <td>
-                    <span className={`swatch st-${p.status}`} aria-hidden="true" /> {STATUS_TEXT[p.status].name}
-                    {p.added && <span className="badge badge-new">new</span>}
-                  </td>
-                </tr>
+        <>
+          {common.length > 0 && (
+            <p className="pathways-common">
+              {shown.length === 1 ? "It has" : `All ${String(shown.length)} share`}:{" "}
+              {common.map((t, i) => (
+                <span key={t}>
+                  {i > 0 && " · "}
+                  {TIER_NAMES[t]} <strong>{nodeLabel(map, t, shown[0]?.[t] ?? "")}</strong>
+                </span>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </p>
+          )}
+          <div className="table-wrap">
+            <table className="pathways">
+              <caption className="sr-only">The {shown.length} matching pathways</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Status</th>
+                  {varying.map((t) => (
+                    <th key={t} scope="col">
+                      {TIER_NAMES[t]}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {shown.map((p) => (
+                  <tr key={tiers.map((t) => p[t]).join("|")}>
+                    <td data-label="Status">
+                      <span>
+                        <span className={`swatch st-${p.status}`} aria-hidden="true" /> {STATUS_TEXT[p.status].name}
+                        {p.added && <span className="badge badge-new">new</span>}
+                      </span>
+                    </td>
+                    {varying.map((t) => (
+                      <td key={t} data-label={TIER_NAMES[t]}>
+                        {nodeLabel(map, t, p[t])}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       ) : (
         <p className="muted">
           {shown.length} pathways match. They are listed here once your choices narrow them to {LIST_LIMIT} or fewer.
