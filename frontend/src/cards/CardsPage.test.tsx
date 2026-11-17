@@ -61,7 +61,9 @@ describe("the Cards page", PAGE, () => {
   });
 
   it("shows no teaching headings on a card whose text isn't written yet", () => {
-    renderAt("/cards?card=rule%3AR1"); // rule cards carry no teaching text
+    const blank = cards.find((c) => c.teach.length === 0); // any card whose batch isn't written yet
+    expect(blank).toBeDefined();
+    renderAt(`/cards?card=${encodeURIComponent(blank?.id ?? "")}`);
     expect(screen.queryByRole("region", { name: "What it is" })).not.toBeInTheDocument();
   });
 
