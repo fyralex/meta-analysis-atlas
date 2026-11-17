@@ -1537,7 +1537,7 @@
    "only": null
   },
   "N_RD": {
-   "label": "Risk difference",
+   "label": "Risk difference (network)",
    "call": "netmeta(sm=\"RD\")",
    "src": "NM",
    "added": false,
@@ -1553,7 +1553,7 @@
    "only": null
   },
   "N_MD": {
-   "label": "Mean difference",
+   "label": "Mean difference (network)",
    "call": "netmeta(sm=\"MD\")",
    "src": "NM",
    "added": false,
@@ -1585,7 +1585,7 @@
    "only": null
   },
   "N_IRD": {
-   "label": "Incidence rate difference",
+   "label": "Incidence rate difference (network)",
    "call": "netmeta(sm=\"IRD\")",
    "src": "NM",
    "added": false,
@@ -1657,7 +1657,7 @@
    "only": null
   },
   "PF_HR": {
-   "label": "Adjusted hazard ratio (log)",
+   "label": "Adjusted hazard ratio (log), prognostic factor",
    "call": "enter log HR and its SE",
    "src": "RILEY",
    "added": false,
@@ -1665,7 +1665,7 @@
    "only": null
   },
   "PF_OR": {
-   "label": "Adjusted odds ratio (log)",
+   "label": "Adjusted odds ratio (log), prognostic factor",
    "call": "enter log OR and its SE",
    "src": "RILEY",
    "added": false,
@@ -1673,7 +1673,7 @@
    "only": null
   },
   "PF_RR": {
-   "label": "Adjusted risk ratio (log)",
+   "label": "Adjusted risk ratio (log), prognostic factor",
    "call": "enter log RR and its SE",
    "src": "RILEY",
    "added": false,
@@ -1753,7 +1753,7 @@
    "only": null
   },
   "EX_OR": {
-   "label": "Adjusted odds ratio (log)",
+   "label": "Adjusted odds ratio (log), exposure",
    "call": "enter log OR and its SE",
    "src": "CH-10",
    "added": false,
@@ -1761,7 +1761,7 @@
    "only": null
   },
   "EX_RR": {
-   "label": "Adjusted risk ratio (log)",
+   "label": "Adjusted risk ratio (log), exposure",
    "call": "enter log RR and its SE",
    "src": "CH-10",
    "added": false,
@@ -1769,7 +1769,7 @@
    "only": null
   },
   "EX_HR": {
-   "label": "Adjusted hazard ratio (log)",
+   "label": "Adjusted hazard ratio (log), exposure",
    "call": "enter log HR and its SE",
    "src": "CH-10",
    "added": false,
@@ -2045,7 +2045,7 @@
    "added_models": []
   },
   "IPD1": {
-   "label": "One-stage regression on participant data",
+   "label": "One-stage regression on participant data (pairwise)",
    "fn": "mixed-effects or multilevel regression",
    "domain": "pairwise",
    "takes": [
@@ -2178,7 +2178,7 @@
    ]
   },
   "NM_IPD": {
-   "label": "One-stage regression on participant data",
+   "label": "One-stage regression on participant data (network)",
    "fn": "mixed-effects regression, frequentist or Bayesian",
    "domain": "network",
    "takes": [

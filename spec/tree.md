@@ -198,15 +198,15 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
     - datatype: Individual participant data  (3)
       - outcome: Binary [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Pooled proportion (logit scale) [CHECK]
       - outcome: Continuous [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Pooled mean [CHECK]
       - outcome: Count / person-time [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Pooled rate (log scale) [CHECK]
   - group: Two groups (pairwise)  (157)
     - datatype: Arm-level summary data  (77)
@@ -444,19 +444,19 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
     - datatype: Individual participant data  (4)
       - outcome: Binary [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Odds ratio from the treatment coefficient [CHECK]
       - outcome: Continuous [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Mean difference from the treatment coefficient [CHECK]
       - outcome: Count / person-time [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Rate ratio from the treatment coefficient [CHECK]
       - outcome: Time-to-event [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
             - metric: Hazard ratio from the treatment coefficient [CHECK]
   - group: Change or matched pairs (same people measured twice)  (40)
     - datatype: Arm-level summary data  (40)
@@ -523,168 +523,168 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
           - method: Frequentist, graph-theoretical [NEW]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Mantel-Haenszel for networks (sparse binary data) [NEW]  (3)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
         - model: Random effects  (12)
           - method: Frequentist, graph-theoretical [NEW]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
       - outcome: Continuous  (18)
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
         - model: Random effects  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
       - outcome: Count / person-time  (12)
         - model: Common effect  (6)
           - method: Frequentist, graph-theoretical [NEW]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
         - model: Random effects  (6)
           - method: Frequentist, graph-theoretical [NEW]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
     - datatype: Contrast-level estimates  (60)
       - outcome: Binary  (24)
         - model: Common effect  (12)
           - method: Frequentist, graph-theoretical [NEW]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
         - model: Random effects  (12)
           - method: Frequentist, graph-theoretical [NEW]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference
+            - metric: Risk difference (network)
             - metric: Arcsine difference [NEW]
       - outcome: Continuous  (18)
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
         - model: Random effects  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
-            - metric: Mean difference
+            - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
       - outcome: Count / person-time  (12)
         - model: Common effect  (6)
           - method: Frequentist, graph-theoretical [NEW]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
         - model: Random effects  (6)
           - method: Frequentist, graph-theoretical [NEW]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
           - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference
+            - metric: Incidence rate difference (network)
       - outcome: Time-to-event  (6)
         - model: Common effect  (3)
           - method: Frequentist, graph-theoretical [NEW]  (1)
@@ -703,15 +703,15 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
     - datatype: Individual participant data  (3)
       - outcome: Binary [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (network) [CHECK]  (1)
             - metric: Odds ratio
       - outcome: Continuous [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
-            - metric: Mean difference
+          - method: One-stage regression on participant data (network) [CHECK]  (1)
+            - metric: Mean difference (network)
       - outcome: Time-to-event [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data [CHECK]  (1)
+          - method: One-stage regression on participant data (network) [CHECK]  (1)
             - metric: Hazard ratio
 - framework: 2. Diagnostic test accuracy  (10)
   - group: One index test against a reference standard  (8)
@@ -745,30 +745,30 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
       - outcome: Any outcome [NEW] [CHECK]  (20)
         - model: Common effect  (8)
           - method: Inverse variance  (4)
-            - metric: Adjusted hazard ratio (log) [CHECK]
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
             - metric: Adjusted mean difference [CHECK]
           - method: Multilevel / multivariate  (4)
-            - metric: Adjusted hazard ratio (log) [CHECK]
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
             - metric: Adjusted mean difference [CHECK]
         - model: Random effects  (12)
           - method: Inverse variance  (4)
-            - metric: Adjusted hazard ratio (log) [CHECK]
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
             - metric: Adjusted mean difference [CHECK]
           - method: Bayesian normal-normal hierarchical model  (4)
-            - metric: Adjusted hazard ratio (log) [CHECK]
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
             - metric: Adjusted mean difference [CHECK]
           - method: Multilevel / multivariate  (4)
-            - metric: Adjusted hazard ratio (log) [CHECK]
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
+            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
             - metric: Adjusted mean difference [CHECK]
   - group: Prediction model performance (external validation)  (4)
     - datatype: Precomputed estimate  (4)
@@ -858,26 +858,26 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
       - outcome: Any outcome [NEW] [CHECK]  (15)
         - model: Common effect  (6)
           - method: Inverse variance  (3)
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
-            - metric: Adjusted hazard ratio (log) [CHECK]
+            - metric: Adjusted odds ratio (log), exposure [CHECK]
+            - metric: Adjusted risk ratio (log), exposure [CHECK]
+            - metric: Adjusted hazard ratio (log), exposure [CHECK]
           - method: Multilevel / multivariate  (3)
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
-            - metric: Adjusted hazard ratio (log) [CHECK]
+            - metric: Adjusted odds ratio (log), exposure [CHECK]
+            - metric: Adjusted risk ratio (log), exposure [CHECK]
+            - metric: Adjusted hazard ratio (log), exposure [CHECK]
         - model: Random effects  (9)
           - method: Inverse variance  (3)
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
-            - metric: Adjusted hazard ratio (log) [CHECK]
+            - metric: Adjusted odds ratio (log), exposure [CHECK]
+            - metric: Adjusted risk ratio (log), exposure [CHECK]
+            - metric: Adjusted hazard ratio (log), exposure [CHECK]
           - method: Bayesian normal-normal hierarchical model  (3)
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
-            - metric: Adjusted hazard ratio (log) [CHECK]
+            - metric: Adjusted odds ratio (log), exposure [CHECK]
+            - metric: Adjusted risk ratio (log), exposure [CHECK]
+            - metric: Adjusted hazard ratio (log), exposure [CHECK]
           - method: Multilevel / multivariate  (3)
-            - metric: Adjusted odds ratio (log) [CHECK]
-            - metric: Adjusted risk ratio (log) [CHECK]
-            - metric: Adjusted hazard ratio (log) [CHECK]
+            - metric: Adjusted odds ratio (log), exposure [CHECK]
+            - metric: Adjusted risk ratio (log), exposure [CHECK]
+            - metric: Adjusted hazard ratio (log), exposure [CHECK]
   - group: Dose-response  (6)
     - datatype: Estimates at several dose levels per study  (6)
       - outcome: Binary or time-to-event [NEW]  (2)

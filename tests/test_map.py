@@ -111,6 +111,14 @@ def test_hazard_ratio_is_a_precomputed_estimate() -> None:
     assert not bm.METRICS["HR"]["call"].startswith("escalc")
 
 
+@pytest.mark.parametrize("kind", ["METRICS", "METHODS"])
+def test_no_two_entries_share_a_label(kind: str) -> None:
+    """Each method and metric is named differently, so no two look the same in a list (issue #37)."""
+    entries: dict[str, bm.Metric] | dict[str, bm.Method] = getattr(bm, kind)
+    labels = [e["label"] for e in entries.values()]
+    assert sorted(label for label in set(labels) if labels.count(label) > 1) == []
+
+
 def test_every_metric_a_branch_offers_exists() -> None:
     assert [(b["outcome"], c) for b in bm.BRANCHES for c in b["metrics"] if c not in bm.METRICS] == []
 

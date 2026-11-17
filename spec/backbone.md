@@ -108,13 +108,13 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | I_R | Pooled rate (log scale) | `Poisson mixed model, intercept only` | CH-26 | CHECK |
 | N_OR | Odds ratio | `netmeta(sm="OR")` | NM | OK |
 | N_RR | Risk ratio | `netmeta(sm="RR")` | NM | OK |
-| N_RD | Risk difference | `netmeta(sm="RD")` | NM | OK |
+| N_RD | Risk difference (network) | `netmeta(sm="RD")` | NM | OK |
 | N_ASD | Arcsine difference | `netmeta(sm="ASD")` | NM | NEW |
-| N_MD | Mean difference | `netmeta(sm="MD")` | NM | OK |
+| N_MD | Mean difference (network) | `netmeta(sm="MD")` | NM | OK |
 | N_SMD | Standardized mean difference (Cohen's d) | `netmeta(sm="SMD")` | META-pw | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |
 | N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
-| N_IRD | Incidence rate difference | `netmeta(sm="IRD")` | NM | OK |
+| N_IRD | Incidence rate difference (network) | `netmeta(sm="IRD")` | NM | OK |
 | N_HR | Hazard ratio | `netmeta(sm="HR")` | NM | OK |
 | SESP | Summary sensitivity and specificity (estimated jointly) | `mada::reitsma()` | MADA | OK |
 | SROC | Summary ROC curve | `HSROC model` | DTA-HB | CHECK |
@@ -123,9 +123,9 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | LRN | Negative likelihood ratio | `mada::madauni()` | DTA-HB | CHECK |
 | CSTAT | c-statistic (logit scale) | `valmeta(measure="cstat")` | VALMETA | OK |
 | OE | Total observed:expected ratio (log scale) | `valmeta(measure="OE")` | VALMETA | OK |
-| PF_HR | Adjusted hazard ratio (log) | `enter log HR and its SE` | RILEY | CHECK |
-| PF_OR | Adjusted odds ratio (log) | `enter log OR and its SE` | RILEY | CHECK |
-| PF_RR | Adjusted risk ratio (log) | `enter log RR and its SE` | RILEY | CHECK |
+| PF_HR | Adjusted hazard ratio (log), prognostic factor | `enter log HR and its SE` | RILEY | CHECK |
+| PF_OR | Adjusted odds ratio (log), prognostic factor | `enter log OR and its SE` | RILEY | CHECK |
+| PF_RR | Adjusted risk ratio (log), prognostic factor | `enter log RR and its SE` | RILEY | CHECK |
 | PF_MD | Adjusted mean difference | `enter MD and its SE` | RILEY | CHECK |
 | COR | Raw correlation | `escalc(measure="COR")` | MF-escalc | OK |
 | UCOR | Bias-corrected correlation | `escalc(measure="UCOR")` | MF-escalc | OK |
@@ -135,9 +135,9 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | PHI | Phi coefficient | `escalc(measure="PHI")` | MF-escalc | OK |
 | RTET | Tetrachoric correlation | `escalc(measure="RTET")` | MF-escalc | OK |
 | PCOR | Partial correlation | `escalc(measure="PCOR")` | MF-escalc | OK |
-| EX_OR | Adjusted odds ratio (log) | `enter log OR and its SE` | CH-10 | CHECK |
-| EX_RR | Adjusted risk ratio (log) | `enter log RR and its SE` | CH-10 | CHECK |
-| EX_HR | Adjusted hazard ratio (log) | `enter log HR and its SE` | CH-10 | CHECK |
+| EX_OR | Adjusted odds ratio (log), exposure | `enter log OR and its SE` | CH-10 | CHECK |
+| EX_RR | Adjusted risk ratio (log), exposure | `enter log RR and its SE` | CH-10 | CHECK |
+| EX_HR | Adjusted hazard ratio (log), exposure | `enter log HR and its SE` | CH-10 | CHECK |
 | DR_RR | Trend in log relative risk per unit of dose | `dosresmeta(logrr ~ dose)` | DOSRES | OK |
 | DR_MD | Trend in mean difference per unit of dose | `dosresmeta(covariance="md")` | DOSRES | OK |
 | DR_SMD | Trend in standardized mean difference per unit of dose | `dosresmeta(covariance="smd")` | DOSRES | OK |
@@ -157,12 +157,12 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
 | Multilevel / multivariate | `metafor::rma.mv() with vcalc()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MF-mv | OK | For studies that contribute several dependent estimates. Without a random term it fits a fixed-effects model (v11 says random only). REML or ML. No Hartung-Knapp, cumulative or leave-one-out function. |
 | Observed minus expected and variance (log-rank / Peto) | `computed as (O-E)/V with variance 1/V` | Common effect | oev | standard | CH-10 | NEW, CHECK | Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet. |
-| One-stage regression on participant data | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
+| One-stage regression on participant data (pairwise) | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
 | Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | NEW | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | NEW | Methods MH and NCH are common-effect only. |
 | Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11 | CHECK | Supports meta-regression. Common-effect option not confirmed from the manual. |
-| One-stage regression on participant data | `mixed-effects regression, frequentist or Bayesian` | Random effects | ipd | standard | CH-26 | CHECK |  |
+| One-stage regression on participant data (network) | `mixed-effects regression, frequentist or Bayesian` | Random effects | ipd | standard | CH-26 | CHECK |  |
 | Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |
 | Hierarchical summary ROC model (Rutter and Gatsonis) | `implementation not chosen` | Random effects | tab | standard, subgroup, meta-regression | DTA-HB, MADA | CHECK | Used when studies apply different thresholds. |
 | Univariate pooling | `mada::madauni()` | Common effect, Random effects | tab | standard | DTA-HB | CHECK | Ignores the correlation between sensitivity and specificity. |
