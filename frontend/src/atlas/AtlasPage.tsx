@@ -70,7 +70,8 @@ export function AtlasPage() {
         With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer.
       </p>
       <p>
-        <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>, with these choices.
+        <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>. It keeps your framework,
+        group structure, datatype and outcome choices.
       </p>
 
       <div className="atlas-controls">

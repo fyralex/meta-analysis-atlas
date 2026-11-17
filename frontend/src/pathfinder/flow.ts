@@ -3,7 +3,16 @@
 // filtering, so Pathfinder never decides validity itself. Its answers are an Atlas selection, kept in the page
 // address, so the Atlas can open on them and Pathfinder on the Atlas's choices.
 
-import { DEFAULT_OPTIONS, filterPathways, tierNodes, TIERS, type NodeSummary, type Selection, type Tier } from "../atlas/filter";
+import {
+  filterPathways,
+  tierNodes,
+  TIERS,
+  type FilterOptions,
+  type NodeSummary,
+  type Selection,
+  type Tier,
+  type TierOrder,
+} from "../atlas/filter";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
 
@@ -36,9 +45,9 @@ export function nextQuestion(selection: Selection): Question | undefined {
   return QUESTIONS.find((q) => answered(selection)[q.tier] === undefined);
 }
 
-/** A question's options, possible ones first, each with how many pathways it leaves. */
-export function choices(selection: Selection, tier: Tier): NodeSummary[] {
-  const nodes = tierNodes(map.pathways, answered(selection), tier, DEFAULT_OPTIONS);
+/** A question's options, possible ones first, each with how many pathways it leaves, under the Atlas's settings. */
+export function choices(selection: Selection, tier: Tier, options: FilterOptions): NodeSummary[] {
+  const nodes = tierNodes(map.pathways, answered(selection), tier, options);
   return [...nodes.filter((n) => n.count > 0), ...nodes.filter((n) => n.count === 0)];
 }
 
@@ -57,17 +66,25 @@ export function answer(selection: Selection, tier: Tier, value: string): Selecti
 }
 
 /** The pathways that fit the answers so far. */
-export function fitting(selection: Selection): Pathway[] {
-  return filterPathways(map.pathways, answered(selection), DEFAULT_OPTIONS);
+export function fitting(selection: Selection, options: FilterOptions): Pathway[] {
+  return filterPathways(map.pathways, answered(selection), options);
 }
 
-/** The Atlas, opened on these answers. */
-export function atlasHref(selection: Selection): string {
+/** Choices in the selection that Pathfinder doesn't use: later tiers, or answers after an unanswered question. */
+export function unused(selection: Selection): Tier[] {
+  const kept = answered(selection);
+  return TIERS.filter((t) => selection[t] !== undefined && kept[t] === undefined);
+}
+
+/** The Atlas, opened on these answers and the same settings. */
+export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder): string {
   const params = new URLSearchParams();
   for (const tier of TIERS) {
     const value = answered(selection)[tier];
     if (value !== undefined) params.set(tier, value);
   }
+  if (order !== "model-method-metric") params.set("order", order);
+  if (options.hideNew) params.set("new", "hide");
   const query = params.toString();
   return query === "" ? "/atlas" : `/atlas?${query}`;
 }
