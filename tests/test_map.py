@@ -614,3 +614,16 @@ def test_every_standardized_mean_difference_carries_the_same_cautions() -> None:
     shared = [line for line in bm.TEACH["metric:SMD_G"] if line[0] != "what"]
     for cid in ("metric:SMD_D", "metric:SMDH", "metric:SMD1"):
         assert all(line in bm.TEACH[cid] for line in shared), cid
+
+
+ONE_GROUP = ("PR", "PLN", "PLO", "PRZ", "PAS", "PFT", "MN", "SMN", "MNLN", "IR", "IRLN", "IRS", "IRFT")
+
+
+def test_batch_four_covers_every_one_group_measure() -> None:
+    assert {"metric:" + c for c in ONE_GROUP} <= set(bm.TEACH)
+
+
+def test_batch_four_says_nothing_beyond_escalc() -> None:
+    """escalc() defines these measures and their zero-count defaults; no line here goes beyond it."""
+    for c in ONE_GROUP:
+        assert all(src == "MF-escalc" for _, _, src in bm.TEACH["metric:" + c]), c
