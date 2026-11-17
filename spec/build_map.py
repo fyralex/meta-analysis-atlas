@@ -3428,8 +3428,13 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "framework:interventional-effect-of-an-intervention": [
         (
             "what",
-            "Compares the effects of interventions. Its effect measures compare outcome data between groups: they are ratio measures, where 1 means no difference, or difference measures, where 0 does.",
+            "Compares the effects of interventions. When groups are compared, its effect measures are ratio measures, where 1 means no difference, or difference measures, where 0 does.",
             "CH-6 s6.1.2",
+        ),
+        (
+            "what",
+            "Its one-group branches instead summarise a single group, for example as a proportion, a mean or a rate.",
+            "MF-escalc",
         ),
     ],
     "group:one-group-single-arm": [
@@ -3449,17 +3454,22 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "group:change-or-matched-pairs-same-people-measured-twice": [
         (
             "what",
-            "The same people are measured twice, as in a crossover trial, where each participant receives a sequence of interventions and so acts as their own control.",
+            "Each study measures change within one group, typically before and after a treatment, or compares matched pairs.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "In a crossover trial, each participant receives a sequence of interventions and so acts as their own control.",
             "CH-23 s23.2.1",
         ),
         (
             "use",
-            "The analysis keeps the pairs together: Cochrane gives a paired t-test as an appropriate analysis of a two-period, two-intervention crossover trial with continuous data.",
+            "For a two-period, two-intervention crossover trial with continuous data, Cochrane gives a paired t-test as an appropriate analysis, provided carry-over and period effects are not a problem.",
             "CH-23 s23.2.5",
         ),
         (
             "caution",
-            "Analysing such a trial as if its groups were separate ignores the pairing, which is a unit-of-analysis error.",
+            "Analysing a crossover trial as if its groups were separate ignores the pairing, which is a unit-of-analysis error.",
             "CH-23 s23.2.6",
         ),
         (
@@ -3481,7 +3491,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "Cochrane notes that it gives more precise estimates of the intervention effects and lets the interventions be ranked for an outcome.",
+            "Cochrane reports that empirical studies suggest it gives more precise estimates of intervention effects, and notes that it lets the interventions be ranked for an outcome.",
             "CH-11 s11.1.2",
         ),
         NETWORK_CAUTIONS[0],
@@ -3489,7 +3499,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "datatype:arm-level-summary-data": [
         (
             "what",
-            "Summary results for each group of each study: for a binary outcome, the numbers with and without the event; for a continuous outcome, the mean, the standard deviation and the number measured.",
+            "The summary numbers each study reports, from which escalc() computes the effect measure and its sampling variance.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "When groups are compared, for a binary outcome these are the numbers with and without the event in each group; for a continuous outcome, each group's mean, standard deviation and number measured.",
             "CH-6 s6.4.2, s6.5.2",
         ),
     ],
@@ -3513,8 +3528,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "An IPD review usually takes longer and costs more than a review of published summary data.",
-            "CH-26 s26.1.1",
+            "Cochrane notes that IPD reviews often take longer and need more resources than reviews of published summary data.",
+            "CH-26 s26.1.2",
         ),
     ],
     "datatype:observed-minus-expected-and-variance": [
