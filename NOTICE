@@ -29,5 +29,13 @@ Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-
 and the documentation of the packages above. Every source used is listed, with
 its link, in spec/backbone.md.
 
+The web app bundles these JavaScript packages, each under the MIT license,
+with the dependencies they bring (MIT, BSD-3-Clause or Apache-2.0):
+
+  React, React DOM   https://react.dev
+  React Router       https://reactrouter.com
+  three.js           https://threejs.org
+  react-three-fiber  https://github.com/pmndrs/react-three-fiber
+
 Fonts used by the map page (IBM Plex) are loaded from Google Fonts and are
 licensed under the SIL Open Font License 1.1.

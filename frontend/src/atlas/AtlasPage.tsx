@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { lazy, Suspense, useState } from "react";
+import { Link, useLocation, useSearchParams } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
 import { STATUSES, type Status } from "../types/map";
@@ -19,6 +19,10 @@ import { TierLayer } from "./TierLayer";
 import { useAtlasState } from "./useAtlasState";
 import { explain } from "./whyNot";
 import { WhyNotPanel } from "./WhyNotPanel";
+import { hasWebGL, scene } from "./scene";
+
+// three.js is loaded only when the 3D view is chosen; the 2D view, the default, doesn't need it.
+const Atlas3D = lazy(() => import("./Atlas3D"));
 
 const ORDERS: { value: TierOrder; text: string }[] = [
   { value: "model-method-metric", text: "Model → Method → Metric" },
@@ -38,6 +42,9 @@ function compatibleFirst(nodes: NodeSummary[]): NodeSummary[] {
 export function AtlasPage() {
   const { selection, order, options, dropped, update: change } = useAtlasState();
   const { search } = useLocation();
+  const [params] = useSearchParams();
+  const [webgl] = useState(hasWebGL);
+  const view: "2d" | "3d" = params.get("view") === "3d" && webgl ? "3d" : "2d";
   const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
   // Any change of choices or settings closes "Why not?": its answer was for the old ones.
   // Pathfinder's advisory answers (rare, vary) belong to the choices they were given for; any change made here
@@ -105,6 +112,35 @@ export function AtlasPage() {
           />
           Hide entries marked new (not in the reviewed draft the map started from)
         </label>
+        <fieldset className="choice">
+          <legend>View</legend>
+          <label>
+            <input
+              type="radio"
+              name="atlas-view"
+              id="view-2d"
+              checked={view === "2d"}
+              onChange={() => {
+                update({ extra: { view: null } });
+              }}
+            />
+            2D (works with the keyboard and screen readers)
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="atlas-view"
+              id="view-3d"
+              checked={view === "3d"}
+              disabled={!webgl}
+              onChange={() => {
+                update({ extra: { view: "3d" } });
+              }}
+            />
+            3D (drag to turn, click a node to choose it)
+          </label>
+          {!webgl && <p className="muted">This browser can&apos;t draw the 3D view (no WebGL), so the Atlas shows 2D.</p>}
+        </fieldset>
       </div>
 
       <ul className="legend" aria-label="Status colours">
@@ -156,7 +192,45 @@ export function AtlasPage() {
         </button>
       )}
 
-      {tiers.map((tier) => (
+      {view === "3d" && (
+        <section className="atlas-3d-view" aria-label="The map in 3D">
+          <p className="muted">
+            Drag to turn the layers; click a node to choose it, or a grey node (no pathway fits) to see why. The 2D view
+            shows the same nodes and counts, and works with the keyboard.
+          </p>
+          <Suspense fallback={<p>Loading the 3D view…</p>}>
+            <Atlas3D
+              layers={scene(map.pathways, selection, order, options)}
+              onPick={(n) => {
+                if (n.count === 0) setAsked({ tier: n.tier, value: n.value });
+                else update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
+              }}
+            />
+          </Suspense>
+          {asked && (
+            <WhyNotPanel
+              tier={asked.tier}
+              label={nodeLabel(map, asked.tier, asked.value)}
+              explanation={explain(map.pathways, selection, asked.tier, asked.value, options)}
+              labelOf={(t, v) => nodeLabel(map, t, v)}
+              onClose={closeWhyNot}
+            />
+          )}
+          {tiers
+            .filter((t) => selection[t] !== undefined)
+            .map((t) => (
+              <AboutCard
+                key={`${t}=${selection[t] ?? ""}`}
+                tier={t}
+                value={selection[t] ?? ""}
+                label={nodeLabel(map, t, selection[t] ?? "")}
+              />
+            ))}
+        </section>
+      )}
+
+      {view === "2d" &&
+        tiers.map((tier) => (
         <TierLayer
           key={tier}
           id={`tier-${tier}`}
