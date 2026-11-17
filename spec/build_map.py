@@ -2105,6 +2105,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 11: summary sensitivity and specificity, prediction model performance and dose-response trends.
 # Batch 12: the network measures, from netmeta() and pairwise().
 # Batch 13: the adjusted exposure measures, from Cochrane 10 (not the IPD measures: Cochrane 26 doesn't cover them).
+# Batch 14: the interventional framework, its group structures, datatypes and outcome types.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # The line every network measure shares: what netmeta() reads (netmeta(), "sm" and "TE").
@@ -3422,6 +3423,152 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Cochrane notes that log hazard ratios from Cox proportional hazards models, with their standard errors, "
             "can be combined this way.",
             "CH-10 s10.9",
+        ),
+    ],
+    "framework:interventional-effect-of-an-intervention": [
+        (
+            "what",
+            "Compares the effects of interventions. Its effect measures compare outcome data between groups: they are ratio measures, where 1 means no difference, or difference measures, where 0 does.",
+            "CH-6 s6.1.2",
+        ),
+    ],
+    "group:one-group-single-arm": [
+        (
+            "what",
+            "Each study gives a result for one group only, such as a proportion, a mean or a rate, so there is no comparison between groups within a study.",
+            "MF-escalc",
+        ),
+    ],
+    "group:two-groups-pairwise": [
+        (
+            "what",
+            "Each study compares two intervention groups, and each participant receives only one of the interventions, as in a parallel-group trial.",
+            "CH-23 s23.2.1",
+        ),
+    ],
+    "group:change-or-matched-pairs-same-people-measured-twice": [
+        (
+            "what",
+            "The same people are measured twice, as in a crossover trial, where each participant receives a sequence of interventions and so acts as their own control.",
+            "CH-23 s23.2.1",
+        ),
+        (
+            "use",
+            "The analysis keeps the pairs together: Cochrane gives a paired t-test as an appropriate analysis of a two-period, two-intervention crossover trial with continuous data.",
+            "CH-23 s23.2.5",
+        ),
+        (
+            "caution",
+            "Analysing such a trial as if its groups were separate ignores the pairing, which is a unit-of-analysis error.",
+            "CH-23 s23.2.6",
+        ),
+        (
+            "caution",
+            "In a crossover trial the main problem is carry-over: an intervention's effect lasting into the next period.",
+            "CH-23 s23.2.3",
+        ),
+    ],
+    "group:multiple-groups-network": [
+        (
+            "what",
+            "Studies that link three or more interventions through direct comparisons form a network. Network meta-analysis combines the direct and indirect estimates in one analysis.",
+            "CH-11 s11.1",
+        ),
+        (
+            "what",
+            "An indirect estimate of B against C comes from the direct estimates of B against A and of A against C.",
+            "CH-11 s11.2.1",
+        ),
+        (
+            "use",
+            "Cochrane notes that it gives more precise estimates of the intervention effects and lets the interventions be ranked for an outcome.",
+            "CH-11 s11.1.2",
+        ),
+        NETWORK_CAUTIONS[0],
+    ],
+    "datatype:arm-level-summary-data": [
+        (
+            "what",
+            "Summary results for each group of each study: for a binary outcome, the numbers with and without the event; for a continuous outcome, the mean, the standard deviation and the number measured.",
+            "CH-6 s6.4.2, s6.5.2",
+        ),
+    ],
+    "datatype:precomputed-estimate": [
+        (
+            "what",
+            "One effect estimate per study with its standard error, already computed, pooled by the generic inverse-variance method. Ratio measures are entered as natural logarithms.",
+            "CH-10 s10.3.3",
+        ),
+    ],
+    "datatype:individual-participant-data": [
+        (
+            "what",
+            "The original data on each participant in each study, which can be checked and analysed centrally.",
+            "CH-26 s26.1.1",
+        ),
+        (
+            "use",
+            "Cochrane lists advantages over published summaries, among them including unpublished studies, analysing all important outcomes, and more power to study how participant characteristics change the effect of an intervention.",
+            "CH-26 s26.1.1",
+        ),
+        (
+            "caution",
+            "An IPD review usually takes longer and costs more than a review of published summary data.",
+            "CH-26 s26.1.1",
+        ),
+    ],
+    "datatype:observed-minus-expected-and-variance": [
+        (
+            "what",
+            "For each study, observed minus expected events (O - E) and its variance (V), from participant data or study reports.",
+            "CH-10 s10.9",
+        ),
+    ],
+    "datatype:contrast-level-estimates": [
+        (
+            "what",
+            "One estimate with its standard error for each pair of treatments compared in a study; a multi-arm study gives every pair.",
+            "NM",
+        ),
+    ],
+    "outcome:binary": [
+        (
+            "what",
+            "Each participant's outcome is one of two categories, such as event or no event.",
+            "CH-6 s6.1.1",
+        ),
+    ],
+    "outcome:continuous": [
+        (
+            "what",
+            "Each participant's outcome is a measurement of a numerical quantity.",
+            "CH-6 s6.1.1",
+        ),
+    ],
+    "outcome:count-person-time": [
+        (
+            "what",
+            "Counts, or rates, of the events each participant experiences.",
+            "CH-6 s6.1.1",
+        ),
+    ],
+    "outcome:time-to-event": [
+        (
+            "what",
+            "The time until an event occurs, typically survival.",
+            "CH-6 s6.1.1",
+        ),
+        (
+            "use",
+            "Such data are not easily summarised group by group, so Cochrane notes it is usually more convenient to extract hazard ratios.",
+            "CH-6 s6.3",
+        ),
+    ],
+    "outcome:ordinal": [
+        (
+            "what",
+            "Each participant's outcome is one of several ordered categories; measurement scales count as ordinal data.",
+            "CH-6 s6.1.1",
         ),
     ],
 }
