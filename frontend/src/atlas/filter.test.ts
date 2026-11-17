@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
-import type { Pathway } from "../types/map";
+import { STATUSES, type Pathway, type Status } from "../types/map";
 import {
   DEFAULT_OPTIONS,
   filterPathways,
@@ -21,9 +21,12 @@ const lock = lockRaw as unknown as Pathway[];
 const all = map.pathways;
 const HIDE_NEW = { hideNew: true };
 
-function lockCount(selection: Selection, hideNew = false): number {
+function lockCount(selection: Selection, hideNew = false, status?: Status): number {
   return lock.filter(
-    (p) => !(hideNew && p.added) && TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
+    (p) =>
+      !(hideNew && p.added) &&
+      (status === undefined || p.status === status) &&
+      TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
   ).length;
 }
 
@@ -45,8 +48,11 @@ describe("every node's count", () => {
   it.each(frameworks)("%s: each node in each tier counts as the lock file does", (framework) => {
     for (const tier of TIERS) {
       for (const node of tierNodes(all, { framework }, tier, DEFAULT_OPTIONS)) {
-        const expected = lockCount(tier === "framework" ? { framework: node.value } : { framework, [tier]: node.value });
-        expect(node.count, `${tier}: ${node.value}`).toBe(expected);
+        const sel: Selection = tier === "framework" ? { framework: node.value } : { framework, [tier]: node.value };
+        expect(node.count, `${tier}: ${node.value}`).toBe(lockCount(sel));
+        for (const status of STATUSES) {
+          expect(node.byStatus[status], `${tier}: ${node.value}, ${status}`).toBe(lockCount(sel, false, status));
+        }
       }
     }
   });
@@ -138,6 +144,25 @@ describe("choosing nodes", () => {
     expect(reconcile(all, { framework: dta }, HIDE_NEW)).toEqual({});
     const kept = { framework: frameworks[0] ?? "" };
     expect(reconcile(all, kept, HIDE_NEW)).toEqual(kept);
+  });
+
+  it("drops only the choice that is empty on its own, keeping the others", () => {
+    // Every change-or-matched-pairs pathway is new; the framework and datatype still match without it.
+    const group = "Change or matched pairs (same people measured twice)";
+    expect(lockCount({ group }, true)).toBe(0);
+    const selection = { framework: frameworks[0] ?? "", group, datatype: "Arm-level summary data" };
+    expect(reconcile(all, selection, HIDE_NEW)).toEqual({ framework: selection.framework, datatype: selection.datatype });
+  });
+
+  it("drops a value the map doesn't have, keeping the valid choices after it", () => {
+    const selection = { framework: frameworks[0] ?? "", group: "nope", metric: "OR" };
+    expect(reconcile(all, selection, DEFAULT_OPTIONS)).toEqual({ framework: selection.framework, metric: "OR" });
+  });
+
+  it("drops the latest choices first when the rest match nothing together", () => {
+    // Each choice matches on its own, but not together: the later one goes.
+    const selection = { method: "PETO", metric: "MD" };
+    expect(reconcile(all, selection, DEFAULT_OPTIONS)).toEqual({ method: "PETO" });
   });
 });
 

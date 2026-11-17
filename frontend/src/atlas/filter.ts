@@ -63,7 +63,8 @@ function emptyByStatus(): Record<Status, number> {
 /**
  * Every value of a tier, in the order the map first lists it, with its facet count.
  * Values with no compatible pathway are kept, with a count of zero, so a view can
- * show them greyed out (and, later, say why).
+ * show them greyed out (and, later, say why). With new entries hidden, a value found
+ * only in new pathways isn't listed at all.
  */
 export function tierNodes(
   pathways: readonly Pathway[],
@@ -104,11 +105,19 @@ export function toggle(
 }
 
 /**
- * Hiding new entries can leave a chosen value with nothing under it; drop such
- * choices, latest tier first, until the selection matches something again.
+ * Make a selection match something again, after new entries are hidden or when it
+ * names a value the map doesn't have. First drop each choice that matches nothing on
+ * its own; if the remaining choices still match nothing together, drop them from the
+ * latest tier back until they do.
  */
 export function reconcile(pathways: readonly Pathway[], selection: Selection, options: FilterOptions): Selection {
-  let next = selection;
+  let next: Selection = selection;
+  for (const tier of TIERS) {
+    const value = selection[tier];
+    if (value !== undefined && !pathways.some((p) => matches(p, { [tier]: value }, options))) {
+      next = without(next, tier);
+    }
+  }
   for (const tier of [...TIERS].reverse()) {
     if (pathways.some((p) => matches(p, next, options))) break;
     next = without(next, tier);
