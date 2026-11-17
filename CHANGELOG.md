@@ -51,6 +51,8 @@ it. Nothing runs analyses yet; no pathway is runnable.
   choice whose source has been read, written and audited in 15 batches
   (#51–#57, #60–#67).
 - A glossary of 14 terms, linked from the cards that use them (#68).
+- A method card's "Used for" names the group structures the method has
+  pathways in, with their framework where it spans several (#76).
 
 ### The project
 
@@ -60,6 +62,9 @@ it. Nothing runs analyses yet; no pathway is runnable.
   small ones that change only docs, tests or a few lines outside the map
   (#26, #28).
 - Faster frontend tests (#50).
+- A generated record of every npm package with its licence, checked to be
+  GPL-compatible for what the app uses, and a list of the npm advisories
+  still open in the build and test tools, with why (#75).
 
 ### Known gaps
 
