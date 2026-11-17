@@ -519,7 +519,7 @@ def test_model_cards_cite_the_handbook_and_every_listed_method(all_cards: list[b
     for c in all_cards:
         if c["tier"] != "model":
             continue
-        assert c["notes"] == [{"text": bm.MODEL_NOTE, "src": "CH-10 s10.10.4.1, MF-models"}]
+        assert set(source_keys(bm.MODEL_SRC)) <= set(source_keys(c["src"]))
         keys = set(source_keys(c["src"]))
         for me in bm.METHODS.values():
             if c["value"] in me["models"]:

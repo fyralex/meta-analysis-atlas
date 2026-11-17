@@ -1879,12 +1879,8 @@ CARDS = HERE / "cards.json"
 NODE_TIERS = ("framework", "group", "datatype", "outcome", "model", "method", "metric")
 BRANCH_FIELD = {"framework": "fw", "group": "group", "datatype": "datatype", "outcome": "outcome"}
 # Where to read about the two models: Cochrane 10.10.4.1 sets out the choice between them as a debate,
-# and metafor's page on model types defines each.
+# and metafor's page on model types defines each. The cards' teaching text (TEACH) says so.
 MODEL_SRC = "CH-10 s10.10.4.1, MF-models"
-MODEL_NOTE = (
-    "Cochrane 10.10.4.1 sets out the choice between a common-effect and a random-effects model as a debate, "
-    "with arguments on both sides; metafor's page on model types defines each model."
-)
 
 
 class Fact(TypedDict):
@@ -2068,7 +2064,7 @@ def _model_card(model: str) -> Card:
         added=False,
         verified=True,
         facts=[_fact("Methods that fit it", [me["label"] for me in fit])],
-        notes=[CardNote(text=MODEL_NOTE, src=MODEL_SRC)],
+        notes=[],  # the choice between the models is in the card's teaching text (TEACH)
         teach=[],
         rules=[],
         # the note's sources, then those of each method listed: the list comes from each method's own models
