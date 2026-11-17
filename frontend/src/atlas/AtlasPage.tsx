@@ -40,9 +40,11 @@ export function AtlasPage() {
   const { search } = useLocation();
   const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
   // Any change of choices or settings closes "Why not?": its answer was for the old ones.
+  // Pathfinder's advisory answers (rare, vary) belong to the choices they were given for; any change made here
+  // takes them back, so they can't reach Pathfinder again on other choices.
   const update: typeof change = (c) => {
     setAsked(null);
-    change(c);
+    change({ ...c, extra: { rare: null, vary: null, ...c.extra } });
   };
 
   function closeWhyNot() {

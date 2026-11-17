@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes, useLocation } from "react-router";
 import { describe, expect, it } from "vitest";
 import { PathfinderPage } from "./PathfinderPage";
@@ -45,6 +45,10 @@ describe("Pathfinder", PAGE, () => {
     pick(/^Arm-level summary data/);
     expect(screen.getByRole("heading", { level: 2, name: "What kind of outcome is it?" })).toHaveFocus();
     pick(/^Binary/);
+    expect(screen.getByRole("heading", { level: 2, name: "Are the events rare?" })).toHaveFocus();
+    pick(/^No$/);
+    expect(screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" })).toHaveFocus();
+    pick(/^Not sure$/);
     expect(screen.getByRole("heading", { level: 2, name: "Pathways that fit your answers" })).toHaveFocus();
     fireEvent.click(screen.getByRole("button", { name: "Start again" }));
     expect(screen.getByRole("heading", { level: 2, name: "What kind of question does the review ask?" })).toHaveFocus();
@@ -52,6 +56,8 @@ describe("Pathfinder", PAGE, () => {
     pick(/^Two groups \(pairwise\)/);
     pick(/^Arm-level summary data/);
     pick(/^Binary/);
+    pick(/^No$/);
+    pick(/^Not sure$/);
     const params = new URLSearchParams(address());
     expect(params.get("group")).toBe("Two groups (pairwise)");
     expect(params.get("outcome")).toBe("Binary");
@@ -100,5 +106,75 @@ describe("Pathfinder", PAGE, () => {
   it("says when it ignores choices from the address", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&model=Random+effects");
     expect(screen.getByText(/doesn't use your model choice/)).toBeInTheDocument();
+  });
+
+  const BINARY =
+    "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
+    "&datatype=Arm-level+summary+data&outcome=Binary";
+
+  it("on rare events, shows what the method cards say, with rule R9, and removes no pathway", () => {
+    renderAt(BINARY);
+    expect(screen.getAllByRole("button", { name: /^(Yes|No|Not sure)$/ })).toHaveLength(3);
+    pick(/^Yes$/);
+    pick(/^Not sure$/);
+    const rare = screen.getByRole("region", { name: "Rare events" });
+    expect(within(rare).getByRole("link", { name: "Rule R9" })).toBeInTheDocument();
+    expect(within(rare).getByRole("link", { name: "Peto" })).toBeInTheDocument();
+    expect(within(rare).getByRole("link", { name: "Inverse variance" })).toBeInTheDocument();
+    expect(new URLSearchParams(address()).get("rare")).toBe("yes");
+    // every pathway is still listed: inverse variance included
+    const table = screen.getByRole("table", { name: /pathways that fit/ });
+    expect(within(table).getAllByRole("link", { name: "Inverse variance" }).length).toBeGreaterThan(0);
+  });
+
+  it("on varying effects, pre-selects a model, shows both models' cards, and switches in one click", () => {
+    renderAt(`${BINARY}&rare=no`);
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" }),
+    ).toBeInTheDocument();
+    pick(/^Yes, they probably differ$/);
+    const model = screen.getByRole("region", { name: "Model" });
+    expect(within(model).getByText("Showing random effects pathways only.")).toBeInTheDocument();
+    expect(within(model).getByRole("link", { name: "Common effect" })).toBeInTheDocument();
+    expect(within(model).getByRole("link", { name: "Random effects" })).toBeInTheDocument();
+    expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
+    const atlas = screen.getByRole("link", { name: "Open them in the Atlas" }).getAttribute("href") ?? "";
+    expect(new URLSearchParams(atlas.slice(atlas.indexOf("?"))).get("model")).toBe("Random effects");
+    const table = () => screen.getByRole("table", { name: /pathways that fit/ });
+    expect(within(table()).queryAllByRole("link", { name: "Common effect" })).toHaveLength(0);
+    fireEvent.click(within(model).getByRole("button", { name: "Show common effect pathways only" }));
+    expect(within(table()).queryAllByRole("link", { name: "Random effects" })).toHaveLength(0);
+    fireEvent.click(screen.getByRole("button", { name: "Show both models" }));
+    expect(within(table()).getAllByRole("link", { name: "Random effects" }).length).toBeGreaterThan(0);
+    expect(within(table()).getAllByRole("link", { name: "Common effect" }).length).toBeGreaterThan(0);
+  });
+
+  it("keeps every fitting method's rare-events advice when one model is shown, and keeps the model", () => {
+    renderAt(`${BINARY}&vary=yes&model=Random+effects`);
+    pick(/^Yes$/);
+    expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
+    const rare = screen.getByRole("region", { name: "Rare events" });
+    // Peto is common-effect only, so its pathways are not in the table, but its card's advice still shows
+    expect(within(rare).getByRole("link", { name: "Peto" })).toBeInTheDocument();
+  });
+
+  it("skips the rare-events question where no method that fits says anything about it", () => {
+    renderAt(
+      "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
+        "&datatype=Arm-level+summary+data&outcome=Continuous",
+    );
+    expect(screen.queryByRole("heading", { level: 2, name: "Are the events rare?" })).toBeNull();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" }),
+    ).toBeInTheDocument();
+  });
+
+  it("takes back the advisory answers when an earlier answer changes", () => {
+    renderAt(`${BINARY}&rare=yes&vary=yes&model=Random+effects`);
+    fireEvent.click(screen.getByRole("button", { name: "Change outcome type (now Binary)" }));
+    const params = new URLSearchParams(address());
+    expect(params.get("rare")).toBeNull();
+    expect(params.get("vary")).toBeNull();
+    expect(params.get("model")).toBeNull();
   });
 });

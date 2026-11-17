@@ -13,7 +13,9 @@ import {
   type Tier,
   type TierOrder,
 } from "../atlas/filter";
+import { cardFor } from "../cards/cards";
 import { map } from "../map";
+import type { TeachLine } from "../types/cards";
 import type { Pathway } from "../types/map";
 
 export interface Question {
@@ -76,11 +78,12 @@ export function unused(selection: Selection): Tier[] {
   return TIERS.filter((t) => selection[t] !== undefined && kept[t] === undefined);
 }
 
-/** The Atlas, opened on these answers and the same settings. */
-export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder): string {
+/** The Atlas, opened on these answers (and a model Pathfinder pre-selected) with the same settings. */
+export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder, model?: string): string {
   const params = new URLSearchParams();
+  const tiers: Selection = model === undefined ? answered(selection) : { ...answered(selection), model };
   for (const tier of TIERS) {
-    const value = answered(selection)[tier];
+    const value = tiers[tier];
     if (value !== undefined) params.set(tier, value);
   }
   if (order !== "model-method-metric") params.set("order", order);
@@ -98,4 +101,75 @@ export function clearFrom(selection: Selection, tier: Tier): Selection {
     if (v !== undefined) out[q.tier] = v;
   }
   return out;
+}
+
+// The two advisory questions (#7; docs/decisions/0005). They come after the four above and are kept in the
+// address as "rare" and "vary". Neither removes a pathway: "rare" shows what the cards of the methods that fit
+// say about rare events, and "vary" pre-selects a model while both stay one click away.
+
+export type Advice = "yes" | "no" | "unsure";
+export const ADVICE: Advice[] = ["yes", "no", "unsure"];
+
+export interface AdviceQuestion {
+  key: "rare" | "vary";
+  text: string;
+  answers: Record<Advice, string>;
+}
+
+export const RARE: AdviceQuestion = {
+  key: "rare",
+  text: "Are the events rare?",
+  answers: { yes: "Yes", no: "No", unsure: "Not sure" },
+};
+
+export const VARY: AdviceQuestion = {
+  key: "vary",
+  text: "Do you expect the true effects to differ between studies?",
+  answers: { yes: "Yes, they probably differ", no: "No, they share one effect", unsure: "Not sure" },
+};
+
+/** The model each answer to VARY pre-selects; "unsure" pre-selects none. */
+export const MODEL_FOR: Partial<Record<Advice, string>> = { yes: "Random effects", no: "Common effect" };
+
+export function readAdvice(value: string | null): Advice | undefined {
+  return ADVICE.find((a) => a === value);
+}
+
+export interface RareLine {
+  method: string;
+  line: TeachLine;
+}
+
+/** What the cards of the methods among these pathways say about rare events, in the map's order of methods. */
+export function rareLines(found: readonly Pathway[]): RareLine[] {
+  const methods = [...new Set(found.map((p) => p.method))];
+  return methods.flatMap((method) =>
+    (cardFor("method", method)?.teach ?? []).filter((t) => /\brare\b/i.test(t.text)).map((line) => ({ method, line })),
+  );
+}
+
+/** The models among these pathways, in the map's order. */
+export function modelsIn(found: readonly Pathway[]): string[] {
+  return [...new Set(found.map((p) => p.model))];
+}
+
+/**
+ * Where the rare-events advice applies: binary outcomes compared between two groups (Cochrane 10.4.4.3, on
+ * dichotomous outcomes) or across a network (netmetabin()). Rates (Cochrane 10.8) and one-group data are not
+ * what those sections speak to, though the same methods fit them.
+ */
+const RARE_SCOPE = { outcome: "Binary", groups: new Set(["Two groups (pairwise)", "Multiple groups (network)"]) };
+
+/**
+ * Ask about rare events only within RARE_SCOPE, and only where a method that fits is one its card suggests for
+ * them (a "use" line), not where the only line is a caution: inverse variance carries one wherever it fits.
+ */
+export function asksRare(found: readonly Pathway[]): boolean {
+  const inScope = found.length > 0 && found.every((p) => p.outcome === RARE_SCOPE.outcome && RARE_SCOPE.groups.has(p.group));
+  return inScope && rareLines(found).some((l) => l.line.kind === "use");
+}
+
+/** Ask whether true effects vary only where both models still fit. */
+export function asksVary(found: readonly Pathway[]): boolean {
+  return modelsIn(found).length > 1;
 }

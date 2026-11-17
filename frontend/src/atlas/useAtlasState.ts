@@ -16,8 +16,19 @@ export interface AtlasState {
    * matched no pathway: from the address, or by the last change (such as hiding new entries).
    */
   dropped: Tier[];
-  update: (change: { selection?: Selection; order?: TierOrder; options?: FilterOptions }) => void;
+  update: (change: Change) => void;
 }
+
+export interface Change {
+  selection?: Selection;
+  order?: TierOrder;
+  options?: FilterOptions;
+  /** Other address parameters to set (a string) or remove (null), such as Pathfinder's answers. */
+  extra?: Record<string, string | null>;
+}
+
+/** The address parameters this hook owns; any other parameter is kept as it is unless `extra` changes it. */
+const OWN = new Set<string>([...TIERS, "order", "new"]);
 
 export function useAtlasState(): AtlasState {
   const [params, setParams] = useSearchParams();
@@ -37,11 +48,16 @@ export function useAtlasState(): AtlasState {
     (t) => (asked[t] !== undefined && selection[t] === undefined) || (clearedHere.includes(t) && selection[t] === undefined),
   );
 
-  function update(change: { selection?: Selection; order?: TierOrder; options?: FilterOptions }) {
+  function update(change: Change) {
     const nextOptions = change.options ?? options;
     const wanted = change.selection ?? selection;
     const nextSelection = reconcile(map.pathways, wanted, nextOptions);
     const next = new URLSearchParams();
+    for (const [key, value] of params) if (!OWN.has(key)) next.set(key, value);
+    for (const [key, value] of Object.entries(change.extra ?? {})) {
+      if (value === null) next.delete(key);
+      else next.set(key, value);
+    }
     for (const tier of TIERS) {
       const value = nextSelection[tier];
       if (value !== undefined) next.set(tier, value);

@@ -216,6 +216,19 @@ describe("the Atlas's 2D view", PAGE, () => {
     expect(summary()).not.toContain("Cleared");
   });
 
+  it("keeps address parameters it doesn't own, but takes back Pathfinder's answers on any change", () => {
+    const router = createMemoryRouter([{ path: "*", element: <App /> }], {
+      initialEntries: ["/atlas?rare=yes&vary=yes&other=1"],
+    });
+    render(<RouterProvider router={router} />);
+    fireEvent.click(nodes("framework")[0] as HTMLElement);
+    const params = new URLSearchParams(router.state.location.search);
+    expect(params.get("framework")).not.toBeNull();
+    expect(params.get("other")).toBe("1");
+    expect(params.get("rare")).toBeNull();
+    expect(params.get("vary")).toBeNull();
+  });
+
   it.each(["method", "metric"] as const)(
     "marks a %s new or to check from its own entry, whatever is chosen",
     (tier) => {

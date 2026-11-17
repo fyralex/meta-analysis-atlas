@@ -12,7 +12,8 @@ export const APPS = [
     name: "Pathfinder",
     what: "A few questions about your review lead to its pathways.",
     issue: 7,
-    state: "The questions about the kind of review, its groups, data and outcome; the questions on rare events and varying effects come next.",
+    state:
+      "Built: the questions about the kind of review, its groups, data and outcome, then advice on rare events and on whether effects vary.",
   },
   {
     path: "/cards",
