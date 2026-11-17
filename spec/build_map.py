@@ -2248,7 +2248,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:OR": [
         (
             "what",
-            "The ratio of the odds of the event in the two groups, where the odds are the chance of the event divided by the chance of no event. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "The ratio of the odds of the event in the two groups, where the odds are the chance of the event divided by the chance of no event. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
             "CH-6 s6.4.1.1, s6.4.1.2, MF-escalc",
         ),
         (
@@ -2275,7 +2275,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:RR": [
         (
             "what",
-            "The risk of the event in one group divided by the risk in the other; 1 means no difference. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "The risk of the event in one group divided by the risk in the other; 1 means no difference. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
             "CH-6 s6.4.1.2, MF-escalc",
         ),
         (
@@ -2377,7 +2377,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane expects one set of means to be multiplied by -1 first; the standard deviations stay as they are.",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
             "CH-6 s6.5.1.2",
         ),
     ],
@@ -2399,7 +2399,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane expects one set of means to be multiplied by -1 first; the standard deviations stay as they are.",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
             "CH-6 s6.5.1.2",
         ),
         ("caution", "Cochrane's standardized mean difference is Hedges' adjusted g, not this one.", "CH-6 s6.5.1.2"),
@@ -2422,7 +2422,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane expects one set of means to be multiplied by -1 first; the standard deviations stay as they are.",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
             "CH-6 s6.5.1.2",
         ),
     ],
@@ -2444,14 +2444,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane expects one set of means to be multiplied by -1 first; the standard deviations stay as they are.",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
             "CH-6 s6.5.1.2",
         ),
     ],
     "metric:ROM": [
         (
             "what",
-            "The ratio of the two groups' mean outcomes. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "The ratio of the two groups' mean outcomes. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
             "CH-6 s6.5.1.3, MF-escalc",
         ),
         (
