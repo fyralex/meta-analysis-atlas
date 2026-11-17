@@ -113,8 +113,8 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | N_MD | Mean difference | `netmeta(sm="MD")` | NM | OK |
 | N_SMD | Standardized mean difference | `netmeta(sm="SMD")` | NM | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |
-| N_IRR | Incidence rate ratio | `netmeta(pairwise(event, time, sm="IRR"))` | NM | OK |
-| N_IRD | Incidence rate difference | `netmeta(pairwise(event, time, sm="IRD"))` | NM | OK |
+| N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
+| N_IRD | Incidence rate difference | `netmeta(sm="IRD")` | NM | OK |
 | N_HR | Hazard ratio | `netmeta(sm="HR")` | NM | OK |
 | SESP | Summary sensitivity and specificity (estimated jointly) | `mada::reitsma()` | MADA | OK |
 | SROC | Summary ROC curve | `HSROC model` | DTA-HB | CHECK |

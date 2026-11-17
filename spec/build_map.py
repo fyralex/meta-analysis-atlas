@@ -237,9 +237,9 @@ METRICS: dict[str, Metric] = {
     "N_MD": m("Mean difference", 'netmeta(sm="MD")', "NM"),
     "N_SMD": m("Standardized mean difference", 'netmeta(sm="SMD")', "NM"),
     "N_ROM": m("Ratio of means", 'netmeta(sm="ROM")', "NM"),
-    # netmeta's examples run both through pairwise(event, time), which uses metainc()'s measures
-    "N_IRR": m("Incidence rate ratio", 'netmeta(pairwise(event, time, sm="IRR"))', "NM"),
-    "N_IRD": m("Incidence rate difference", 'netmeta(pairwise(event, time, sm="IRD"))', "NM"),
+    # netmeta's examples fit both from arm-level events and person-time, via pairwise(event, time, sm=...)
+    "N_IRR": m("Incidence rate ratio", 'netmeta(sm="IRR")', "NM"),
+    "N_IRD": m("Incidence rate difference", 'netmeta(sm="IRD")', "NM"),
     "N_HR": m("Hazard ratio", 'netmeta(sm="HR")', "NM"),
     # diagnostic test accuracy
     "SESP": m("Summary sensitivity and specificity (estimated jointly)", "mada::reitsma()", "MADA"),

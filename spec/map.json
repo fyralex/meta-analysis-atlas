@@ -1556,7 +1556,7 @@
   },
   "N_IRR": {
    "label": "Incidence rate ratio",
-   "call": "netmeta(pairwise(event, time, sm=\"IRR\"))",
+   "call": "netmeta(sm=\"IRR\")",
    "src": "NM",
    "added": false,
    "verified": true,
@@ -1564,7 +1564,7 @@
   },
   "N_IRD": {
    "label": "Incidence rate difference",
-   "call": "netmeta(pairwise(event, time, sm=\"IRD\"))",
+   "call": "netmeta(sm=\"IRD\")",
    "src": "NM",
    "added": false,
    "verified": true,
