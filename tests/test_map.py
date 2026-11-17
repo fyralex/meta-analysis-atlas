@@ -804,3 +804,19 @@ def test_a_term_matches_only_at_the_start_of_a_word() -> None:
         teach=[],
     )
     assert bm._terms_used(c) == ["term:subgroup-analysis"]
+
+
+def test_the_readme_states_the_maps_counts() -> None:
+    """The README describes only what the map holds (CLAUDE.md, rule 7): its pathway and status counts."""
+    readme = (bm.HERE.parent / "README.md").read_text()
+    paths = bm.pathways()
+    assert f" and {len(paths)} pathways." in readme
+    assert f"A glossary of\n{len(bm.GLOSSARY)} terms" in readme or f"A glossary of {len(bm.GLOSSARY)} terms" in readme
+    for status, name in (
+        ("planned", "Planned"),
+        ("specified", "Specified"),
+        ("to_check", "To check"),
+        ("runnable", "Runnable"),
+    ):
+        n = sum(p["status"] == status for p in paths)
+        assert re.search(rf"^\| {name} \| {n} \|", readme, re.M), (name, n)
