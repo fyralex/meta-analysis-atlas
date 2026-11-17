@@ -85,6 +85,7 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, a
             >
               <span className="node-label">{label(node.value)}</span>
               <span className="node-meta" aria-hidden="true">
+                {node.selected && <span className="node-check">✓</span>}
                 <span className="node-count">{node.count}</span>
                 {isNew && (
                   <span className="badge badge-new">
