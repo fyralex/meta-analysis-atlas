@@ -664,3 +664,16 @@ def test_every_taught_network_method_carries_the_network_cautions() -> None:
     """Transitivity and the statistician hold whatever fits the network (Cochrane 11.2.2, 11.3.1)."""
     for c in NETWORK_TAUGHT:
         assert all(line in bm.TEACH["method:" + c] for line in bm.NETWORK_CAUTIONS), c
+
+
+def test_batch_nine_covers_the_other_frameworks_methods_with_a_readable_source() -> None:
+    assert {"method:BIV", "method:HSROC", "method:VAL", "method:DR"} <= set(bm.TEACH)
+
+
+def test_no_teaching_line_cites_a_source_marked_not_read() -> None:
+    """A source the map marks as not read (or not readable online) cannot back teaching text."""
+    unread = {k for k, (label, _) in bm.SOURCES.items() if "not read" in label}
+    assert {"DTA-HB", "DEBRAY", "RILEY"} <= unread
+    for cid, lines in bm.TEACH.items():
+        for _, _, src in lines:
+            assert not set(source_keys(src)) & unread, cid

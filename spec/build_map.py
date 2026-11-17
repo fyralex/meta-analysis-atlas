@@ -2100,6 +2100,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 6: the other two-group measures (rates, hazard ratio, ordinal) and O - E and variance.
 # Batch 7: the other pairwise methods (penalised logistic regression, Bayesian, multilevel, one-stage IPD).
 # Batch 8: the network methods with a source that covers them (not yet one-stage IPD in a network).
+# Batch 9: the other frameworks' methods, from the package pages only (the DTA handbook is not read yet).
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
@@ -3062,6 +3063,97 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
     ]
     + NETWORK_CAUTIONS,
+    "method:BIV": [
+        (
+            "what",
+            "Fits the bivariate random-effects model of Reitsma et al. (2005) to each study's 2x2 counts, pooling "
+            "transformed sensitivity and false positive rate together.",
+            "MADA",
+        ),
+        (
+            "what",
+            "Harbord et al. (2007) showed it to be equivalent to the hierarchical summary ROC model of Rutter and "
+            "Gatsonis.",
+            "MADA",
+        ),
+        (
+            "use",
+            "Covariates enter through its formula, for meta-regression. Variance components are estimated by REML "
+            "by default.",
+            "MADA",
+        ),
+        (
+            "caution",
+            "By default, when any cell of any study is zero, 0.5 is added to every cell of every study; "
+            'correction.control = "single" limits it to the studies with a zero.',
+            "MADA",
+        ),
+        (
+            "caution",
+            "Standard errors are given only for the summary parameters. Likelihood ratios and predictive values need "
+            "other functions in mada.",
+            "MADA",
+        ),
+    ],
+    "method:HSROC": [
+        (
+            "what",
+            "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al., which mada's "
+            "reitsma() fits.",
+            "MADA",
+        ),
+    ],
+    "method:VAL": [
+        (
+            "what",
+            "valmeta() pools a prediction model's performance across validation studies: the c-statistic or the "
+            "total observed:expected (O:E) ratio. By default it pools the c-statistic on the logit scale; the O:E "
+            "ratio is modelled with a log or identity link.",
+            "VALMETA",
+        ),
+        (
+            "use",
+            "It fits random effects by default (REML), with Hartung-Knapp confidence intervals and an approximate "
+            "prediction interval. A Bayesian version runs through JAGS.",
+            "VALMETA",
+        ),
+        (
+            "use",
+            "When a study does not report the c-statistic, the O:E ratio or their standard errors, valmeta() derives "
+            "them from other information the study reports, where it can.",
+            "VALMETA",
+        ),
+    ],
+    "method:DR": [
+        (
+            "what",
+            "dosresmeta() estimates a dose-response curve from summarised data, allowing for the correlation among a "
+            "study's estimates and for heterogeneity across studies.",
+            "DOSRES",
+        ),
+        (
+            "what",
+            "Each study gives an estimate for each exposure level against a reference level: log relative risks, "
+            "mean differences or standardised mean differences. For log relative risks it also needs the cases and "
+            "the total (or person-time) at each level, and the design: case-control, incidence rate or cumulative "
+            "incidence.",
+            "DOSRES",
+        ),
+        (
+            "use",
+            "For log relative risks, the covariance among a study's estimates comes from Greenland and Longnecker's "
+            "method by default, or Hamling's; mean differences and standardised mean differences have their own "
+            "options. The trend is linear or non-linear, as the model formula sets it (for example with a quadratic "
+            "term).",
+            "DOSRES",
+        ),
+        (
+            "use",
+            "Two-stage by default, or one-stage. Common effects, or random effects by ML or REML; the method of "
+            "moments is available for the two-stage procedure only.",
+            "DOSRES",
+        ),
+    ],
 }
 
 
