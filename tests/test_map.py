@@ -820,3 +820,16 @@ def test_the_readme_states_the_maps_counts() -> None:
     ):
         n = sum(p["status"] == status for p in paths)
         assert re.search(rf"^\| {name} \| {n} \|", readme, re.M), (name, n)
+
+
+def test_a_method_card_names_the_group_structures_it_has_pathways_in(all_cards: list[bm.Card]) -> None:
+    """Peto takes 2x2 tables, so its card mustn't say it is for single groups (#74)."""
+    paths = bm.pathways()
+    for code in bm.METHODS:
+        card = _card(all_cards, bm.card_id("method", code))
+        used = next(f["items"] for f in card["facts"] if f["label"] == "Used for")
+        groups = {str(p["group"]) for p in paths if p["method"] == code}
+        if groups:
+            assert set(used) == groups, code
+    peto = _card(all_cards, "method:PETO")
+    assert next(f["items"] for f in peto["facts"] if f["label"] == "Used for") == ["Two groups (pairwise)"]
