@@ -159,6 +159,10 @@ describe("choosing nodes", () => {
     expect(reconcile(all, selection, DEFAULT_OPTIONS)).toEqual({ framework: selection.framework, metric: "OR" });
   });
 
+  it("drops every value the map doesn't have, not just the first", () => {
+    expect(reconcile(all, { group: "nope", datatype: "nope", metric: "OR" }, DEFAULT_OPTIONS)).toEqual({ metric: "OR" });
+  });
+
   it("drops the latest choices first when the rest match nothing together", () => {
     // Each choice matches on its own, but not together: the later one goes.
     const selection = { method: "PETO", metric: "MD" };
