@@ -603,3 +603,14 @@ def test_batch_two_covers_the_two_group_binary_measures() -> None:
 
 def test_the_risk_difference_card_cautions_that_relative_measures_are_more_consistent() -> None:
     assert any(k == "caution" and src == "CH-10 s10.4.3" for k, _, src in bm.TEACH["metric:RD"])
+
+
+def test_batch_three_covers_the_two_group_continuous_measures() -> None:
+    assert {"metric:MD", "metric:SMD_G", "metric:SMD_D", "metric:SMDH", "metric:SMD1", "metric:ROM"} <= set(bm.TEACH)
+
+
+def test_every_standardized_mean_difference_carries_the_same_cautions() -> None:
+    """Cochrane 6.5.1.2's assumption about standard deviations, and the direction of scales, apply to each."""
+    shared = [line for line in bm.TEACH["metric:SMD_G"] if line[0] != "what"]
+    for cid in ("metric:SMD_D", "metric:SMDH", "metric:SMD1"):
+        assert all(line in bm.TEACH[cid] for line in shared), cid
