@@ -2098,6 +2098,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 4: the measures for one group (proportions, means, incidence rates), from escalc() only.
 # Batch 5: the measures for change scores and matched pairs.
 # Batch 6: the other two-group measures (rates, hazard ratio, ordinal) and O - E and variance.
+# Batch 7: the other pairwise methods (penalised logistic regression, Bayesian, multilevel, one-stage IPD).
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2816,6 +2817,122 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "Cochrane notes that RevMan offers only common-effect methods for O - E and V outcomes.",
             "CH-10 s10.9",
+        ),
+    ],
+    "method:LRP": [
+        (
+            "what",
+            "Fits one logistic regression to the arm-level counts of every study at once, maximising a likelihood "
+            "with a Firth-type penalty. It pools odds ratios.",
+            "META-bin",
+        ),
+        (
+            "use",
+            "The penalty aims to reduce bias when events are rare and studies are few, though meta notes it can be "
+            "used for binary data in general. Studies with no events in one arm or in both are included without a "
+            "continuity correction.",
+            "META-bin",
+        ),
+        (
+            "caution",
+            "Its random-effects version uses a multiplicative heterogeneity parameter (an estimate of 1 means no "
+            "heterogeneity) rather than a between-study variance (tau squared).",
+            "META-bin",
+        ),
+    ],
+    "method:BAYES": [
+        (
+            "what",
+            "Fits the random-effects model, whose two unknowns are the mean effect and the heterogeneity (tau), the "
+            "Bayesian way: a prior for each is combined with the data into posterior distributions. bayesmeta() "
+            "computes them numerically, with the DIRECT algorithm.",
+            "BM",
+        ),
+        (
+            "what",
+            "It reports an estimate with a credible interval, the range the effect lies in with the stated "
+            "probability, and can give the probability that the effect lies in any range.",
+            "CH-10 s10.13",
+        ),
+        (
+            "use",
+            "Cochrane lists potential advantages: it can bring in outside evidence, such as how much effects usually "
+            "vary, and it allows for the imprecision of the estimated heterogeneity. It adds that an informative "
+            "heterogeneity prior is particularly useful when there are few studies.",
+            "CH-10 s10.13",
+        ),
+        (
+            "use",
+            "bayesmeta() can also predict the effect in a new study and give shrunken estimates for each study. "
+            "bmr() extends it to meta-regression, including subgroups coded as zero/one covariates.",
+            "BM, BM-bmr",
+        ),
+        (
+            "caution",
+            "Results depend on the priors, so analysts using different priors can reach different results. Cochrane "
+            "asks for sensitivity analyses of the assumptions and strongly recommends statistical expertise.",
+            "CH-10 s10.13",
+        ),
+        (
+            "caution",
+            "The default heterogeneity prior in bayesmeta() is uniform, which its manual says to use with caution; "
+            "it names weakly informative alternatives such as half-normal and half-Cauchy priors.",
+            "BM",
+        ),
+    ],
+    "method:MV": [
+        (
+            "what",
+            "Fits multilevel and multivariate models: several estimates from one study can each enter, with a random "
+            "effect for each level (such as estimates within studies) and a variance-covariance matrix for their "
+            "sampling errors.",
+            "MF-mv",
+        ),
+        (
+            "use",
+            "For studies that contribute dependent estimates. vcalc() can construct or approximate the "
+            "variance-covariance matrix of those estimates.",
+            "MF-mv",
+        ),
+        (
+            "caution",
+            "Given only the sampling variances, rma.mv() assumes the sampling errors are uncorrelated. robust() gives "
+            "cluster-robust tests and confidence intervals.",
+            "MF-mv",
+        ),
+        (
+            "caution",
+            'Tests use the normal distribution by default. test="t" uses a t distribution but, unlike the '
+            'Hartung-Knapp option (test="knha") in rma.uni(), does not adjust the standard errors.',
+            "MF-mv",
+        ),
+    ],
+    "method:IPD1": [
+        (
+            "what",
+            "Analyses the participant data of all studies in one regression model, stratified by study. The two-stage "
+            "alternative analyses each study separately and then pools the summaries.",
+            "CH-26 s26.4.2",
+        ),
+        (
+            "use",
+            "Cochrane notes that one-stage and two-stage analyses often give similar results, and that differences "
+            "tend to come from different modelling assumptions. It asks for the choice to be specified in advance, "
+            "or for both results to be reported.",
+            "CH-26 s26.4.2",
+        ),
+        (
+            "caution",
+            "Participants have to stay within their studies, by stratifying or by accounting for clustering. The "
+            "model needs more statistical expertise, and standard meta-analysis statistics are hard to get from it; "
+            "Cochrane suggests a two-stage analysis alongside it for those and for forest plots.",
+            "CH-26 s26.4.2",
+        ),
+        (
+            "caution",
+            "When estimating how participant characteristics change the effect, within-study interactions must be "
+            "kept apart from between-study ones.",
+            "CH-26 s26.4.4",
         ),
     ],
 }
