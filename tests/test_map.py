@@ -811,6 +811,7 @@ def test_the_readme_states_the_maps_counts() -> None:
     readme = (bm.HERE.parent / "README.md").read_text()
     paths = bm.pathways()
     assert f" and {len(paths)} pathways." in readme
+    assert f"A glossary of\n{len(bm.GLOSSARY)} terms" in readme or f"A glossary of {len(bm.GLOSSARY)} terms" in readme
     for status, name in (
         ("planned", "Planned"),
         ("specified", "Specified"),
