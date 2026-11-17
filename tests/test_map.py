@@ -595,3 +595,11 @@ def test_batch_one_covers_the_models_and_the_two_group_binary_methods() -> None:
 def test_the_models_present_the_choice_as_a_debate() -> None:
     for cid in ("model:common-effect", "model:random-effects"):
         assert any("debated" in t and src == "CH-10 s10.10.4.1" for _, t, src in bm.TEACH[cid])
+
+
+def test_batch_two_covers_the_two_group_binary_measures() -> None:
+    assert {"metric:OR", "metric:RR", "metric:RD", "metric:PETO", "metric:AS"} <= set(bm.TEACH)
+
+
+def test_the_risk_difference_card_cautions_that_relative_measures_are_more_consistent() -> None:
+    assert any(k == "caution" and src == "CH-10 s10.4.3" for k, _, src in bm.TEACH["metric:RD"])
