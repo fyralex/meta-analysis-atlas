@@ -2579,12 +2579,17 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "For two measurements on the same people (one group measured twice), or on two matched groups.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "In a crossover trial, Cochrane advises a paired analysis: analysing the periods as if they were separate groups is a unit-of-analysis error that gives the trial too little weight.",
             "CH-23 s23.2.5, s23.2.6",
         ),
         (
             "caution",
-            "It needs the correlation between the two measurements. If a study doesn't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
+            "It needs the correlation between the two measurements. For crossover trials that don't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
             "CH-23 s23.2.7.1, s23.2.7.3, MF-escalc",
         ),
     ],
@@ -2601,17 +2606,22 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "For two measurements on the same people (one group measured twice), or on two matched groups.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "In a crossover trial, Cochrane advises a paired analysis: analysing the periods as if they were separate groups is a unit-of-analysis error that gives the trial too little weight.",
             "CH-23 s23.2.5, s23.2.6",
         ),
         (
             "caution",
-            "It needs the correlation between the two measurements. If a study doesn't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
+            "It needs the correlation between the two measurements. For crossover trials that don't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
             "CH-23 s23.2.7.1, s23.2.7.3, MF-escalc",
         ),
         (
             "caution",
-            "Use an imputed correlation with great care here: for a standardized measure it changes the estimate itself, not only its standard error.",
+            "When the change-score standard deviation is worked out from an imputed correlation, the imputed value changes the estimate itself, not only its standard error. Cochrane gives this caution for standardized mean differences from crossover trials.",
             "CH-23 s23.2.7.2",
         ),
     ],
@@ -2623,7 +2633,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "For two measurements on the same people (one group measured twice), or on two matched groups.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "In a crossover trial, Cochrane advises a paired analysis: analysing the periods as if they were separate groups is a unit-of-analysis error that gives the trial too little weight.",
             "CH-23 s23.2.5, s23.2.6",
         ),
     ],
@@ -2635,7 +2650,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "For two measurements on the same people (one group measured twice), or on two matched groups.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "In a crossover trial, Cochrane advises a paired analysis: analysing the periods as if they were separate groups is a unit-of-analysis error that gives the trial too little weight.",
             "CH-23 s23.2.5, s23.2.6",
         ),
     ],
