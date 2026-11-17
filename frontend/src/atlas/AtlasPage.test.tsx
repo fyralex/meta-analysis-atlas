@@ -330,8 +330,24 @@ describe("the Atlas's 2D view", PAGE, () => {
     const common = document.querySelector(".pathways-common")?.textContent ?? "";
     expect(common).toContain(`${TIER_NAMES.framework} ${F1}`);
     expect(common).toContain(`${TIER_NAMES.model} Random effects`);
-    // Every cell names its column, for the card layout on narrow screens.
-    for (const cell of within(table).getAllByRole("cell")) expect(cell.dataset.label).toBeTruthy();
+    // Status and the tiers that differ between rows are the columns.
+    expect(headers).toEqual(["Status", TIER_NAMES.datatype, TIER_NAMES.method, TIER_NAMES.metric]);
+    // Every cell names its column for the card layout on narrow screens, hidden from screen readers.
+    for (const cell of within(table).getAllByRole("cell")) {
+      expect(cell.querySelector(".cell-label")?.getAttribute("aria-hidden")).toBe("true");
+    }
+  });
+
+  it("moves a tier nobody chose to the summary line when every match shares it, and says so for a single match", () => {
+    // Choosing Peto leaves one framework, group, datatype, outcome, model and metric: all shared, none chosen.
+    renderAtlas(`?framework=${encodeURIComponent(F1)}&method=PETO`);
+    expect(lockCount({ framework: F1, method: "PETO" })).toBe(1);
+    const common = document.querySelector(".pathways-common")?.textContent ?? "";
+    expect(common.startsWith("It has:")).toBe(true);
+    expect(common).toContain(`${TIER_NAMES.group} Two groups (pairwise)`);
+    expect(common).toContain(`${TIER_NAMES.model} Common effect`);
+    const table = screen.getByRole("table", { name: /matching pathways/ });
+    expect(within(table).getAllByRole("columnheader").map((h) => h.textContent)).toEqual(["Status"]);
   });
 
   it("marks a chosen node with a check as well as its colour, and gives the radio buttons values", () => {

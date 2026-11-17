@@ -206,10 +206,12 @@ ul.option-reason { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
 .node[aria-pressed="true"] .node-label { font-weight: 600; }
 .pathways-common { color: var(--muted); }
 .pathways-common strong { color: var(--text); font-weight: 600; }
+/* The column name inside each cell shows only in the card layout; the column headers name it otherwise. */
+table.pathways .cell-label { display: none; }
 @media (max-width: 640px) {
   table.pathways, table.pathways tbody, table.pathways tr, table.pathways td { display: block; width: 100%; }
   table.pathways thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   table.pathways tr { border: 1px solid var(--line); border-radius: 6px; padding: 0.4rem 0.6rem; margin-bottom: 0.6rem; }
   table.pathways td { border: none; padding: 0.15rem 0; display: grid; grid-template-columns: 9rem 1fr; gap: 0.5rem; }
-  table.pathways td::before { content: attr(data-label); color: var(--muted); font-size: 0.9em; }
+  table.pathways .cell-label { display: block; color: var(--muted); font-size: 0.9em; }
 }

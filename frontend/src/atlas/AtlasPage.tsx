@@ -104,7 +104,7 @@ export function AtlasPage() {
 
       <div className="atlas-controls">
         <fieldset className="choice">
-          <legend>Choose in this order</legend>
+          <legend>Show the last three tiers as</legend>
           {ORDERS.map((o) => (
             <label key={o.value}>
               <input
@@ -321,7 +321,7 @@ export function AtlasPage() {
       <h2>Matching pathways</h2>
       {shown.length <= LIST_LIMIT ? (
         <>
-          {common.length > 0 && (
+          {common.length > 0 && shown.length > 0 && (
             <p className="pathways-common">
               {shown.length === 1 ? "It has" : `All ${String(shown.length)} share`}:{" "}
               {common.map((t, i) => (
@@ -333,30 +333,40 @@ export function AtlasPage() {
             </p>
           )}
           <div className="table-wrap">
-            <table className="pathways">
+            {/* Explicit roles: on narrow screens the rows become cards (CSS display), which some browsers would
+                otherwise read as plain text rather than a table. */}
+            <table className="pathways" role="table">
               <caption className="sr-only">The {shown.length} matching pathways</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Status</th>
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th scope="col" role="columnheader">
+                    Status
+                  </th>
                   {varying.map((t) => (
-                    <th key={t} scope="col">
+                    <th key={t} scope="col" role="columnheader">
                       {TIER_NAMES[t]}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody role="rowgroup">
                 {shown.map((p) => (
-                  <tr key={tiers.map((t) => p[t]).join("|")}>
-                    <td data-label="Status">
+                  <tr key={tiers.map((t) => p[t]).join("|")} role="row">
+                    <td role="cell" data-label="Status">
+                      <span className="cell-label" aria-hidden="true">
+                        Status
+                      </span>
                       <span>
                         <span className={`swatch st-${p.status}`} aria-hidden="true" /> {STATUS_TEXT[p.status].name}
                         {p.added && <span className="badge badge-new">new</span>}
                       </span>
                     </td>
                     {varying.map((t) => (
-                      <td key={t} data-label={TIER_NAMES[t]}>
-                        {nodeLabel(map, t, p[t])}
+                      <td key={t} role="cell" data-label={TIER_NAMES[t]}>
+                        <span className="cell-label" aria-hidden="true">
+                          {TIER_NAMES[t]}
+                        </span>
+                        <span>{nodeLabel(map, t, p[t])}</span>
                       </td>
                     ))}
                   </tr>
