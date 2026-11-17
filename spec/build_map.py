@@ -1063,8 +1063,8 @@ RULES: list[tuple[str, str, str, str]] = [
         "R32",
         "In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate "
         "Peto's method computes: an approximate log odds ratio from observed minus expected events and their "
-        'variance. escalc(measure="PETO") also computes it study by study, so other methods could pool it; the map '
-        "leaves that out (owner's decision, issue #45).",
+        'variance. escalc(measure="PETO") also computes it study by study; this map doesn\'t offer pooling it with '
+        "another method.",
         "agrees",
         "CH-10 s10.4.2, MF-escalc",
     ),

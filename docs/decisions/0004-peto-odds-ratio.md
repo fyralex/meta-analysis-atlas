@@ -11,11 +11,12 @@ Peto's method (`rma.peto`), as before. No pathway changes.
 
 - **Cochrane Handbook 10.4.2** presents the Peto odds ratio as the estimate
   that Peto's method computes: an approximate log odds ratio from observed
-  minus expected events and their variance. It describes the method as one of
-  the common-effect methods and doesn't recommend it as a default.
+  minus expected events and their variance. It doesn't recommend the method as
+  a default. The introduction to 10.4 lists it among the common-effect methods.
 - **metafor's `escalc(measure="PETO")`** computes the same log odds ratio
-  study by study, so `rma.uni` or another method could pool it, including
-  with random effects.
+  study by study. Its page doesn't say which function should pool it; once
+  computed, `rma.uni` or another method could take it, including with random
+  effects (our reading, not a statement of the page).
 
 Neither source says the Peto odds ratio must be pooled only by Peto's method.
 R32 therefore states the restriction as the map's choice ("In this map, ...")
