@@ -45,3 +45,29 @@ def test_the_real_lock_has_only_compatible_app_dependencies_and_the_record_lists
     text = nl.render(pkgs)
     for p in pkgs:
         assert f"| `{p['name']}` | {p['version']} |" in text
+
+
+def test_counts_a_package_installed_twice_once_and_as_the_apps_if_any_copy_is(tmp_path: pathlib.Path) -> None:
+    lock = _lock(
+        tmp_path,
+        {
+            "node_modules/a/node_modules/x": {"version": "1", "license": "MIT", "dev": True},
+            "node_modules/x": {"version": "1", "license": "MIT"},
+            "node_modules/y": {"version": "2", "license": "MIT", "devOptional": True},
+        },
+    )
+    assert nl.packages(lock) == [
+        {"name": "x", "version": "1", "licence": "MIT", "dev": False},
+        {"name": "y", "version": "2", "licence": "MIT", "dev": False},
+    ]
+
+
+def test_main_writes_the_record_or_fails_without_writing(tmp_path: pathlib.Path) -> None:
+    out = tmp_path / "npm-licences.md"
+    good = _lock(tmp_path, {"node_modules/ok": {"version": "1", "license": "MIT"}})
+    assert nl.main(good, out) == 0
+    assert "| `ok` | 1 | MIT |" in out.read_text()
+    out.unlink()
+    bad = _lock(tmp_path, {"node_modules/bad": {"version": "1", "license": "SSPL-1.0"}})
+    assert nl.main(bad, out) == 1
+    assert not out.exists()

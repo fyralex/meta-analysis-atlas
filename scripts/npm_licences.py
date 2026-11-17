@@ -35,22 +35,27 @@ class Package(TypedDict):
 
 
 def packages(lock: pathlib.Path = LOCK) -> list[Package]:
-    """Every installed package in the lock file, by name, with how it is used."""
+    """
+    Every package in the lock file, once per name and version, with how it is used. A package installed at
+    several paths counts as the app's if any copy is: npm's dev flag (set only on packages used just to build
+    and test) decides, which is the cautious side. "devOptional" packages count as the app's.
+    """
     data = json.loads(lock.read_text())
-    out: list[Package] = []
+    found: dict[tuple[str, str], Package] = {}
     for path, entry in data["packages"].items():
         if not path:
             continue  # the frontend itself
         name = path.rsplit("node_modules/", 1)[-1]
-        out.append(
-            Package(
-                name=name,
-                version=str(entry.get("version", "?")),
-                licence=str(entry.get("license", "unknown")),
-                dev=bool(entry.get("dev", False)),
-            )
+        version = str(entry.get("version", "?"))
+        dev = bool(entry.get("dev", False))
+        seen = found.get((name, version))
+        if seen is not None:
+            seen["dev"] = seen["dev"] and dev
+            continue
+        found[(name, version)] = Package(
+            name=name, version=version, licence=str(entry.get("license", "unknown")), dev=dev
         )
-    return sorted(out, key=lambda p: (p["name"], p["version"]))
+    return sorted(found.values(), key=lambda p: (p["name"], p["version"]))
 
 
 def not_compatible(pkgs: list[Package]) -> list[Package]:
@@ -78,12 +83,13 @@ def render(pkgs: list[Package]) -> str:
         "if a dependency of the app has a licence that isn't compatible with",
         "GPL-3.0-or-later.",
         "",
-        f"{len(pkgs)} packages: {len(shipped)} the app depends on, {len(dev)} used only to build and test it.",
+        f"{len(pkgs)} packages (each name and version once): {len(shipped)} the app depends on, "
+        f"{len(dev)} used only to build and test it.",
         "By licence: " + ", ".join(f"{k} {v}" for k, v in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))) + ".",
         "",
         "## Dependencies of the app",
         "",
-        "What the app's build can bundle, with their own dependencies and type definitions.",
+        "Split by npm's dev flag: what the app's build can bundle, with their own dependencies and type definitions.",
         "",
         *_table(shipped),
         "",
@@ -95,8 +101,8 @@ def render(pkgs: list[Package]) -> str:
     return "\n".join(lines)
 
 
-def main() -> int:
-    pkgs = packages()
+def main(lock: pathlib.Path = LOCK, out: pathlib.Path = OUT) -> int:
+    pkgs = packages(lock)
     bad = not_compatible(pkgs)
     if bad:
         for p in bad:
@@ -104,7 +110,7 @@ def main() -> int:
                 f"{p['name']} {p['version']}: licence {p['licence']} is not on the GPL-compatible list", file=sys.stderr
             )
         return 1
-    OUT.write_text(render(pkgs))
+    out.write_text(render(pkgs))
     return 0
 
 

@@ -5,12 +5,12 @@ don't edit it by hand. `scripts/check.sh` fails if it is out of date, and
 if a dependency of the app has a licence that isn't compatible with
 GPL-3.0-or-later.
 
-287 packages: 22 the app depends on, 265 used only to build and test it.
-By licence: MIT 222, Apache-2.0 19, MPL-2.0 12, ISC 11, BSD-2-Clause 8, BlueOak-1.0.0 6, BSD-3-Clause 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
+285 packages (each name and version once): 22 the app depends on, 263 used only to build and test it.
+By licence: MIT 222, Apache-2.0 19, MPL-2.0 12, ISC 11, BSD-2-Clause 8, BSD-3-Clause 4, BlueOak-1.0.0 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
 
 ## Dependencies of the app
 
-What the app's build can bundle, with their own dependencies and type definitions.
+Split by npm's dev flag: what the app's build can bundle, with their own dependencies and type definitions.
 
 | Package | Version | Licence |
 |---|---|---|
@@ -234,8 +234,6 @@ What the app's build can bundle, with their own dependencies and type definition
 | `lightningcss-win32-arm64-msvc` | 1.33.0 | MPL-2.0 |
 | `lightningcss-win32-x64-msvc` | 1.33.0 | MPL-2.0 |
 | `locate-path` | 6.0.0 | MIT |
-| `lru-cache` | 11.5.3 | BlueOak-1.0.0 |
-| `lru-cache` | 11.5.3 | BlueOak-1.0.0 |
 | `lru-cache` | 11.5.3 | BlueOak-1.0.0 |
 | `lru-cache` | 5.1.1 | ISC |
 | `lz-string` | 1.5.0 | MIT |
