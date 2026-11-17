@@ -48,13 +48,19 @@ describe("the Atlas in 3D", { timeout: 15_000 }, () => {
     state.fail = false;
   });
 
-  it("chooses a node on a click, as the 2D view does, and keeps Pathfinder's answers when the view switches", async () => {
-    const router = open("?view=3d&rare=yes");
+  it("chooses a node on a click, as the 2D view does", async () => {
+    const router = open("?view=3d");
     fireEvent.click(await screen.findByRole("button", { name: new RegExp(`^framework: ${F1.replace(/[().]/g, "\\$&")} \\(`) }));
     expect(params(router).get("framework")).toBe(F1);
     expect(params(router).get("view")).toBe("3d");
+  });
+
+  it("keeps the choices and Pathfinder's answers when the view switches", async () => {
+    const router = open(`?view=3d&rare=yes&framework=${encodeURIComponent(F1)}`);
+    await screen.findByRole("list", { name: "3D nodes" });
     fireEvent.click(screen.getByRole("radio", { name: /^2D/ }));
     expect(params(router).get("view")).toBeNull();
+    expect(params(router).get("rare")).toBe("yes");
     expect(params(router).get("framework")).toBe(F1);
   });
 
