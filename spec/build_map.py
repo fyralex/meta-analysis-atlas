@@ -2265,6 +2265,11 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "A study with no events, or only events, in a group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell.",
             "CH-6 s6.4.1.2, MF-escalc",
         ),
+        (
+            "caution",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell.",
+            "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
+        ),
     ],
     "metric:RR": [
         (
@@ -2279,7 +2284,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "Unlike the odds ratio and the risk difference, it changes with which outcome is counted as the event. Cochrane suggests counting the less common outcome.",
+            "Switching which outcome counts as the event only flips the sign of a risk difference or inverts an odds ratio, but it can change a risk ratio substantially. Cochrane suggests counting the less common outcome as the event.",
             "CH-6 s6.4.1.5",
         ),
         (
@@ -2289,15 +2294,20 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "A study with no events, or only events, in a group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell.",
+            "A study with no events in the comparator group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell, which includes a group where everyone had the event.",
             "CH-6 s6.4.1.2, MF-escalc",
+        ),
+        (
+            "caution",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell.",
+            "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
         ),
     ],
     "metric:RD": [
         (
             "what",
             "The risk in one group minus the risk in the other, also called the absolute risk reduction. It can be computed even when neither group has events.",
-            "CH-6 s6.4.1.4",
+            "CH-6 s6.4.1, s6.4.1.4",
         ),
         (
             "use",
@@ -2306,7 +2316,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "Cochrane notes that relative measures (odds ratio, risk ratio) are on average more consistent across studies than risk differences. It suggests pooling a relative measure, re-expressing the result in absolute terms, and checking how much the choice of measure matters.",
+            "Cochrane notes that relative measures are on average more consistent across studies than risk differences, and considers it wise to avoid pooling risk differences unless there is a clear reason to expect them to be consistent. A pooled relative effect can be re-expressed as a risk difference.",
             "CH-10 s10.4.3",
         ),
         (
