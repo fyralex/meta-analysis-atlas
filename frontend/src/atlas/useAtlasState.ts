@@ -21,7 +21,10 @@ export interface AtlasState {
 
 export function useAtlasState(): AtlasState {
   const [params, setParams] = useSearchParams();
-  const [cleared, setCleared] = useState<Tier[]>([]);
+  // Choices the last change cleared, with the address it wrote, so Back and Forward
+  // to another address don't show a stale note.
+  const [cleared, setCleared] = useState<{ address: string; tiers: Tier[] }>({ address: "", tiers: [] });
+  const clearedHere = cleared.address === params.toString() ? cleared.tiers : [];
   const order: TierOrder = params.get("order") === "metric-method-model" ? "metric-method-model" : "model-method-metric";
   const options: FilterOptions = { hideNew: params.get("new") === "hide" };
   const asked: Selection = {};
@@ -31,14 +34,13 @@ export function useAtlasState(): AtlasState {
   }
   const selection = reconcile(map.pathways, asked, options);
   const dropped = TIERS.filter(
-    (t) => (asked[t] !== undefined && selection[t] === undefined) || (cleared.includes(t) && selection[t] === undefined),
+    (t) => (asked[t] !== undefined && selection[t] === undefined) || (clearedHere.includes(t) && selection[t] === undefined),
   );
 
   function update(change: { selection?: Selection; order?: TierOrder; options?: FilterOptions }) {
     const nextOptions = change.options ?? options;
     const wanted = change.selection ?? selection;
     const nextSelection = reconcile(map.pathways, wanted, nextOptions);
-    setCleared(TIERS.filter((t) => wanted[t] !== undefined && nextSelection[t] === undefined));
     const next = new URLSearchParams();
     for (const tier of TIERS) {
       const value = nextSelection[tier];
@@ -46,6 +48,10 @@ export function useAtlasState(): AtlasState {
     }
     if ((change.order ?? order) !== "model-method-metric") next.set("order", "metric-method-model");
     if (nextOptions.hideNew) next.set("new", "hide");
+    setCleared({
+      address: next.toString(),
+      tiers: TIERS.filter((t) => wanted[t] !== undefined && nextSelection[t] === undefined),
+    });
     setParams(next, { replace: true });
   }
 

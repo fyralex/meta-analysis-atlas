@@ -1,5 +1,5 @@
-import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
+import { createMemoryRouter, MemoryRouter, RouterProvider } from "react-router";
 import { describe, expect, it } from "vitest";
 import lockRaw from "../../../spec/pathways.lock.json";
 import { App } from "../App";
@@ -174,6 +174,19 @@ describe("the Atlas's 2D view", () => {
     expect(summary()).toContain("Cleared your choice of framework");
     expect(summary()).toContain(`${String(lockCount({}, true))} of`);
     fireEvent.click(node("model", "Random effects"));
+    expect(summary()).not.toContain("Cleared");
+  });
+
+  it("shows the cleared note only on the address it was worked out for", () => {
+    const dta = `?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`;
+    const router = createMemoryRouter([{ path: "*", element: <App /> }], { initialEntries: [`/atlas${dta}`] });
+    render(<RouterProvider router={router} />);
+    fireEvent.click(screen.getByRole("checkbox", { name: /Hide entries marked new/ }));
+    expect(summary()).toContain("Cleared your choice of framework");
+    // Back to the opening map, where the framework is unchosen for another reason.
+    act(() => {
+      void router.navigate("/atlas");
+    });
     expect(summary()).not.toContain("Cleared");
   });
 
