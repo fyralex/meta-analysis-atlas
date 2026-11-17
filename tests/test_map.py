@@ -643,3 +643,11 @@ def test_paired_binary_cards_defer_to_a_statistician_as_cochrane_does() -> None:
 
 def test_batch_six_covers_the_other_two_group_measures_and_o_minus_e() -> None:
     assert {"metric:IRR", "metric:IRD", "metric:IRSD", "metric:HR", "metric:POR", "method:OEV"} <= set(bm.TEACH)
+
+
+def test_batch_seven_covers_the_other_pairwise_methods() -> None:
+    assert {"method:LRP", "method:BAYES", "method:MV", "method:IPD1"} <= set(bm.TEACH)
+
+
+def test_the_bayesian_card_cautions_that_results_depend_on_the_priors() -> None:
+    assert any(k == "caution" and src == "CH-10 s10.13" for k, _, src in bm.TEACH["method:BAYES"])
