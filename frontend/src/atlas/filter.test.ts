@@ -178,9 +178,13 @@ describe("node labels", () => {
   });
 
   it("adds the code to a name that two methods or metrics share", () => {
-    expect(nodeLabel(map, "metric", "RD")).toBe("Risk difference (RD)");
-    expect(nodeLabel(map, "metric", "N_RD")).toBe("Risk difference (N_RD)");
-    expect(nodeLabel(map, "method", "IPD1")).toBe("One-stage regression on participant data (IPD1)");
+    // The map gives every entry its own name (#37); this keeps the fallback for one that doesn't.
+    const rd = map.metrics.RD;
+    if (!rd) throw new Error("no RD metric");
+    const shared = { ...map, metrics: { ...map.metrics, RD2: { ...rd } } };
+    expect(nodeLabel(shared, "metric", "RD")).toBe("Risk difference (RD)");
+    expect(nodeLabel(shared, "metric", "RD2")).toBe("Risk difference (RD2)");
+    expect(nodeLabel(map, "metric", "RD")).toBe("Risk difference");
   });
 
   it.each(["method", "metric"] as const)("gives every %s in the map a different label", (tier) => {

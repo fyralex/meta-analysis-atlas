@@ -233,14 +233,14 @@ METRICS: dict[str, Metric] = {
     # network (netmeta sm codes)
     "N_OR": m("Odds ratio", 'netmeta(sm="OR")', "NM"),
     "N_RR": m("Risk ratio", 'netmeta(sm="RR")', "NM"),
-    "N_RD": m("Risk difference", 'netmeta(sm="RD")', "NM"),
+    "N_RD": m("Risk difference (network)", 'netmeta(sm="RD")', "NM"),
     "N_ASD": m("Arcsine difference", 'netmeta(sm="ASD")', "NM", added=True),
-    "N_MD": m("Mean difference", 'netmeta(sm="MD")', "NM"),
+    "N_MD": m("Mean difference (network)", 'netmeta(sm="MD")', "NM"),
     "N_SMD": m("Standardized mean difference (Cohen's d)", 'netmeta(sm="SMD")', "META-pw"),
     "N_ROM": m("Ratio of means", 'netmeta(sm="ROM")', "NM"),
     # netmeta's examples fit both from arm-level events and person-time, via pairwise(event, time, sm=...)
     "N_IRR": m("Incidence rate ratio", 'netmeta(sm="IRR")', "NM"),
-    "N_IRD": m("Incidence rate difference", 'netmeta(sm="IRD")', "NM"),
+    "N_IRD": m("Incidence rate difference (network)", 'netmeta(sm="IRD")', "NM"),
     "N_HR": m("Hazard ratio", 'netmeta(sm="HR")', "NM"),
     # diagnostic test accuracy
     "SESP": m("Summary sensitivity and specificity (estimated jointly)", "mada::reitsma()", "MADA"),
@@ -251,9 +251,9 @@ METRICS: dict[str, Metric] = {
     # prognosis
     "CSTAT": m("c-statistic (logit scale)", 'valmeta(measure="cstat")', "VALMETA"),
     "OE": m("Total observed:expected ratio (log scale)", 'valmeta(measure="OE")', "VALMETA"),
-    "PF_HR": m("Adjusted hazard ratio (log)", "enter log HR and its SE", "RILEY", verified=False),
-    "PF_OR": m("Adjusted odds ratio (log)", "enter log OR and its SE", "RILEY", verified=False),
-    "PF_RR": m("Adjusted risk ratio (log)", "enter log RR and its SE", "RILEY", verified=False),
+    "PF_HR": m("Adjusted hazard ratio (log), prognostic factor", "enter log HR and its SE", "RILEY", verified=False),
+    "PF_OR": m("Adjusted odds ratio (log), prognostic factor", "enter log OR and its SE", "RILEY", verified=False),
+    "PF_RR": m("Adjusted risk ratio (log), prognostic factor", "enter log RR and its SE", "RILEY", verified=False),
     "PF_MD": m("Adjusted mean difference", "enter MD and its SE", "RILEY", verified=False),
     # association
     "COR": m("Raw correlation", E % "COR"),
@@ -264,9 +264,9 @@ METRICS: dict[str, Metric] = {
     "PHI": m("Phi coefficient", E % "PHI"),
     "RTET": m("Tetrachoric correlation", E % "RTET"),
     "PCOR": m("Partial correlation", E % "PCOR"),
-    "EX_OR": m("Adjusted odds ratio (log)", "enter log OR and its SE", "CH-10", verified=False),
-    "EX_RR": m("Adjusted risk ratio (log)", "enter log RR and its SE", "CH-10", verified=False),
-    "EX_HR": m("Adjusted hazard ratio (log)", "enter log HR and its SE", "CH-10", verified=False),
+    "EX_OR": m("Adjusted odds ratio (log), exposure", "enter log OR and its SE", "CH-10", verified=False),
+    "EX_RR": m("Adjusted risk ratio (log), exposure", "enter log RR and its SE", "CH-10", verified=False),
+    "EX_HR": m("Adjusted hazard ratio (log), exposure", "enter log HR and its SE", "CH-10", verified=False),
     "DR_RR": m("Trend in log relative risk per unit of dose", "dosresmeta(logrr ~ dose)", "DOSRES"),
     "DR_MD": m("Trend in mean difference per unit of dose", 'dosresmeta(covariance="md")', "DOSRES"),
     "DR_SMD": m("Trend in standardized mean difference per unit of dose", 'dosresmeta(covariance="smd")', "DOSRES"),
@@ -417,7 +417,7 @@ METHODS: dict[str, Method] = {
         note="Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet.",
     ),
     "IPD1": meth(
-        "One-stage regression on participant data",
+        "One-stage regression on participant data (pairwise)",
         "mixed-effects or multilevel regression",
         "pairwise",
         ["ipd"],
@@ -477,7 +477,7 @@ METHODS: dict[str, Method] = {
         note="Supports meta-regression. Common-effect option not confirmed from the manual.",
     ),
     "NM_IPD": meth(
-        "One-stage regression on participant data",
+        "One-stage regression on participant data (network)",
         "mixed-effects regression, frequentist or Bayesian",
         "network",
         ["ipd"],
