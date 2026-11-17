@@ -2093,6 +2093,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # states its source's rule in our own words and cites the section it comes
 # from (CLAUDE.md, rule 8). Written in batches the owner reviews (issue #6).
 # Batch 1: the two models and the two-group methods for binary outcomes.
+# Batch 2: the effect measures for two-group binary outcomes.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2242,6 +2243,108 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "in rma.glmm() and often run into numerical problems, such as failing to converge.",
             "MF-glmm",
         ),
+    ],
+    "metric:OR": [
+        (
+            "what",
+            "The ratio of the odds of the event in the two groups, where the odds are the chance of the event divided by the chance of no event. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "CH-6 s6.4.1.1, s6.4.1.2, MF-escalc",
+        ),
+        (
+            "use",
+            "Cochrane notes that relative measures (odds ratio, risk ratio) are on average more consistent across studies than risk differences. It suggests pooling a relative measure, re-expressing the result in absolute terms, and checking how much the choice of measure matters.",
+            "CH-10 s10.4.3",
+        ),
+        (
+            "caution",
+            "It is easily misread as a risk ratio. When events are common (above about 20%), that misreading overstates the effect. Cochrane advises converting it to a risk ratio, using the comparator group's risk, before interpreting it.",
+            "CH-6 s6.4.1.2, s6.4.1.3",
+        ),
+        (
+            "caution",
+            "A study with no events, or only events, in a group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell.",
+            "CH-6 s6.4.1.2, MF-escalc",
+        ),
+        (
+            "caution",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell. Setting drop00=TRUE leaves them out; its documentation notes that this has sometimes been recommended.",
+            "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
+        ),
+    ],
+    "metric:RR": [
+        (
+            "what",
+            "The risk of the event in one group divided by the risk in the other; 1 means no difference. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "CH-6 s6.4.1.2, MF-escalc",
+        ),
+        (
+            "use",
+            "Cochrane notes that relative measures (odds ratio, risk ratio) are on average more consistent across studies than risk differences. It suggests pooling a relative measure, re-expressing the result in absolute terms, and checking how much the choice of measure matters.",
+            "CH-10 s10.4.3",
+        ),
+        (
+            "caution",
+            "Switching which outcome counts as the event only flips the sign of a risk difference or inverts an odds ratio, but it can change a risk ratio substantially. Cochrane suggests counting the less common outcome as the event.",
+            "CH-6 s6.4.1.5",
+        ),
+        (
+            "caution",
+            "What it means clinically depends on the baseline risk: the same risk ratio can be a large or a trivial change in absolute terms.",
+            "CH-6 s6.4.1.2",
+        ),
+        (
+            "caution",
+            "A study with no events in either group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell, which includes a group where everyone had the event.",
+            "CH-6 s6.4.1.2, MF-escalc",
+        ),
+        (
+            "caution",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell. Setting drop00=TRUE leaves them out; its documentation notes that this has sometimes been recommended.",
+            "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
+        ),
+    ],
+    "metric:RD": [
+        (
+            "what",
+            "The risk in one group minus the risk in the other, also called the absolute risk reduction. It can be computed even when neither group has events.",
+            "CH-6 s6.4.1, s6.4.1.4",
+        ),
+        (
+            "use",
+            "Easy to understand, and useful for weighing likely benefits against likely harms. A number needed to treat can't be pooled, but a pooled result can be converted to one.",
+            "CH-6 s6.4.1.4",
+        ),
+        (
+            "caution",
+            "Cochrane notes that relative measures are on average more consistent across studies than risk differences, and considers it wise to avoid pooling risk differences unless there is a clear reason to expect them to be consistent. A pooled relative effect can be re-expressed as a risk difference.",
+            "CH-10 s10.4.3",
+        ),
+        (
+            "caution",
+            "Applied to a population with a different baseline risk, it can give impossible risks, below 0 or above 1.",
+            "CH-6 s6.4.1.4",
+        ),
+    ],
+    "metric:PETO": [
+        (
+            "what",
+            "The odds ratio as Peto's method estimates it: an approximation built from observed minus expected events and their variance, on the log scale.",
+            "CH-10 s10.4.2, MF-escalc",
+        ),
+        (
+            "use",
+            "In this map it goes only with Peto's method (rule R32); that method's card says when it suits.",
+            "CH-10 s10.4.2, MF-escalc",
+        ),
+        (
+            "caution",
+            "The approximation can be biased when effects are large, events are common or the arms are unbalanced.",
+            "CH-10 s10.4.2",
+        ),
+    ],
+    "metric:AS": [
+        ("what", "The difference between the arcsine square roots of the two groups' risks.", "MF-escalc"),
+        ("what", "escalc() adds no 0.5 correction to zero cells for this measure unless asked to.", "MF-escalc"),
     ],
 }
 
