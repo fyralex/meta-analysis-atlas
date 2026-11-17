@@ -12,7 +12,12 @@ function renderAt(path: string) {
   );
 }
 
-describe("the app shell", () => {
+// These tests render whole pages. The first render in a test worker pays the cold start (jsdom, React, the
+// map files), about 0.4 s alone but several seconds when two check runs share the machine (#49). A page-sized
+// timeout for this file only; the global default stays.
+const PAGE = { timeout: 15_000 };
+
+describe("the app shell", PAGE, () => {
   it("shows the pathway count and the counts by status from map.json", () => {
     renderAt("/");
     expect(screen.getByText(map.pathways.length.toLocaleString("en"))).toBeInTheDocument();
