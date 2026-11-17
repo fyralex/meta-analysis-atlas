@@ -2119,9 +2119,9 @@ NETWORK_MEASURE: tuple[str, str, str] = (
 ADJUSTED_MEASURE: tuple[str, str, str] = (
     "what",
     "Each study's estimate enters as its natural logarithm with its standard error, pooled by the generic "
-    "inverse-variance method. Cochrane uses that method for results reported only as an estimate and standard "
-    "error, such as adjusted analyses.",
-    "CH-10 s10.3.3, s10.5.2",
+    "inverse-variance method. Cochrane describes that method for results available only as an estimate and its "
+    "standard error, including those from non-randomized studies.",
+    "CH-10 s10.3.3",
 )
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
 NETWORK_CAUTIONS: list[tuple[str, str, str]] = [
