@@ -110,7 +110,9 @@ describe("the Atlas's 2D view", () => {
   });
 
   it("lists a layer's compatible nodes before the greyed-out ones", () => {
-    renderAtlas(`?framework=${encodeURIComponent(F1)}`);
+    // Here the map lists "Observed minus expected and variance" (no match) before "Contrast-level estimates".
+    expect(lockCount({ framework: F1, model: "Random effects", datatype: "Observed minus expected and variance" })).toBe(0);
+    renderAtlas(`?framework=${encodeURIComponent(F1)}&model=Random%20effects`);
     for (const tier of TIERS) {
       const counts = nodes(tier).map(shownCount);
       const firstZero = counts.indexOf(0);

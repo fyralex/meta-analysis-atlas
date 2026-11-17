@@ -24,7 +24,7 @@ function spoken(text: string, node: NodeSummary): string {
 /**
  * One tier of the map: a group of toggle buttons, one per value. Tab reaches the
  * group once; the arrow keys, Home and End move between its nodes. A node with no
- * compatible pathway stays focusable, so it can be read, but can't be chosen.
+ * compatible pathway stays focusable, so it can be read; choosing it does nothing.
  */
 export function TierLayer({ id, name, nodes, label, onChoose }: Props) {
   const tabStop = Math.max(
@@ -61,7 +61,7 @@ export function TierLayer({ id, name, nodes, label, onChoose }: Props) {
               aria-disabled={none}
               tabIndex={i === tabStop ? 0 : -1}
               onClick={() => {
-                if (!none) onChoose(node.value);
+                onChoose(node.value); // the caller's toggle() refuses a node with no compatible pathway
               }}
               onKeyDown={(e) => {
                 onKeyDown(e, i);
