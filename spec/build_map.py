@@ -2737,7 +2737,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates are particularly suited to rare events.",
             "CH-10 s10.8",
         ),
         (
@@ -2754,7 +2754,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates are particularly suited to rare events.",
             "CH-10 s10.8",
         ),
         (
@@ -2767,7 +2767,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ("what", "The difference between the square roots of the two groups' rates.", "MF-escalc"),
         (
             "caution",
-            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates are particularly suited to rare events.",
             "CH-10 s10.8",
         ),
         ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
@@ -2780,7 +2780,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "If some studies report log-rank results and others Cox estimates, Cochrane suggests converting the log-rank results to log hazard ratios and standard errors, so that all can be pooled together.",
+            "If some studies report log-rank results and others Cox estimates, Cochrane notes the log-rank results can be converted to log hazard ratios and standard errors, so that all can be pooled together.",
             "CH-10 s10.9",
         ),
     ],
@@ -2797,7 +2797,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "It needs specialised software, and its summary is hard to interpret clinically. Cochrane notes ordinal outcomes are more often analysed as binary or continuous, following how the studies analysed them.",
+            "It needs statistical software, and its summary is hard to interpret clinically. Cochrane notes ordinal outcomes are more often analysed as binary or continuous, following how the studies analysed them.",
             "CH-10 s10.7",
         ),
     ],
