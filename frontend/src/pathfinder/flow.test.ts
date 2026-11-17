@@ -3,7 +3,20 @@ import lock from "../../../spec/pathways.lock.json";
 import { DEFAULT_OPTIONS, TIERS, type FilterOptions } from "../atlas/filter";
 import type { Selection } from "../atlas/filter";
 import type { Pathway } from "../types/map";
-import { answer, answered, atlasHref, choices, fitting, nextQuestion, QUESTIONS, unused } from "./flow";
+import {
+  answer,
+  answered,
+  asksRare,
+  asksVary,
+  atlasHref,
+  choices,
+  fitting,
+  modelsIn,
+  nextQuestion,
+  QUESTIONS,
+  rareLines,
+  unused,
+} from "./flow";
 
 const key = (p: Pathway) => TIERS.map((t) => p[t]).join("|");
 const locked = new Set((lock as unknown as Pathway[]).map(key));
@@ -70,5 +83,29 @@ describe("Pathfinder's questions", () => {
     expect(new URLSearchParams(href.slice("/atlas?".length)).get("framework")).toBe(first);
     expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric")).toBe("/atlas");
     expect(atlasHref({}, { hideNew: true }, "metric-method-model")).toBe("/atlas?order=metric-method-model&new=hide");
+  });
+
+  it("with either model pre-selected for varying effects, never end on no pathway", () => {
+    for (const end of walk({})) {
+      const found = fitting(end, DEFAULT_OPTIONS);
+      if (!asksVary(found)) continue;
+      for (const m of modelsIn(found)) {
+        expect(found.filter((p) => p.model === m).length, `${JSON.stringify(end)} ${m}`).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("ask about rare events only where a fitting method's card speaks of them", () => {
+    const pairwise = {
+      framework: "1. Interventional (effect of an intervention)",
+      group: "Two groups (pairwise)",
+      datatype: "Arm-level summary data",
+    };
+    const binary = fitting({ ...pairwise, outcome: "Binary" }, DEFAULT_OPTIONS);
+    const lines = rareLines(binary);
+    expect(lines.map((l) => l.method)).toEqual(expect.arrayContaining(["IV", "PETO", "GLMM"]));
+    expect(lines.find((l) => l.method === "IV")?.line.kind).toBe("caution");
+    expect(asksRare(binary)).toBe(true);
+    expect(asksRare(fitting({ ...pairwise, outcome: "Continuous" }, DEFAULT_OPTIONS))).toBe(false);
   });
 });

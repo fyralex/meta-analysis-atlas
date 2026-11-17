@@ -13,7 +13,9 @@ import {
   type Tier,
   type TierOrder,
 } from "../atlas/filter";
+import { cardFor } from "../cards/cards";
 import { map } from "../map";
+import type { TeachLine } from "../types/cards";
 import type { Pathway } from "../types/map";
 
 export interface Question {
@@ -98,4 +100,67 @@ export function clearFrom(selection: Selection, tier: Tier): Selection {
     if (v !== undefined) out[q.tier] = v;
   }
   return out;
+}
+
+// The two advisory questions (#7; docs/decisions/0005). They come after the four above and are kept in the
+// address as "rare" and "vary". Neither removes a pathway: "rare" shows what the cards of the methods that fit
+// say about rare events, and "vary" pre-selects a model while both stay one click away.
+
+export type Advice = "yes" | "no" | "unsure";
+export const ADVICE: Advice[] = ["yes", "no", "unsure"];
+
+export interface AdviceQuestion {
+  key: "rare" | "vary";
+  text: string;
+  answers: Record<Advice, string>;
+}
+
+export const RARE: AdviceQuestion = {
+  key: "rare",
+  text: "Are the events rare?",
+  answers: { yes: "Yes", no: "No", unsure: "Not sure" },
+};
+
+export const VARY: AdviceQuestion = {
+  key: "vary",
+  text: "Do you expect the true effects to differ between studies?",
+  answers: { yes: "Yes, they probably differ", no: "No, they share one effect", unsure: "Not sure" },
+};
+
+/** The model each answer to VARY pre-selects; "unsure" pre-selects none. */
+export const MODEL_FOR: Partial<Record<Advice, string>> = { yes: "Random effects", no: "Common effect" };
+
+export function readAdvice(value: string | null): Advice | undefined {
+  return ADVICE.find((a) => a === value);
+}
+
+export interface RareLine {
+  method: string;
+  line: TeachLine;
+}
+
+/** What the cards of the methods among these pathways say about rare events, in the map's order of methods. */
+export function rareLines(found: readonly Pathway[]): RareLine[] {
+  const methods = [...new Set(found.map((p) => p.method))];
+  return methods.flatMap((method) =>
+    (cardFor("method", method)?.teach ?? []).filter((t) => /\brare\b/i.test(t.text)).map((line) => ({ method, line })),
+  );
+}
+
+/** The models among these pathways, in the map's order. */
+export function modelsIn(found: readonly Pathway[]): string[] {
+  return [...new Set(found.map((p) => p.model))];
+}
+
+/**
+ * Ask about rare events only where a method that fits is one its card suggests for them (a "use" line), not
+ * where the only line is a caution: inverse variance carries one for every outcome, continuous ones included.
+ */
+export function asksRare(found: readonly Pathway[]): boolean {
+  return rareLines(found).some((l) => l.line.kind === "use");
+}
+
+/** Ask whether true effects vary only where both models still fit. */
+export function asksVary(found: readonly Pathway[]): boolean {
+  return modelsIn(found).length > 1;
 }
