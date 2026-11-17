@@ -26,6 +26,7 @@ import argparse
 import html
 import json
 import pathlib
+import re
 from collections.abc import Iterable, Iterator, Mapping, Sequence
 from typing import Protocol, TypedDict
 
@@ -1902,7 +1903,7 @@ class TeachLine(TypedDict):
 
 class Card(TypedDict):
     id: str
-    tier: str  # one of NODE_TIERS, or "rule"
+    tier: str  # one of NODE_TIERS, "rule", or "term" (a glossary entry)
     value: str  # the value pathways use (a code for methods and metrics), or the rule's id
     title: str
     added: bool
@@ -1911,6 +1912,7 @@ class Card(TypedDict):
     notes: list[CardNote]
     rules: list[str]  # ids of the rules behind a method's or metric's limits (WHY_RULE, ONLY_RULE); else empty
     teach: list[TeachLine]  # teaching text, from TEACH; empty until its batch is written
+    terms: list[str]  # ids of the glossary cards for terms its teaching text or notes use (GLOSSARY)
     src: str  # the card's sources, written as for the rules
 
 
@@ -2000,6 +2002,7 @@ def _branch_card(tier: str, value: str) -> Card:
         notes=card_notes,
         teach=[],
         rules=[],
+        terms=[],
         src=_join_src([n["src"] for n in card_notes] + [", ".join(b["src"]) for b in bs]),
     )
 
@@ -2027,6 +2030,7 @@ def _method_card(code: str) -> Card:
         notes=[CardNote(text=me["note"], src=src)] if me["note"] else [],
         teach=[],
         rules=sorted({r for (mid, _), (r, _) in WHY_RULE.items() if mid == code}, key=lambda r: int(r[1:])),
+        terms=[],
         src=src,
     )
 
@@ -2050,6 +2054,7 @@ def _metric_card(code: str) -> Card:
         notes=[],
         teach=[],
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
+        terms=[],
         src=mt["src"],
     )
 
@@ -2067,6 +2072,7 @@ def _model_card(model: str) -> Card:
         notes=[],  # the choice between the models is in the card's teaching text (TEACH)
         teach=[],
         rules=[],
+        terms=[],
         # the note's sources, then those of each method listed: the list comes from each method's own models
         src=_join_src([MODEL_SRC] + [", ".join(me["src"]) for me in fit]),
     )
@@ -2084,6 +2090,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
         notes=[CardNote(text=text, src=src)],
         teach=[],
         rules=[],
+        terms=[],
         src=src,
     )
 
@@ -3726,8 +3733,146 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
 }
 
 
+# --------------------------------------------------------------------------
+# The glossary (issue #6): one card per term, linked from every card whose
+# teaching text or notes use it. Each entry: (term, definition in our own words,
+# source, phrases that mark the term in a card's text). A phrase matches at the
+# start of a word, ignoring case, so "subgroup" also finds "subgroups".
+class Term(TypedDict):
+    term: str
+    text: str
+    src: str
+    match: list[str]
+
+
+GLOSSARY: list[Term] = [
+    Term(
+        term="Effect measure",
+        text="A statistic that compares outcome data between two groups, either as a ratio (where 1 means no "
+        "difference) or as a difference (where 0 does).",
+        src="CH-6 s6.1.2",
+        match=["effect measure"],
+    ),
+    Term(
+        term="Heterogeneity",
+        text="Variation in the true effects across studies, seen as study results that differ more than chance "
+        "alone would explain.",
+        src="CH-10 s10.10.1",
+        match=["heterogeneity"],
+    ),
+    Term(
+        term="Between-study variance (tau squared)",
+        text="In a random-effects model, the variance of the distribution of true effects: how widely they spread "
+        "around their average.",
+        src="CH-10 s10.10.4",
+        match=["between-study variance", "tau squared", "tau²"],
+    ),
+    Term(
+        term="Prediction interval",
+        text="A range for the effect in a new study like those in a random-effects meta-analysis, reflecting how "
+        "widely the true effects spread.",
+        src="CH-10 s10.10.4.3",
+        match=["prediction interval"],
+    ),
+    Term(
+        term="Continuity correction",
+        text="A small number, usually 0.5, added to the cells of a 2x2 table with a zero count so that an estimate "
+        "can be computed. It tends to pull estimates towards no difference and to overstate their variances.",
+        src="CH-10 s10.4.4.1",
+        match=["continuity correction", "zero-cell correction"],
+    ),
+    Term(
+        term="Subgroup analysis",
+        text="Splitting the data into subgroups, usually to compare the effect between them.",
+        src="CH-10 s10.11.2",
+        match=["subgroup"],
+    ),
+    Term(
+        term="Meta-regression",
+        text="An extension of subgroup analysis that relates the effect to study characteristics, continuous as well "
+        "as categorical. Cochrane advises against it, in general, with fewer than ten studies.",
+        src="CH-10 s10.11.4",
+        match=["meta-regression"],
+    ),
+    Term(
+        term="Sensitivity analysis",
+        text="Repeating the main analysis with other reasonable choices in place of arbitrary or unclear ones, to see "
+        "whether the findings hold. Unlike a subgroup analysis, it does not estimate an effect for the studies it "
+        "sets aside.",
+        src="CH-10 s10.14",
+        match=["sensitivity analys"],
+    ),
+    Term(
+        term="Credible interval",
+        text="In a Bayesian analysis, a range that holds the effect with the stated probability.",
+        src="CH-10 s10.13",
+        match=["credible interval"],
+    ),
+    Term(
+        term="Indirect comparison",
+        text="An estimate of how two interventions compare, built from studies that compare each of them with a "
+        "common third one.",
+        src="CH-11 s11.2.1",
+        match=["indirect comparison", "indirect estimate"],
+    ),
+    Term(
+        term="Transitivity",
+        text="The assumption behind indirect comparisons: the studies of the different comparisons are similar in "
+        "everything important apart from the interventions compared.",
+        src="CH-11 s11.2.2",
+        match=["transitivity"],
+    ),
+    Term(
+        term="Incoherence (inconsistency)",
+        text="Disagreement between the direct and indirect evidence on the same comparison; coherence is its absence.",
+        src="CH-11 s11.2.3.2",
+        match=["incoheren", "inconsisten"],
+    ),
+    Term(
+        term="Unit-of-analysis error",
+        text="Analysing more observations than the units that were randomized, for example by treating the two "
+        "periods of a crossover trial as separate groups.",
+        src="CH-6 s6.2.1, CH-23 s23.2.6",
+        match=["unit-of-analysis"],
+    ),
+    Term(
+        term="Carry-over",
+        text="In a crossover trial, an intervention's effect lasting into the next period.",
+        src="CH-23 s23.2.3",
+        match=["carry-over"],
+    ),
+]
+
+
+def _term_card(t: Term) -> Card:
+    return Card(
+        id=card_id("term", t["term"]),
+        tier="term",
+        value=t["term"],
+        title=t["term"],
+        added=False,
+        verified=True,
+        facts=[],
+        notes=[],
+        teach=[TeachLine(kind="what", text=t["text"], src=t["src"])],
+        rules=[],
+        terms=[],
+        src=t["src"],
+    )
+
+
+def _terms_used(c: Card) -> list[str]:
+    """The glossary cards for the terms a card's teaching text or notes use, in glossary order."""
+    text = " ".join([line["text"] for line in c["teach"]] + [n["text"] for n in c["notes"]])
+    return [
+        card_id("term", t["term"])
+        for t in GLOSSARY
+        if any(re.search(r"(?<![\w-])" + re.escape(m), text, re.IGNORECASE) for m in t["match"])
+    ]
+
+
 def cards(paths: Sequence[Pathway]) -> list[Card]:
-    """A card for every value of every tier that a pathway uses, every method and metric, and every rule."""
+    """A card for every value of every tier that a pathway uses, every method and metric, every rule, and every glossary term."""
     out: list[Card] = []
     for tier in NODE_TIERS:
         values = _uniq(str(p[tier]) for p in paths)  # type: ignore[literal-required]
@@ -3743,6 +3888,8 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
     for c in out:
         c["teach"] = [TeachLine(kind=k, text=t, src=src) for k, t, src in TEACH.get(c["id"], [])]
         c["src"] = _join_src([c["src"]] + [line["src"] for line in c["teach"]])
+        c["terms"] = _terms_used(c)
+    out += [_term_card(t) for t in GLOSSARY]
     return out
 
 

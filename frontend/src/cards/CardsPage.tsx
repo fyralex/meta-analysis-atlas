@@ -9,6 +9,7 @@ import { CardBadges, CardView } from "./CardView";
 const GROUPS: { tier: CardTier; name: string }[] = [
   ...TIERS.map((t) => ({ tier: t, name: TIER_NAMES[t] })),
   { tier: "rule", name: "Rules" },
+  { tier: "term", name: "Glossary" },
 ];
 
 export function CardsPage() {
@@ -26,9 +27,10 @@ export function CardsPage() {
     <section className="page cards-page">
       <h1>Cards</h1>
       <p className="lead">
-        A card for every choice in the map and every rule. Each card shows what the map holds about it: the R call or
-        function, the data it reads, the notes and rules that apply, and where the map takes them from. Teaching text
-        (what each choice is, and when to use it) is being added in reviewed batches.
+        A card for every choice in the map and every rule, and a glossary of the terms they use. Each card shows what
+        the map holds about it: what it is and when to use it, the R call or function, the data it reads, the notes
+        and rules that apply, and where the map takes them from. A card has no teaching text where its only source
+        hasn&apos;t been read yet.
       </p>
 
       {id !== null && (
