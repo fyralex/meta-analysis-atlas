@@ -1,0 +1,84 @@
+import { useEffect, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router";
+import { TIERS } from "../atlas/filter";
+import { TIER_NAMES } from "../atlas/names";
+import type { CardTier } from "../types/cards";
+import { cardById, cardHref, cards, searchCards } from "./cards";
+import { CardView } from "./CardView";
+
+const GROUPS: { tier: CardTier; name: string }[] = [
+  ...TIERS.map((t) => ({ tier: t, name: TIER_NAMES[t] })),
+  { tier: "rule", name: "Rules" },
+];
+
+export function CardsPage() {
+  const [params] = useSearchParams();
+  const [query, setQuery] = useState("");
+  const id = params.get("card");
+  const chosen = id === null ? undefined : cardById(id);
+  const shown = searchCards(cards, query);
+  const heading = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    if (chosen) heading.current?.focus();
+  }, [chosen]);
+
+  return (
+    <section className="page cards-page">
+      <h1>Cards</h1>
+      <p className="lead">
+        A card for every choice in the map and every rule. Each card shows what the map holds about it: the R call or
+        function, the data it reads, the notes and rules that apply, and where the map takes them from. Teaching text
+        (what each choice is, and when to use it) is being added in reviewed batches.
+      </p>
+
+      {id !== null && (
+        <section className="card-shown" aria-labelledby="card-shown-title">
+          <h2 id="card-shown-title" tabIndex={-1} ref={heading}>
+            {chosen ? `${GROUPS.find((g) => g.tier === chosen.tier)?.name ?? ""}: ${chosen.title}` : "No such card"}
+          </h2>
+          {chosen ? (
+            <CardView card={chosen} level={3} hideTitle />
+          ) : (
+            <p>There is no card at this address. Choose one from the list below.</p>
+          )}
+        </section>
+      )}
+
+      <label className="search" htmlFor="card-search">
+        Find a card
+        <input
+          id="card-search"
+          type="search"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+          }}
+        />
+      </label>
+      <p className="muted" role="status">
+        {shown.length} of {cards.length} cards
+      </p>
+
+      {GROUPS.map(({ tier, name }) => {
+        const inTier = shown.filter((c) => c.tier === tier);
+        if (inTier.length === 0) return null;
+        return (
+          <section key={tier} aria-labelledby={`cards-${tier}`}>
+            <h2 id={`cards-${tier}`}>{name}</h2>
+            <ul className="card-index">
+              {inTier.map((c) => (
+                <li key={c.id}>
+                  <Link to={cardHref(c.id)} aria-current={c.id === id ? "page" : undefined}>
+                    {c.title}
+                  </Link>
+                  {c.added && <span className="badge badge-new">new</span>}
+                  {!c.verified && <span className="badge badge-check">to check</span>}
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+    </section>
+  );
+}

@@ -28,10 +28,13 @@ describe("the app shell", () => {
     expect(screen.getByRole("toolbar", { name: "Framework" })).toBeInTheDocument();
   });
 
-  it.each([
-    ["/pathfinder", "Pathfinder", "#7"],
-    ["/cards", "Cards", "#6"],
-  ])("routes %s to its page, which says it isn't built yet", (path, name, issue) => {
+  it("routes /cards to the Cards page", () => {
+    renderAt("/cards");
+    expect(screen.getByRole("heading", { level: 1, name: "Cards" })).toBeInTheDocument();
+    expect(screen.getByRole("searchbox", { name: "Find a card" })).toBeInTheDocument();
+  });
+
+  it.each([["/pathfinder", "Pathfinder", "#7"]])("routes %s to its page, which says it isn't built yet", (path, name, issue) => {
     renderAt(path);
     expect(screen.getByRole("heading", { level: 1, name })).toBeInTheDocument();
     expect(screen.getByText(new RegExp(`issue ${issue}`))).toBeInTheDocument();

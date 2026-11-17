@@ -19,6 +19,6 @@ export const APPS = [
     name: "Cards",
     what: "A teaching card for every choice and rule, with references.",
     issue: 6,
-    state: "Not built yet.",
+    state: "A card for every choice and rule, from the map; teaching text and the glossary aren't written yet.",
   },
 ] as const;
