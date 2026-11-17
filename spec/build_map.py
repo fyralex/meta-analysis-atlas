@@ -2103,8 +2103,17 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 9: the other frameworks' methods, from the package pages only (the DTA handbook is not read yet).
 # Batch 10: the correlation and Cronbach's alpha measures, from escalc() only.
 # Batch 11: summary sensitivity and specificity, prediction model performance and dose-response trends.
+# Batch 12: the network measures, from netmeta() and pairwise().
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
+# The line every network measure shares: what netmeta() reads (netmeta(), "sm" and "TE").
+NETWORK_MEASURE: tuple[str, str, str] = (
+    "what",
+    "The same measure as in a pairwise analysis, pooled across the network by netmeta(). netmeta() reads one "
+    "estimate per comparison (every pair of arms in a multi-arm study); for arm-level data, pairwise() computes "
+    "them.",
+    "NM",
+)
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
 NETWORK_CAUTIONS: list[tuple[str, str, str]] = [
     (
@@ -3328,6 +3337,71 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "what",
             "Models each study's standardized mean differences, typically each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"smd\") needs the standard deviations, and method.smd chooses Cohen's, Hedges' or Glass's version.",
             "DOSRES",
+        ),
+    ],
+    "metric:N_OR": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "By default, pairwise() adds 0.5 to every cell of a study with a zero cell, and leaves out studies with no events, or only events, in both arms unless allstudies = TRUE.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_RR": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "By default, pairwise() adds 0.5 to the event counts of a study with a zero cell, and leaves out studies with no events, or only events, in both arms unless allstudies = TRUE.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_RD": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "By default, pairwise() adds 0.5 to the cells of a study with a zero cell only to compute its standard error.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_ASD": [
+        NETWORK_MEASURE,
+    ],
+    "metric:N_MD": [
+        NETWORK_MEASURE,
+    ],
+    "metric:N_SMD": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "pairwise() computes Cohen's d rather than Hedges' g, because Hedges' g is not consistent within multi-arm studies.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_ROM": [
+        NETWORK_MEASURE,
+    ],
+    "metric:N_IRR": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "By default, pairwise() adds 0.5 to the counts of a study with a zero count.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_IRD": [
+        NETWORK_MEASURE,
+        (
+            "caution",
+            "By default, pairwise() adds 0.5 to the counts of a study with a zero count only to compute its standard error.",
+            "META-pw",
+        ),
+    ],
+    "metric:N_HR": [
+        NETWORK_MEASURE,
+        (
+            "what",
+            "Each comparison enters as its log hazard ratio with its standard error.",
+            "NM",
         ),
     ],
 }

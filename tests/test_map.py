@@ -700,3 +700,15 @@ def test_batch_eleven_covers_the_measures_whose_package_pages_were_read() -> Non
     for c, key in expected.items():
         lines = bm.TEACH["metric:" + c]
         assert lines and all(src == key for _, _, src in lines), c
+
+
+NETWORK_MEASURES = ("N_OR", "N_RR", "N_RD", "N_ASD", "N_MD", "N_SMD", "N_ROM", "N_IRR", "N_IRD", "N_HR")
+
+
+def test_batch_twelve_gives_every_network_measure_the_shared_line() -> None:
+    for c in NETWORK_MEASURES:
+        assert bm.TEACH["metric:" + c][0] == bm.NETWORK_MEASURE, c
+
+
+def test_the_network_smd_card_says_why_it_is_cohens_d() -> None:
+    assert any(k == "caution" and src == "META-pw" for k, _, src in bm.TEACH["metric:N_SMD"])
