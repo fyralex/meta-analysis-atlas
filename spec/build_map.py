@@ -2097,6 +2097,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 3: the effect measures for two-group continuous outcomes.
 # Batch 4: the measures for one group (proportions, means, incidence rates), from escalc() only.
 # Batch 5: the measures for change scores and matched pairs.
+# Batch 6: the other two-group measures (rates, hazard ratio, ordinal) and O - E and variance.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2721,6 +2722,100 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "For crossover trials with binary outcomes, Cochrane notes that more complex methods are needed and suggests consulting a statistician.",
             "CH-23 s23.2.5",
+        ),
+    ],
+    "metric:IRR": [
+        (
+            "what",
+            "Each group's events divided by its person-time at risk, and the ratio of the two rates, on the log scale. Cochrane pools the log rate ratio by inverse variance; Poisson regression is an alternative.",
+            "CH-10 s10.8, MF-escalc",
+        ),
+        (
+            "what",
+            "In randomized trials it is often close to the risk ratio, but the two differ when the intervention changes the chance of having more than one event.",
+            "CH-10 s10.8",
+        ),
+        (
+            "caution",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "CH-10 s10.8",
+        ),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to both groups' event counts in any study with no events in one or both groups.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:IRD": [
+        (
+            "what",
+            "The difference between the two groups' rates (events divided by person-time at risk). Cochrane notes it can also be pooled by inverse variance.",
+            "CH-10 s10.8, MF-escalc",
+        ),
+        (
+            "caution",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "CH-10 s10.8",
+        ),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to both groups' event counts in any study with no events in one or both groups.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:IRSD": [
+        ("what", "The difference between the square roots of the two groups' rates.", "MF-escalc"),
+        (
+            "caution",
+            "A rate assumes the risk of an event is the same for every participant and over time, which may not hold. Cochrane notes rates suit rare events best.",
+            "CH-10 s10.8",
+        ),
+        ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:HR": [
+        (
+            "what",
+            "The hazard ratio, pooled on the log scale. Log hazard ratios and their standard errors, for example from Cox models, are pooled by inverse variance.",
+            "CH-10 s10.9",
+        ),
+        (
+            "use",
+            "If some studies report log-rank results and others Cox estimates, Cochrane suggests converting the log-rank results to log hazard ratios and standard errors, so that all can be pooled together.",
+            "CH-10 s10.9",
+        ),
+    ],
+    "metric:POR": [
+        (
+            "what",
+            "The proportional odds ratio, from a proportional odds model of an ordinal scale. Its log and standard error are pooled by inverse variance.",
+            "CH-10 s10.7",
+        ),
+        (
+            "use",
+            "Suits a scale with few categories, when each group's counts per category are reported and all studies used the same scale. It uses the data better than splitting the scale in two.",
+            "CH-10 s10.7",
+        ),
+        (
+            "caution",
+            "It needs specialised software, and its summary is hard to interpret clinically. Cochrane notes ordinal outcomes are more often analysed as binary or continuous, following how the studies analysed them.",
+            "CH-10 s10.7",
+        ),
+    ],
+    "method:OEV": [
+        (
+            "what",
+            "Pools observed minus expected statistics (O - E) and their variances (V), from participant data or study reports.",
+            "CH-10 s10.9",
+        ),
+        (
+            "use",
+            "With a log-rank approach it gives a hazard ratio; Peto's method on binary data gives an odds ratio.",
+            "CH-10 s10.9",
+        ),
+        (
+            "caution",
+            "Cochrane notes that RevMan offers only common-effect methods for O - E and V outcomes.",
+            "CH-10 s10.9",
         ),
     ],
 }
