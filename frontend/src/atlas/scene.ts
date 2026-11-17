@@ -74,12 +74,17 @@ export function scene(
   });
 }
 
-/** Whether this browser can draw the 3D view. Without WebGL, the Atlas keeps to the 2D view. */
+/**
+ * Whether this browser can draw the 3D view: three.js needs WebGL 2 (WebGL 1 is unsupported since r163).
+ * Without it, the Atlas keeps to the 2D view. The probe's context is released at once.
+ */
 export function hasWebGL(): boolean {
-  if (typeof document === "undefined" || typeof WebGLRenderingContext === "undefined") return false;
+  if (typeof document === "undefined" || typeof WebGL2RenderingContext === "undefined") return false;
   try {
-    const canvas = document.createElement("canvas");
-    return Boolean(canvas.getContext("webgl2") ?? canvas.getContext("webgl"));
+    const gl = document.createElement("canvas").getContext("webgl2");
+    if (!gl) return false;
+    gl.getExtension("WEBGL_lose_context")?.loseContext();
+    return true;
   } catch {
     return false;
   }

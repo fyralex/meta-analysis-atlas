@@ -221,7 +221,7 @@ describe("the Atlas's 2D view", PAGE, () => {
     renderAtlas("?view=3d");
     expect(screen.getByRole("radio", { name: /^3D/ })).toBeDisabled();
     expect(screen.getByRole("radio", { name: /^2D/ })).toBeChecked();
-    expect(screen.getByText(/can't draw the 3D view \(no WebGL\)/)).toBeInTheDocument();
+    expect(screen.getByText(/can't draw the 3D view \(no WebGL 2\)/)).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "The map in 3D" })).toBeNull();
     for (const tier of TIERS) expect(layer(tier)).toBeInTheDocument();
   });

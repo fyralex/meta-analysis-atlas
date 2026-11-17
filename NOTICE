@@ -30,7 +30,7 @@ and the documentation of the packages above. Every source used is listed, with
 its link, in spec/backbone.md.
 
 The web app bundles these JavaScript packages, each under the MIT license,
-with the dependencies they bring (MIT, BSD-3-Clause or Apache-2.0):
+with the dependencies they bring (MIT or BSD-3-Clause):
 
   React, React DOM   https://react.dev
   React Router       https://reactrouter.com

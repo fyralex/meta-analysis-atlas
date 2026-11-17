@@ -426,7 +426,7 @@ export function PathfinderPage() {
           )}
 
           <p>
-            <Link to={atlasHref(selection, options, order, model)}>
+            <Link to={atlasHref(selection, options, order, model, params.get("view"))}>
               Open them in the Atlas
             </Link>
             , to choose the model, method and metric and see why the others don&apos;t fit.

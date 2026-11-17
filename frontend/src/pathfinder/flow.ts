@@ -78,8 +78,14 @@ export function unused(selection: Selection): Tier[] {
   return TIERS.filter((t) => selection[t] !== undefined && kept[t] === undefined);
 }
 
-/** The Atlas, opened on these answers (and a model Pathfinder pre-selected) with the same settings. */
-export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder, model?: string): string {
+/** The Atlas, opened on these answers (and a model Pathfinder pre-selected) with the same settings and view. */
+export function atlasHref(
+  selection: Selection,
+  options: FilterOptions,
+  order: TierOrder,
+  model?: string,
+  view?: string | null,
+): string {
   const params = new URLSearchParams();
   const tiers: Selection = model === undefined ? answered(selection) : { ...answered(selection), model };
   for (const tier of TIERS) {
@@ -88,6 +94,7 @@ export function atlasHref(selection: Selection, options: FilterOptions, order: T
   }
   if (order !== "model-method-metric") params.set("order", order);
   if (options.hideNew) params.set("new", "hide");
+  if (view === "3d") params.set("view", "3d");
   const query = params.toString();
   return query === "" ? "/atlas" : `/atlas?${query}`;
 }

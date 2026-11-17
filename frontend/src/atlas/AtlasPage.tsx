@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
@@ -20,6 +20,7 @@ import { useAtlasState } from "./useAtlasState";
 import { explain } from "./whyNot";
 import { WhyNotPanel } from "./WhyNotPanel";
 import { hasWebGL, scene } from "./scene";
+import { View3DBoundary } from "./View3DBoundary";
 
 // three.js is loaded only when the 3D view is chosen; the 2D view, the default, doesn't need it.
 const Atlas3D = lazy(() => import("./Atlas3D"));
@@ -44,7 +45,11 @@ export function AtlasPage() {
   const { search } = useLocation();
   const [params] = useSearchParams();
   const [webgl] = useState(hasWebGL);
-  const view: "2d" | "3d" = params.get("view") === "3d" && webgl ? "3d" : "2d";
+  // Set if the 3D view fails after all (its code doesn't load, or the browser can't draw it): back to 2D.
+  const [failed3d, setFailed3d] = useState(false);
+  const can3d = webgl && !failed3d;
+  const view: "2d" | "3d" = params.get("view") === "3d" && can3d ? "3d" : "2d";
+  const region3d = useRef<HTMLElement>(null);
   const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
   // Any change of choices or settings closes "Why not?": its answer was for the old ones.
   // Pathfinder's advisory answers (rare, vary) belong to the choices they were given for; any change made here
@@ -54,10 +59,20 @@ export function AtlasPage() {
     change({ ...c, extra: { rare: null, vary: null, ...c.extra } });
   };
 
+  /** Switching view changes no choice, so Pathfinder's answers stay. */
+  function setView(v: "2d" | "3d") {
+    setAsked(null);
+    change({ extra: { view: v === "3d" ? "3d" : null } });
+  }
+
   function closeWhyNot() {
     if (!asked) return;
     const { tier, value } = asked;
     setAsked(null);
+    if (view === "3d") {
+      region3d.current?.focus();
+      return;
+    }
     const nodes = document.querySelectorAll<HTMLButtonElement>(`#tier-${tier}-nodes button.node`);
     [...nodes].find((b) => b.dataset.value === value)?.focus();
   }
@@ -76,7 +91,8 @@ export function AtlasPage() {
       <p className="lead">
         Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
         node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices: press it to see why.
-        With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer.
+        {view === "2d" &&
+          " With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer."}
       </p>
       <p>
         <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>. It keeps your framework,
@@ -121,7 +137,7 @@ export function AtlasPage() {
               id="view-2d"
               checked={view === "2d"}
               onChange={() => {
-                update({ extra: { view: null } });
+                setView("2d");
               }}
             />
             2D (works with the keyboard and screen readers)
@@ -132,14 +148,19 @@ export function AtlasPage() {
               name="atlas-view"
               id="view-3d"
               checked={view === "3d"}
-              disabled={!webgl}
+              disabled={!can3d}
               onChange={() => {
-                update({ extra: { view: "3d" } });
+                setView("3d");
               }}
             />
             3D (drag to turn, click a node to choose it)
           </label>
-          {!webgl && <p className="muted">This browser can&apos;t draw the 3D view (no WebGL), so the Atlas shows 2D.</p>}
+          {!webgl && <p className="muted">This browser can&apos;t draw the 3D view (no WebGL 2), so the Atlas shows 2D.</p>}
+          {webgl && failed3d && (
+            <p className="muted" role="status">
+              The 3D view couldn&apos;t be drawn here, so the Atlas shows 2D.
+            </p>
+          )}
         </fieldset>
       </div>
 
@@ -193,20 +214,26 @@ export function AtlasPage() {
       )}
 
       {view === "3d" && (
-        <section className="atlas-3d-view" aria-label="The map in 3D">
+        <section className="atlas-3d-view" aria-label="The map in 3D" ref={region3d} tabIndex={-1}>
           <p className="muted">
             Drag to turn the layers; click a node to choose it, or a grey node (no pathway fits) to see why. The 2D view
             shows the same nodes and counts, and works with the keyboard.
           </p>
-          <Suspense fallback={<p>Loading the 3D view…</p>}>
-            <Atlas3D
-              layers={scene(map.pathways, selection, order, options)}
-              onPick={(n) => {
-                if (n.count === 0) setAsked({ tier: n.tier, value: n.value });
-                else update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
-              }}
-            />
-          </Suspense>
+          <View3DBoundary
+            onError={() => {
+              setFailed3d(true);
+            }}
+          >
+            <Suspense fallback={<p>Loading the 3D view…</p>}>
+              <Atlas3D
+                layers={scene(map.pathways, selection, order, options)}
+                onPick={(n) => {
+                  if (n.count > 0) update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
+                  else setAsked(asked?.tier === n.tier && asked.value === n.value ? null : { tier: n.tier, value: n.value });
+                }}
+              />
+            </Suspense>
+          </View3DBoundary>
           {asked && (
             <WhyNotPanel
               tier={asked.tier}
