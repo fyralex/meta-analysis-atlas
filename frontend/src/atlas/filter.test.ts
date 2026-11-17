@@ -192,3 +192,28 @@ describe("node labels", () => {
     expect(new Set(values.map((v) => nodeLabel(map, tier, v))).size).toBe(values.length);
   });
 });
+
+describe("showing only runnable pathways", () => {
+  // No pathway is runnable in v0.1, so these tests mark every third pathway runnable in a copy of the map.
+  const some = all.map((p, i): Pathway => (i % 3 === 0 ? { ...p, status: "runnable" } : p));
+  const ONLY = { hideNew: false, runnableOnly: true };
+
+  it("keeps only runnable pathways, and counts every node over them alone", () => {
+    expect(filterPathways(some, {}, ONLY).every((p) => p.status === "runnable")).toBe(true);
+    expect(filterPathways(some, {}, ONLY)).toHaveLength(some.filter((p) => p.status === "runnable").length);
+    for (const tier of TIERS) {
+      for (const n of tierNodes(some, {}, tier, ONLY)) {
+        expect(n.count).toBe(some.filter((p) => p.status === "runnable" && p[tier] === n.value).length);
+      }
+    }
+  });
+
+  it("combines with hiding new entries", () => {
+    const both = filterPathways(some, {}, { hideNew: true, runnableOnly: true });
+    expect(both).toHaveLength(some.filter((p) => p.status === "runnable" && !p.added).length);
+  });
+
+  it("changes nothing when it is off", () => {
+    expect(filterPathways(some, {}, DEFAULT_OPTIONS)).toHaveLength(some.length);
+  });
+});

@@ -51,7 +51,11 @@ export type Explanation =
   /** It meets each choice on its own, but not all together; dropping any of these tiers would let it fit. */
   | { kind: "together"; tiers: Tier[] }
   /** It fits the choices only through entries marked new, which are hidden. */
-  | { kind: "hidden-new" };
+  | { kind: "hidden-new" }
+  /** It fits the choices only through pathways that aren't runnable, and only runnable ones are shown. */
+  | { kind: "not-runnable" }
+  /** It fits the choices only through pathways that are both marked new and not runnable, and both settings hide them. */
+  | { kind: "hidden-both" };
 
 /** Why a node has no compatible pathway under the current selection. */
 export function explain(
@@ -69,7 +73,13 @@ export function explain(
     return reasons ? [{ tier: t, value: v, reasons }] : [];
   });
   if (blockers.length > 0) return { kind: "blocked", blockers };
-  if (options.hideNew && pathways.some((p) => matches(p, wanted, { hideNew: false }))) return { kind: "hidden-new" };
+  if (options.runnableOnly && pathways.some((p) => matches(p, wanted, { ...options, runnableOnly: false }))) {
+    return { kind: "not-runnable" };
+  }
+  if (options.hideNew && pathways.some((p) => matches(p, wanted, { ...options, hideNew: false }))) return { kind: "hidden-new" };
+  if (options.hideNew && options.runnableOnly && pathways.some((p) => matches(p, wanted, { hideNew: false }))) {
+    return { kind: "hidden-both" };
+  }
   const tiers = others
     .map(([t]) => t)
     .filter((t) => pathways.some((p) => matches(p, without(wanted, t), options)));

@@ -28,7 +28,10 @@ export interface Change {
 }
 
 /** The address parameters this hook owns; any other parameter is kept as it is unless `extra` changes it. */
-const OWN = new Set<string>([...TIERS, "order", "new"]);
+const OWN = new Set<string>([...TIERS, "order", "new", "runnable"]);
+
+/** Whether any pathway in the map is runnable (none is in v0.1). */
+export const ANY_RUNNABLE = map.pathways.some((p) => p.status === "runnable");
 
 export function useAtlasState(): AtlasState {
   const [params, setParams] = useSearchParams();
@@ -37,7 +40,11 @@ export function useAtlasState(): AtlasState {
   const [cleared, setCleared] = useState<{ address: string; tiers: Tier[] }>({ address: "", tiers: [] });
   const clearedHere = cleared.address === params.toString() ? cleared.tiers : [];
   const order: TierOrder = params.get("order") === "metric-method-model" ? "metric-method-model" : "model-method-metric";
-  const options: FilterOptions = { hideNew: params.get("new") === "hide" };
+  // "runnable=only" is ignored while no pathway is runnable: it would match nothing and clear every choice.
+  const options: FilterOptions = {
+    hideNew: params.get("new") === "hide",
+    runnableOnly: params.get("runnable") === "only" && ANY_RUNNABLE,
+  };
   const asked: Selection = {};
   for (const tier of TIERS) {
     const value = params.get(tier);
@@ -64,6 +71,7 @@ export function useAtlasState(): AtlasState {
     }
     if ((change.order ?? order) !== "model-method-metric") next.set("order", "metric-method-model");
     if (nextOptions.hideNew) next.set("new", "hide");
+    if (nextOptions.runnableOnly && ANY_RUNNABLE) next.set("runnable", "only");
     setCleared({
       address: next.toString(),
       tiers: TIERS.filter((t) => wanted[t] !== undefined && nextSelection[t] === undefined),

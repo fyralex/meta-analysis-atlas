@@ -10,13 +10,14 @@ import {
   type Tier,
   tierNodes,
   tiersInOrder,
+  included,
   toggle,
   type TierOrder,
 } from "./filter";
 import { AboutCard } from "./AboutCard";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { TierLayer } from "./TierLayer";
-import { useAtlasState } from "./useAtlasState";
+import { ANY_RUNNABLE, useAtlasState } from "./useAtlasState";
 import { explain } from "./whyNot";
 import { WhyNotPanel } from "./WhyNotPanel";
 import { hasWebGL, scene } from "./scene";
@@ -78,7 +79,7 @@ export function AtlasPage() {
   }
   const tiers = tiersInOrder(order);
   const shown = filterPathways(map.pathways, selection, options);
-  const total = options.hideNew ? map.pathways.filter((p) => !p.added).length : map.pathways.length;
+  const total = map.pathways.filter((p) => included(p, options)).length;
   const byStatus = Object.fromEntries(STATUSES.map((s) => [s, shown.filter((p) => p.status === s).length])) as Record<
     Status,
     number
@@ -123,11 +124,30 @@ export function AtlasPage() {
             id="hide-new"
             checked={options.hideNew}
             onChange={(e) => {
-              update({ options: { hideNew: e.target.checked } });
+              update({ options: { ...options, hideNew: e.target.checked } });
             }}
           />
           Hide entries marked new (not in the reviewed draft the map started from)
         </label>
+        <label className="choice">
+          <input
+            type="checkbox"
+            id="runnable-only"
+            checked={options.runnableOnly === true}
+            disabled={!ANY_RUNNABLE}
+            aria-describedby={ANY_RUNNABLE ? undefined : "runnable-none"}
+            onChange={(e) => {
+              update({ options: { ...options, runnableOnly: e.target.checked } });
+            }}
+          />
+          Show only runnable pathways (validated against a published result)
+        </label>
+        {!ANY_RUNNABLE && (
+          <p className="muted" id="runnable-none">
+            No pathway is runnable yet. A pathway becomes runnable once it passes a validation test, against a published
+            worked example or the R package run on the same data; the first ones are planned for v0.2.
+          </p>
+        )}
         <fieldset className="choice">
           <legend>View</legend>
           <label>
