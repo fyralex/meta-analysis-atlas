@@ -123,7 +123,7 @@ def test_metrics_reserved_for_one_method_name_real_methods() -> None:
 
 
 def test_v11_counts_add_up() -> None:
-    assert len(bm.V11_REMOVED) == 30
+    assert len(bm.V11_REMOVED) == 26
     assert bm.V11_KEPT + len(bm.V11_REMOVED) == bm.V11_SUMMARY_PATHWAYS == 226
 
 
@@ -140,6 +140,21 @@ def test_v11_removed_pathways_are_absent_from_the_map() -> None:
 def test_v11_removed_pathways_each_have_a_reason() -> None:
     for c in bm.V11_REMOVED:
         assert re.match(r"^(R\d+: |.*; under review in issue #\d+$)", c["reason"]), c
+
+
+def test_network_count_data_offers_rate_ratio_and_difference() -> None:
+    """netmeta's examples run both through pairwise() with event and person-time data (issue #29)."""
+    for code in ("N_IRR", "N_IRD"):
+        assert bm.METRICS[code]["verified"], code
+        assert bm.METRICS[code]["src"] == "NM", code
+    v11_ird = {
+        (bm.F1, bm.G4, dt, bm.COUNT, bm.RANDOM, me, "N_IRD")
+        for dt in (bm.ARM, bm.CONTRAST)
+        for me in ("NM_MV", "NM_BAYES")
+    }
+    by_key = {bm.pathway_key(p): p for p in bm.pathways()}
+    assert v11_ird <= set(by_key)
+    assert [k for k in v11_ird if by_key[k]["added"]] == []
 
 
 def test_v11_removed_reasons_cite_existing_rules() -> None:

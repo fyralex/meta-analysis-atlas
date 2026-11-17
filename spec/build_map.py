@@ -237,7 +237,9 @@ METRICS: dict[str, Metric] = {
     "N_MD": m("Mean difference", 'netmeta(sm="MD")', "NM"),
     "N_SMD": m("Standardized mean difference", 'netmeta(sm="SMD")', "NM"),
     "N_ROM": m("Ratio of means", 'netmeta(sm="ROM")', "NM"),
-    "N_IRR": m("Incidence rate ratio", "input through pairwise() not confirmed", "NM-man", verified=False),
+    # netmeta's examples fit both from arm-level events and person-time, via pairwise(event, time, sm=...)
+    "N_IRR": m("Incidence rate ratio", 'netmeta(sm="IRR")', "NM"),
+    "N_IRD": m("Incidence rate difference", 'netmeta(sm="IRD")', "NM"),
     "N_HR": m("Hazard ratio", 'netmeta(sm="HR")', "NM"),
     # diagnostic test accuracy
     "SESP": m("Summary sensitivity and specificity (estimated jointly)", "mada::reitsma()", "MADA"),
@@ -643,7 +645,7 @@ br(F1, G3, ARM, "arm", "Binary", "paired 2x2 table", ["MPRR", "MPOR", "MPRD", "M
 net: dict[str, tuple[str, list[str]]] = {
     "Binary": ("events and total per arm", ["N_OR", "N_RR", "N_RD", "N_ASD"]),
     "Continuous": ("mean, SD, n per arm", ["N_MD", "N_SMD", "N_ROM"]),
-    "Count / person-time": ("events and person-time per arm", ["N_IRR"]),
+    "Count / person-time": ("events and person-time per arm", ["N_IRR", "N_IRD"]),
 }
 for o, (inp, ms) in net.items():
     br(F1, G4, ARM, "arm", o, inp, ms, domain="network")
@@ -1037,7 +1039,7 @@ OPEN = [
 # check that it is really absent.
 # --------------------------------------------------------------------------
 V11_SUMMARY_PATHWAYS = 226  # v11's interventional summary-data pathways
-V11_KEPT = 196  # of those, in the map unchanged
+V11_KEPT = 200  # of those, in the map unchanged
 CONTRAST = "Contrast-level estimates"
 COUNT = "Count / person-time"
 
@@ -1093,18 +1095,7 @@ for _dt in (ARM, CONTRAST):
                 )
             )
         V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))
-        V11_REMOVED.append(
-            V11Change(
-                group=G4,
-                datatype=_dt,
-                outcome=COUNT,
-                model=RANDOM,
-                method=_me,
-                metric="N_IRD",
-                v11_metric="IRD",
-                reason="no reason recorded; under review in issue #29",
-            )
-        )
+# v11's 4 network IRD pathways were dropped with no reason and restored in issue #29.
 for _model in (COMMON, RANDOM):
     for _code in ("RR", "RD"):
         V11_REMOVED.append(

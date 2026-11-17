@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 552; interventional 442; interventional, in v11's scope 210; of those, confirmed 183; new, not in v11 342; still to check 99; status runnable 0; status planned 392; status specified 61; status to_check 99.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 187; new, not in v11 350; still to check 95; status runnable 0; status planned 408; status specified 61; status to_check 95.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -113,7 +113,8 @@ Counts: pathways in total 552; interventional 442; interventional, in v11's scop
 | N_MD | Mean difference | `netmeta(sm="MD")` | NM | OK |
 | N_SMD | Standardized mean difference | `netmeta(sm="SMD")` | NM | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |
-| N_IRR | Incidence rate ratio | `input through pairwise() not confirmed` | NM-man | CHECK |
+| N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
+| N_IRD | Incidence rate difference | `netmeta(sm="IRD")` | NM | OK |
 | N_HR | Hazard ratio | `netmeta(sm="HR")` | NM | OK |
 | SESP | Summary sensitivity and specificity (estimated jointly) | `mada::reitsma()` | MADA | OK |
 | SROC | Summary ROC curve | `HSROC model` | DTA-HB | CHECK |
@@ -207,7 +208,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 
 ## Compared with taxonomy v11
 
-Of v11's 226 interventional summary-data pathways, 196 are in the map unchanged and 30 are not, each below with its reason. Merging Cohen's d and Hedges' g gives 4 network SMD pathways. v11's one-stage IPD pathways are not compared.
+Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged and 26 are not, each below with its reason. Merging Cohen's d and Hedges' g gives 4 network SMD pathways. v11's one-stage IPD pathways are not compared.
 
 | Group | Datatype | Outcome | Model | Method | v11 metric | Reason |
 |---|---|---|---|---|---|---|
@@ -227,16 +228,12 @@ Of v11's 226 interventional summary-data pathways, 196 are in the map unchanged 
 | Multiple groups (network) | Contrast-level estimates | Time-to-event | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
 | Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
 | Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Frequentist, multivariate | IRD | no reason recorded; under review in issue #29 |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | no reason recorded; under review in issue #29 |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |

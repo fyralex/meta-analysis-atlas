@@ -3,9 +3,9 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 552; interventional 442; interventional, in v11's scope 210; of those, confirmed 183; new, not in v11 342; still to check 99; status runnable 0; status planned 392; status specified 61; status to_check 99.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 187; new, not in v11 350; still to check 95; status runnable 0; status planned 408; status specified 61; status to_check 95.
 
-- framework: 1. Interventional (effect of an intervention)  (442)
+- framework: 1. Interventional (effect of an intervention)  (454)
   - group: One group (single arm)  (137)
     - datatype: Arm-level summary data  (69)
       - outcome: Binary  (32)
@@ -516,8 +516,8 @@ Counts: pathways in total 552; interventional 442; interventional, in v11's scop
             - metric: Matched-pairs marginal odds ratio (log) [NEW]
             - metric: Matched-pairs marginal risk difference [NEW]
             - metric: Matched-pairs conditional odds ratio (log) [NEW]
-  - group: Multiple groups (network)  (108)
-    - datatype: Arm-level summary data  (51)
+  - group: Multiple groups (network)  (120)
+    - datatype: Arm-level summary data  (57)
       - outcome: Binary  (27)
         - model: Common effect  (15)
           - method: Frequentist, graph-theoretical [NEW]  (4)
@@ -582,22 +582,28 @@ Counts: pathways in total 552; interventional 442; interventional, in v11's scop
             - metric: Mean difference
             - metric: Standardized mean difference
             - metric: Ratio of means
-      - outcome: Count / person-time  (6)
-        - model: Common effect  (3)
-          - method: Frequentist, graph-theoretical [NEW]  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Frequentist, multivariate  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
-            - metric: Incidence rate ratio [CHECK]
-        - model: Random effects  (3)
-          - method: Frequentist, graph-theoretical [NEW]  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Frequentist, multivariate  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
-            - metric: Incidence rate ratio [CHECK]
-    - datatype: Contrast-level estimates  (54)
+      - outcome: Count / person-time  (12)
+        - model: Common effect  (6)
+          - method: Frequentist, graph-theoretical [NEW]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Frequentist, multivariate  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+        - model: Random effects  (6)
+          - method: Frequentist, graph-theoretical [NEW]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Frequentist, multivariate  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+    - datatype: Contrast-level estimates  (60)
       - outcome: Binary  (24)
         - model: Common effect  (12)
           - method: Frequentist, graph-theoretical [NEW]  (4)
@@ -658,21 +664,27 @@ Counts: pathways in total 552; interventional 442; interventional, in v11's scop
             - metric: Mean difference
             - metric: Standardized mean difference
             - metric: Ratio of means
-      - outcome: Count / person-time  (6)
-        - model: Common effect  (3)
-          - method: Frequentist, graph-theoretical [NEW]  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Frequentist, multivariate  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
-            - metric: Incidence rate ratio [CHECK]
-        - model: Random effects  (3)
-          - method: Frequentist, graph-theoretical [NEW]  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Frequentist, multivariate  (1)
-            - metric: Incidence rate ratio [CHECK]
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
-            - metric: Incidence rate ratio [CHECK]
+      - outcome: Count / person-time  (12)
+        - model: Common effect  (6)
+          - method: Frequentist, graph-theoretical [NEW]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Frequentist, multivariate  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+        - model: Random effects  (6)
+          - method: Frequentist, graph-theoretical [NEW]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Frequentist, multivariate  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
+          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+            - metric: Incidence rate ratio
+            - metric: Incidence rate difference
       - outcome: Time-to-event  (6)
         - model: Common effect  (3)
           - method: Frequentist, graph-theoretical [NEW]  (1)
