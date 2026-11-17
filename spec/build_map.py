@@ -989,9 +989,9 @@ RULES: list[tuple[str, str, str, str]] = [
     ),
     (
         "R31",
-        "A network's standardized mean difference is Cohen's d, as pairwise() computes it for netmeta: Hedges' g "
-        "would not stay consistent across the comparisons of a study with three or more arms. The map offers one "
-        "network SMD.",
+        "A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way "
+        "for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons "
+        "disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD.",
         "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
         "META-pw",
     ),
@@ -1101,7 +1101,7 @@ for _dt in (ARM, CONTRAST):
                     method=_me,
                     metric=_code,
                     v11_metric=_name,
-                    reason="R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies",
+                    reason="R31: one network SMD, Cohen's d (N_SMD)",
                 )
             )
         V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))
@@ -1178,11 +1178,11 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
     (
         "NM_MV",
         "N_SMD",
-    ): "the Cohen's d of R31 is netmeta's; how rma.mv networks take an SMD is not yet confirmed (issue #31)",
+    ): "R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation",
     (
         "NM_BAYES",
         "N_SMD",
-    ): "the Cohen's d of R31 is netmeta's; how gemtc networks take an SMD is not yet confirmed (issue #31)",
+    ): "R31's source covers netmeta; gemtc's measures are still to confirm (issue #40)",
 }
 
 

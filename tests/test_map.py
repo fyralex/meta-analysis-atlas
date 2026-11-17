@@ -175,6 +175,9 @@ def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
         assert method in bm.METHODS and metric in bm.METRICS
         allowed = bm.METHODS[method]["metrics"]
         assert allowed is None or metric in allowed
+    paired = [p for p in bm.pathways() if (p["method"], p["metric"]) in bm.UNCONFIRMED]
+    assert {(p["method"], p["metric"]) for p in paired} == set(bm.UNCONFIRMED), "a pair generates no pathway"
+    assert {p["status"] for p in paired} == {"to_check"}
 
 
 def test_v11_removed_reasons_cite_existing_rules() -> None:
