@@ -857,10 +857,11 @@ br(
 )
 
 # Notes on framework, group and datatype nodes: (text, source), the source written as for the rules.
+# "Not in v11" is a statement about taxonomy v11, which stays private; the source backs the rest of the note.
 FRAMEWORK_NOTES: dict[str, tuple[str, str]] = {
     F1: (
-        "Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses are also used for prevalence "
-        "and incidence.",
+        "Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or "
+        "an incidence rate from single groups.",
         "CH-10, MF-escalc",
     ),
     F2: (
@@ -878,13 +879,14 @@ FRAMEWORK_NOTES: dict[str, tuple[str, str]] = {
 }
 GROUP_NOTES: dict[str, tuple[str, str]] = {
     G3: (
-        "Not in v11. Needed for before-and-after designs and crossover trials (Cochrane 23.2).",
+        "Not in v11. Needed for before-and-after designs, and for crossover trials (Cochrane 23.2).",
         "CH-23 s23.2, MF-escalc",
     ),
     G4: (
-        "Both common-effect and random-effects models are available. After fitting: treatment ranking "
-        "(P-score, SUCRA, rankogram) and checks of transitivity and consistency. These are outputs, not metrics.",
-        "CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn",
+        "Both common-effect and random-effects models are available. Before fitting, judge transitivity: whether "
+        "effect modifiers are similar across the comparisons. After fitting, check consistency and rank the "
+        "treatments (P-score, SUCRA, rankogram); rankings are outputs, not metrics.",
+        "CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn, DMA",
     ),
 }
 DATATYPE_NOTES: dict[str, tuple[str, str]] = {

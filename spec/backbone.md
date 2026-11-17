@@ -62,13 +62,13 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 
 | Tier | Node | Note | Source |
 |---|---|---|---|
-| framework | 1. Interventional (effect of an intervention) | Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses are also used for prevalence and incidence. | CH-10, MF-escalc |
+| framework | 1. Interventional (effect of an intervention) | Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or an incidence rate from single groups. | CH-10, MF-escalc |
 | framework | 2. Diagnostic test accuracy | Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified. | DTA-HB, MADA |
 | framework | 3. Prognosis | Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor entries are unverified. | VALMETA, RILEY |
 | framework | 4. Association | Not in v11 (correlation was excluded there). | MF-escalc, DOSRES |
 | framework | 5. Measurement reliability | Not in v11. Supported by metafor. | MF-escalc |
-| group | Change or matched pairs (same people measured twice) | Not in v11. Needed for before-and-after designs and crossover trials (Cochrane 23.2). | CH-23 s23.2, MF-escalc |
-| group | Multiple groups (network) | Both common-effect and random-effects models are available. After fitting: treatment ranking (P-score, SUCRA, rankogram) and checks of transitivity and consistency. These are outputs, not metrics. | CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn |
+| group | Change or matched pairs (same people measured twice) | Not in v11. Needed for before-and-after designs, and for crossover trials (Cochrane 23.2). | CH-23 s23.2, MF-escalc |
+| group | Multiple groups (network) | Both common-effect and random-effects models are available. Before fitting, judge transitivity: whether effect modifiers are similar across the comparisons. After fitting, check consistency and rank the treatments (P-score, SUCRA, rankogram); rankings are outputs, not metrics. | CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn, DMA |
 | datatype | Individual participant data | Two-stage analysis: analyse each study, then pool the estimates through the Precomputed estimate branch. One-stage analysis is shown here. | CH-26 s26.4.2, s26.4.5 |
 
 ## Metrics
