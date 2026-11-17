@@ -1682,8 +1682,8 @@ def _choices(b: Branch, mid: str, code: str, model: str) -> list[Choice]:
 
 
 def _labels(tier: str, values: Iterable[str]) -> str:
-    """Labels in alphabetical order."""
-    return ", ".join(sorted((tier_label(tier, v) for v in values), key=str.lower))
+    """Labels in alphabetical order, separated by semicolons (some labels hold a comma)."""
+    return "; ".join(sorted((tier_label(tier, v) for v in values), key=str.lower))
 
 
 def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Reason:
@@ -1716,11 +1716,10 @@ def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Rea
         src = next(r[3] for r in RULES if r[0] == rule)
     elif check == "only":
         src = mt["src"]
-    elif check == "domain":  # the branches of that domain, whose methods the reason names
+    elif check == "domain":  # the sources of every method the reason names
         keys: list[str] = []
-        for other in BRANCHES:
-            if other["domain"] == b["domain"]:
-                keys += [k for k in other["src"] if k not in keys]
+        for k_mid in [mid] + [k for k, m in METHODS.items() if m["domain"] == b["domain"]]:
+            keys += [k for k in METHODS[k_mid]["src"] if k not in keys]
         src = ", ".join(keys)
     else:
         src = ", ".join(me["src"])

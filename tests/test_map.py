@@ -356,8 +356,8 @@ def test_every_why_not_reason_cites_known_sources_and_rules(
             ("method", "IV"),
             ("group", "Multiple groups (network)"),
             "In this map, Inverse variance is offered for single groups and two-group comparisons; for networks "
-            "of three or more treatments, the map offers: Bayesian hierarchical (MCMC), Frequentist, "
-            "graph-theoretical, Frequentist, multivariate, Mantel-Haenszel for networks (sparse binary data), "
+            "of three or more treatments, the map offers: Bayesian hierarchical (MCMC); Frequentist, "
+            "graph-theoretical; Frequentist, multivariate; Mantel-Haenszel for networks (sparse binary data); "
             "One-stage regression on participant data (network).",
             "",
         ),
@@ -378,6 +378,14 @@ def test_r2_is_cited_only_for_precomputed_estimates() -> None:
     reason = bm._check_reason("takes", ipd, "MH", ipd["metrics"][0], bm.COMMON)
     assert reason["rule"] == ""
     assert reason["src"] == ", ".join(bm.METHODS["MH"]["src"])
+
+
+def test_a_domain_reason_cites_every_method_it_names(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    (reason,) = why[("method", "IV")][("group", "Multiple groups (network)")]
+    named = ["IV"] + [k for k, m in bm.METHODS.items() if m["domain"] == "network"]
+    assert set(source_keys(reason["src"])) == {k for mid in named for k in bm.METHODS[mid]["src"]}
 
 
 def test_why_not_names_every_route_when_there_are_several(
