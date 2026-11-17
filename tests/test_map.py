@@ -717,3 +717,28 @@ def test_the_network_smd_card_says_why_it_is_cohens_d() -> None:
 def test_batch_thirteen_gives_the_adjusted_exposure_measures_the_shared_line() -> None:
     for c in ("EX_OR", "EX_RR", "EX_HR"):
         assert bm.TEACH["metric:" + c][0] == bm.ADJUSTED_MEASURE, c
+
+
+def test_batch_fourteen_covers_the_interventional_framework_and_its_branches() -> None:
+    batch = {
+        "framework:interventional-effect-of-an-intervention",
+        "group:one-group-single-arm",
+        "group:two-groups-pairwise",
+        "group:change-or-matched-pairs-same-people-measured-twice",
+        "group:multiple-groups-network",
+        "datatype:arm-level-summary-data",
+        "datatype:precomputed-estimate",
+        "datatype:individual-participant-data",
+        "datatype:observed-minus-expected-and-variance",
+        "datatype:contrast-level-estimates",
+        "outcome:binary",
+        "outcome:continuous",
+        "outcome:count-person-time",
+        "outcome:time-to-event",
+        "outcome:ordinal",
+    }
+    assert batch <= set(bm.TEACH)
+
+
+def test_the_network_group_card_carries_the_transitivity_caution() -> None:
+    assert bm.NETWORK_CAUTIONS[0] in bm.TEACH["group:multiple-groups-network"]
