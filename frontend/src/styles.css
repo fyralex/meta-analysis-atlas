@@ -145,3 +145,13 @@ button { font: inherit; color: inherit; }
 .pathways { border-collapse: collapse; font-size: 14px; background: var(--surface); border: 1px solid var(--line); }
 .pathways th, .pathways td { padding: 6px 10px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
 .pathways .badge { margin-left: 6px; }
+
+.why-not { margin-top: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--focus); border-radius: 4px; max-width: 75ch; }
+.why-not h3 { margin: 0 0 8px; font-size: 1.05rem; }
+.why-not h3:focus { outline: none; }
+.why-not h3:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.why-not p { margin: 4px 0; }
+.reasons { margin: 4px 0 8px; padding-left: 1.2em; }
+.reasons li { margin-bottom: 8px; }
+.rule, .refs { font-size: 14px; color: var(--muted); }
+.rule strong { color: var(--text); }
