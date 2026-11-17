@@ -712,3 +712,8 @@ def test_batch_twelve_gives_every_network_measure_the_shared_line() -> None:
 
 def test_the_network_smd_card_says_why_it_is_cohens_d() -> None:
     assert any(k == "caution" and src == "META-pw" for k, _, src in bm.TEACH["metric:N_SMD"])
+
+
+def test_batch_thirteen_gives_the_adjusted_exposure_measures_the_shared_line() -> None:
+    for c in ("EX_OR", "EX_RR", "EX_HR"):
+        assert bm.TEACH["metric:" + c][0] == bm.ADJUSTED_MEASURE, c

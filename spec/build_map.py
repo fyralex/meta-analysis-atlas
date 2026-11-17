@@ -2104,6 +2104,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 10: the correlation and Cronbach's alpha measures, from escalc() only.
 # Batch 11: summary sensitivity and specificity, prediction model performance and dose-response trends.
 # Batch 12: the network measures, from netmeta() and pairwise().
+# Batch 13: the adjusted exposure measures, from Cochrane 10 (not the IPD measures: Cochrane 26 doesn't cover them).
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # The line every network measure shares: what netmeta() reads (netmeta(), "sm" and "TE").
@@ -2113,6 +2114,14 @@ NETWORK_MEASURE: tuple[str, str, str] = (
     "estimate per comparison (every pair of arms in a multi-arm study); for arm-level data, pairwise() computes "
     "them.",
     "NM",
+)
+# The line every adjusted exposure measure shares: how an estimate with its standard error is pooled.
+ADJUSTED_MEASURE: tuple[str, str, str] = (
+    "what",
+    "Each study's estimate enters as its natural logarithm with its standard error, pooled by the generic "
+    "inverse-variance method. Cochrane describes that method for results available only as an estimate and its "
+    "standard error, including those from non-randomized studies.",
+    "CH-10 s10.3.3",
 )
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
 NETWORK_CAUTIONS: list[tuple[str, str, str]] = [
@@ -3402,6 +3411,17 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "what",
             "Each comparison enters as its log hazard ratio with its standard error.",
             "NM",
+        ),
+    ],
+    "metric:EX_OR": [ADJUSTED_MEASURE],
+    "metric:EX_RR": [ADJUSTED_MEASURE],
+    "metric:EX_HR": [
+        ADJUSTED_MEASURE,
+        (
+            "what",
+            "Cochrane notes that log hazard ratios from Cox proportional hazards models, with their standard errors, "
+            "can be combined this way.",
+            "CH-10 s10.9",
         ),
     ],
 }
