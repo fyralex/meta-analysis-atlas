@@ -222,7 +222,7 @@
 {"text": "Peto goes only with the outcome: Binary.", "rule": "", "src": "MF-peto, CH-10"},
 {"text": "Peto goes only with the group structure: Two groups (pairwise).", "rule": "", "src": "MF-peto, CH-10"},
 {"text": "Peto goes only with the framework: 1. Interventional (effect of an intervention).", "rule": "", "src": "MF-peto, CH-10"},
-{"text": "In this map, Peto odds ratio (log) is offered only with Peto.", "rule": "", "src": "MF-escalc"},
+{"text": "In this map, Peto odds ratio (log) is offered only with Peto.", "rule": "R32", "src": "CH-10 s10.4.2, MF-escalc"},
 {"text": "Peto odds ratio (log) goes only with the outcome: Binary.", "rule": "", "src": "MF-escalc, MF-uni, CH-6"},
 {"text": "Peto odds ratio (log) goes only with the datatype: Arm-level summary data.", "rule": "", "src": "MF-escalc, MF-uni, CH-6"},
 {"text": "Penalised logistic regression (rare events) goes only with the metric: Odds ratio (log).", "rule": "", "src": "META-bin"},

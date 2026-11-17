@@ -394,8 +394,22 @@ def test_why_not_names_every_route_when_there_are_several(
     """The Peto odds ratio with random effects: the map offers it only with Peto's method, which is common-effect."""
     reasons = {(r["text"], r["rule"]) for r in why[("metric", "PETO")][("model", "Random effects")]}
     assert reasons == {
-        ("In this map, Peto odds ratio (log) is offered only with Peto.", ""),
+        ("In this map, Peto odds ratio (log) is offered only with Peto.", "R32"),
         ("Peto fits a common-effect model only.", "R5"),
+    }
+
+
+def test_the_peto_odds_ratio_limit_cites_r32_as_the_maps_choice(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    """Issue #45: kept as the map's choice. R32 says so, so its reason keeps "In this map, "."""
+    rule = next(r for r in bm.RULES if r[0] == "R32")
+    assert rule[1].startswith("In this map, ")
+    (reason,) = why[("metric", "PETO")][("method", "IV")]
+    assert reason == {
+        "text": "In this map, Peto odds ratio (log) is offered only with Peto.",
+        "rule": "R32",
+        "src": "CH-10 s10.4.2, MF-escalc",
     }
 
 
@@ -489,6 +503,10 @@ def test_method_card_carries_its_function_and_rules(all_cards: list[bm.Card]) ->
     peto = next(c for c in all_cards if c["id"] == "method:PETO")
     assert {"label": "R function", "items": ["metafor::rma.peto()"], "code": True} in peto["facts"]
     assert peto["rules"] == ["R2", "R5"]
+
+
+def test_peto_odds_ratio_card_lists_r32(all_cards: list[bm.Card]) -> None:
+    assert next(c for c in all_cards if c["id"] == "metric:PETO")["rules"] == ["R32"]
 
 
 def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:

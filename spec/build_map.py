@@ -1059,6 +1059,15 @@ RULES: list[tuple[str, str, str, str]] = [
         "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
         "META-pw",
     ),
+    (
+        "R32",
+        "In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate "
+        "Peto's method computes: an approximate log odds ratio from observed minus expected events and their "
+        'variance. escalc(measure="PETO") also computes it study by study; this map doesn\'t offer pooling it with '
+        "another method.",
+        "agrees",
+        "CH-10 s10.4.2, MF-escalc",
+    ),
 ]
 
 CROSS: list[tuple[str, str, str]] = [
@@ -1638,6 +1647,9 @@ WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
     ("OEV", "models"): ("R25", True),
     ("NM_MH", "models"): ("R20", True),
 }
+# The rule behind a metric's "only with" limit, by metric. R32 states it as the map's choice, so the reason
+# keeps "In this map, ".
+ONLY_RULE: dict[str, str] = {"PETO": "R32"}
 CHECKS = ("domain", "takes", "metrics", "only", "models")
 Choice = tuple[str, str]  # (tier, value)
 
@@ -1689,6 +1701,8 @@ def _labels(tier: str, values: Iterable[str]) -> str:
 def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Reason:
     me, mt = METHODS[mid], METRICS[code]
     rule, stated = WHY_RULE.get((mid, check), ("", False))
+    if check == "only":
+        rule, stated = ONLY_RULE.get(code, ""), False
     if check == "takes" and b["kind"] != "est" and rule == "R2":
         rule, stated = "", False
     if check == "domain":
@@ -1893,7 +1907,7 @@ class Card(TypedDict):
     verified: bool
     facts: list[Fact]
     notes: list[CardNote]
-    rules: list[str]  # ids of the rules behind a method's limits (from WHY_RULE); empty for other cards
+    rules: list[str]  # ids of the rules behind a method's or metric's limits (WHY_RULE, ONLY_RULE); else empty
     src: str  # the card's sources, written as for the rules
 
 
@@ -2029,7 +2043,7 @@ def _metric_card(code: str) -> Card:
         verified=mt["verified"],
         facts=facts,
         notes=[],
-        rules=[],
+        rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         src=mt["src"],
     )
 
