@@ -1597,8 +1597,9 @@ def write_html(tree: Node, stats_rows: list[tuple[str, int]]) -> None:
 # that pass every check below (the same checks pathways() applies). For two
 # choices that never meet, each combination holding both that fails exactly
 # one check gives a reason; their union explains the pair. A pair that no
-# such combination holds never shares a branch, and the reason says which
-# values each one does go with. Reasons about a method's models or metrics
+# such combination holds gets a reason that names the values one of the two
+# goes with (from the shorter list): for two branch values, they never share
+# a branch. Reasons about a method's models or metrics
 # come first: when there are any, "this method takes other data" or "works
 # in another domain" routes are left out as the least telling. Where a rule states the check, the reason
 # cites the rule; otherwise the method's or metric's own sources.
@@ -1621,19 +1622,21 @@ KIND_WORDS = {
     "none": "no data of its own",
 }
 MODEL_WORDS = {COMMON: "a common-effect model", RANDOM: "a random-effects model"}
-# The rule that states a method's limit, by (method, check); "takes" is about precomputed estimates only (R2).
-WHY_RULE: dict[tuple[str, str], str] = {
-    ("MH", "models"): "R3",
-    ("MH", "metrics"): "R3",
-    ("MH", "takes"): "R2",
-    ("PETO", "models"): "R5",
-    ("PETO", "metrics"): "R5",
-    ("PETO", "takes"): "R2",
-    ("PETO", "only"): "R5",
-    ("GLMM", "metrics"): "R6",
-    ("GLMM", "takes"): "R2",
-    ("OEV", "models"): "R25",
-    ("NM_MH", "models"): "R20",
+# The rule behind a method's limit, by (method, check), and whether the rule states the limit outright.
+# "takes" is cited only for precomputed estimates, all R2 covers. A reason whose rule doesn't state it
+# outright, or that has no rule, is worded as what this map does ("In this map, ..."), not as a fact
+# about the method.
+WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
+    ("MH", "models"): ("R3", True),
+    ("MH", "metrics"): ("R3", True),
+    ("MH", "takes"): ("R2", True),
+    ("PETO", "models"): ("R5", True),
+    ("PETO", "metrics"): ("R5", True),
+    ("PETO", "takes"): ("R2", True),
+    ("GLMM", "metrics"): ("R6", False),  # R6 also lists RR and RD as experimental
+    ("GLMM", "takes"): ("R2", True),
+    ("OEV", "models"): ("R25", True),
+    ("NM_MH", "models"): ("R20", True),
 }
 CHECKS = ("domain", "takes", "metrics", "only", "models")
 Choice = tuple[str, str]  # (tier, value)
@@ -1679,36 +1682,46 @@ def _choices(b: Branch, mid: str, code: str, model: str) -> list[Choice]:
 
 
 def _labels(tier: str, values: Iterable[str]) -> str:
-    return ", ".join(tier_label(tier, v) for v in values)
+    """Labels in alphabetical order."""
+    return ", ".join(sorted((tier_label(tier, v) for v in values), key=str.lower))
 
 
 def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Reason:
     me, mt = METHODS[mid], METRICS[code]
-    rule = WHY_RULE.get((mid, check), "")
+    rule, stated = WHY_RULE.get((mid, check), ("", False))
     if check == "takes" and b["kind"] != "est" and rule == "R2":
-        rule = ""
+        rule, stated = "", False
     if check == "domain":
-        text = "%s is for %s, not %s." % (me["label"], DOMAIN_WORDS[me["domain"]], DOMAIN_WORDS[b["domain"]])
+        others = [k for k, m in METHODS.items() if m["domain"] == b["domain"]]
+        text = "%s is offered for %s; for %s, the map offers: %s." % (
+            me["label"],
+            DOMAIN_WORDS[me["domain"]],
+            DOMAIN_WORDS[b["domain"]],
+            _labels("method", others),
+        )
     elif check == "takes":
         takes = sorted(me["takes"], key=list(KIND_WORDS).index)
-        text = "%s takes %s, not %s." % (
-            me["label"],
-            " or ".join(KIND_WORDS[k] for k in takes),
-            KIND_WORDS[b["kind"]],
-        )
+        text = "%s takes %s, not %s." % (me["label"], " or ".join(KIND_WORDS[k] for k in takes), KIND_WORDS[b["kind"]])
     elif check == "metrics":
         assert me["metrics"] is not None  # a "metrics" failure needs a list
-        text = "%s gives only: %s." % (me["label"], _labels("metric", sorted(me["metrics"])))
+        text = "%s gives only: %s." % (me["label"], _labels("metric", me["metrics"]))
     elif check == "only":
         assert mt["only"] is not None  # an "only" failure needs a list
-        rule = WHY_RULE.get((next(iter(sorted(mt["only"]))), "only"), "")
-        text = "%s is computed only by %s." % (mt["label"], _labels("method", sorted(mt["only"])))
+        text = "%s is offered only with %s." % (mt["label"], _labels("method", mt["only"]))
     else:
         text = "%s fits %s only." % (me["label"], " or ".join(MODEL_WORDS[m] for m in me["models"]))
+    if not stated:
+        text = "In this map, " + text  # names keep their capitals
     if rule:
         src = next(r[3] for r in RULES if r[0] == rule)
     elif check == "only":
         src = mt["src"]
+    elif check == "domain":  # the branches of that domain, whose methods the reason names
+        keys: list[str] = []
+        for other in BRANCHES:
+            if other["domain"] == b["domain"]:
+                keys += [k for k in other["src"] if k not in keys]
+        src = ", ".join(keys)
     else:
         src = ", ".join(me["src"])
     return Reason(text=text, rule=rule, src=src)

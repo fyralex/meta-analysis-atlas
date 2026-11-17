@@ -355,8 +355,10 @@ def test_every_why_not_reason_cites_known_sources_and_rules(
         (
             ("method", "IV"),
             ("group", "Multiple groups (network)"),
-            "Inverse variance is for single groups and two-group comparisons, not networks of three or more "
-            "treatments.",
+            "In this map, Inverse variance is offered for single groups and two-group comparisons; for networks "
+            "of three or more treatments, the map offers: Bayesian hierarchical (MCMC), Frequentist, "
+            "graph-theoretical, Frequentist, multivariate, Mantel-Haenszel for networks (sparse binary data), "
+            "One-stage regression on participant data (network).",
             "",
         ),
         (("outcome", "Binary"), ("metric", "MD"), "Mean difference goes only with the outcome: Continuous.", ""),
@@ -381,9 +383,28 @@ def test_r2_is_cited_only_for_precomputed_estimates() -> None:
 def test_why_not_names_every_route_when_there_are_several(
     why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
 ) -> None:
-    """The Peto odds ratio with random effects: only Peto's method gives it, and Peto's method is common-effect."""
-    texts = {r["text"] for r in why[("metric", "PETO")][("model", "Random effects")]}
-    assert texts == {"Peto odds ratio (log) is computed only by Peto.", "Peto fits a common-effect model only."}
+    """The Peto odds ratio with random effects: the map offers it only with Peto's method, which is common-effect."""
+    reasons = {(r["text"], r["rule"]) for r in why[("metric", "PETO")][("model", "Random effects")]}
+    assert reasons == {
+        ("In this map, Peto odds ratio (log) is offered only with Peto.", ""),
+        ("Peto fits a common-effect model only.", "R5"),
+    }
+
+
+def test_a_reason_no_rule_states_is_worded_as_the_maps(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    """A reason may state a limit as a fact about a method only when its rule states it outright."""
+    outright = {rule for rule, states in bm.WHY_RULE.values() if states}
+    hedged = {rule for rule, states in bm.WHY_RULE.values() if not states}
+    for others in why.values():
+        for reasons in others.values():
+            for r in reasons:
+                if " goes only with " in r["text"]:
+                    continue
+                as_fact = not r["text"].startswith("In this map, ")
+                assert not as_fact or r["rule"] in outright, r
+                assert r["rule"] not in hedged or not as_fact, r
 
 
 def test_why_not_file_holds_every_pair_once() -> None:
