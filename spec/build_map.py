@@ -2095,6 +2095,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 1: the two models and the two-group methods for binary outcomes.
 # Batch 2: the effect measures for two-group binary outcomes.
 # Batch 3: the effect measures for two-group continuous outcomes.
+# Batch 4: the measures for one group (proportions, means, incidence rates), from escalc() only.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2464,6 +2465,109 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Only for outcomes that take positive values: it suits values after the intervention, not changes from baseline, which can be negative. escalc() can't compute it when the two means have opposite signs.",
             "CH-6 s6.5.1.3, MF-escalc",
         ),
+    ],
+    "metric:PR": [
+        ("what", "The proportion of participants with the event, untransformed.", "MF-escalc"),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to the event and non-event counts of any study where either is 0.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PLN": [
+        ("what", "The proportion of participants with the event, on the log scale.", "MF-escalc"),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to the event and non-event counts of any study where either is 0.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PLO": [
+        (
+            "what",
+            "The proportion of participants with the event on the logit scale, that is, the log odds of the event.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to the event and non-event counts of any study where either is 0.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PRZ": [
+        ("what", "The proportion of participants with the event on the probit scale.", "MF-escalc"),
+        (
+            "caution",
+            "By default escalc() adds 0.5 to the event and non-event counts of any study where either is 0.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PAS": [
+        (
+            "what",
+            "The proportion of participants with the event after the arcsine square-root (angular) transformation.",
+            "MF-escalc",
+        ),
+        ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:PFT": [
+        (
+            "what",
+            "The proportion of participants with the event after the Freeman-Tukey double arcsine transformation.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "metafor's documentation does not recommend double arcsine proportions for meta-analysis, citing Schwarzer et al. (2019) and Röver and Friede (2022).",
+            "MF-escalc",
+        ),
+        ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:MN": [
+        ("what", "The mean outcome in one group, in the outcome's own units.", "MF-escalc"),
+    ],
+    "metric:SMN": [
+        (
+            "what",
+            "The mean divided by the standard deviation. escalc() needs the standard deviation itself, not the standard error of the mean.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "Subtracting a fixed value from each mean first gives a single-group standardized mean difference.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:MNLN": [
+        (
+            "what",
+            "The mean outcome in one group, on the log scale. metafor mentions it for measurements on a ratio scale.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:IR": [
+        ("what", "The number of events divided by the person-time at risk, untransformed.", "MF-escalc"),
+        ("caution", "By default escalc() adds 0.5 to the event count of any study with no events.", "MF-escalc"),
+    ],
+    "metric:IRLN": [
+        ("what", "The number of events divided by the person-time at risk, on the log scale.", "MF-escalc"),
+        ("caution", "By default escalc() adds 0.5 to the event count of any study with no events.", "MF-escalc"),
+    ],
+    "metric:IRS": [
+        (
+            "what",
+            "The number of events divided by the person-time at risk, after a square-root transformation.",
+            "MF-escalc",
+        ),
+        ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:IRFT": [
+        (
+            "what",
+            "The number of events divided by the person-time at risk, after the Freeman-Tukey transformation.",
+            "MF-escalc",
+        ),
+        ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
     ],
 }
 
