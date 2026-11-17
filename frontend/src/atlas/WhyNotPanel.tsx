@@ -84,6 +84,12 @@ export function WhyNotPanel({ tier, label, explanation, labelOf, onClose }: Prop
           marked new&rdquo; to see them.
         </p>
       )}
+      {explanation.kind === "not-runnable" && (
+        <p>
+          It fits your choices only through pathways that aren&apos;t runnable yet, and only runnable ones are shown.
+          Untick &ldquo;Show only runnable pathways&rdquo; to see them.
+        </p>
+      )}
       <button type="button" className="clear" onClick={onClose}>
         Close
       </button>

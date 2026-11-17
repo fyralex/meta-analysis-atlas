@@ -5,7 +5,7 @@ export const APPS = [
     name: "Atlas",
     what: "The whole map, in 3D and 2D, narrowing as you choose.",
     issue: 4,
-    state: "The 2D view is built; the 3D view isn't yet.",
+    state: "Built: the 2D view (the accessible default) and the 3D view, sharing the same counts and settings.",
   },
   {
     path: "/pathfinder",

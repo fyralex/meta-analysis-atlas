@@ -216,6 +216,16 @@ describe("the Atlas's 2D view", PAGE, () => {
     expect(summary()).not.toContain("Cleared");
   });
 
+  it("offers the runnable-only switch only once a pathway is runnable, and ignores it in the address until then", () => {
+    renderAtlas(`?runnable=only&framework=${encodeURIComponent(F1)}`);
+    const box = screen.getByRole("checkbox", { name: /Show only runnable pathways/ });
+    expect(box).toBeDisabled();
+    expect(box).not.toBeChecked();
+    expect(box).toHaveAccessibleDescription(/No pathway is runnable yet/);
+    // The framework choice is kept, and every pathway of it still counts.
+    expect(summary()).toContain(`${String(lockCount({ framework: F1 }))} of ${String(lock.length)}`);
+  });
+
   it("offers the 3D view only where the browser can draw it, and shows 2D otherwise", () => {
     // The test environment has no WebGL, like a browser without it.
     renderAtlas("?view=3d");

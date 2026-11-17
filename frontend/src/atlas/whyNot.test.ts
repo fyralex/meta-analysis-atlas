@@ -113,3 +113,14 @@ describe("explaining a greyed-out node", () => {
     expect(explain(lock, { method: "MV" }, "model", "Common effect", SHOW).kind).not.toBe("hidden-new");
   });
 });
+
+describe("why not, with only runnable pathways shown", () => {
+  it("says a node fits only through pathways that aren't runnable", () => {
+    // In a copy of the map where only Peto's pathways are runnable, inverse variance fits nothing shown.
+    const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
+    // With the Peto odds ratio chosen, a choice blocks inverse variance first (rule R32), runnable or not.
+    const why = explain(some, { metric: "PETO" }, "method", "IV", { hideNew: false, runnableOnly: true });
+    expect(why.kind).toBe("blocked");
+    expect(explain(some, {}, "method", "IV", { hideNew: false, runnableOnly: true }).kind).toBe("not-runnable");
+  });
+});

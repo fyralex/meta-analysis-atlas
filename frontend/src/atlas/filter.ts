@@ -23,6 +23,8 @@ export type Selection = Partial<Record<Tier, string>>;
 export interface FilterOptions {
   /** Leave out pathways not in taxonomy v11 (marked "new"). */
   hideNew: boolean;
+  /** Keep only runnable pathways (status "runnable"). */
+  runnableOnly?: boolean;
 }
 
 export const DEFAULT_OPTIONS: FilterOptions = { hideNew: false };
@@ -32,8 +34,15 @@ export function without(selection: Selection, tier: Tier): Selection {
   return Object.fromEntries(Object.entries(selection).filter(([t]) => t !== tier));
 }
 
-export function matches(p: Pathway, selection: Selection, options: FilterOptions, except?: Tier): boolean {
+/** Whether the settings let a pathway be shown at all, whatever is chosen. */
+export function included(p: Pathway, options: FilterOptions): boolean {
   if (options.hideNew && p.added) return false;
+  if (options.runnableOnly && p.status !== "runnable") return false;
+  return true;
+}
+
+export function matches(p: Pathway, selection: Selection, options: FilterOptions, except?: Tier): boolean {
+  if (!included(p, options)) return false;
   for (const tier of TIERS) {
     if (tier === except) continue;
     const value = selection[tier];
@@ -74,7 +83,7 @@ export function tierNodes(
 ): NodeSummary[] {
   const nodes = new Map<string, NodeSummary>();
   for (const p of pathways) {
-    if (options.hideNew && p.added) continue;
+    if (!included(p, options)) continue;
     let node = nodes.get(p[tier]);
     if (!node) {
       node = { value: p[tier], count: 0, byStatus: emptyByStatus(), newCount: 0, selected: selection[tier] === p[tier] };

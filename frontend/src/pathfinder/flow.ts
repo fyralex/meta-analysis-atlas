@@ -94,6 +94,7 @@ export function atlasHref(
   }
   if (order !== "model-method-metric") params.set("order", order);
   if (options.hideNew) params.set("new", "hide");
+  if (options.runnableOnly) params.set("runnable", "only");
   if (view === "3d") params.set("view", "3d");
   const query = params.toString();
   return query === "" ? "/atlas" : `/atlas?${query}`;

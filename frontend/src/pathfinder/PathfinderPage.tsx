@@ -61,6 +61,7 @@ function Reason({ tier, value }: { tier: Tier; value: string }) {
 function WhyNot({ selection, tier, value, options }: { selection: Selection; tier: Tier; value: string; options: FilterOptions }) {
   const why = explain(map.pathways, answered(selection), tier, value, options);
   if (why.kind === "hidden-new") return <p className="muted">It is only in entries marked new, which are hidden.</p>;
+  if (why.kind === "not-runnable") return <p className="muted">None of its pathways is runnable yet.</p>;
   if (why.kind !== "blocked") return <p className="muted">Not possible with your answers together.</p>;
   return (
     <ul className="option-reason">
@@ -265,6 +266,20 @@ export function PathfinderPage() {
             }}
           >
             Show them
+          </button>
+        </p>
+      )}
+      {options.runnableOnly && (
+        <p className="note">
+          Only runnable pathways are shown, as in the Atlas.{" "}
+          <button
+            type="button"
+            className="link-button"
+            onClick={() => {
+              update({ options: { ...options, runnableOnly: false } });
+            }}
+          >
+            Show all
           </button>
         </p>
       )}
