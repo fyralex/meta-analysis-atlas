@@ -1,0 +1,156 @@
+import { map } from "../map";
+import { STATUS_TEXT } from "../status";
+import { STATUSES, type Status } from "../types/map";
+import { filterPathways, nodeLabel, type NodeSummary, tierNodes, tiersInOrder, toggle, type TierOrder } from "./filter";
+import { LIST_LIMIT, TIER_NAMES } from "./names";
+import { TierLayer } from "./TierLayer";
+import { useAtlasState } from "./useAtlasState";
+
+const ORDERS: { value: TierOrder; text: string }[] = [
+  { value: "model-method-metric", text: "Model → Method → Metric" },
+  { value: "metric-method-model", text: "Metric → Method → Model" },
+];
+
+/** Compatible nodes first, then the greyed-out ones; each in the map's order. */
+function compatibleFirst(nodes: NodeSummary[]): NodeSummary[] {
+  return [...nodes.filter((n) => n.count > 0), ...nodes.filter((n) => n.count === 0)];
+}
+
+export function AtlasPage() {
+  const { selection, order, options, dropped, update } = useAtlasState();
+  const tiers = tiersInOrder(order);
+  const shown = filterPathways(map.pathways, selection, options);
+  const total = options.hideNew ? map.pathways.filter((p) => !p.added).length : map.pathways.length;
+  const byStatus = Object.fromEntries(STATUSES.map((s) => [s, shown.filter((p) => p.status === s).length])) as Record<
+    Status,
+    number
+  >;
+  const chosen = tiers.filter((t) => selection[t] !== undefined);
+
+  return (
+    <section className="page atlas">
+      <h1>Atlas</h1>
+      <p className="lead">
+        Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
+        node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices.
+      </p>
+
+      <div className="atlas-controls">
+        <fieldset className="choice">
+          <legend>Order of the last three tiers</legend>
+          {ORDERS.map((o) => (
+            <label key={o.value}>
+              <input
+                type="radio"
+                name="tier-order"
+                id={`order-${o.value}`}
+                checked={order === o.value}
+                onChange={() => {
+                  update({ order: o.value });
+                }}
+              />
+              {o.text}
+            </label>
+          ))}
+        </fieldset>
+        <label className="choice">
+          <input
+            type="checkbox"
+            id="hide-new"
+            checked={options.hideNew}
+            onChange={(e) => {
+              update({ options: { hideNew: e.target.checked } });
+            }}
+          />
+          Hide entries marked new (not in the reviewed draft the map started from)
+        </label>
+      </div>
+
+      <ul className="legend" aria-label="Status colours">
+        {STATUSES.map((s) => (
+          <li key={s}>
+            <span className={`swatch st-${s}`} aria-hidden="true" />
+            <strong>{STATUS_TEXT[s].name}</strong>: {STATUS_TEXT[s].meaning}
+          </li>
+        ))}
+      </ul>
+
+      <div className="summary" role="status">
+        <p>
+          <strong>{shown.length}</strong> of {total} pathways match
+          {chosen.length > 0 && <> your {chosen.length === 1 ? "choice" : `${String(chosen.length)} choices`}</>}.{" "}
+          <span className="muted">
+            {STATUSES.filter((s) => byStatus[s] > 0)
+              .map((s) => `${String(byStatus[s])} ${STATUS_TEXT[s].name.toLowerCase()}`)
+              .join(", ")}
+          </span>
+        </p>
+        {dropped.length > 0 && (
+          <p className="note">
+            Cleared {dropped.map((t) => TIER_NAMES[t].toLowerCase()).join(" and ")}: that choice matched no pathway.
+          </p>
+        )}
+      </div>
+      {chosen.length > 0 && (
+        <button
+          type="button"
+          className="clear"
+          onClick={() => {
+            update({ selection: {} });
+          }}
+        >
+          Clear all choices
+        </button>
+      )}
+
+      {tiers.map((tier) => (
+        <TierLayer
+          key={tier}
+          id={`tier-${tier}`}
+          name={TIER_NAMES[tier]}
+          nodes={compatibleFirst(tierNodes(map.pathways, selection, tier, options))}
+          label={(value) => nodeLabel(map, tier, value)}
+          onChoose={(value) => {
+            update({ selection: toggle(map.pathways, selection, tier, value, options) });
+          }}
+        />
+      ))}
+
+      <h2>Matching pathways</h2>
+      {shown.length <= LIST_LIMIT ? (
+        <div className="table-wrap">
+          <table className="pathways">
+            <caption className="sr-only">The {shown.length} matching pathways</caption>
+            <thead>
+              <tr>
+                {tiers.map((t) => (
+                  <th key={t} scope="col">
+                    {TIER_NAMES[t]}
+                  </th>
+                ))}
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {shown.map((p) => (
+                <tr key={tiers.map((t) => p[t]).join("|")}>
+                  {tiers.map((t) => (
+                    <td key={t}>{nodeLabel(map, t, p[t])}</td>
+                  ))}
+                  <td>
+                    <span className={`swatch st-${p.status}`} aria-hidden="true" /> {STATUS_TEXT[p.status].name}
+                    {p.added && <span className="badge badge-new">new</span>}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <p className="muted">
+          {shown.length} pathways match. They are listed here once your choices narrow them to {LIST_LIMIT} or fewer.
+        </p>
+      )}
+    </section>
+  );
+}

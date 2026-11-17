@@ -1,9 +1,9 @@
 import { NavLink, Route, Routes } from "react-router";
 import { APPS } from "./apps";
+import { AtlasPage } from "./atlas/AtlasPage";
 import { HomePage } from "./pages/HomePage";
 import { NotBuiltPage } from "./pages/NotBuiltPage";
 import { ThemeSwitch } from "./ThemeSwitch";
-
 
 export function App() {
   return (
@@ -27,7 +27,8 @@ export function App() {
       <main id="main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {APPS.map((a) => (
+          <Route path="/atlas" element={<AtlasPage />} />
+          {APPS.filter((a) => a.path !== "/atlas").map((a) => (
             <Route key={a.path} path={a.path} element={<NotBuiltPage name={a.name} what={a.what} issue={a.issue} />} />
           ))}
           <Route path="*" element={<NotBuiltPage name="Page not found" what="There is no page at this address." />} />
