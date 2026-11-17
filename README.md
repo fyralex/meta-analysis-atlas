@@ -9,35 +9,86 @@ Framework → Group structure → Datatype → Outcome type → Model → Method
 
 The map covers five frameworks (interventional, including network
 meta-analysis; diagnostic test accuracy; prognosis; association; measurement
-reliability) and 552 pathways. Every entry cites its source: the Cochrane
+reliability) and 564 pathways. Every entry cites its source: the Cochrane
 Handbook, the metafor documentation, or the documentation of the R package
 that runs it. Entries that haven't been confirmed against a primary source
 are marked as such.
 
 ## Status
 
-Early work. Nothing runs analyses yet. Each pathway in the map has a status:
-**planned** (its engine is on the roadmap below), **specified** (confirmed,
-not planned yet) or **to check** (not yet confirmed from a primary source).
-None is runnable yet ([how statuses are set](docs/decisions/0001-pathway-status.md)).
+Version 0.1 is the map and three apps for exploring it. **Nothing runs
+analyses yet.** Each pathway has a status:
 
-| Release | Scope |
-|---|---|
-| v0.1 (in progress) | The map, browsable in 3D and 2D; a question flow that leads to pathways; teaching cards with references |
-| v0.2 | Running analyses on your own data or on published examples, with the exact R code shown; every runnable pathway validated against a published result |
-| v0.3 | Network meta-analysis, Bayesian and multilevel models |
-| v0.4 | Diagnostic accuracy, prognosis, and a methods advisor |
+| Status | Pathways | Meaning |
+|---|---|---|
+| Planned | 404 | Confirmed from its sources; its engine is on the roadmap |
+| Specified | 61 | Confirmed from its sources; not planned yet |
+| To check | 99 | Not yet confirmed from a primary source |
+| Runnable | 0 | Validated against a published result; none yet |
 
-## Browse the map
+A pathway becomes runnable only when it passes a validation test, against a
+published worked example or the R package run on the same data
+([how statuses are set](docs/decisions/0001-pathway-status.md)).
+
+## The apps
+
+**Atlas** shows every pathway, one layer per tier. Choosing a node keeps only
+the pathways through it, and every node shows how many would remain. A node
+that doesn't fit your choices says why, with its source. The 2D
+view works with the keyboard and screen readers; a 3D view shows the same
+nodes and counts as stacked rings you can turn.
+
+![The Atlas in 2D, with the interventional framework and two-group studies chosen](docs/screenshots/atlas-2d.png)
+
+![The Atlas in 3D: the seven tiers as stacked rings](docs/screenshots/atlas-3d.png)
+
+**Pathfinder** asks a few questions in a methodologist's order: the kind of
+question, what each study compares, what it reported, and the outcome. Each
+option says what it is, with its source, and options the map rules out say
+why. For binary outcomes compared between two groups or across a network, it
+asks whether events are rare, and when both models
+fit it asks whether true effects are expected to differ. Neither answer
+removes a pathway: they show what the cards say, and pre-select a model with
+the other one click away ([why](docs/decisions/0005-pathfinder-advisory-questions.md)).
+Its answers are shared with the Atlas.
+
+![Pathfinder after three answers, asking about the outcome](docs/screenshots/pathfinder.png)
+
+**Cards** gives every choice and rule a card: what it is, when to use it,
+its cautions, the R function, the data it reads and the rules that limit it,
+each line with its source. A card has no teaching text where its only source
+hasn't been read yet. A glossary of the terms the cards use is linked from
+each card.
+
+![The card for Peto's method](docs/screenshots/cards.png)
+
+## How the map is built
+
+The map is the specification. All of its data is in one file,
+[`spec/build_map.py`](spec/build_map.py), and everything else is generated
+from it. Pathways aren't listed by hand: the generator combines the branches,
+methods and metrics and keeps the combinations the rules allow.
+
+```mermaid
+flowchart LR
+  B["spec/build_map.py<br/>sources, branches, methods,<br/>metrics, rules, teaching text"]
+  B --> M["map.json<br/>every pathway"]
+  B --> W["why_not.json<br/>why two choices never meet"]
+  B --> C["cards.json<br/>a card per choice, rule and term"]
+  B --> D["backbone.md, tree.md, map.html<br/>for reading"]
+  B -- "--lock" --> L["pathways.lock.json<br/>the pathways, pinned"]
+  M --> A["Atlas, Pathfinder, Cards"]
+  W --> A
+  C --> A
+  L -. "tests compare" .-> M
+```
+
+To read the map without the apps:
 
 - [`spec/tree.md`](spec/tree.md): the full tree as text.
 - [`spec/backbone.md`](spec/backbone.md): the metrics, methods and rules,
   each with its source.
 - `spec/map.html`: a searchable page; download it and open it in a browser.
-
-The map is generated. All its data is in
-[`spec/build_map.py`](spec/build_map.py); run `python3 spec/build_map.py` to
-regenerate the other files.
 
 ## Run the apps locally
 
@@ -48,15 +99,47 @@ npm ci --prefix frontend
 npm --prefix frontend run dev    # then open http://localhost:5173
 ```
 
-The apps read the map from `spec/map.json` when they are built. Atlas,
-Pathfinder and Cards are being built for v0.1; for now the home page shows
-the map's pathways by status.
+The apps read the map from `spec/` when they are built.
+
+## Add or change a pathway
+
+1. Open an issue that says what should change and why, with a source: a
+   Cochrane Handbook section, the documentation of the R function, or a
+   methods paper.
+2. Edit the data in `spec/build_map.py`: a branch, a method (with its R
+   function, the models it fits and the data it reads), a metric (with its
+   exact call, such as `escalc(measure="SMD")`) or a rule. Give every entry
+   its source. An entry not yet confirmed from a primary source is marked
+   `verified=False`.
+3. Run `python3 spec/build_map.py --lock`. The diff of
+   `spec/pathways.lock.json` lists every pathway added or removed.
+4. Open a pull request that explains each change in that diff, with its
+   reference. A methodology decision also gets a short record in
+   [`docs/decisions/`](docs/decisions/).
+
+Every change to the map is audited against its sources before review.
+
+## Propose a methodology change
+
+Open an issue. Say what the map gets wrong or leaves out, and cite the source
+that shows it, by section. Where methodologists disagree, the map presents the
+question as debate, so an issue that sets out both sides is welcome.
 
 ## How this project is run
 
 Every change starts as an issue and lands through a reviewed pull request,
 including changes to the methodology. The rules are in
-[`CLAUDE.md`](CLAUDE.md).
+[`CLAUDE.md`](CLAUDE.md), and the changes are listed in
+[`CHANGELOG.md`](CHANGELOG.md).
+
+## Roadmap
+
+| Release | Scope |
+|---|---|
+| v0.1 | The map with all five frameworks; Atlas (2D and 3D), Pathfinder and Cards |
+| v0.2 | Running analyses on your own data or on published examples, with the exact R code shown; one-group and two-group metafor pathways made runnable through validation tests |
+| v0.3 | Network meta-analysis, Bayesian and multilevel models |
+| v0.4 | Diagnostic accuracy, prognosis, and a methods advisor |
 
 ## License
 

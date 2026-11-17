@@ -1,0 +1,67 @@
+# Changelog
+
+Each release lists what changed, with the pull requests behind it. The map
+itself changes only through audited pull requests, and each map change
+explains its effect on the pathways.
+
+## 0.1.0 (proposed, not yet released)
+
+The first release: the map of analysis pathways, and three apps to explore
+it. Nothing runs analyses yet; no pathway is runnable.
+
+### The map
+
+- 564 pathways across five frameworks: interventional (including network
+  meta-analysis), diagnostic test accuracy, prognosis, association and
+  measurement reliability. They are generated from `spec/build_map.py` and
+  pinned in `spec/pathways.lock.json` (#30).
+- A status for every pathway: 404 planned, 61 specified and 99 to check (#33).
+- A source for every branch, method, metric, rule and note (#43). Each
+  method and metric has its own name (#42).
+- Map changes, each with its reason and source:
+  - the incidence rate difference for networks (#39);
+  - the network standardized mean difference is Cohen's d, as `pairwise()`
+    computes it (#41);
+  - the Peto odds ratio goes only with Peto's method, as rule R32 (#48;
+    decision 0004).
+
+### Atlas
+
+- A 2D view of every pathway, one layer per tier, with counts for every node
+  and the tier order as a setting (#36, #38).
+- "Why not?" for every node that doesn't fit the choices, with its reason
+  and source (#44, #46).
+- A 3D view of the same nodes and counts, which falls back to 2D without
+  WebGL 2 (#71).
+- Settings to hide entries marked new, and to show only runnable pathways.
+  The second stays off until a pathway is runnable (#72).
+
+### Pathfinder
+
+- Questions in a methodologist's order lead to the pathways that fit, each
+  option with its source and each ruled-out option with its reason. The
+  answers are shared with the Atlas (#69).
+- Advice on rare events and on whether true effects vary. Neither removes a
+  pathway (#70; decision 0005).
+
+### Cards
+
+- A card for every choice and rule (#47), with teaching text for every
+  choice whose source has been read, written and audited in 15 batches
+  (#51–#57, #60–#67).
+- A glossary of 14 terms, linked from the cards that use them (#68).
+
+### The project
+
+- Local checks for every pull request, and CI and a GitHub Pages deploy at
+  releases (#26, #34).
+- An audit of every pull request against its sources before review (#26,
+  #28).
+- Faster frontend tests (#50).
+
+### Known gaps
+
+- Cards whose only source hasn't been read have no teaching text yet: those
+  that rely on the Cochrane Handbook for diagnostic test accuracy, on Riley et
+  al. 2019, and the participant-data measures (#21, #25, #58, #59).
+- In the 3D view, the labels are small until a node is hovered or chosen.
