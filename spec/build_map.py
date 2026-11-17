@@ -2007,11 +2007,24 @@ def _branch_card(tier: str, value: str) -> Card:
     )
 
 
-def _method_card(code: str) -> Card:
+def _framework_short(framework: str) -> str:
+    """ "1. Interventional (effect of an intervention)" -> "Interventional"."""
+    return framework.split(". ", 1)[-1].split(" (", 1)[0]
+
+
+def _method_card(code: str, paths: Sequence[Pathway]) -> Card:
     me = METHODS[code]
+    # "Used for" names the group structures the method has pathways in, not its whole domain: Peto and
+    # Mantel-Haenszel are pairwise methods but take two groups only (#74).
+    mine = [p for p in paths if p["method"] == code]
+    # Across frameworks, a group's name alone can repeat ("One group"): name the framework too.
+    several = len({p["framework"] for p in mine}) > 1
+    groups = _uniq(
+        f"{_framework_short(str(p['framework']))}: {p['group']}" if several else str(p["group"]) for p in mine
+    )
     facts = [
         _fact("R function", [me["fn"]], code=True),
-        _fact("Used for", [DOMAIN_WORDS[me["domain"]]]),
+        _fact("Used for", groups or [DOMAIN_WORDS[me["domain"]]]),
         _fact("Reads", [KIND_WORDS[k] for k in sorted(me["takes"])]),
         _fact("Models", me["models"]),
         _fact("Analysis types", me["analysis"]),
@@ -3881,7 +3894,7 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
     for tier in NODE_TIERS:
         values = _uniq(str(p[tier]) for p in paths)  # type: ignore[literal-required]
         if tier == "method":
-            out += [_method_card(c) for c in METHODS]
+            out += [_method_card(c, paths) for c in METHODS]
         elif tier == "metric":
             out += [_metric_card(c) for c in METRICS]
         elif tier == "model":
