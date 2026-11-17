@@ -286,3 +286,138 @@ def test_milestones_follow_the_roadmap(framework: str, method: str, milestone: s
 
 def test_the_statuses_are_the_four_claude_md_defines() -> None:
     assert bm.STATUSES == ("runnable", "planned", "specified", "to_check")
+
+
+# --- "Why not?" -------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def why() -> dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]]:
+    return bm.why_not(bm.pathways())
+
+
+def test_why_not_checks_are_the_generators() -> None:
+    """The combinations that fail no check are exactly the pathways, so the reasons explain the real rules."""
+    passing = {
+        (b["fw"], b["group"], b["datatype"], b["outcome"], model, mid, code)
+        for b, mid, code, model, fails in bm._combinations()
+        if not fails
+    }
+    assert passing == {bm.pathway_key(p) for p in bm.pathways()}
+
+
+def test_why_not_covers_exactly_the_pairs_that_never_meet(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    together: set[tuple[bm.Choice, bm.Choice]] = set()
+    choices: set[bm.Choice] = set()
+    for p in bm.pathways():
+        cs = list(zip(bm.PATHWAY_KEY, bm.pathway_key(p), strict=True))
+        choices.update(cs)
+        together.update((x, y) for x in cs for y in cs)
+    apart = {(x, y) for x in choices for y in choices if x[0] != y[0] and (x, y) not in together}
+    explained = {(x, y) for x, others in why.items() for y, reasons in others.items() if reasons}
+    assert explained == apart
+
+
+def test_why_not_reads_the_same_both_ways(why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]]) -> None:
+    assert [(x, y) for x, others in why.items() for y, r in others.items() if why[y][x] != r] == []
+
+
+def test_every_why_not_reason_cites_known_sources_and_rules(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    rule_ids = {r[0] for r in bm.RULES}
+    reasons = {(r["text"], r["rule"], r["src"]) for others in why.values() for rs in others.values() for r in rs}
+    for text, rule, src in reasons:
+        keys = source_keys(src)
+        assert keys and set(keys) <= set(bm.SOURCES), (text, src)
+        assert rule == "" or rule in rule_ids, (text, rule)
+
+
+@pytest.mark.parametrize(
+    ("x", "y", "text", "rule"),
+    [
+        (("method", "PETO"), ("metric", "MD"), "Peto gives only: Peto odds ratio (log).", "R5"),
+        (("method", "MH"), ("model", "Random effects"), "Mantel-Haenszel fits a common-effect model only.", "R3"),
+        (
+            ("method", "MH"),
+            ("datatype", "Precomputed estimate"),
+            "Mantel-Haenszel takes arm-level data, not precomputed estimates.",
+            "R2",
+        ),
+        (
+            ("model", "Random effects"),
+            ("datatype", "Observed minus expected and variance"),
+            "Observed minus expected and variance (log-rank / Peto) fits a common-effect model only.",
+            "R25",
+        ),
+        (
+            ("method", "IV"),
+            ("group", "Multiple groups (network)"),
+            "In this map, Inverse variance is offered for single groups and two-group comparisons; for networks "
+            "of three or more treatments, the map offers: Bayesian hierarchical (MCMC); Frequentist, "
+            "graph-theoretical; Frequentist, multivariate; Mantel-Haenszel for networks (sparse binary data); "
+            "One-stage regression on participant data (network).",
+            "",
+        ),
+        (("outcome", "Binary"), ("metric", "MD"), "Mean difference goes only with the outcome: Continuous.", ""),
+    ],
+)
+def test_why_not_gives_the_reason_its_rule_states(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]], x: bm.Choice, y: bm.Choice, text: str, rule: str
+) -> None:
+    assert [(r["text"], r["rule"]) for r in why[x][y]] == [(text, rule)]
+
+
+def test_r2_is_cited_only_for_precomputed_estimates() -> None:
+    """R2 says which methods take a precomputed estimate; it says nothing about other data a method can't read."""
+    by_kind = {b["kind"]: b for b in bm.BRANCHES if b["metrics"]}
+    est, ipd = by_kind["est"], by_kind["ipd"]
+    assert bm._check_reason("takes", est, "MH", est["metrics"][0], bm.COMMON)["rule"] == "R2"
+    reason = bm._check_reason("takes", ipd, "MH", ipd["metrics"][0], bm.COMMON)
+    assert reason["rule"] == ""
+    assert reason["src"] == ", ".join(bm.METHODS["MH"]["src"])
+
+
+def test_a_domain_reason_cites_every_method_it_names(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    (reason,) = why[("method", "IV")][("group", "Multiple groups (network)")]
+    named = ["IV"] + [k for k, m in bm.METHODS.items() if m["domain"] == "network"]
+    assert set(source_keys(reason["src"])) == {k for mid in named for k in bm.METHODS[mid]["src"]}
+
+
+def test_why_not_names_every_route_when_there_are_several(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    """The Peto odds ratio with random effects: the map offers it only with Peto's method, which is common-effect."""
+    reasons = {(r["text"], r["rule"]) for r in why[("metric", "PETO")][("model", "Random effects")]}
+    assert reasons == {
+        ("In this map, Peto odds ratio (log) is offered only with Peto.", ""),
+        ("Peto fits a common-effect model only.", "R5"),
+    }
+
+
+def test_a_reason_no_rule_states_is_worded_as_the_maps(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    """A reason may state a limit as a fact about a method only when its rule states it outright."""
+    outright = {rule for rule, states in bm.WHY_RULE.values() if states}
+    hedged = {rule for rule, states in bm.WHY_RULE.values() if not states}
+    for others in why.values():
+        for reasons in others.values():
+            for r in reasons:
+                if " goes only with " in r["text"]:
+                    continue
+                as_fact = not r["text"].startswith("In this map, ")
+                assert not as_fact or r["rule"] in outright, r
+                assert r["rule"] not in hedged or not as_fact, r
+
+
+def test_why_not_file_holds_every_pair_once() -> None:
+    data = json.loads(bm.WHY_NOT.read_text())
+    assert data == bm.why_not_json(bm.pathways())
+    pairs = {frozenset((row[0], row[1])) for row in data["pairs"]}
+    assert len(pairs) == len(data["pairs"])
+    assert all(len(row) >= 3 for row in data["pairs"])

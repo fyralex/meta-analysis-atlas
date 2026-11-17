@@ -181,6 +181,7 @@ there and run it; never edit the generated files.
 | `spec/tree.md` | The full tree as text |
 | `spec/map.html` | A searchable page of the tree (standalone) |
 | `spec/pathways.lock.json` | Every generated pathway, pinned; rewritten only with `--lock` |
+| `spec/why_not.json` | For each pair of choices that never meet in a pathway, the reasons why, from the same checks that generate the pathways |
 
 **What each entry carries:**
 - a `src` (one or more source keys from `SOURCES`, each with a URL);

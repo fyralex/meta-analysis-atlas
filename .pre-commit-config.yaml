@@ -1,6 +1,6 @@
 # Quick checks on every commit. The full set is scripts/check.sh (see CLAUDE.md, "Checks").
 # Generated files in spec/ are left alone by the fixers: the generator owns them.
-exclude: ^(LICENSE|spec/(map\.json|map\.html|tree\.md|backbone\.md|pathways\.lock\.json))$
+exclude: ^(LICENSE|spec/(map\.json|map\.html|tree\.md|backbone\.md|pathways\.lock\.json|why_not\.json))$
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks

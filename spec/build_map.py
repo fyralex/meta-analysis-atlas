@@ -26,7 +26,7 @@ import argparse
 import html
 import json
 import pathlib
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Iterable, Iterator, Mapping, Sequence
 from typing import Protocol, TypedDict
 
 HERE = pathlib.Path(__file__).parent
@@ -1590,6 +1590,270 @@ def write_html(tree: Node, stats_rows: list[tuple[str, int]]) -> None:
     (HERE / "map.html").write_text(page)
 
 
+# --------------------------------------------------------------------------
+# "Why not?": why two choices never meet in a pathway
+#
+# A pathway is a branch, a method, one of the branch's metrics and a model
+# that pass every check below (the same checks pathways() applies). For two
+# choices that never meet, each combination holding both that fails exactly
+# one check gives a reason; their union explains the pair. A pair that no
+# such combination holds gets a reason that names the values one of the two
+# goes with (from the shorter list): for two branch values, they never share
+# a branch. Reasons about a method's models or metrics
+# come first: when there are any, "this method takes other data" or "works
+# in another domain" routes are left out as the least telling. Where a rule states the check, the reason
+# cites the rule; otherwise the method's or metric's own sources.
+# --------------------------------------------------------------------------
+DOMAIN_WORDS = {
+    "pairwise": "single groups and two-group comparisons",
+    "network": "networks of three or more treatments",
+    "dta": "diagnostic test accuracy",
+    "valid": "prediction model validation",
+    "dose": "dose-response",
+    "none": "no analysis of its own",
+}
+KIND_WORDS = {
+    "arm": "arm-level data",
+    "est": "precomputed estimates",
+    "ipd": "individual participant data",
+    "oev": "O - E and V",
+    "tab": "2x2 tables",
+    "dose": "estimates at several dose levels",
+    "none": "no data of its own",
+}
+MODEL_WORDS = {COMMON: "a common-effect model", RANDOM: "a random-effects model"}
+# The rule behind a method's limit, by (method, check), and whether the rule states the limit outright.
+# "takes" is cited only for precomputed estimates, all R2 covers. A reason whose rule doesn't state it
+# outright, or that has no rule, is worded as what this map does ("In this map, ..."), not as a fact
+# about the method.
+WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
+    ("MH", "models"): ("R3", True),
+    ("MH", "metrics"): ("R3", True),
+    ("MH", "takes"): ("R2", True),
+    ("PETO", "models"): ("R5", True),
+    ("PETO", "metrics"): ("R5", True),
+    ("PETO", "takes"): ("R2", True),
+    ("GLMM", "metrics"): ("R6", False),  # R6 also lists RR and RD as experimental
+    ("GLMM", "takes"): ("R2", True),
+    ("OEV", "models"): ("R25", True),
+    ("NM_MH", "models"): ("R20", True),
+}
+CHECKS = ("domain", "takes", "metrics", "only", "models")
+Choice = tuple[str, str]  # (tier, value)
+
+
+class Reason(TypedDict):
+    text: str
+    rule: str  # a rule id, or "" when no rule states it
+    src: str  # written like a rule's source
+
+
+def _combinations() -> Iterator[tuple[Branch, str, str, str, list[str]]]:
+    """Every branch, method, branch metric and model, with the checks it fails."""
+    for b in BRANCHES:
+        for mid, me in METHODS.items():
+            for code in b["metrics"]:
+                mt = METRICS[code]
+                for model in (COMMON, RANDOM):
+                    fails = []
+                    if me["domain"] != b["domain"]:
+                        fails.append("domain")
+                    if b["kind"] not in me["takes"]:
+                        fails.append("takes")
+                    if me["metrics"] is not None and code not in me["metrics"]:
+                        fails.append("metrics")
+                    if mt["only"] and mid not in mt["only"]:
+                        fails.append("only")
+                    if model not in me["models"]:
+                        fails.append("models")
+                    yield b, mid, code, model, fails
+
+
+def _choices(b: Branch, mid: str, code: str, model: str) -> list[Choice]:
+    return [
+        ("framework", b["fw"]),
+        ("group", b["group"]),
+        ("datatype", b["datatype"]),
+        ("outcome", b["outcome"]),
+        ("model", model),
+        ("method", mid),
+        ("metric", code),
+    ]
+
+
+def _labels(tier: str, values: Iterable[str]) -> str:
+    """Labels in alphabetical order, separated by semicolons (some labels hold a comma)."""
+    return "; ".join(sorted((tier_label(tier, v) for v in values), key=str.lower))
+
+
+def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Reason:
+    me, mt = METHODS[mid], METRICS[code]
+    rule, stated = WHY_RULE.get((mid, check), ("", False))
+    if check == "takes" and b["kind"] != "est" and rule == "R2":
+        rule, stated = "", False
+    if check == "domain":
+        others = [k for k, m in METHODS.items() if m["domain"] == b["domain"]]
+        text = "%s is offered for %s; for %s, the map offers: %s." % (
+            me["label"],
+            DOMAIN_WORDS[me["domain"]],
+            DOMAIN_WORDS[b["domain"]],
+            _labels("method", others),
+        )
+    elif check == "takes":
+        takes = sorted(me["takes"], key=list(KIND_WORDS).index)
+        text = "%s takes %s, not %s." % (me["label"], " or ".join(KIND_WORDS[k] for k in takes), KIND_WORDS[b["kind"]])
+    elif check == "metrics":
+        assert me["metrics"] is not None  # a "metrics" failure needs a list
+        text = "%s gives only: %s." % (me["label"], _labels("metric", me["metrics"]))
+    elif check == "only":
+        assert mt["only"] is not None  # an "only" failure needs a list
+        text = "%s is offered only with %s." % (mt["label"], _labels("method", mt["only"]))
+    else:
+        text = "%s fits %s only." % (me["label"], " or ".join(MODEL_WORDS[m] for m in me["models"]))
+    if not stated:
+        text = "In this map, " + text  # names keep their capitals
+    if rule:
+        src = next(r[3] for r in RULES if r[0] == rule)
+    elif check == "only":
+        src = mt["src"]
+    elif check == "domain":  # the sources of every method the reason names
+        keys: list[str] = []
+        for k_mid in [mid] + [k for k, m in METHODS.items() if m["domain"] == b["domain"]]:
+            keys += [k for k in METHODS[k_mid]["src"] if k not in keys]
+        src = ", ".join(keys)
+    else:
+        src = ", ".join(me["src"])
+    return Reason(text=text, rule=rule, src=src)
+
+
+def _choice_sources() -> dict[Choice, list[str]]:
+    """The sources behind each choice: its branches' for a branch value or a metric, its own for a method."""
+    sources: dict[Choice, list[str]] = {}
+    for b in BRANCHES:
+        cs: list[Choice] = [
+            ("framework", b["fw"]),
+            ("group", b["group"]),
+            ("datatype", b["datatype"]),
+            ("outcome", b["outcome"]),
+        ]
+        for c in cs + [("metric", code) for code in b["metrics"]]:
+            sources.setdefault(c, [])
+            sources[c] += [k for k in b["src"] if k not in sources[c]]
+    for mid, me in METHODS.items():
+        sources[("method", mid)] = list(me["src"])
+    return sources
+
+
+def why_not(paths: Sequence[Pathway]) -> dict[Choice, dict[Choice, list[Reason]]]:
+    """For each choice, the choices it never meets in a pathway, each with the reasons why (the same both ways)."""
+    together: dict[Choice, set[Choice]] = {}
+    for p in paths:
+        cs = list(zip(PATHWAY_KEY, pathway_key(p), strict=True))
+        for c in cs:
+            together.setdefault(c, set()).update(cs)
+    sources = _choice_sources()
+    by_route: dict[tuple[Choice, Choice], list[tuple[str, Reason]]] = {}
+    for b, mid, code, model, fails in _combinations():
+        if len(fails) != 1:
+            continue
+        cs = _choices(b, mid, code, model)
+        reason: Reason | None = None
+        for x in cs:
+            for y in cs:
+                if x[0] != y[0] and x in together and y not in together[x]:
+                    reason = reason or _check_reason(fails[0], b, mid, code, model)
+                    found = by_route.setdefault((x, y), [])
+                    if (fails[0], reason) not in found:
+                        found.append((fails[0], reason))
+    out: dict[Choice, dict[Choice, list[Reason]]] = {}
+    for x in together:
+        for y in together:
+            if x[0] == y[0] or y in together[x]:
+                continue
+            routes = by_route.get((x, y), [])
+            # A method that can't read the data, or works in another domain, is the least telling route:
+            # keep those reasons only when no limit on a model or metric explains the pair.
+            closer = [r for check, r in routes if check not in ("domain", "takes")]
+            reasons = closer or [r for _, r in routes] or [_apart(x, y, together, sources)]
+            out.setdefault(x, {})[y] = reasons
+    return out
+
+
+def _apart(x: Choice, y: Choice, together: Mapping[Choice, set[Choice]], sources: Mapping[Choice, list[str]]) -> Reason:
+    """Two choices that never share a branch: say what each goes with, from the shorter list."""
+    # The same reason both ways: describe the choice with the shorter list, the earlier tier on a tie.
+    first, second = sorted((x, y), key=lambda c: PATHWAY_KEY.index(c[0]))
+    with_first = sorted((v for t, v in together[first] if t == second[0]), key=lambda v: tier_label(second[0], v))
+    with_second = sorted((v for t, v in together[second] if t == first[0]), key=lambda v: tier_label(first[0], v))
+    if len(with_first) <= len(with_second):
+        about, tier, values = first, second[0], with_first
+    else:
+        about, tier, values = second, first[0], with_second
+    text = "%s goes only with %s: %s." % (tier_label(*about), TIER_WORDS[tier], _labels(tier, values))
+    src = sources.get(about) or sources.get(second if about == first else first) or []
+    return Reason(text=text, rule="", src=", ".join(src))
+
+
+TIER_WORDS = {
+    "framework": "the framework",
+    "group": "the group structure",
+    "datatype": "the datatype",
+    "outcome": "the outcome",
+    "model": "the model",
+    "method": "the method",
+    "metric": "the metric",
+}
+
+
+WHY_NOT = HERE / "why_not.json"
+
+
+class WhyNotFile(TypedDict):
+    choices: list[str]  # "tier=value"
+    reasons: list[Reason]  # each written once
+    pairs: list[list[int]]  # [choice, choice, reason, ...]: each unordered pair once
+
+
+def why_not_json(paths: Sequence[Pathway]) -> WhyNotFile:
+    """why_not() compactly, for spec/why_not.json."""
+    out = WhyNotFile(choices=[], reasons=[], pairs=[])
+    r_index: dict[tuple[str, str, str], int] = {}
+    c_index: dict[Choice, int] = {}
+
+    def cid(c: Choice) -> int:
+        if c not in c_index:
+            c_index[c] = len(out["choices"])
+            out["choices"].append("%s=%s" % c)
+        return c_index[c]
+
+    for x, others in why_not(paths).items():
+        for y, rs in others.items():
+            if cid(y) < cid(x):
+                continue
+            row = [cid(x), cid(y)]
+            for r in rs:
+                key = (r["text"], r["rule"], r["src"])
+                if key not in r_index:
+                    r_index[key] = len(out["reasons"])
+                    out["reasons"].append(r)
+                row.append(r_index[key])
+            out["pairs"].append(row)
+    return out
+
+
+def write_why_not(paths: Sequence[Pathway]) -> None:
+    """One pair or reason per line: small, and a change to one shows as a one-line diff."""
+    data = why_not_json(paths)
+    WHY_NOT.write_text(
+        '{"choices": %s,\n"reasons": [\n%s\n],\n"pairs": [\n%s\n]}\n'
+        % (
+            json.dumps(data["choices"], ensure_ascii=False),
+            ",\n".join(json.dumps(r, ensure_ascii=False) for r in data["reasons"]),
+            ",\n".join(json.dumps(row) for row in data["pairs"]),
+        )
+    )
+
+
 def _json_default(o: object) -> list[str]:
     if isinstance(o, set):
         return sorted(o)
@@ -1644,6 +1908,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         pathways=paths,
     )
     (HERE / "map.json").write_text(json.dumps(data, indent=1, default=_json_default))
+    write_why_not(paths)
     print(stats)
     by: dict[tuple[str, str], list[int]] = {}
     for p in paths:
