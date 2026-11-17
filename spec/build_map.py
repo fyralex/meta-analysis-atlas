@@ -3300,14 +3300,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "what",
-            "When a study does not report it or its standard error, valmeta() derives them from other reported information, such as observed and expected event counts. Within studies it is modelled as normal (log or identity scale) or Poisson.",
+            "When a study does not report it or its standard error, valmeta() derives them from other reported information. In a frequentist meta-analysis it models the within-study variation as normal (log or identity scale) or Poisson.",
             "VALMETA",
         ),
     ],
     "metric:DR_RR": [
         (
             "what",
-            "Models each study's log relative risks, each against the study's reference exposure level, as a function of dose.",
+            "Models each study's log relative risks, typically each against the study's reference exposure level, as a function of dose.",
             "DOSRES",
         ),
         (
@@ -3319,14 +3319,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:DR_MD": [
         (
             "what",
-            "Models each study's mean differences, each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"md\") needs the standard deviations.",
+            "Models each study's mean differences, typically each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"md\") needs the standard deviations.",
             "DOSRES",
         ),
     ],
     "metric:DR_SMD": [
         (
             "what",
-            "Models each study's standardized mean differences, each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"smd\") needs the standard deviations, and method.smd chooses Cohen's, Hedges' or Glass's version.",
+            "Models each study's standardized mean differences, typically each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"smd\") needs the standard deviations, and method.smd chooses Cohen's, Hedges' or Glass's version.",
             "DOSRES",
         ),
     ],
