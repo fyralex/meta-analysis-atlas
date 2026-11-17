@@ -651,3 +651,16 @@ def test_batch_seven_covers_the_other_pairwise_methods() -> None:
 
 def test_the_bayesian_card_cautions_that_results_depend_on_the_priors() -> None:
     assert any(k == "caution" and src == "CH-10 s10.13" for k, _, src in bm.TEACH["method:BAYES"])
+
+
+NETWORK_TAUGHT = ("NM_GT", "NM_MV", "NM_MH", "NM_BAYES")
+
+
+def test_batch_eight_covers_the_network_methods_with_a_source() -> None:
+    assert {"method:" + c for c in NETWORK_TAUGHT} <= set(bm.TEACH)
+
+
+def test_every_taught_network_method_carries_the_network_cautions() -> None:
+    """Transitivity and the statistician hold whatever fits the network (Cochrane 11.2.2, 11.3.1)."""
+    for c in NETWORK_TAUGHT:
+        assert all(line in bm.TEACH["method:" + c] for line in bm.NETWORK_CAUTIONS), c

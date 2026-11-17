@@ -2099,8 +2099,24 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 5: the measures for change scores and matched pairs.
 # Batch 6: the other two-group measures (rates, hazard ratio, ordinal) and O - E and variance.
 # Batch 7: the other pairwise methods (penalised logistic regression, Bayesian, multilevel, one-stage IPD).
+# Batch 8: the network methods with a source that covers them (not yet one-stage IPD in a network).
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
+# Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
+NETWORK_CAUTIONS: list[tuple[str, str, str]] = [
+    (
+        "caution",
+        "Indirect comparisons hold only when the studies behind the different comparisons are similar in everything "
+        "important apart from the treatments compared (transitivity). Cochrane assesses this by comparing the "
+        "effect modifiers across comparisons.",
+        "CH-11 s11.2.2",
+    ),
+    (
+        "caution",
+        "Cochrane advises including a statistician skilled in network meta-analysis in the review team.",
+        "CH-11 s11.3.1",
+    ),
+]
 TEACH: dict[str, list[tuple[str, str, str]]] = {
     "model:common-effect": [
         (
@@ -2935,6 +2951,117 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "CH-26 s26.4.4",
         ),
     ],
+    "method:NM_GT": [
+        (
+            "what",
+            "netmeta() fits the network with a graph-theoretical method taken from electrical networks, which has "
+            "been shown to be equivalent to frequentist network meta-analysis. It reads one estimate per comparison; "
+            "pairwise() converts arm-level data.",
+            "NM",
+        ),
+        (
+            "what",
+            "A multi-arm study enters as all of its pairwise comparisons, reweighted because they come from the same "
+            "study.",
+            "NM",
+        ),
+        (
+            "use",
+            "It fits common and random effects together. The random-effects model adds the same heterogeneity "
+            "variance to every comparison, estimated by DL, REML or ML.",
+            "NM",
+        ),
+        (
+            "use",
+            "To check consistency, its Q statistic splits into a part for each pairwise meta-analysis and a part for "
+            "the inconsistency left between them. Cochrane notes that finding no significant incoherence does not "
+            "show there is none.",
+            "NM, CH-11 s11.4.4.2",
+        ),
+        (
+            "caution",
+            "Assuming the same heterogeneity for every comparison is common and helps estimation, but Cochrane says "
+            "the choice should rest on clinical and methodological judgement.",
+            "CH-11 s11.4.3.2",
+        ),
+        (
+            "caution",
+            "Harrer et al. note that netmeta does not yet support meta-regression, which a Bayesian model allows.",
+            "DMA",
+        ),
+    ]
+    + NETWORK_CAUTIONS,
+    "method:NM_MV": [
+        (
+            "what",
+            "Fits the network as a multivariate model in rma.mv(), arm-based or contrast-based. The covariances "
+            "between the comparisons of a multi-arm study go into the variance-covariance matrix.",
+            "MD-senn",
+        ),
+        (
+            "use",
+            "The documented example fits fixed-effects and random-effects network models, and a model with random "
+            "inconsistency effects (Law et al. 2016).",
+            "MD-senn",
+        ),
+        (
+            "use",
+            "Like any rma.mv() model it accepts moderators, so a network model can include them.",
+            "MF-mv",
+        ),
+    ]
+    + NETWORK_CAUTIONS,
+    "method:NM_MH": [
+        (
+            "what",
+            "netmetabin() pools binary outcomes across a network from the event counts and sample sizes of each arm, "
+            "one comparison per row (pairwise() converts arm-based data). Its Mantel-Haenszel "
+            "method (Efthimiou et al. 2019) and its non-central hypergeometric method fit common effects only.",
+            "NM-bin",
+        ),
+        (
+            "use",
+            "The Mantel-Haenszel model comes from a paper on network meta-analysis of rare events. By default, no "
+            "continuity correction enters the network estimates.",
+            "NM-bin",
+        ),
+        (
+            "caution",
+            "Heterogeneity is not modelled. In netmetabin(), a preset heterogeneity and prediction intervals are "
+            "available only with the inverse-variance method.",
+            "NM-bin",
+        ),
+    ]
+    + NETWORK_CAUTIONS,
+    "method:NM_BAYES": [
+        (
+            "what",
+            "Fits a Bayesian hierarchical model for the network with gemtc, which samples the posterior by MCMC "
+            "(Gibbs sampling in JAGS). By default its priors are uninformative, so the data drive the results.",
+            "DMA",
+        ),
+        (
+            "use",
+            "Cochrane notes that hierarchical models are a popular way to fit network meta-analysis, often in a "
+            "Bayesian framework, and lists complex analyses such as network meta-analysis among the potential "
+            "advantages of Bayesian methods.",
+            "CH-11 s11.4.3, CH-10 s10.13",
+        ),
+        (
+            "use",
+            "Harrer et al. note that it allows network meta-regression, which netmeta does not yet support, and that "
+            "frequentist and Bayesian network models should give the same results when the sample is large enough.",
+            "DMA",
+        ),
+        (
+            "caution",
+            "MCMC output needs checking: burn-in iterations are discarded, and convergence is checked with trace "
+            "plots and the Gelman-Rubin potential scale reduction factor, which Harrer et al. say should end below "
+            "1.05.",
+            "DMA",
+        ),
+    ]
+    + NETWORK_CAUTIONS,
 }
 
 
