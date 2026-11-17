@@ -54,6 +54,16 @@ export interface Branch {
   added: boolean;
   verified: boolean;
   note: string;
+  /** Keys of `sources` for the data this branch reads, its metrics and its note. */
+  src: string[];
+}
+
+/** A note on a framework, group or datatype node; `src` is written like a rule's source. */
+export interface Note {
+  tier: "framework" | "group" | "datatype";
+  value: string;
+  text: string;
+  src: string;
 }
 
 export interface MapData {
@@ -62,6 +72,7 @@ export interface MapData {
   branches: Branch[];
   rules: [id: string, rule: string, comparedWithV11: string, source: string][];
   cross_cutting: [section: string, content: string, source: string][];
+  notes: Note[];
   open_items: string[];
   /** Method and metric pairs whose pathways stay to check, each with why. */
   unconfirmed: { method: string; metric: string; why: string }[];
