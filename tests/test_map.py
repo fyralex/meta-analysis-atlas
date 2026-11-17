@@ -627,3 +627,15 @@ def test_batch_four_says_nothing_beyond_escalc() -> None:
     """escalc() defines these measures and their zero-count defaults; no line here goes beyond it."""
     for c in ONE_GROUP:
         assert all(src == "MF-escalc" for _, _, src in bm.TEACH["metric:" + c]), c
+
+
+PAIRED = ("MC", "SMCC", "SMCR", "ROMC", "MPRR", "MPOR", "MPRD", "MPORC")
+
+
+def test_batch_five_covers_every_paired_measure() -> None:
+    assert {"metric:" + c for c in PAIRED} <= set(bm.TEACH)
+
+
+def test_paired_binary_cards_defer_to_a_statistician_as_cochrane_does() -> None:
+    for c in ("MPRR", "MPOR", "MPRD", "MPORC"):
+        assert any(k == "caution" and src == "CH-23 s23.2.5" for k, _, src in bm.TEACH["metric:" + c]), c
