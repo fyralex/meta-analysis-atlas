@@ -421,3 +421,75 @@ def test_why_not_file_holds_every_pair_once() -> None:
     pairs = {frozenset((row[0], row[1])) for row in data["pairs"]}
     assert len(pairs) == len(data["pairs"])
     assert all(len(row) >= 3 for row in data["pairs"])
+
+
+# --- cards ---------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def all_cards() -> list[bm.Card]:
+    return bm.cards(bm.pathways())
+
+
+def test_every_node_and_rule_has_one_card(all_cards: list[bm.Card]) -> None:
+    paths = bm.pathways()
+    nodes = {(t, str(p[t])) for p in paths for t in bm.NODE_TIERS}  # type: ignore[literal-required]
+    nodes |= {("method", c) for c in bm.METHODS} | {("metric", c) for c in bm.METRICS}
+    nodes |= {("rule", r[0]) for r in bm.RULES}
+    have = [(c["tier"], c["value"]) for c in all_cards]
+    assert len(have) == len(set(have))
+    assert set(have) == nodes
+
+
+def test_card_ids_are_unique(all_cards: list[bm.Card]) -> None:
+    ids = [c["id"] for c in all_cards]
+    assert len(ids) == len(set(ids))
+
+
+def test_card_ids_are_readable() -> None:
+    assert bm.card_id("framework", bm.F1) == "framework:interventional-effect-of-an-intervention"
+    assert bm.card_id("outcome", "Count / person-time") == "outcome:count-person-time"
+    assert bm.card_id("method", "IV") == "method:IV"
+    assert bm.card_id("rule", "R5") == "rule:R5"
+
+
+def test_every_card_cites_known_sources(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        keys = source_keys(c["src"])
+        assert keys, c["id"]
+        assert [k for k in keys if k not in bm.SOURCES] == [], c["id"]
+
+
+def test_every_card_note_cites_known_sources_the_card_lists(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        for n in c["notes"]:
+            keys = source_keys(n["src"])
+            assert keys and all(k in bm.SOURCES for k in keys), c["id"]
+            assert set(keys) <= set(source_keys(c["src"])), c["id"]
+
+
+def test_card_rules_exist(all_cards: list[bm.Card]) -> None:
+    ids = {r[0] for r in bm.RULES}
+    assert all(set(c["rules"]) <= ids for c in all_cards)
+
+
+def test_method_card_carries_its_function_and_rules(all_cards: list[bm.Card]) -> None:
+    peto = next(c for c in all_cards if c["id"] == "method:PETO")
+    assert {"label": "R function", "items": ["metafor::rma.peto()"], "code": True} in peto["facts"]
+    assert peto["rules"] == ["R2", "R5"]
+
+
+def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:
+    for code, mt in bm.METRICS.items():
+        card = next(c for c in all_cards if c["id"] == "metric:" + code)
+        assert card["facts"][0] == {"label": "R call", "items": [mt["call"]], "code": True}
+
+
+def test_model_cards_cite_the_handbook_on_the_choice(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        if c["tier"] == "model":
+            assert c["src"] == "CH-10 s10.10.4.1, MF-models"
+
+
+def test_cards_file_is_current(all_cards: list[bm.Card]) -> None:
+    assert json.loads(bm.CARDS.read_text()) == json.loads(json.dumps(all_cards))
