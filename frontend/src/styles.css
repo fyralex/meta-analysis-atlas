@@ -1,0 +1,75 @@
+/* Tokens: the light palette on :root; the dark one for the system setting and for an explicit choice. */
+:root {
+  color-scheme: light;
+  --bg: #f7f8f7;
+  --surface: #ffffff;
+  --text: #1c2321;
+  --muted: #5b6662;
+  --line: #d9dedb;
+  --accent: #1f6f5c;
+  --focus: #b35c00;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121615;
+    --surface: #1b2120;
+    --text: #e6ebe9;
+    --muted: #9aa6a2;
+    --line: #2f3836;
+    --accent: #5cc3a6;
+    --focus: #ffb35c;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121615;
+  --surface: #1b2120;
+  --text: #e6ebe9;
+  --muted: #9aa6a2;
+  --line: #2f3836;
+  --accent: #5cc3a6;
+  --focus: #ffb35c;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--accent); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+.skip { position: absolute; left: -9999px; }
+.skip:focus { left: 16px; top: 8px; background: var(--surface); padding: 6px 10px; border: 1px solid var(--line); }
+main:focus { outline: none; }
+
+.shell { max-width: 960px; margin: 0 auto; padding: 0 max(16px, 3vw) 48px; }
+.top {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px;
+  padding-block: 16px; border-bottom: 1px solid var(--line);
+}
+.brand { font-weight: 700; color: var(--text); text-decoration: none; margin-right: auto; }
+.top nav { display: flex; gap: 16px; }
+.top nav a { text-decoration: none; padding: 2px 0; }
+.top nav a.active { border-bottom: 2px solid var(--accent); }
+
+.theme-switch { display: flex; gap: 8px; border: 0; margin: 0; padding: 0; font-size: 14px; color: var(--muted); }
+.theme-switch legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.theme-switch label { display: flex; align-items: center; gap: 4px; cursor: pointer; }
+
+.page h1 { font-size: 1.9rem; line-height: 1.2; text-wrap: balance; margin: 32px 0 12px; }
+.page h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+.lead { max-width: 65ch; color: var(--muted); }
+.muted { color: var(--muted); }
+.count { font-size: 1.15rem; }
+.count strong { font-size: 2.2rem; font-variant-numeric: tabular-nums; margin-right: 6px; }
+
+.statuses { border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); width: 100%; max-width: 640px; }
+.statuses caption { text-align: left; font-weight: 600; padding-bottom: 6px; }
+.statuses th, .statuses td { padding: 8px 12px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
+.statuses .num { text-align: right; font-variant-numeric: tabular-nums; }
+.apps { padding-left: 1.2em; max-width: 65ch; }
+.apps li { margin-bottom: 6px; }

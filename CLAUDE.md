@@ -75,12 +75,13 @@ Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
 public). Commits are authored with the owner's GitHub noreply address, set in
 the repo's git config.
 
-**Tools needed:** `git`, Python 3.11 or later, and the GitHub CLI `gh`
+**Tools needed:** `git`, Python 3.11 or later, Node 22 or later, and the GitHub CLI `gh`
 (logged in with `gh auth login`). Once per clone:
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/pre-commit install
+npm ci --prefix frontend
 export ATLAS_PRIVATE_SCAN=<path to the owner's private scan script>   # e.g. in your shell profile
 ```
 
@@ -369,7 +370,7 @@ check isn't opened. The script runs:
 2. **map files current:** regenerating `spec/` changes nothing.
 3. **private name scan:** `$ATLAS_PRIVATE_SCAN` prints nothing. The script
    fails if it isn't set.
-4. **frontend** (from PR 3): lint, typecheck, Vitest, build.
+4. **frontend:** ESLint, `tsc --noEmit`, Vitest, and the production build.
 
 **At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
 same script in a clean environment only when a milestone is closed, a `v*`
@@ -385,6 +386,7 @@ and the advisor scenarios run the same way.
 ```bash
 python3 spec/build_map.py                     # regenerate the map files
 python3 spec/build_map.py --lock              # also rewrite spec/pathways.lock.json after a map change
+npm --prefix frontend run dev                 # the apps, at http://localhost:5173
 scripts/check.sh                              # every local check for a PR
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
 gh workflow run CI                            # start CI by hand (it also runs at releases)

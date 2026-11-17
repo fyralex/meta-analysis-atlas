@@ -42,6 +42,12 @@ repos:
         language: system
         files: ^(spec/|tests/)
         pass_filenames: false
+      - id: frontend-quick
+        name: frontend lint and types
+        entry: sh -c 'npm --prefix frontend run -s lint && npm --prefix frontend run -s typecheck'
+        language: system
+        files: ^frontend/
+        pass_filenames: false
       - id: private-scan
         name: private name scan (needs ATLAS_PRIVATE_SCAN)
         entry: sh -c 'if [ -z "${ATLAS_PRIVATE_SCAN:-}" ]; then echo "ATLAS_PRIVATE_SCAN is not set"; exit 1; fi; "$ATLAS_PRIVATE_SCAN"'
