@@ -2096,6 +2096,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 2: the effect measures for two-group binary outcomes.
 # Batch 3: the effect measures for two-group continuous outcomes.
 # Batch 4: the measures for one group (proportions, means, incidence rates), from escalc() only.
+# Batch 5: the measures for change scores and matched pairs.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2568,6 +2569,139 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "MF-escalc",
         ),
         ("caution", "escalc() adds no correction to zero counts for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:MC": [
+        ("what", "The difference between the means of the two measurements, in the outcome's own units.", "MF-escalc"),
+        (
+            "what",
+            "If a study reports only the standard deviation of the change scores, escalc() can take it as sd1i, with sd2i and ri set to 0.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "CH-23 s23.2.5, s23.2.6",
+        ),
+        (
+            "caution",
+            "It needs the correlation between the two measurements. If a study doesn't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
+            "CH-23 s23.2.7.1, s23.2.7.3, MF-escalc",
+        ),
+    ],
+    "metric:SMCC": [
+        (
+            "what",
+            "The mean change divided by the standard deviation of the change scores, which escalc() works out from the two standard deviations and their correlation. A bias correction applies by default.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "If a study reports only the standard deviation of the change scores, escalc() can take it as sd1i, with sd2i and ri set to 0.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "CH-23 s23.2.5, s23.2.6",
+        ),
+        (
+            "caution",
+            "It needs the correlation between the two measurements. If a study doesn't report it, Cochrane suggests taking it from another study or an external source, and checking the result over plausible values in a sensitivity analysis.",
+            "CH-23 s23.2.7.1, s23.2.7.3, MF-escalc",
+        ),
+        (
+            "caution",
+            "Use an imputed correlation with great care here: for a standardized measure it changes the estimate itself, not only its standard error.",
+            "CH-23 s23.2.7.2",
+        ),
+    ],
+    "metric:SMCR": [
+        (
+            "what",
+            "The mean change divided by the standard deviation of the raw scores at one time point, usually before treatment; the other standard deviation isn't needed. A bias correction applies by default.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "CH-23 s23.2.5, s23.2.6",
+        ),
+    ],
+    "metric:ROMC": [
+        (
+            "what",
+            "The ratio of the two measurements' means, on the log scale. A bias correction applies by default.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For one group measured twice, or a crossover trial, where each participant is their own control. Cochrane advises against analysing a crossover trial's periods as if they were separate groups: that unit-of-analysis error gives the trial too little weight.",
+            "CH-23 s23.2.5, s23.2.6",
+        ),
+    ],
+    "metric:MPRR": [
+        (
+            "what",
+            "Built from a paired 2x2 table, which classifies each pair (or each person measured twice) by the outcome under both conditions.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "Computed from the marginal table: the paired table collapsed to the number with the outcome under each condition. This one is the risk ratio, on the log scale.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "For crossover trials with binary outcomes, Cochrane notes that more complex methods are needed and suggests consulting a statistician.",
+            "CH-23 s23.2.5",
+        ),
+    ],
+    "metric:MPOR": [
+        (
+            "what",
+            "Built from a paired 2x2 table, which classifies each pair (or each person measured twice) by the outcome under both conditions.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "Computed from the marginal table: the paired table collapsed to the number with the outcome under each condition. This one is the odds ratio, on the log scale.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "For crossover trials with binary outcomes, Cochrane notes that more complex methods are needed and suggests consulting a statistician.",
+            "CH-23 s23.2.5",
+        ),
+    ],
+    "metric:MPRD": [
+        (
+            "what",
+            "Built from a paired 2x2 table, which classifies each pair (or each person measured twice) by the outcome under both conditions.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            "Computed from the marginal table: the paired table collapsed to the number with the outcome under each condition. This one is the risk difference.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "For crossover trials with binary outcomes, Cochrane notes that more complex methods are needed and suggests consulting a statistician.",
+            "CH-23 s23.2.5",
+        ),
+    ],
+    "metric:MPORC": [
+        (
+            "what",
+            "Built from a paired 2x2 table, which classifies each pair (or each person measured twice) by the outcome under both conditions.",
+            "MF-escalc",
+        ),
+        ("what", "The conditional odds ratio, computed from the paired table itself, on the log scale.", "MF-escalc"),
+        (
+            "caution",
+            "For crossover trials with binary outcomes, Cochrane notes that more complex methods are needed and suggests consulting a statistician.",
+            "CH-23 s23.2.5",
+        ),
     ],
 }
 
