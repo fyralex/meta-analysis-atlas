@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { map } from "../map";
 import { Sources } from "../SourceList";
-import type { Card } from "../types/cards";
+import type { Card, TeachKind } from "../types/cards";
 import { cardHref } from "./cards";
 
 interface Props {
@@ -11,6 +11,12 @@ interface Props {
   /** Leave the title out where the page already names the card, with its badges (CardBadges). */
   hideTitle?: boolean;
 }
+
+const TEACH_HEADINGS: { kind: TeachKind; text: string }[] = [
+  { kind: "what", text: "What it is" },
+  { kind: "use", text: "When to use it" },
+  { kind: "caution", text: "Cautions" },
+];
 
 function ruleText(id: string): string {
   return map.rules.find((r) => r[0] === id)?.[1] ?? "";
@@ -48,6 +54,21 @@ export function CardView({ card, level, hideTitle = false }: Props) {
           <CardBadges card={card} />
         </H>
       )}
+      {TEACH_HEADINGS.map(({ kind, text }) => {
+        const lines = card.teach.filter((t) => t.kind === kind);
+        if (lines.length === 0) return null;
+        return (
+          <section key={kind} className="teach" aria-label={text}>
+            <p className="facts-label">{text}</p>
+            {lines.map((t) => (
+              <div key={t.text} className="card-note">
+                <p>{t.text}</p>
+                <Sources src={t.src} />
+              </div>
+            ))}
+          </section>
+        );
+      })}
       {card.facts.length > 0 && (
         <dl className="facts">
           {card.facts.map((f) => (

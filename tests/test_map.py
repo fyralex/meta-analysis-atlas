@@ -547,3 +547,51 @@ def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
 
 def test_cards_file_is_current(all_cards: list[bm.Card]) -> None:
     assert json.loads(bm.CARDS.read_text()) == json.loads(json.dumps(all_cards))
+
+
+# --- teaching text -------------------------------------------------------------
+
+BANNED = re.compile(r"\b(mandatory|gold standard|always)\b", re.IGNORECASE)
+
+
+def test_teaching_text_is_for_cards_that_exist(all_cards: list[bm.Card]) -> None:
+    assert set(bm.TEACH) <= {c["id"] for c in all_cards}
+
+
+def test_every_teaching_line_has_a_kind_and_a_known_source() -> None:
+    for cid, lines in bm.TEACH.items():
+        assert lines, cid
+        for kind, text, src in lines:
+            assert kind in bm.TEACH_KINDS, (cid, kind)
+            assert text.strip() == text and text.endswith("."), (cid, text)
+            keys = source_keys(src)
+            assert keys and all(k in bm.SOURCES for k in keys), (cid, src)
+
+
+def test_teaching_text_avoids_absolute_words_no_source_uses() -> None:
+    """CLAUDE.md rule 8: no "mandatory", "gold standard" or "always" unless the source says so."""
+    assert [t for lines in bm.TEACH.values() for _, t, _ in lines if BANNED.search(t)] == []
+
+
+def test_a_card_lists_its_teaching_text_and_cites_its_sources(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        assert [(t["kind"], t["text"], t["src"]) for t in c["teach"]] == bm.TEACH.get(c["id"], [])
+        keys = set(source_keys(c["src"]))
+        for t in c["teach"]:
+            assert set(source_keys(t["src"])) <= keys, c["id"]
+
+
+def test_batch_one_covers_the_models_and_the_two_group_binary_methods() -> None:
+    assert {
+        "model:common-effect",
+        "model:random-effects",
+        "method:IV",
+        "method:MH",
+        "method:PETO",
+        "method:GLMM",
+    } <= set(bm.TEACH)
+
+
+def test_the_models_present_the_choice_as_a_debate() -> None:
+    for cid in ("model:common-effect", "model:random-effects"):
+        assert any("debated" in t and src == "CH-10 s10.10.4.1" for _, t, src in bm.TEACH[cid])
