@@ -1908,14 +1908,21 @@ def card_id(tier: str, value: str) -> str:
 
 
 def _join_src(fields: Iterable[str]) -> str:
-    """Several source fields as one, each key once, in order of first appearance."""
-    parts: list[str] = []
+    """Several source fields as one: each key once, in order of first appearance, with all its sections.
+
+    A word starting with "s" and a digit is a section of the key before it, as the frontend reads it.
+    """
+    sections: dict[str, list[str]] = {}
     for field in fields:
-        for part in field.split(","):
-            part = part.strip()
-            if part and part not in parts:
-                parts.append(part)
-    return ", ".join(parts)
+        key = ""
+        for word in field.replace(",", " ").split():
+            if word[0] == "s" and word[1:2].isdigit() and key:
+                if word not in sections[key]:
+                    sections[key].append(word)
+            else:
+                key = word
+                sections.setdefault(key, [])
+    return ", ".join(" ".join([k, ", ".join(ss)]) if ss else k for k, ss in sections.items())
 
 
 def _uniq(xs: Iterable[str]) -> list[str]:

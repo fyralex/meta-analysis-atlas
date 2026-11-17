@@ -54,7 +54,7 @@ describe("the Cards page", () => {
   it("shows an opened card's flags in its heading", () => {
     renderAt("/cards?card=method%3AOEV");
     const heading = screen.getByRole("heading", { level: 2, name: /^Method: / });
-    expect(heading).toHaveTextContent("to check");
+    expect(heading).toHaveAccessibleName(/ to check$/);
   });
 
   it("says so when the address names no card", () => {

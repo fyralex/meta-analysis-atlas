@@ -340,7 +340,7 @@ describe("the Atlas's 2D view", () => {
     it("shows a chosen node's flags next to its card's summary", () => {
       renderAtlas("?datatype=Individual%20participant%20data");
       const summary = screen.getByText(/^About Individual participant data/);
-      expect(summary).toHaveTextContent("to check");
+      expect(summary.textContent).toMatch(/Individual participant data to check$/);
     });
   });
 });

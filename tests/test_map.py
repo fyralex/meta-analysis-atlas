@@ -468,6 +468,18 @@ def test_every_card_note_cites_known_sources_the_card_lists(all_cards: list[bm.C
             assert set(keys) <= set(source_keys(c["src"])), c["id"]
 
 
+def test_join_src_merges_sections_under_one_key() -> None:
+    assert bm._join_src(["CH-10 s10.10.4.1, MF-models", "MF-uni, CH-10", "CH-11 s11.2.2, s11.4.4, NM"]) == (
+        "CH-10 s10.10.4.1, MF-models, MF-uni, CH-11 s11.2.2, s11.4.4, NM"
+    )
+
+
+def test_no_card_cites_a_source_twice(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        keys = source_keys(c["src"])
+        assert len(keys) == len(set(keys)), c["id"]
+
+
 def test_card_rules_exist(all_cards: list[bm.Card]) -> None:
     ids = {r[0] for r in bm.RULES}
     assert all(set(c["rules"]) <= ids for c in all_cards)

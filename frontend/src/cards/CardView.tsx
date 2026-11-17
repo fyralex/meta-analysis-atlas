@@ -20,8 +20,19 @@ function ruleText(id: string): string {
 export function CardBadges({ card }: { card: Card }) {
   return (
     <>
-      {card.added && <span className="badge badge-new">new</span>}
-      {!card.verified && <span className="badge badge-check">to check</span>}
+      {/* the spaces keep an accessible name from running the title and the badges together */}
+      {card.added && (
+        <>
+          {" "}
+          <span className="badge badge-new">new</span>
+        </>
+      )}
+      {!card.verified && (
+        <>
+          {" "}
+          <span className="badge badge-check">to check</span>
+        </>
+      )}
     </>
   );
 }
