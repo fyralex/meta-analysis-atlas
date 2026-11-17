@@ -11,6 +11,16 @@ const lock = lockRaw as unknown as Pathway[];
 const values = Object.fromEntries(TIERS.map((t) => [t, [...new Set(lock.map((p) => p[t]))]])) as Record<Tier, string[]>;
 const meet = new Set<string>();
 for (const p of lock) for (const a of TIERS) for (const b of TIERS) meet.add(`${a}=${p[a]}|${b}=${p[b]}`);
+// Every three choices that share a pathway, keyed in TIERS order: a set lookup, not a scan of the lock file.
+const tripleKey = (s: Selection) =>
+  TIERS.filter((t) => s[t] !== undefined)
+    .map((t) => `${t}=${s[t] ?? ""}`)
+    .join("|");
+const triples = new Set<string>();
+for (const p of lock)
+  for (const a of TIERS)
+    for (const b of TIERS)
+      for (const c of TIERS) if (a < b && b < c) triples.add(tripleKey({ [a]: p[a], [b]: p[b], [c]: p[c] }));
 const SHOW = { hideNew: false };
 const HIDE = { hideNew: true };
 
@@ -66,7 +76,7 @@ describe("explaining a greyed-out node", () => {
             if (t === a || t === b) continue;
             for (const v of values[t]) {
               const each = meet.has(`${t}=${v}|${a}=${p[a]}`) && meet.has(`${t}=${v}|${b}=${p[b]}`);
-              if (each && !lock.some((q) => matches(q, { ...selection, [t]: v }, SHOW))) {
+              if (each && !triples.has(tripleKey({ ...selection, [t]: v }))) {
                 found = { selection, tier: t, value: v };
                 break search;
               }

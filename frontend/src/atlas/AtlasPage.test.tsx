@@ -35,10 +35,18 @@ function nodes(tier: Tier): HTMLButtonElement[] {
   return within(layer(tier)).getAllByRole("button");
 }
 
+// Each tier's values by label, from the lock file: worked out once, not for every node checked.
+const byLabel = Object.fromEntries(
+  TIERS.map((t) => {
+    const out = new Map<string, string[]>();
+    for (const v of new Set(lock.map((p) => p[t]))) out.set(nodeLabel(map, t, v), [...(out.get(nodeLabel(map, t, v)) ?? []), v]);
+    return [t, out];
+  }),
+) as Record<Tier, Map<string, string[]>>;
+
 /** The value behind a node, found from its label among the lock file's values. */
 function valueOf(tier: Tier, button: HTMLElement): string {
-  const label = button.querySelector(".node-label")?.textContent;
-  const values = [...new Set(lock.map((p) => p[tier]))].filter((v) => nodeLabel(map, tier, v) === label);
+  const values = byLabel[tier].get(button.querySelector(".node-label")?.textContent ?? "") ?? [];
   expect(values).toHaveLength(1);
   return values[0] ?? "";
 }
@@ -53,8 +61,16 @@ function node(tier: Tier, value: string): HTMLButtonElement {
   return found;
 }
 
+/** The live summary. Found by selector: getByRole("status") walks the whole page (about 0.4 s), and the
+ * tests read the summary often. "opens on the whole map" checks once that it is the page's status region. */
+function summaryRegion(): HTMLElement {
+  const el = document.querySelector<HTMLElement>(".summary[role='status']");
+  if (!el) throw new Error("no summary");
+  return el;
+}
+
 function summary(): string {
-  return screen.getByRole("status").textContent;
+  return summaryRegion().textContent;
 }
 
 /**
@@ -64,16 +80,18 @@ function summary(): string {
 function expectCountsMatchLock(selection: Selection, hideNew = false) {
   const kept = lock.filter((p) => !(hideNew && p.added));
   const matching = kept.filter((p) => TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]));
+  const text = summary(); // role queries walk the whole page: each is made once
   for (const status of STATUSES) {
     const n = matching.filter((p) => p.status === status).length;
-    if (n > 0) expect(summary()).toContain(`${String(n)} ${status === "to_check" ? "to check" : status}`);
-    else expect(summary()).not.toContain(status === "to_check" ? "to check" : status);
+    if (n > 0) expect(text).toContain(`${String(n)} ${status === "to_check" ? "to check" : status}`);
+    else expect(text).not.toContain(status === "to_check" ? "to check" : status);
   }
   for (const tier of TIERS) {
-    expect(new Set(nodes(tier).map((b) => valueOf(tier, b))), tier).toEqual(new Set(kept.map((p) => p[tier])));
-  }
-  for (const tier of TIERS) {
-    for (const button of nodes(tier)) {
+    // By id, not by role: this runs for every node of every layer, and role queries walk the whole page.
+    // Other tests find the same toolbars by role.
+    const buttons = [...document.querySelectorAll<HTMLButtonElement>(`#tier-${tier}-nodes button.node`)];
+    expect(new Set(buttons.map((b) => valueOf(tier, b))), tier).toEqual(new Set(kept.map((p) => p[tier])));
+    for (const button of buttons) {
       const rest = Object.fromEntries(Object.entries(selection).filter(([t]) => t !== tier));
       expect(shownCount(button), `${tier}: ${valueOf(tier, button)}`).toBe(
         lockCount({ ...rest, [tier]: valueOf(tier, button) }, hideNew),
@@ -82,9 +100,16 @@ function expectCountsMatchLock(selection: Selection, hideNew = false) {
   }
 }
 
-describe("the Atlas's 2D view", () => {
+// These tests render whole pages. The first render in a test worker pays the cold start (jsdom, React, the
+// map files), about 0.4 s alone but several seconds when two check runs share the machine (#49). A page-sized
+// timeout for this file only; the global default stays.
+const PAGE = { timeout: 15_000 };
+
+describe("the Atlas's 2D view", PAGE, () => {
   it("opens on the whole map, with every node's count equal to the lock file's", () => {
     renderAtlas();
+    expect(screen.getByRole("status")).toBe(summaryRegion());
+    for (const tier of TIERS) expect(layer(tier)).toContainElement(document.getElementById(`tier-${tier}-nodes`));
     expect(summary()).toContain(`${String(lock.length)} of ${String(lock.length)} pathways match`);
     expectCountsMatchLock({});
   });
