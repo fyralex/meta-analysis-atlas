@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 187; new, not in v11 350; still to check 95; status runnable 0; status planned 408; status specified 61; status to_check 95.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; new, not in v11 350; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -111,7 +111,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | N_RD | Risk difference | `netmeta(sm="RD")` | NM | OK |
 | N_ASD | Arcsine difference | `netmeta(sm="ASD")` | NM | NEW |
 | N_MD | Mean difference | `netmeta(sm="MD")` | NM | OK |
-| N_SMD | Standardized mean difference | `netmeta(sm="SMD")` | NM | OK |
+| N_SMD | Standardized mean difference (Cohen's d) | `netmeta(sm="SMD")` | META-pw | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |
 | N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
 | N_IRD | Incidence rate difference | `netmeta(sm="IRD")` | NM | OK |
@@ -205,6 +205,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R28 | Tests for funnel plot asymmetry need at least 10 studies; Egger's original test is not recommended for odds ratios or SMDs. | not in v11 | CH-13 s13.3.4.4 |
 | R29 | Trim and fill and selection models work on rma.uni models only (trim and fill: no moderators). | not in v11 | MF-trimfill, MF-selmodel |
 | R30 | Meta-regression is generally not advised with fewer than ten studies. | missing in v11 | CH-10 s10.11.4 |
+| R31 | A network's standardized mean difference is Cohen's d, as pairwise() computes it for netmeta: Hedges' g would not stay consistent across the comparisons of a study with three or more arms. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw |
 
 ## Compared with taxonomy v11
 
@@ -226,18 +227,27 @@ Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged 
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
 | Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
 | Multiple groups (network) | Contrast-level estimates | Time-to-event | Random effects | Bayesian hierarchical (MCMC) | SUCRA | R17: a ranking computed after the network model is fitted, not an effect measure |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | merged into N_SMD with no source recorded; under review in issue #31 |
-| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | merged into N_SMD with no source recorded; under review in issue #31 |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Cohen's d | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Frequentist, multivariate | Hedges' g | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Cohen's d | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | R31: the network SMD is Cohen's d (N_SMD); Hedges' g is not consistent in multi-arm studies |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
+
+## Method and metric pairs still to check
+
+Each method and metric here is confirmed on its own; their pairing is not yet, so its pathways are to check.
+
+| Method | Metric | Why |
+|---|---|---|
+| Frequentist, multivariate | Standardized mean difference (Cohen's d) | the Cohen's d of R31 is netmeta's; how rma.mv networks take an SMD is not yet confirmed (issue #31) |
+| Bayesian hierarchical (MCMC) | Standardized mean difference (Cohen's d) | the Cohen's d of R31 is netmeta's; how gemtc networks take an SMD is not yet confirmed (issue #31) |
 
 ## Sections that apply across the tree
 
@@ -257,7 +267,7 @@ Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged 
 4. Choose the R implementation for the HSROC model and for O - E and V data.
 5. Confirm R packages for one-stage IPD, pairwise and network.
 6. Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).
-7. Confirm incidence-rate input for network meta-analysis.
+7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 8. Confirm which models penalised logistic regression (metabin LRP) fits.
 9. Read the rest of the bayesmeta manual.
 10. Record the Handbook version and the date of each chapter.
@@ -292,6 +302,7 @@ Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged 
 | NM-bin | netmeta, netmetabin() | https://rdrr.io/cran/netmeta/man/netmetabin.html |
 | NM-man | netmeta manual | https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html |
 | META-bin | meta, metabin() | https://rdrr.io/cran/meta/man/metabin.html |
+| META-pw | meta, pairwise(), Details | https://rdrr.io/cran/meta/man/pairwise.html |
 | META-cont | meta, metacont() | https://rdrr.io/cran/meta/man/metacont.html |
 | DMA | Harrer et al., Doing Meta-Analysis in R, network chapter | https://doing-meta.guide/netwma.html |
 | MADA | mada, reitsma() | https://rdrr.io/cran/mada/man/reitsma.html |

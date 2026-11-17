@@ -105,6 +105,10 @@
    "meta, metabin()",
    "https://rdrr.io/cran/meta/man/metabin.html"
   ],
+  "META-pw": [
+   "meta, pairwise(), Details",
+   "https://rdrr.io/cran/meta/man/pairwise.html"
+  ],
   "META-cont": [
    "meta, metacont()",
    "https://rdrr.io/cran/meta/man/metacont.html"
@@ -1101,6 +1105,12 @@
    "Meta-regression is generally not advised with fewer than ten studies.",
    "missing in v11",
    "CH-10 s10.11.4"
+  ],
+  [
+   "R31",
+   "A network's standardized mean difference is Cohen's d, as pairwise() computes it for netmeta: Hedges' g would not stay consistent across the comparisons of a study with three or more arms. The map offers one network SMD.",
+   "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
+   "META-pw"
   ]
  ],
  "cross_cutting": [
@@ -1137,11 +1147,23 @@
   "Choose the R implementation for the HSROC model and for O - E and V data.",
   "Confirm R packages for one-stage IPD, pairwise and network.",
   "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
-  "Confirm incidence-rate input for network meta-analysis.",
+  "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).",
   "Confirm which models penalised logistic regression (metabin LRP) fits.",
   "Read the rest of the bayesmeta manual.",
   "Record the Handbook version and the date of each chapter.",
   "Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function."
+ ],
+ "unconfirmed": [
+  {
+   "method": "NM_MV",
+   "metric": "N_SMD",
+   "why": "the Cohen's d of R31 is netmeta's; how rma.mv networks take an SMD is not yet confirmed (issue #31)"
+  },
+  {
+   "method": "NM_BAYES",
+   "metric": "N_SMD",
+   "why": "the Cohen's d of R31 is netmeta's; how gemtc networks take an SMD is not yet confirmed (issue #31)"
+  }
  ],
  "metrics": {
   "PR": {
@@ -1539,9 +1561,9 @@
    "only": null
   },
   "N_SMD": {
-   "label": "Standardized mean difference",
+   "label": "Standardized mean difference (Cohen's d)",
    "call": "netmeta(sm=\"SMD\")",
-   "src": "NM",
+   "src": "META-pw",
    "added": false,
    "verified": true,
    "only": null
@@ -7111,10 +7133,10 @@
    "model": "Common effect",
    "method": "NM_MV",
    "metric": "N_SMD",
-   "verified": true,
+   "verified": false,
    "added": true,
    "milestone": "v0.3",
-   "status": "planned"
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7124,10 +7146,10 @@
    "model": "Random effects",
    "method": "NM_MV",
    "metric": "N_SMD",
-   "verified": true,
+   "verified": false,
    "added": false,
    "milestone": "v0.3",
-   "status": "planned"
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7813,10 +7835,10 @@
    "model": "Common effect",
    "method": "NM_MV",
    "metric": "N_SMD",
-   "verified": true,
+   "verified": false,
    "added": true,
    "milestone": "v0.3",
-   "status": "planned"
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7826,10 +7848,10 @@
    "model": "Random effects",
    "method": "NM_MV",
    "metric": "N_SMD",
-   "verified": true,
+   "verified": false,
    "added": false,
    "milestone": "v0.3",
-   "status": "planned"
+   "status": "to_check"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",

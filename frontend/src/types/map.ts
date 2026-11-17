@@ -63,6 +63,8 @@ export interface MapData {
   rules: [id: string, rule: string, comparedWithV11: string, source: string][];
   cross_cutting: [section: string, content: string, source: string][];
   open_items: string[];
+  /** Method and metric pairs whose pathways stay to check, each with why. */
+  unconfirmed: { method: string; metric: string; why: string }[];
   metrics: Record<string, Metric>;
   methods: Record<string, Method>;
   pathways: Pathway[];

@@ -139,7 +139,7 @@ def test_v11_removed_pathways_are_absent_from_the_map() -> None:
 
 def test_v11_removed_pathways_each_have_a_reason() -> None:
     for c in bm.V11_REMOVED:
-        assert re.match(r"^(R\d+: |.*; under review in issue #\d+$)", c["reason"]), c
+        assert re.match(r"^R\d+: ", c["reason"]), c
 
 
 def test_network_count_data_offers_rate_ratio_and_difference() -> None:
@@ -155,6 +155,26 @@ def test_network_count_data_offers_rate_ratio_and_difference() -> None:
     by_key = {bm.pathway_key(p): p for p in bm.pathways()}
     assert v11_ird <= set(by_key)
     assert [k for k in v11_ird if by_key[k]["added"]] == []
+
+
+def test_the_network_smd_is_cohens_d() -> None:
+    """meta's pairwise() computes Cohen's d for netmeta, as Hedges' g isn't consistent in multi-arm studies (#31)."""
+    assert "Cohen's d" in bm.METRICS["N_SMD"]["label"]
+    assert bm.METRICS["N_SMD"]["src"] == "META-pw"
+    assert "R31" in {r[0] for r in bm.RULES}
+    by_method: dict[str, set[str]] = {}
+    for p in bm.pathways():
+        if p["metric"] == "N_SMD":
+            by_method.setdefault(p["method"], set()).add(p["status"])
+    assert by_method == {"NM_GT": {"planned"}, "NM_MV": {"to_check"}, "NM_BAYES": {"to_check"}}
+
+
+def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
+    assert bm.UNCONFIRMED
+    for method, metric in bm.UNCONFIRMED:
+        assert method in bm.METHODS and metric in bm.METRICS
+        allowed = bm.METHODS[method]["metrics"]
+        assert allowed is None or metric in allowed
 
 
 def test_v11_removed_reasons_cite_existing_rules() -> None:

@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 187; new, not in v11 350; still to check 95; status runnable 0; status planned 408; status specified 61; status to_check 95.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; new, not in v11 350; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
 
 - framework: 1. Interventional (effect of an intervention)  (454)
   - group: One group (single arm)  (137)
@@ -559,28 +559,28 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
         - model: Random effects  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
       - outcome: Count / person-time  (12)
         - model: Common effect  (6)
@@ -641,28 +641,28 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
         - model: Random effects  (9)
           - method: Frequentist, graph-theoretical [NEW]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
             - metric: Mean difference
-            - metric: Standardized mean difference
+            - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
       - outcome: Count / person-time  (12)
         - model: Common effect  (6)
