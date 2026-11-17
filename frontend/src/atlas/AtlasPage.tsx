@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
 import { STATUSES, type Status } from "../types/map";
@@ -36,6 +37,7 @@ function compatibleFirst(nodes: NodeSummary[]): NodeSummary[] {
 
 export function AtlasPage() {
   const { selection, order, options, dropped, update: change } = useAtlasState();
+  const { search } = useLocation();
   const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
   // Any change of choices or settings closes "Why not?": its answer was for the old ones.
   const update: typeof change = (c) => {
@@ -66,6 +68,10 @@ export function AtlasPage() {
         Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
         node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices: press it to see why.
         With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer.
+      </p>
+      <p>
+        <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>. It keeps your framework,
+        group structure, datatype and outcome choices, up to the first one you haven&apos;t made.
       </p>
 
       <div className="atlas-controls">
