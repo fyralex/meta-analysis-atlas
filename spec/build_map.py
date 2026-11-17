@@ -139,6 +139,7 @@ SOURCES: dict[str, tuple[str, str]] = {
     "NM-bin": ("netmeta, netmetabin()", "https://rdrr.io/cran/netmeta/man/netmetabin.html"),
     "NM-man": ("netmeta manual", "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"),
     "META-bin": ("meta, metabin()", "https://rdrr.io/cran/meta/man/metabin.html"),
+    "META-pw": ("meta, pairwise(), Details", "https://rdrr.io/cran/meta/man/pairwise.html"),
     "META-cont": ("meta, metacont()", "https://rdrr.io/cran/meta/man/metacont.html"),
     "DMA": ("Harrer et al., Doing Meta-Analysis in R, network chapter", "https://doing-meta.guide/netwma.html"),
     "MADA": ("mada, reitsma()", "https://rdrr.io/cran/mada/man/reitsma.html"),
@@ -235,7 +236,7 @@ METRICS: dict[str, Metric] = {
     "N_RD": m("Risk difference", 'netmeta(sm="RD")', "NM"),
     "N_ASD": m("Arcsine difference", 'netmeta(sm="ASD")', "NM", added=True),
     "N_MD": m("Mean difference", 'netmeta(sm="MD")', "NM"),
-    "N_SMD": m("Standardized mean difference", 'netmeta(sm="SMD")', "NM"),
+    "N_SMD": m("Standardized mean difference (Cohen's d)", 'netmeta(sm="SMD")', "META-pw"),
     "N_ROM": m("Ratio of means", 'netmeta(sm="ROM")', "NM"),
     # netmeta's examples fit both from arm-level events and person-time, via pairwise(event, time, sm=...)
     "N_IRR": m("Incidence rate ratio", 'netmeta(sm="IRR")', "NM"),
@@ -986,6 +987,14 @@ RULES: list[tuple[str, str, str, str]] = [
         "missing in v11",
         "CH-10 s10.11.4",
     ),
+    (
+        "R31",
+        "A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way "
+        "for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons "
+        "disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD.",
+        "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
+        "META-pw",
+    ),
 ]
 
 CROSS: list[tuple[str, str, str]] = [
@@ -1020,7 +1029,8 @@ OPEN = [
     "Choose the R implementation for the HSROC model and for O - E and V data.",
     "Confirm R packages for one-stage IPD, pairwise and network.",
     "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
-    "Confirm incidence-rate input for network meta-analysis.",
+    "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
+    "(Cohen's d, R31).",
     "Confirm which models penalised logistic regression (metabin LRP) fits.",
     "Read the rest of the bayesmeta manual.",
     "Record the Handbook version and the date of each chapter.",
@@ -1091,7 +1101,7 @@ for _dt in (ARM, CONTRAST):
                     method=_me,
                     metric=_code,
                     v11_metric=_name,
-                    reason="merged into N_SMD with no source recorded; under review in issue #31",
+                    reason="R31: one network SMD, Cohen's d (N_SMD)",
                 )
             )
         V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))
@@ -1163,6 +1173,19 @@ def status_of(verified: bool, milestone: str) -> str:
 # --------------------------------------------------------------------------
 # Generation
 # --------------------------------------------------------------------------
+# A method and metric each confirmed on their own, whose pairing still needs its own source.
+UNCONFIRMED: dict[tuple[str, str], str] = {
+    (
+        "NM_MV",
+        "N_SMD",
+    ): "R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation",
+    (
+        "NM_BAYES",
+        "N_SMD",
+    ): "R31's source covers netmeta; gemtc's measures are still to confirm (issue #40)",
+}
+
+
 def pathways() -> list[Pathway]:
     out: list[Pathway] = []
     for b in BRANCHES:
@@ -1175,7 +1198,7 @@ def pathways() -> list[Pathway]:
                     continue
                 if mt["only"] and mid not in mt["only"]:
                     continue
-                verified = b["verified"] and me["verified"] and mt["verified"]
+                verified = b["verified"] and me["verified"] and mt["verified"] and (mid, code) not in UNCONFIRMED
                 milestone = milestone_of(b["fw"], mid)
                 for model in me["models"]:
                     out.append(
@@ -1399,6 +1422,15 @@ def write_backbone_md(paths: list[Pathway], stats: str) -> None:
             ],
         ),
         "",
+        "## Method and metric pairs still to check",
+        "",
+        "Each method and metric here is confirmed on its own; their pairing is not yet, so its pathways are to check.",
+        "",
+        table(
+            ["Method", "Metric", "Why"],
+            [(METHODS[me]["label"], METRICS[mt]["label"], why) for (me, mt), why in UNCONFIRMED.items()],
+        ),
+        "",
         "## Sections that apply across the tree",
         "",
         table(["Section", "Content", "Source"], CROSS),
@@ -1519,6 +1551,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         rules=RULES,
         cross_cutting=CROSS,
         open_items=OPEN,
+        unconfirmed=[{"method": me, "metric": mt, "why": why} for (me, mt), why in UNCONFIRMED.items()],
         metrics=METRICS,
         methods=METHODS,
         pathways=paths,
