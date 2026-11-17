@@ -4,7 +4,7 @@ import { TIERS } from "../atlas/filter";
 import { TIER_NAMES } from "../atlas/names";
 import type { CardTier } from "../types/cards";
 import { cardById, cardHref, cards, searchCards } from "./cards";
-import { CardView } from "./CardView";
+import { CardBadges, CardView } from "./CardView";
 
 const GROUPS: { tier: CardTier; name: string }[] = [
   ...TIERS.map((t) => ({ tier: t, name: TIER_NAMES[t] })),
@@ -33,8 +33,15 @@ export function CardsPage() {
 
       {id !== null && (
         <section className="card-shown" aria-labelledby="card-shown-title">
-          <h2 id="card-shown-title" tabIndex={-1} ref={heading}>
-            {chosen ? `${GROUPS.find((g) => g.tier === chosen.tier)?.name ?? ""}: ${chosen.title}` : "No such card"}
+          <h2 id="card-shown-title" className="card-title" tabIndex={-1} ref={heading}>
+            {chosen ? (
+              <>
+                {`${GROUPS.find((g) => g.tier === chosen.tier)?.name ?? ""}: ${chosen.title}`}
+                <CardBadges card={chosen} />
+              </>
+            ) : (
+              "No such card"
+            )}
           </h2>
           {chosen ? (
             <CardView card={chosen} level={3} hideTitle />
@@ -71,8 +78,7 @@ export function CardsPage() {
                   <Link to={cardHref(c.id)} aria-current={c.id === id ? "page" : undefined}>
                     {c.title}
                   </Link>
-                  {c.added && <span className="badge badge-new">new</span>}
-                  {!c.verified && <span className="badge badge-check">to check</span>}
+                  <CardBadges card={c} />
                 </li>
               ))}
             </ul>

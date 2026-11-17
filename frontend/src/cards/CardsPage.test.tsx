@@ -51,6 +51,12 @@ describe("the Cards page", () => {
     expect(within(shown).getAllByText(/s10\.4\.2/)).toHaveLength(1);
   });
 
+  it("shows an opened card's flags in its heading", () => {
+    renderAt("/cards?card=method%3AOEV");
+    const heading = screen.getByRole("heading", { level: 2, name: /^Method: / });
+    expect(heading).toHaveTextContent("to check");
+  });
+
   it("says so when the address names no card", () => {
     renderAt("/cards?card=method%3ANOPE");
     expect(screen.getByRole("heading", { level: 2, name: "No such card" })).toBeInTheDocument();

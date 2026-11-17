@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { cardFor, cardHref } from "../cards/cards";
-import { CardView } from "../cards/CardView";
+import { CardBadges, CardView } from "../cards/CardView";
 import type { Tier } from "./filter";
 
 /** The card of a layer's chosen node, folded under the layer until opened. */
@@ -9,7 +9,10 @@ export function AboutCard({ tier, value, label }: { tier: Tier; value: string; l
   if (!card) return null;
   return (
     <details className="about">
-      <summary>About {label}</summary>
+      <summary>
+        About {label}
+        <CardBadges card={card} />
+      </summary>
       <CardView card={card} level={3} hideTitle />
       <p>
         <Link to={cardHref(card.id)}>Open this card on the Cards page</Link>

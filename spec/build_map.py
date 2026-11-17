@@ -1867,6 +1867,10 @@ BRANCH_FIELD = {"framework": "fw", "group": "group", "datatype": "datatype", "ou
 # Where to read about the two models: Cochrane 10.10.4.1 sets out the choice between them as a debate,
 # and metafor's page on model types defines each.
 MODEL_SRC = "CH-10 s10.10.4.1, MF-models"
+MODEL_NOTE = (
+    "Cochrane 10.10.4.1 sets out the choice between a common-effect and a random-effects model as a debate, "
+    "with arguments on both sides; metafor's page on model types defines each model."
+)
 
 
 class Fact(TypedDict):
@@ -1889,7 +1893,7 @@ class Card(TypedDict):
     verified: bool
     facts: list[Fact]
     notes: list[CardNote]
-    rules: list[str]  # ids of rules about this node
+    rules: list[str]  # ids of the rules behind a method's limits (from WHY_RULE); empty for other cards
     src: str  # the card's sources, written as for the rules
 
 
@@ -1938,6 +1942,20 @@ def _branch_card(tier: str, value: str) -> Card:
         facts.append(
             _fact("What studies report", _uniq("%s, %s: %s" % (b["group"], b["datatype"], b["inputs"]) for b in bs))
         )
+    facts.append(
+        _fact(
+            "Branches under it",
+            [
+                "%d in all: %d confirmed, %d still to check; %d new"
+                % (
+                    len(bs),
+                    sum(b["verified"] for b in bs),
+                    sum(not b["verified"] for b in bs),
+                    sum(b["added"] for b in bs),
+                )
+            ],
+        )
+    )
     own = {"framework": FRAMEWORK_NOTES, "group": GROUP_NOTES, "datatype": DATATYPE_NOTES}.get(tier, {})
     card_notes = [CardNote(text=t, src=s) for t, s in [own[value]]] if value in own else []
     if tier == "outcome":
@@ -2010,6 +2028,7 @@ def _metric_card(code: str) -> Card:
 
 
 def _model_card(model: str) -> Card:
+    fit = [me for me in METHODS.values() if model in me["models"]]
     return Card(
         id=card_id("model", model),
         tier="model",
@@ -2017,10 +2036,11 @@ def _model_card(model: str) -> Card:
         title=model,
         added=False,
         verified=True,
-        facts=[_fact("Methods that fit it", [me["label"] for me in METHODS.values() if model in me["models"]])],
-        notes=[],
+        facts=[_fact("Methods that fit it", [me["label"] for me in fit])],
+        notes=[CardNote(text=MODEL_NOTE, src=MODEL_SRC)],
         rules=[],
-        src=MODEL_SRC,
+        # the note's sources, then those of each method listed: the list comes from each method's own models
+        src=_join_src([MODEL_SRC] + [", ".join(me["src"]) for me in fit]),
     )
 
 

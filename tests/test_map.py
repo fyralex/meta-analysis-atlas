@@ -485,10 +485,34 @@ def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:
         assert card["facts"][0] == {"label": "R call", "items": [mt["call"]], "code": True}
 
 
-def test_model_cards_cite_the_handbook_on_the_choice(all_cards: list[bm.Card]) -> None:
+def test_model_cards_cite_the_handbook_and_every_listed_method(all_cards: list[bm.Card]) -> None:
     for c in all_cards:
-        if c["tier"] == "model":
-            assert c["src"] == "CH-10 s10.10.4.1, MF-models"
+        if c["tier"] != "model":
+            continue
+        assert c["notes"] == [{"text": bm.MODEL_NOTE, "src": "CH-10 s10.10.4.1, MF-models"}]
+        keys = set(source_keys(c["src"]))
+        for me in bm.METHODS.values():
+            if c["value"] in me["models"]:
+                assert set(me["src"]) <= keys, (c["id"], me["label"])
+
+
+def _card(cards: list[bm.Card], cid: str) -> bm.Card:
+    return next(c for c in cards if c["id"] == cid)
+
+
+def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
+    """New when every branch under the node is new; to check when none of them is confirmed."""
+    f1 = _card(all_cards, "framework:interventional-effect-of-an-intervention")  # some branches new, some to check
+    assert (f1["added"], f1["verified"]) == (False, True)
+    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # all new, one confirmed
+    assert (dta["added"], dta["verified"]) == (True, True)
+    ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
+    assert ipd["verified"] is False
+    assert {
+        "label": "Branches under it",
+        "items": ["2 in all: 1 confirmed, 1 still to check; 2 new"],
+        "code": False,
+    } in dta["facts"]
 
 
 def test_cards_file_is_current(all_cards: list[bm.Card]) -> None:

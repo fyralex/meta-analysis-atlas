@@ -336,5 +336,11 @@ describe("the Atlas's 2D view", () => {
       expect(screen.getByText(/^About 1\. Interventional/)).toBeInTheDocument();
       expect(screen.queryByText(/^About Random effects/)).not.toBeInTheDocument();
     });
+
+    it("shows a chosen node's flags next to its card's summary", () => {
+      renderAtlas("?datatype=Individual%20participant%20data");
+      const summary = screen.getByText(/^About Individual participant data/);
+      expect(summary).toHaveTextContent("to check");
+    });
   });
 });

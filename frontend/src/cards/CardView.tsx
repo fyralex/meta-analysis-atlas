@@ -8,12 +8,22 @@ interface Props {
   card: Card;
   /** The heading level of the card's title, to fit the page around it. */
   level: 2 | 3 | 4;
-  /** Leave the title out where the page already names the card (the Atlas's "About" summary). */
+  /** Leave the title out where the page already names the card, with its badges (CardBadges). */
   hideTitle?: boolean;
 }
 
 function ruleText(id: string): string {
   return map.rules.find((r) => r[0] === id)?.[1] ?? "";
+}
+
+/** A card's own flags as badges: "new" (not in the reviewed draft) and "to check" (not yet confirmed). */
+export function CardBadges({ card }: { card: Card }) {
+  return (
+    <>
+      {card.added && <span className="badge badge-new">new</span>}
+      {!card.verified && <span className="badge badge-check">to check</span>}
+    </>
+  );
 }
 
 /** One teaching card: what the map holds about a node or rule, with its sources. */
@@ -22,10 +32,9 @@ export function CardView({ card, level, hideTitle = false }: Props) {
   return (
     <article className="card" aria-labelledby={hideTitle ? undefined : `card-${card.id}`}>
       {!hideTitle && (
-        <H id={`card-${card.id}`}>
+        <H id={`card-${card.id}`} className="card-title">
           {card.title}
-          {card.added && <span className="badge badge-new">new</span>}
-          {!card.verified && <span className="badge badge-check">to check</span>}
+          <CardBadges card={card} />
         </H>
       )}
       {card.facts.length > 0 && (
@@ -60,7 +69,7 @@ export function CardView({ card, level, hideTitle = false }: Props) {
       ))}
       {card.rules.length > 0 && (
         <>
-          <p className="facts-label">Rules</p>
+          <p className="facts-label">Rules behind its limits</p>
           <ul className="card-rules">
             {card.rules.map((r) => (
               <li key={r}>
