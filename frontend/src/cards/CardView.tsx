@@ -101,8 +101,10 @@ export function CardView({ card, level, hideTitle = false }: Props) {
       ))}
       {card.rules.length > 0 && (
         <>
-          <p className="facts-label">Rules behind its limits</p>
-          <ul className="card-rules">
+          <p className="facts-label" id={`rules-${card.id}`}>
+            Rules behind its limits
+          </p>
+          <ul className="card-rules" aria-labelledby={`rules-${card.id}`}>
             {card.rules.map((r) => (
               <li key={r}>
                 <Link to={cardHref(`rule:${r}`)}>Rule {r}</Link>: {ruleText(r)}
@@ -113,8 +115,10 @@ export function CardView({ card, level, hideTitle = false }: Props) {
       )}
       {card.terms.length > 0 && (
         <>
-          <p className="facts-label">Terms used</p>
-          <ul className="card-terms">
+          <p className="facts-label" id={`terms-${card.id}`}>
+            Terms used
+          </p>
+          <ul className="card-terms" aria-labelledby={`terms-${card.id}`}>
             {card.terms.map((t) => (
               <li key={t}>
                 <Link to={cardHref(t)}>{cardById(t)?.title ?? t}</Link>

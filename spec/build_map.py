@@ -3817,16 +3817,19 @@ GLOSSARY: list[Term] = [
     ),
     Term(
         term="Transitivity",
-        text="The assumption behind indirect comparisons: the studies of the different comparisons are similar in "
-        "everything important apart from the interventions compared.",
+        text="The assumption behind indirect comparisons: the studies of the different comparisons are similar, on "
+        "average, in everything important apart from the interventions compared.",
         src="CH-11 s11.2.2",
         match=["transitivity"],
     ),
     Term(
         term="Incoherence (inconsistency)",
-        text="Disagreement between the direct and indirect evidence on the same comparison; coherence is its absence.",
-        src="CH-11 s11.2.3.2",
-        match=["incoheren", "inconsisten"],
+        text="Disagreement between the direct and indirect evidence on the same comparison; coherence is its "
+        "absence. Cochrane also calls it inconsistency, a word it uses too for heterogeneity in a pairwise "
+        "meta-analysis.",
+        src="CH-11 s11.2.3.2, s11.4.4.1",
+        # network senses only: "inconsistency" alone also means pairwise heterogeneity (Cochrane 11.2.3.2)
+        match=["incoheren", "inconsistency left between", "inconsistency effects"],
     ),
     Term(
         term="Unit-of-analysis error",
@@ -3845,6 +3848,7 @@ GLOSSARY: list[Term] = [
 
 
 def _term_card(t: Term) -> Card:
+    # added flags map entries that are not in taxonomy v11; the glossary is not part of the map, so it stays False
     return Card(
         id=card_id("term", t["term"]),
         tier="term",
@@ -3889,7 +3893,10 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
         c["teach"] = [TeachLine(kind=k, text=t, src=src) for k, t, src in TEACH.get(c["id"], [])]
         c["src"] = _join_src([c["src"]] + [line["src"] for line in c["teach"]])
         c["terms"] = _terms_used(c)
-    out += [_term_card(t) for t in GLOSSARY]
+    for t in GLOSSARY:
+        tc = _term_card(t)
+        tc["terms"] = [x for x in _terms_used(tc) if x != tc["id"]]  # a definition links the other terms it uses
+        out.append(tc)
     return out
 
 

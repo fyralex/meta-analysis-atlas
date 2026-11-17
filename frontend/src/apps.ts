@@ -20,6 +20,6 @@ export const APPS = [
     what: "A teaching card for every choice and rule, with references.",
     issue: 6,
     state:
-      "A card for every choice and rule, with teaching text wherever its source has been read, and a glossary linked from the cards.",
+      "A card for every choice and rule, with teaching text for every choice whose source has been read, and a glossary linked from the cards.",
   },
 ] as const;

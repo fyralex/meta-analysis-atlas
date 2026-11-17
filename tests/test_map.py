@@ -778,8 +778,14 @@ def test_cards_link_the_terms_their_text_uses(all_cards: list[bm.Card]) -> None:
     assert "term:transitivity" in _card(all_cards, "method:NM_GT")["terms"]
     for c in all_cards:
         assert set(c["terms"]) <= {bm.card_id("term", t["term"]) for t in bm.GLOSSARY}
-        if c["tier"] == "term":
-            assert c["terms"] == []
+        assert c["id"] not in c["terms"]
+    assert "term:indirect-comparison" in _card(all_cards, "term:transitivity")["terms"]
+
+
+def test_only_network_text_links_incoherence(all_cards: list[bm.Card]) -> None:
+    """ "Inconsistency" alone also means pairwise heterogeneity (Cochrane 11.2.3.2), so only network senses match."""
+    linked = {c["id"] for c in all_cards if "term:incoherence-inconsistency" in c["terms"]}
+    assert linked == {"method:NM_GT", "method:NM_MV"}
 
 
 def test_a_term_matches_only_at_the_start_of_a_word() -> None:
