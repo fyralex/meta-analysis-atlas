@@ -4,7 +4,7 @@ import { map } from "../map";
 import { parseSource } from "../sources";
 import { cardById, cardFor, cardHref, cards, searchCards } from "./cards";
 
-const CARD_KEYS = ["added", "facts", "id", "notes", "rules", "src", "tier", "title", "value", "verified"];
+const CARD_KEYS = ["added", "facts", "id", "notes", "rules", "src", "teach", "tier", "title", "value", "verified"];
 
 describe("spec/cards.json as the frontend reads it", () => {
   it("gives every card exactly the fields of Card", () => {
@@ -13,6 +13,10 @@ describe("spec/cards.json as the frontend reads it", () => {
       expect([...TIERS, "rule"]).toContain(c.tier);
       for (const f of c.facts) expect(Object.keys(f).sort()).toEqual(["code", "items", "label"]);
       for (const n of c.notes) expect(Object.keys(n).sort()).toEqual(["src", "text"]);
+      for (const t of c.teach) {
+        expect(Object.keys(t).sort()).toEqual(["kind", "src", "text"]);
+        expect(["what", "use", "caution"]).toContain(t.kind);
+      }
     }
   });
 

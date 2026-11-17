@@ -1879,12 +1879,8 @@ CARDS = HERE / "cards.json"
 NODE_TIERS = ("framework", "group", "datatype", "outcome", "model", "method", "metric")
 BRANCH_FIELD = {"framework": "fw", "group": "group", "datatype": "datatype", "outcome": "outcome"}
 # Where to read about the two models: Cochrane 10.10.4.1 sets out the choice between them as a debate,
-# and metafor's page on model types defines each.
+# and metafor's page on model types defines each. The cards' teaching text (TEACH) says so.
 MODEL_SRC = "CH-10 s10.10.4.1, MF-models"
-MODEL_NOTE = (
-    "Cochrane 10.10.4.1 sets out the choice between a common-effect and a random-effects model as a debate, "
-    "with arguments on both sides; metafor's page on model types defines each model."
-)
 
 
 class Fact(TypedDict):
@@ -1898,6 +1894,12 @@ class CardNote(TypedDict):
     src: str
 
 
+class TeachLine(TypedDict):
+    kind: str  # one of TEACH_KINDS
+    text: str
+    src: str  # written as for the rules
+
+
 class Card(TypedDict):
     id: str
     tier: str  # one of NODE_TIERS, or "rule"
@@ -1908,6 +1910,7 @@ class Card(TypedDict):
     facts: list[Fact]
     notes: list[CardNote]
     rules: list[str]  # ids of the rules behind a method's or metric's limits (WHY_RULE, ONLY_RULE); else empty
+    teach: list[TeachLine]  # teaching text, from TEACH; empty until its batch is written
     src: str  # the card's sources, written as for the rules
 
 
@@ -1995,6 +1998,7 @@ def _branch_card(tier: str, value: str) -> Card:
         verified=any(b["verified"] for b in bs),
         facts=facts,
         notes=card_notes,
+        teach=[],
         rules=[],
         src=_join_src([n["src"] for n in card_notes] + [", ".join(b["src"]) for b in bs]),
     )
@@ -2021,6 +2025,7 @@ def _method_card(code: str) -> Card:
         verified=me["verified"],
         facts=facts,
         notes=[CardNote(text=me["note"], src=src)] if me["note"] else [],
+        teach=[],
         rules=sorted({r for (mid, _), (r, _) in WHY_RULE.items() if mid == code}, key=lambda r: int(r[1:])),
         src=src,
     )
@@ -2043,6 +2048,7 @@ def _metric_card(code: str) -> Card:
         verified=mt["verified"],
         facts=facts,
         notes=[],
+        teach=[],
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         src=mt["src"],
     )
@@ -2058,7 +2064,8 @@ def _model_card(model: str) -> Card:
         added=False,
         verified=True,
         facts=[_fact("Methods that fit it", [me["label"] for me in fit])],
-        notes=[CardNote(text=MODEL_NOTE, src=MODEL_SRC)],
+        notes=[],  # the choice between the models is in the card's teaching text (TEACH)
+        teach=[],
         rules=[],
         # the note's sources, then those of each method listed: the list comes from each method's own models
         src=_join_src([MODEL_SRC] + [", ".join(me["src"]) for me in fit]),
@@ -2075,9 +2082,168 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
         verified=True,
         facts=[],
         notes=[CardNote(text=text, src=src)],
+        teach=[],
         rules=[],
         src=src,
     )
+
+
+# --------------------------------------------------------------------------
+# Teaching text for the cards, by card id: (kind, text, source). Each line
+# states its source's rule in our own words and cites the section it comes
+# from (CLAUDE.md, rule 8). Written in batches the owner reviews (issue #6).
+# Batch 1: the two models and the two-group methods for binary outcomes.
+# --------------------------------------------------------------------------
+TEACH_KINDS = ("what", "use", "caution")
+TEACH: dict[str, list[tuple[str, str, str]]] = {
+    "model:common-effect": [
+        (
+            "what",
+            "In its classic reading, it assumes every study estimates the same true effect, so the studies' results "
+            "differ by chance alone, and the pooled estimate is that one effect.",
+            "CH-10 s10.3.1, MF-models",
+        ),
+        (
+            "what",
+            'metafor separates two readings. The equal-effects model (method="EE") assumes the true effects are '
+            'equal. The fixed-effects model (method="FE") makes no such assumption and estimates a weighted average '
+            "of the included studies' true effects, which holds for those studies only. Both give the same numbers. "
+            'This map\'s "Common effect" covers both.',
+            "MF-models",
+        ),
+        (
+            "use",
+            "Whether to prefer it to a random-effects model is debated. Cochrane sets out arguments on both sides, "
+            "and says the choice should not rest on a statistical test for heterogeneity.",
+            "CH-10 s10.10.4.1",
+        ),
+        (
+            "caution",
+            "metafor advises deciding which kind of inference is wanted before examining the data, and notes that no "
+            "test can show for certain that the true effects are homogeneous.",
+            "MF-models",
+        ),
+    ],
+    "model:random-effects": [
+        (
+            "what",
+            "Assumes the studies' true effects differ, drawn from a distribution. It estimates their mean and the "
+            "between-study variance (tau squared).",
+            "CH-10 s10.3.2, MF-models",
+        ),
+        (
+            "what",
+            "Its inference reaches beyond the included studies, to a wider population of studies, which metafor "
+            "notes is only loosely defined.",
+            "MF-models",
+        ),
+        (
+            "use",
+            "Whether to prefer it to a common-effect model is debated. Cochrane sets out arguments on both sides, "
+            "and says the choice should not rest on a statistical test for heterogeneity.",
+            "CH-10 s10.10.4.1",
+        ),
+        (
+            "caution",
+            "It gives smaller studies relatively more weight than a common-effect model does, which can strengthen "
+            "small-study bias when the funnel plot is asymmetric.",
+            "CH-10 s10.10.4.1",
+        ),
+    ],
+    "method:IV": [
+        (
+            "what",
+            "Weights each study's estimate by the inverse of its variance, so more precise studies count for more. "
+            "It needs only an estimate and its standard error from each study.",
+            "CH-10 s10.3, s10.3.1",
+        ),
+        (
+            "use",
+            "The general approach: in metafor it takes any effect measure, with a common-effect or a random-effects "
+            "model.",
+            "MF-uni",
+        ),
+        (
+            "caution",
+            "Cochrane advises avoiding it, including DerSimonian and Laird, when events are rare: it relies on "
+            "large-sample variances, and zero cells need a correction (often 0.5 added to each cell) that tends to "
+            "pull the estimate toward no difference.",
+            "CH-10 s10.4.4.1, s10.4.4.3",
+        ),
+    ],
+    "method:MH": [
+        (
+            "what",
+            "A common-effect method for 2x2 tables (odds ratio, risk ratio or risk difference) that weights studies "
+            "in its own way, depending on the effect measure.",
+            "CH-10 s10.4.1",
+        ),
+        (
+            "use",
+            "Cochrane prefers it to inverse variance when data are sparse (few events or small studies), and "
+            "considers it generally preferable in common-effect analyses; otherwise the two give similar results.",
+            "CH-10 s10.4.1",
+        ),
+        (
+            "use",
+            "A zero-cell correction is needed only when the same cell is zero in every study.",
+            "CH-10 s10.4.4.1",
+        ),
+        (
+            "caution",
+            "Cochrane lists it among the common-effect methods; the random-effects method it gives for binary "
+            "outcomes is inverse variance.",
+            "CH-10 s10.4",
+        ),
+    ],
+    "method:PETO": [
+        (
+            "what",
+            "Pools odds ratios only, using an approximate log odds ratio built from observed minus expected events "
+            "(O - E) and its variance. It needs no zero-cell correction.",
+            "CH-10 s10.4.2",
+        ),
+        (
+            "use",
+            "Works well when events are rare, effects are small (odds ratios near 1) and the arms are of similar "
+            "size. With event rates below 1%, it was the least biased and most powerful method in the studies "
+            "Cochrane reviews, provided the effects were not very large and the arms not badly unbalanced.",
+            "CH-10 s10.4.2, s10.4.4.3",
+        ),
+        (
+            "caution",
+            "It can be biased when effects are large, events are common or the arms are unbalanced. Cochrane does "
+            "not recommend it as a default.",
+            "CH-10 s10.4.2",
+        ),
+    ],
+    "method:GLMM": [
+        (
+            "what",
+            "Models the counts directly with logistic (or Poisson) regression, instead of pooling an estimate from "
+            "each study. With random effects it is a binomial-normal (or Poisson-normal) model.",
+            "MF-glmm",
+        ),
+        (
+            "what",
+            "Zero cells don't stop the fit, so no continuity correction is needed to fit it. Studies with no events "
+            "in either group are left out by default.",
+            "MF-glmm",
+        ),
+        (
+            "use",
+            "Cochrane lists logistic regression among the methods that did best for rare events in the cases where "
+            "Peto's method did not: event rates above 1%, very large effects, or many unbalanced studies.",
+            "CH-10 s10.4.4.3",
+        ),
+        (
+            "caution",
+            "Random effects are fitted by maximum likelihood only. Risk ratio and risk difference are experimental "
+            "in rma.glmm() and often run into numerical problems, such as failing to converge.",
+            "MF-glmm",
+        ),
+    ],
+}
 
 
 def cards(paths: Sequence[Pathway]) -> list[Card]:
@@ -2094,6 +2260,9 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
         else:
             out += [_branch_card(tier, v) for v in values]
     out += [_rule_card(rid, text, src) for rid, text, _, src in RULES]
+    for c in out:
+        c["teach"] = [TeachLine(kind=k, text=t, src=src) for k, t, src in TEACH.get(c["id"], [])]
+        c["src"] = _join_src([c["src"]] + [line["src"] for line in c["teach"]])
     return out
 
 

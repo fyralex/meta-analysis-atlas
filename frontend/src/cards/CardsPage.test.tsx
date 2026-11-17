@@ -42,11 +42,27 @@ describe("the Cards page", PAGE, () => {
     const shown = screen.getByRole("region", { name: "Method: Peto" });
     expect(within(shown).getByText("metafor::rma.peto()")).toBeInTheDocument();
     expect(within(shown).getByRole("link", { name: "Rule R5" })).toHaveAttribute("href", "/cards?card=rule%3AR5");
-    expect(within(shown).getByRole("link", { name: "metafor, rma.peto()" })).toHaveAttribute(
-      "href",
-      "https://wviechtb.github.io/metafor/reference/rma.peto.html",
-    );
+    within(shown)
+      .getAllByRole("link", { name: "metafor, rma.peto()" })
+      .forEach((a) => {
+        expect(a).toHaveAttribute("href", "https://wviechtb.github.io/metafor/reference/rma.peto.html");
+      });
     expect(within(shown).getByRole("heading", { level: 2 })).toHaveFocus();
+  });
+
+  it("shows a card's teaching text under its headings, each line with its sources", () => {
+    renderAt("/cards?card=method%3APETO");
+    const shown = screen.getByRole("region", { name: "Method: Peto" });
+    const cautions = within(shown).getByRole("region", { name: "Cautions" });
+    expect(cautions).toHaveTextContent("not recommend it as a default");
+    expect(cautions).toHaveTextContent("Cochrane Handbook Ch. 10, meta-analysis (s10.4.2)");
+    expect(within(shown).getByRole("region", { name: "What it is" })).toBeInTheDocument();
+    expect(within(shown).getByRole("region", { name: "When to use it" })).toBeInTheDocument();
+  });
+
+  it("shows no teaching headings on a card whose text isn't written yet", () => {
+    renderAt("/cards?card=metric%3APR");
+    expect(screen.queryByRole("region", { name: "What it is" })).not.toBeInTheDocument();
   });
 
   it("shows a rule's text and its sections once", () => {
