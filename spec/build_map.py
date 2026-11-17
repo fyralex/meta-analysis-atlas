@@ -2101,6 +2101,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 7: the other pairwise methods (penalised logistic regression, Bayesian, multilevel, one-stage IPD).
 # Batch 8: the network methods with a source that covers them (not yet one-stage IPD in a network).
 # Batch 9: the other frameworks' methods, from the package pages only (the DTA handbook is not read yet).
+# Batch 10: the correlation and Cronbach's alpha measures, from escalc() only.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
@@ -3152,6 +3153,123 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Two-stage by default, or one-stage. Common effects, or random effects by ML or REML; the method of "
             "moments is available for the two-stage procedure only.",
             "DOSRES",
+        ),
+    ],
+    "metric:COR": [
+        (
+            "what",
+            "The correlation coefficient as reported, entered with each study's sample size. A t-statistic or p-value can stand in when the correlation is not reported, and the sign of the p-value gives the sign.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            'Its sampling variance uses the usual large-sample approximation by default; vtype="H0" computes it assuming the true correlation is zero.',
+            "MF-escalc",
+        ),
+    ],
+    "metric:UCOR": [
+        (
+            "what",
+            "The raw correlation corrected for its slight negative bias (Olkin and Pratt 1958). It takes the same inputs as the raw correlation.",
+            "MF-escalc",
+        ),
+        (
+            "what",
+            'vtype="UB" gives unbiased estimates of its sampling variance.',
+            "MF-escalc",
+        ),
+    ],
+    "metric:ZCOR": [
+        (
+            "what",
+            "The correlation after Fisher's r-to-z transformation (Fisher 1921). It takes the same inputs as the raw correlation.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:RPB": [
+        (
+            "what",
+            "The point-biserial correlation between a two-group variable and a quantitative one, from the groups' means, standard deviations and sizes. A standardized mean difference, correlation, t-statistic or p-value can stand in for the means and standard deviations.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            'Its sampling variance depends on how the data were sampled: vtype="ST" (stratified) or "CS" (cross-sectional) says which, and the default is treated as stratified.',
+            "MF-escalc",
+        ),
+    ],
+    "metric:RBIS": [
+        (
+            "what",
+            "The biserial correlation: from the same inputs as the point-biserial correlation, it estimates the correlation between the quantitative variable and a quantitative variable assumed to underlie the two groups.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "It assumes the two groups come from dichotomising a quantitative variable, and that the two variables are bivariate normal.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PHI": [
+        (
+            "what",
+            "The phi coefficient, a correlation between two two-category variables, computed from the 2x2 table.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            'Its sampling variance depends on how the data were sampled: vtype="ST" (stratified) or "CS" (cross-sectional) says which, and the default is treated as cross-sectional.',
+            "MF-escalc",
+        ),
+    ],
+    "metric:RTET": [
+        (
+            "what",
+            "The tetrachoric correlation: from the 2x2 table, it estimates the correlation between the two quantitative variables assumed to underlie the two dichotomies.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "It assumes each dichotomy cuts a quantitative variable, and that the two variables follow a bivariate normal distribution.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:PCOR": [
+        (
+            "what",
+            "The partial correlation for one regression coefficient, computed from that coefficient's t-statistic, the sample size and the total number of predictors in the model (not counting the intercept). Its sign follows the t-statistic.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:ARAW": [
+        (
+            "what",
+            "Cronbach's alpha as reported, entered with the number of items (or parts) of the instrument and the sample size.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:AHW": [
+        (
+            "what",
+            "Cronbach's alpha transformed as 1 - (1 - alpha)^(1/3), after Hakstian and Whalen (1976). It takes the same inputs as raw alpha.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "metafor's version differs slightly from the published transformation, chosen so that the transformed value increases with alpha.",
+            "MF-escalc",
+        ),
+    ],
+    "metric:ABT": [
+        (
+            "what",
+            "Cronbach's alpha transformed as -log(1 - alpha), after Bonett (2002). It takes the same inputs as raw alpha.",
+            "MF-escalc",
+        ),
+        (
+            "caution",
+            "metafor's version differs slightly from the published transformation, chosen so that the transformed value increases with alpha.",
+            "MF-escalc",
         ),
     ],
 }

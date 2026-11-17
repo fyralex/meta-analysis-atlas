@@ -677,3 +677,12 @@ def test_no_teaching_line_cites_a_source_marked_not_read() -> None:
     for cid, lines in bm.TEACH.items():
         for _, _, src in lines:
             assert not set(source_keys(src)) & unread, cid
+
+
+CORRELATION_AND_ALPHA = ("COR", "UCOR", "ZCOR", "RPB", "RBIS", "PHI", "RTET", "PCOR", "ARAW", "AHW", "ABT")
+
+
+def test_batch_ten_covers_the_correlation_and_alpha_measures_from_escalc_only() -> None:
+    for c in CORRELATION_AND_ALPHA:
+        lines = bm.TEACH["metric:" + c]
+        assert lines and all(src == "MF-escalc" for _, _, src in lines), c
