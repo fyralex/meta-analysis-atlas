@@ -421,3 +421,111 @@ def test_why_not_file_holds_every_pair_once() -> None:
     pairs = {frozenset((row[0], row[1])) for row in data["pairs"]}
     assert len(pairs) == len(data["pairs"])
     assert all(len(row) >= 3 for row in data["pairs"])
+
+
+# --- cards ---------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def all_cards() -> list[bm.Card]:
+    return bm.cards(bm.pathways())
+
+
+def test_every_node_and_rule_has_one_card(all_cards: list[bm.Card]) -> None:
+    paths = bm.pathways()
+    nodes = {(t, str(p[t])) for p in paths for t in bm.NODE_TIERS}  # type: ignore[literal-required]
+    nodes |= {("method", c) for c in bm.METHODS} | {("metric", c) for c in bm.METRICS}
+    nodes |= {("rule", r[0]) for r in bm.RULES}
+    have = [(c["tier"], c["value"]) for c in all_cards]
+    assert len(have) == len(set(have))
+    assert set(have) == nodes
+
+
+def test_card_ids_are_unique(all_cards: list[bm.Card]) -> None:
+    ids = [c["id"] for c in all_cards]
+    assert len(ids) == len(set(ids))
+
+
+def test_card_ids_are_readable() -> None:
+    assert bm.card_id("framework", bm.F1) == "framework:interventional-effect-of-an-intervention"
+    assert bm.card_id("outcome", "Count / person-time") == "outcome:count-person-time"
+    assert bm.card_id("method", "IV") == "method:IV"
+    assert bm.card_id("rule", "R5") == "rule:R5"
+
+
+def test_every_card_cites_known_sources(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        keys = source_keys(c["src"])
+        assert keys, c["id"]
+        assert [k for k in keys if k not in bm.SOURCES] == [], c["id"]
+
+
+def test_every_card_note_cites_known_sources_the_card_lists(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        for n in c["notes"]:
+            keys = source_keys(n["src"])
+            assert keys and all(k in bm.SOURCES for k in keys), c["id"]
+            assert set(keys) <= set(source_keys(c["src"])), c["id"]
+
+
+def test_join_src_merges_sections_under_one_key() -> None:
+    assert bm._join_src(["CH-10 s10.10.4.1, MF-models", "MF-uni, CH-10", "CH-11 s11.2.2, s11.4.4, NM"]) == (
+        "CH-10 s10.10.4.1, MF-models, MF-uni, CH-11 s11.2.2, s11.4.4, NM"
+    )
+
+
+def test_no_card_cites_a_source_twice(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        keys = source_keys(c["src"])
+        assert len(keys) == len(set(keys)), c["id"]
+
+
+def test_card_rules_exist(all_cards: list[bm.Card]) -> None:
+    ids = {r[0] for r in bm.RULES}
+    assert all(set(c["rules"]) <= ids for c in all_cards)
+
+
+def test_method_card_carries_its_function_and_rules(all_cards: list[bm.Card]) -> None:
+    peto = next(c for c in all_cards if c["id"] == "method:PETO")
+    assert {"label": "R function", "items": ["metafor::rma.peto()"], "code": True} in peto["facts"]
+    assert peto["rules"] == ["R2", "R5"]
+
+
+def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:
+    for code, mt in bm.METRICS.items():
+        card = next(c for c in all_cards if c["id"] == "metric:" + code)
+        assert card["facts"][0] == {"label": "R call", "items": [mt["call"]], "code": True}
+
+
+def test_model_cards_cite_the_handbook_and_every_listed_method(all_cards: list[bm.Card]) -> None:
+    for c in all_cards:
+        if c["tier"] != "model":
+            continue
+        assert c["notes"] == [{"text": bm.MODEL_NOTE, "src": "CH-10 s10.10.4.1, MF-models"}]
+        keys = set(source_keys(c["src"]))
+        for me in bm.METHODS.values():
+            if c["value"] in me["models"]:
+                assert set(me["src"]) <= keys, (c["id"], me["label"])
+
+
+def _card(cards: list[bm.Card], cid: str) -> bm.Card:
+    return next(c for c in cards if c["id"] == cid)
+
+
+def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
+    """New when every branch under the node is new; to check when none of them is confirmed."""
+    f1 = _card(all_cards, "framework:interventional-effect-of-an-intervention")  # some branches new, some to check
+    assert (f1["added"], f1["verified"]) == (False, True)
+    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # all new, one confirmed
+    assert (dta["added"], dta["verified"]) == (True, True)
+    ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
+    assert ipd["verified"] is False
+    assert {
+        "label": "Branches under it",
+        "items": ["2 in all: 1 confirmed, 1 still to check; 2 new"],
+        "code": False,
+    } in dta["facts"]
+
+
+def test_cards_file_is_current(all_cards: list[bm.Card]) -> None:
+    assert json.loads(bm.CARDS.read_text()) == json.loads(json.dumps(all_cards))

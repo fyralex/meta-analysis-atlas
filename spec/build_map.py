@@ -1854,6 +1854,240 @@ def write_why_not(paths: Sequence[Pathway]) -> None:
     )
 
 
+# --------------------------------------------------------------------------
+# Cards: one for every node of every tier and for every rule, assembled from
+# the data above. A card states only what the map already holds (calls,
+# functions, the data each branch reads, notes and rules), each with the
+# sources the map gives it. Teaching text (summary, when to use) comes later,
+# in batches the owner reviews (issue #6).
+# --------------------------------------------------------------------------
+CARDS = HERE / "cards.json"
+NODE_TIERS = ("framework", "group", "datatype", "outcome", "model", "method", "metric")
+BRANCH_FIELD = {"framework": "fw", "group": "group", "datatype": "datatype", "outcome": "outcome"}
+# Where to read about the two models: Cochrane 10.10.4.1 sets out the choice between them as a debate,
+# and metafor's page on model types defines each.
+MODEL_SRC = "CH-10 s10.10.4.1, MF-models"
+MODEL_NOTE = (
+    "Cochrane 10.10.4.1 sets out the choice between a common-effect and a random-effects model as a debate, "
+    "with arguments on both sides; metafor's page on model types defines each model."
+)
+
+
+class Fact(TypedDict):
+    label: str
+    items: list[str]
+    code: bool  # the items are R code
+
+
+class CardNote(TypedDict):
+    text: str
+    src: str
+
+
+class Card(TypedDict):
+    id: str
+    tier: str  # one of NODE_TIERS, or "rule"
+    value: str  # the value pathways use (a code for methods and metrics), or the rule's id
+    title: str
+    added: bool
+    verified: bool
+    facts: list[Fact]
+    notes: list[CardNote]
+    rules: list[str]  # ids of the rules behind a method's limits (from WHY_RULE); empty for other cards
+    src: str  # the card's sources, written as for the rules
+
+
+def card_id(tier: str, value: str) -> str:
+    """ "method:IV", "metric:SMD", "rule:R5"; a tier whose values are labels gets a slug of the label."""
+    if tier in ("method", "metric", "rule"):
+        return "%s:%s" % (tier, value)
+    words = "".join(c if c.isalnum() else " " for c in value.lower()).split()
+    if words and words[0].isdigit():  # "1. Interventional ..." -> "interventional-..."
+        words = words[1:]
+    return "%s:%s" % (tier, "-".join(words))
+
+
+def _join_src(fields: Iterable[str]) -> str:
+    """Several source fields as one: each key once, in order of first appearance, with all its sections.
+
+    A word starting with "s" and a digit is a section of the key before it, as the frontend reads it.
+    """
+    sections: dict[str, list[str]] = {}
+    for field in fields:
+        key = ""
+        for word in field.replace(",", " ").split():
+            if word[0] == "s" and word[1:2].isdigit() and key:
+                if word not in sections[key]:
+                    sections[key].append(word)
+            else:
+                key = word
+                sections.setdefault(key, [])
+    return ", ".join(" ".join([k, ", ".join(ss)]) if ss else k for k, ss in sections.items())
+
+
+def _uniq(xs: Iterable[str]) -> list[str]:
+    return list(dict.fromkeys(xs))
+
+
+def _fact(label: str, items: Iterable[str], code: bool = False) -> Fact:
+    return Fact(label=label, items=list(items), code=code)
+
+
+def _branch_card(tier: str, value: str) -> Card:
+    bs = [b for b in BRANCHES if b[BRANCH_FIELD[tier]] == value]  # type: ignore[literal-required]
+    facts: list[Fact] = []
+    if tier == "framework":
+        facts.append(_fact("Group structures", _uniq(b["group"] for b in bs)))
+    elif tier == "group":
+        facts.append(_fact("Frameworks", _uniq(b["fw"] for b in bs)))
+        facts.append(_fact("Datatypes", _uniq(b["datatype"] for b in bs)))
+    elif tier == "datatype":
+        facts.append(
+            _fact("What studies report", _uniq("%s, %s: %s" % (b["group"], b["outcome"], b["inputs"]) for b in bs))
+        )
+    else:
+        facts.append(
+            _fact("What studies report", _uniq("%s, %s: %s" % (b["group"], b["datatype"], b["inputs"]) for b in bs))
+        )
+    facts.append(
+        _fact(
+            "Branches under it",
+            [
+                "%d in all: %d confirmed, %d still to check; %d new"
+                % (
+                    len(bs),
+                    sum(b["verified"] for b in bs),
+                    sum(not b["verified"] for b in bs),
+                    sum(b["added"] for b in bs),
+                )
+            ],
+        )
+    )
+    own = {"framework": FRAMEWORK_NOTES, "group": GROUP_NOTES, "datatype": DATATYPE_NOTES}.get(tier, {})
+    card_notes = [CardNote(text=t, src=s) for t, s in [own[value]]] if value in own else []
+    if tier == "outcome":
+        card_notes += [
+            CardNote(text="%s, %s: %s" % (b["group"], b["datatype"], b["note"]), src=", ".join(b["src"]))
+            for b in bs
+            if b["note"]
+        ]
+    return Card(
+        id=card_id(tier, value),
+        tier=tier,
+        value=value,
+        title=value,
+        # new when every branch under it is new; to check when none of them is confirmed yet
+        added=all(b["added"] for b in bs),
+        verified=any(b["verified"] for b in bs),
+        facts=facts,
+        notes=card_notes,
+        rules=[],
+        src=_join_src([n["src"] for n in card_notes] + [", ".join(b["src"]) for b in bs]),
+    )
+
+
+def _method_card(code: str) -> Card:
+    me = METHODS[code]
+    facts = [
+        _fact("R function", [me["fn"]], code=True),
+        _fact("Used for", [DOMAIN_WORDS[me["domain"]]]),
+        _fact("Reads", [KIND_WORDS[k] for k in sorted(me["takes"])]),
+        _fact("Models", me["models"]),
+        _fact("Analysis types", me["analysis"]),
+    ]
+    if me["metrics"] is not None:
+        facts.append(_fact("Metrics", sorted(METRICS[c]["label"] for c in me["metrics"])))
+    src = ", ".join(me["src"])
+    return Card(
+        id=card_id("method", code),
+        tier="method",
+        value=code,
+        title=me["label"],
+        added=me["added"],
+        verified=me["verified"],
+        facts=facts,
+        notes=[CardNote(text=me["note"], src=src)] if me["note"] else [],
+        rules=sorted({r for (mid, _), (r, _) in WHY_RULE.items() if mid == code}, key=lambda r: int(r[1:])),
+        src=src,
+    )
+
+
+def _metric_card(code: str) -> Card:
+    mt = METRICS[code]
+    facts = [
+        _fact("R call", [mt["call"]], code=True),
+        _fact("Outcome types", _uniq(b["outcome"] for b in BRANCHES if code in b["metrics"])),
+    ]
+    if mt["only"] is not None:
+        facts.append(_fact("Only with", sorted(METHODS[c]["label"] for c in mt["only"])))
+    return Card(
+        id=card_id("metric", code),
+        tier="metric",
+        value=code,
+        title=mt["label"],
+        added=mt["added"],
+        verified=mt["verified"],
+        facts=facts,
+        notes=[],
+        rules=[],
+        src=mt["src"],
+    )
+
+
+def _model_card(model: str) -> Card:
+    fit = [me for me in METHODS.values() if model in me["models"]]
+    return Card(
+        id=card_id("model", model),
+        tier="model",
+        value=model,
+        title=model,
+        added=False,
+        verified=True,
+        facts=[_fact("Methods that fit it", [me["label"] for me in fit])],
+        notes=[CardNote(text=MODEL_NOTE, src=MODEL_SRC)],
+        rules=[],
+        # the note's sources, then those of each method listed: the list comes from each method's own models
+        src=_join_src([MODEL_SRC] + [", ".join(me["src"]) for me in fit]),
+    )
+
+
+def _rule_card(rid: str, text: str, src: str) -> Card:
+    return Card(
+        id=card_id("rule", rid),
+        tier="rule",
+        value=rid,
+        title="Rule " + rid,
+        added=False,
+        verified=True,
+        facts=[],
+        notes=[CardNote(text=text, src=src)],
+        rules=[],
+        src=src,
+    )
+
+
+def cards(paths: Sequence[Pathway]) -> list[Card]:
+    """A card for every value of every tier that a pathway uses, every method and metric, and every rule."""
+    out: list[Card] = []
+    for tier in NODE_TIERS:
+        values = _uniq(str(p[tier]) for p in paths)  # type: ignore[literal-required]
+        if tier == "method":
+            out += [_method_card(c) for c in METHODS]
+        elif tier == "metric":
+            out += [_metric_card(c) for c in METRICS]
+        elif tier == "model":
+            out += [_model_card(v) for v in values]
+        else:
+            out += [_branch_card(tier, v) for v in values]
+    out += [_rule_card(rid, text, src) for rid, text, _, src in RULES]
+    return out
+
+
+def write_cards(paths: Sequence[Pathway]) -> None:
+    """One card per line, so a change to one shows as a one-line diff."""
+    CARDS.write_text("[\n%s\n]\n" % ",\n".join(json.dumps(c, ensure_ascii=False) for c in cards(paths)))
+
+
 def _json_default(o: object) -> list[str]:
     if isinstance(o, set):
         return sorted(o)
@@ -1909,6 +2143,7 @@ def main(argv: Sequence[str] | None = None) -> None:
     )
     (HERE / "map.json").write_text(json.dumps(data, indent=1, default=_json_default))
     write_why_not(paths)
+    write_cards(paths)
     print(stats)
     by: dict[tuple[str, str], list[int]] = {}
     for p in paths:

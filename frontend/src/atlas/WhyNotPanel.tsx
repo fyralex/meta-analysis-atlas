@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router";
+import { cardHref } from "../cards/cards";
 import { map } from "../map";
-import { references } from "../sources";
+import { Sources } from "../SourceList";
 import type { Tier } from "./filter";
 import { TIER_NAMES } from "./names";
 import { ruleText, type Explanation, type Reason } from "./whyNot";
@@ -13,29 +15,15 @@ interface Props {
   onClose: () => void;
 }
 
-function Sources({ src }: { src: string }) {
-  const refs = references(map, src);
-  return (
-    <p className="refs">
-      Sources:{" "}
-      {refs.map((r, i) => (
-        <span key={r.key}>
-          {i > 0 && "; "}
-          {r.url ? <a href={r.url}>{r.label}</a> : r.label}
-          {r.sections.length > 0 && <> ({r.sections.join(", ")})</>}
-        </span>
-      ))}
-    </p>
-  );
-}
-
 function ReasonItem({ reason }: { reason: Reason }) {
   return (
     <li>
       <p>{reason.text}</p>
       {reason.rule && (
         <p className="rule">
-          <strong>Rule {reason.rule}:</strong> {ruleText(map, reason.rule)}
+          <strong>
+            <Link to={cardHref(`rule:${reason.rule}`)}>Rule {reason.rule}</Link>:
+          </strong> {ruleText(map, reason.rule)}
         </p>
       )}
       <Sources src={reason.src} />

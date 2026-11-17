@@ -12,6 +12,7 @@ import {
   toggle,
   type TierOrder,
 } from "./filter";
+import { AboutCard } from "./AboutCard";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { TierLayer } from "./TierLayer";
 import { useAtlasState } from "./useAtlasState";
@@ -170,6 +171,14 @@ export function AtlasPage() {
               explanation={explain(map.pathways, selection, tier, asked.value, options)}
               labelOf={(t, v) => nodeLabel(map, t, v)}
               onClose={closeWhyNot}
+            />
+          )}
+          {selection[tier] !== undefined && (
+            <AboutCard
+              key={selection[tier]}
+              tier={tier}
+              value={selection[tier]}
+              label={nodeLabel(map, tier, selection[tier])}
             />
           )}
         </TierLayer>

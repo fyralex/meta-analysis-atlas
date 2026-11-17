@@ -275,6 +275,7 @@ describe("the Atlas's 2D view", () => {
       expect(panel).toHaveTextContent("Rule R5: Peto needs 2x2 tables");
       expect(within(panel).getByRole("link", { name: "metafor, rma.peto()" })).toHaveAttribute("href", map.sources["MF-peto"]?.[1]);
       expect(md).toHaveAttribute("aria-pressed", "false");
+      expect(within(panel).getByRole("link", { name: "Rule R5" })).toHaveAttribute("href", "/cards?card=rule%3AR5");
     });
 
     it("tells screen readers the node opens the panel, and closes on Escape", () => {
@@ -318,6 +319,28 @@ describe("the Atlas's 2D view", () => {
       expect(screen.getByRole("region", { name: "Why not Common effect?" })).toHaveTextContent(
         "only through entries marked new",
       );
+    });
+  });
+
+  describe("cards", () => {
+    it("folds the card of each chosen node under its layer, with a link to the Cards page", () => {
+      renderAtlas(`?framework=${encodeURIComponent(F1)}&method=PETO`);
+      const details = screen.getByText("About Peto").closest("details") as HTMLElement;
+      expect(details).not.toHaveAttribute("open");
+      expect(layer("method").closest("section")).toContainElement(details);
+      expect(details).toHaveTextContent("metafor::rma.peto()");
+      expect(within(details).getByRole("link", { name: "Open this card on the Cards page" })).toHaveAttribute(
+        "href",
+        "/cards?card=method%3APETO",
+      );
+      expect(screen.getByText(/^About 1\. Interventional/)).toBeInTheDocument();
+      expect(screen.queryByText(/^About Random effects/)).not.toBeInTheDocument();
+    });
+
+    it("shows a chosen node's flags next to its card's summary", () => {
+      renderAtlas("?datatype=Individual%20participant%20data");
+      const summary = screen.getByText(/^About Individual participant data/);
+      expect(summary.textContent).toMatch(/Individual participant data to check$/);
     });
   });
 });
