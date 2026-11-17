@@ -673,6 +673,7 @@ def test_batch_nine_covers_the_other_frameworks_methods_with_a_readable_source()
 def test_no_teaching_line_cites_a_source_marked_not_read() -> None:
     """A source the map marks as not read (or not readable online) cannot back teaching text."""
     unread = {k for k, (label, _) in bm.SOURCES.items() if "not read" in label}
+    assert {"DTA-HB", "DEBRAY", "RILEY"} <= unread
     for cid, lines in bm.TEACH.items():
         for _, _, src in lines:
             assert not set(source_keys(src)) & unread, cid

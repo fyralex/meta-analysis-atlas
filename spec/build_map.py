@@ -3107,8 +3107,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "what",
             "valmeta() pools a prediction model's performance across validation studies: the c-statistic or the "
-            "total observed:expected (O:E) ratio. By default it pools the c-statistic on the logit scale and the O:E "
-            "ratio on the log scale.",
+            "total observed:expected (O:E) ratio. By default it pools the c-statistic on the logit scale; the O:E "
+            "ratio is modelled with a log or identity link.",
             "VALMETA",
         ),
         (
@@ -3133,16 +3133,18 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "what",
-            "Each study gives log relative risks for its exposure levels against a reference level, with the cases "
-            "and the total (or person-time) at each level, and its design: case-control, incidence rate or "
-            "cumulative incidence.",
+            "Each study gives an estimate for each exposure level against a reference level: log relative risks, "
+            "mean differences or standardised mean differences. For log relative risks it also needs the cases and "
+            "the total (or person-time) at each level, and the design: case-control, incidence rate or cumulative "
+            "incidence.",
             "DOSRES",
         ),
         (
             "use",
-            "The covariance among a study's estimates comes from Greenland and Longnecker's method by default, or "
-            "Hamling's. The trend is linear or non-linear, as the model formula sets it (for example with a "
-            "quadratic term).",
+            "For log relative risks, the covariance among a study's estimates comes from Greenland and Longnecker's "
+            "method by default, or Hamling's; mean differences and standardised mean differences have their own "
+            "options. The trend is linear or non-linear, as the model formula sets it (for example with a quadratic "
+            "term).",
             "DOSRES",
         ),
         (
