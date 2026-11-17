@@ -13,6 +13,8 @@ interface Props {
   onChoose: (value: string) => void;
   /** Ask why a node with no compatible pathway can't be chosen. */
   onWhyNot: (value: string) => void;
+  /** The node whose "Why not?" panel is open in this layer, if any. */
+  asked?: string | undefined;
   /** Shown under the layer's nodes: the "Why not?" panel, when one of them is asked about. */
   children?: ReactNode;
 }
@@ -34,7 +36,7 @@ function spoken(text: string, node: NodeSummary, entry?: { added: boolean; verif
  * group once; the arrow keys, Home and End move between its nodes. A node with no
  * compatible pathway stays focusable, so it can be read; pressing it asks why not.
  */
-export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, children }: Props) {
+export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, asked, children }: Props) {
   const tabStop = Math.max(
     0,
     nodes.findIndex((n) => n.selected),
@@ -68,6 +70,9 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, c
               aria-label={spoken(label(node.value), node, entry)}
               aria-pressed={node.selected}
               aria-disabled={none}
+              {...(none
+                ? { "aria-expanded": asked === node.value, "aria-controls": `why-not-panel-${id.replace(/^tier-/, "")}` }
+                : {})}
               tabIndex={i === tabStop ? 0 : -1}
               data-value={node.value}
               onClick={() => {

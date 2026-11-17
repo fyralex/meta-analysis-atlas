@@ -158,6 +158,7 @@ export function AtlasPage() {
           onChoose={(value) => {
             update({ selection: toggle(map.pathways, selection, tier, value, options) });
           }}
+          asked={asked?.tier === tier ? asked.value : undefined}
           onWhyNot={(value) => {
             setAsked(asked?.tier === tier && asked.value === value ? null : { tier, value });
           }}

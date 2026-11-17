@@ -45,6 +45,15 @@ describe("explaining a greyed-out node", () => {
     });
   });
 
+  it("ignores the choice already made in the node's own tier", () => {
+    const e = explain(lock, { method: "PETO", metric: "PETO" }, "metric", "MD", SHOW);
+    expect(e.kind === "blocked" && e.blockers.map((b) => b.tier)).toEqual(["method"]);
+  });
+
+  it("has nothing to explain for a node that fits", () => {
+    expect(explain(lock, { method: "PETO" }, "metric", "PETO", SHOW)).toEqual({ kind: "fits" });
+  });
+
   it("says when a node fits each choice alone but not all together, and which to clear", () => {
     // Find such a case in the lock file: x and y meet, v meets each, but no pathway has all three.
     let found: { selection: Selection; tier: Tier; value: string } | undefined;

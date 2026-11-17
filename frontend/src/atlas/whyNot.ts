@@ -44,6 +44,8 @@ export interface Blocker {
 }
 
 export type Explanation =
+  /** The node fits the choices: nothing to explain (the panel only opens on a node with no pathway). */
+  | { kind: "fits" }
   /** One or more of the current choices never meet this node in any pathway. */
   | { kind: "blocked"; blockers: Blocker[] }
   /** It meets each choice on its own, but not all together; dropping any of these tiers would let it fit. */
@@ -59,13 +61,14 @@ export function explain(
   value: string,
   options: FilterOptions,
 ): Explanation {
+  const wanted = { ...selection, [tier]: value };
+  if (pathways.some((p) => matches(p, wanted, options))) return { kind: "fits" };
   const others = Object.entries(without(selection, tier)) as [Tier, string][];
   const blockers = others.flatMap(([t, v]) => {
     const reasons = reasonsFor([tier, value], [t, v]);
     return reasons ? [{ tier: t, value: v, reasons }] : [];
   });
   if (blockers.length > 0) return { kind: "blocked", blockers };
-  const wanted = { ...selection, [tier]: value };
   if (options.hideNew && pathways.some((p) => matches(p, wanted, { hideNew: false }))) return { kind: "hidden-new" };
   const tiers = others
     .map(([t]) => t)

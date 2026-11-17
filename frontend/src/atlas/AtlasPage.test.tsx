@@ -277,6 +277,20 @@ describe("the Atlas's 2D view", () => {
       expect(md).toHaveAttribute("aria-pressed", "false");
     });
 
+    it("tells screen readers the node opens the panel, and closes on Escape", () => {
+      renderAtlas(query);
+      const md = node("metric", "MD");
+      expect(md).toHaveAttribute("aria-expanded", "false");
+      fireEvent.click(md);
+      const panel = screen.getByRole("region", { name: "Why not Mean difference?" });
+      expect(md).toHaveAttribute("aria-expanded", "true");
+      expect(md).toHaveAttribute("aria-controls", panel.id);
+      fireEvent.keyDown(panel, { key: "Escape" });
+      expect(screen.queryByRole("region", { name: /^Why not/ })).not.toBeInTheDocument();
+      expect(document.activeElement).toBe(node("metric", "MD"));
+      expect(node("model", "Common effect")).not.toHaveAttribute("aria-expanded");
+    });
+
     it("closes and gives focus back to the node", () => {
       renderAtlas(query);
       fireEvent.click(node("metric", "MD"));

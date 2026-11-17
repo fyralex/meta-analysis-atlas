@@ -53,7 +53,15 @@ export function WhyNotPanel({ tier, label, explanation, labelOf, onClose }: Prop
   }, [tier, label]);
 
   return (
-    <div className="why-not" role="region" aria-labelledby={`why-not-${tier}`}>
+    <div
+      className="why-not"
+      id={`why-not-panel-${tier}`}
+      role="region"
+      aria-labelledby={`why-not-${tier}`}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") onClose();
+      }}
+    >
       <h3 id={`why-not-${tier}`} tabIndex={-1} ref={heading}>
         Why not {label}?
       </h3>
@@ -81,6 +89,7 @@ export function WhyNotPanel({ tier, label, explanation, labelOf, onClose }: Prop
           )}
         </p>
       )}
+      {explanation.kind === "fits" && <p>It fits your choices.</p>}
       {explanation.kind === "hidden-new" && (
         <p>
           It fits your choices only through entries marked new, and those are hidden. Untick &ldquo;Hide entries
