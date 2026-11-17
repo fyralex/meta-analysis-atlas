@@ -2094,6 +2094,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # from (CLAUDE.md, rule 8). Written in batches the owner reviews (issue #6).
 # Batch 1: the two models and the two-group methods for binary outcomes.
 # Batch 2: the effect measures for two-group binary outcomes.
+# Batch 3: the effect measures for two-group continuous outcomes.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 TEACH: dict[str, list[tuple[str, str, str]]] = {
@@ -2247,7 +2248,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:OR": [
         (
             "what",
-            "The ratio of the odds of the event in the two groups, where the odds are the chance of the event divided by the chance of no event. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "The ratio of the odds of the event in the two groups, where the odds are the chance of the event divided by the chance of no event. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
             "CH-6 s6.4.1.1, s6.4.1.2, MF-escalc",
         ),
         (
@@ -2274,7 +2275,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:RR": [
         (
             "what",
-            "The risk of the event in one group divided by the risk in the other; 1 means no difference. metafor analyses it on the log scale, which makes it symmetric around 0 and closer to normally distributed.",
+            "The risk of the event in one group divided by the risk in the other; 1 means no difference. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
             "CH-6 s6.4.1.2, MF-escalc",
         ),
         (
@@ -2345,6 +2346,124 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:AS": [
         ("what", "The difference between the arcsine square roots of the two groups' risks.", "MF-escalc"),
         ("what", "escalc() adds no 0.5 correction to zero cells for this measure unless asked to.", "MF-escalc"),
+    ],
+    "metric:MD": [
+        (
+            "what",
+            "The difference between the two groups' mean outcomes, in the outcome's own units. Cochrane uses it when every study measures the outcome on the same scale.",
+            "CH-6 s6.5.1.1, MF-escalc",
+        ),
+        (
+            "what",
+            'By default escalc() computes its variance without assuming the two groups have equal variances (vtype="LS"); vtype="HO" assumes they do.',
+            "MF-escalc",
+        ),
+    ],
+    "metric:SMD_G": [
+        (
+            "what",
+            "The mean difference divided by the pooled standard deviation of the two groups, corrected for the small-sample bias of Cohen's d. Cochrane's standardized mean difference is this one, Hedges' adjusted g.",
+            "CH-6 s6.5.1.2, MF-escalc",
+        ),
+        (
+            "use",
+            "For studies that measure the same thing with different instruments: each study's effect is expressed relative to the spread between its participants, which puts the studies on one scale. Results are in standard-deviation units, not the original units.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It assumes that differences in standard deviation between studies come from their different scales, not from real differences in how variable their populations are. Where populations differ in spread (Cochrane's example: explanatory and pragmatic trials), the same true effect gives different values.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
+            "CH-6 s6.5.1.2",
+        ),
+    ],
+    "metric:SMD_D": [
+        (
+            "what",
+            "The mean difference divided by the pooled standard deviation of the two groups, without the small-sample correction (correct=FALSE). escalc() notes that this version is biased upwards; Hedges' g corrects that.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For studies that measure the same thing with different instruments: each study's effect is expressed relative to the spread between its participants, which puts the studies on one scale. Results are in standard-deviation units, not the original units.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It assumes that differences in standard deviation between studies come from their different scales, not from real differences in how variable their populations are. Where populations differ in spread (Cochrane's example: explanatory and pragmatic trials), the same true effect gives different values.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
+            "CH-6 s6.5.1.2",
+        ),
+        ("caution", "Cochrane's standardized mean difference is Hedges' adjusted g, not this one.", "CH-6 s6.5.1.2"),
+    ],
+    "metric:SMDH": [
+        (
+            "what",
+            "The mean difference divided by the square root of the average of the two groups' variances, so it doesn't assume the groups have equal variances. escalc() applies a bias correction by default.",
+            "MF-escalc",
+        ),
+        (
+            "use",
+            "For studies that measure the same thing with different instruments: each study's effect is expressed relative to the spread between its participants, which puts the studies on one scale. Results are in standard-deviation units, not the original units.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It assumes that differences in standard deviation between studies come from their different scales, not from real differences in how variable their populations are. Where populations differ in spread (Cochrane's example: explanatory and pragmatic trials), the same true effect gives different values.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
+            "CH-6 s6.5.1.2",
+        ),
+    ],
+    "metric:SMD1": [
+        (
+            "what",
+            "The mean difference divided by one group's standard deviation only: in escalc(), the second group's, and the first group's is not used. Cochrane calls the version that uses the comparator group's standard deviation Glass' delta.",
+            "CH-6 s6.5.1.2, MF-escalc",
+        ),
+        (
+            "use",
+            "For studies that measure the same thing with different instruments: each study's effect is expressed relative to the spread between its participants, which puts the studies on one scale. Results are in standard-deviation units, not the original units.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It assumes that differences in standard deviation between studies come from their different scales, not from real differences in how variable their populations are. Where populations differ in spread (Cochrane's example: explanatory and pragmatic trials), the same true effect gives different values.",
+            "CH-6 s6.5.1.2",
+        ),
+        (
+            "caution",
+            "It doesn't align scales that run in opposite directions. Where higher scores mean worse on some scales and better on others, Cochrane treats aligning them as essential: multiply one set of means by -1, or subtract them from the scale's maximum; the standard deviations stay as they are.",
+            "CH-6 s6.5.1.2",
+        ),
+    ],
+    "metric:ROM": [
+        (
+            "what",
+            "The ratio of the two groups' mean outcomes. metafor analyses it on the log scale, which makes it symmetric around 0 and gives it a sampling distribution closer to normal.",
+            "CH-6 s6.5.1.3, MF-escalc",
+        ),
+        (
+            "use",
+            "It can combine studies that use different scales, provided the scales have comparable lower limits. It suits physical measurements that can only be positive but are measured in ways that can't easily be converted.",
+            "CH-6 s6.5.1.3",
+        ),
+        (
+            "caution",
+            "Only for outcomes that take positive values: it suits values after the intervention, not changes from baseline, which can be negative. escalc() can't compute it when the two means have opposite signs.",
+            "CH-6 s6.5.1.3, MF-escalc",
+        ),
     ],
 }
 
