@@ -3218,7 +3218,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            'Its sampling variance depends on how the data were sampled: vtype="ST" (stratified) or "CS" (cross-sectional) has to say which, and the default is treated as cross-sectional.',
+            'Its sampling variance depends on how the data were sampled: vtype="ST" (stratified) or "CS" (cross-sectional) says which, and the default is treated as cross-sectional.',
             "MF-escalc",
         ),
     ],
@@ -3237,7 +3237,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:PCOR": [
         (
             "what",
-            "The partial correlation for one regression coefficient, computed from that coefficient's t-statistic, the sample size and the total number of predictors in the model. Its sign follows the t-statistic.",
+            "The partial correlation for one regression coefficient, computed from that coefficient's t-statistic, the sample size and the total number of predictors in the model (not counting the intercept). Its sign follows the t-statistic.",
             "MF-escalc",
         ),
     ],
