@@ -2106,6 +2106,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 12: the network measures, from netmeta() and pairwise().
 # Batch 13: the adjusted exposure measures, from Cochrane 10 (not the IPD measures: Cochrane 26 doesn't cover them).
 # Batch 14: the interventional framework, its group structures, datatypes and outcome types.
+# Batch 15: the other frameworks and their branches, where the source has been read.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # The line every network measure shares: what netmeta() reads (netmeta(), "sm" and "TE").
@@ -3584,6 +3585,142 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "what",
             "Each participant's outcome is one of several ordered categories; measurement scales count as ordinal data.",
             "CH-6 s6.1.1",
+        ),
+    ],
+    "framework:diagnostic-test-accuracy": [
+        (
+            "what",
+            "Pools a test's sensitivity and false positive rate, from each study's counts of true positives, false negatives, false positives and true negatives.",
+            "MADA",
+        ),
+    ],
+    "framework:prognosis": [
+        (
+            "what",
+            "Includes pooling how well a prediction model performs across studies that validate it.",
+            "VALMETA",
+        ),
+    ],
+    "framework:association": [
+        (
+            "what",
+            "Pools how strongly two variables are related, for example as a correlation, or how an outcome changes with the dose of an exposure.",
+            "MF-escalc, DOSRES",
+        ),
+    ],
+    "framework:measurement-reliability": [
+        (
+            "what",
+            "Pools reliability estimates, such as Cronbach's alpha, across studies (a reliability generalization meta-analysis).",
+            "MF-escalc",
+        ),
+    ],
+    "group:one-index-test-against-a-reference-standard": [
+        (
+            "what",
+            "Each study gives one 2x2 table for the test: true positives, false negatives, false positives and true negatives.",
+            "MADA",
+        ),
+    ],
+    "group:prediction-model-performance-external-validation": [
+        (
+            "what",
+            "Each study validates the same prediction model and reports its performance, such as the c-statistic or the observed:expected ratio.",
+            "VALMETA",
+        ),
+    ],
+    "group:two-variables-in-one-group-correlation": [
+        (
+            "what",
+            "Each study reports how two variables measured in one group are related: the correlation with its sample size, or the data it is computed from, such as group means and standard deviations or a 2x2 table.",
+            "MF-escalc",
+        ),
+    ],
+    "group:exposure-and-outcome-observational-studies": [
+        ADJUSTED_MEASURE,
+    ],
+    "group:dose-response": [
+        (
+            "what",
+            "Each study gives estimates for several exposure levels against a reference level, and the analysis estimates a dose-response curve across studies.",
+            "DOSRES",
+        ),
+    ],
+    "group:one-group": [
+        (
+            "what",
+            "Each study reports Cronbach's alpha for the instrument, with the number of items and the sample size.",
+            "MF-escalc",
+        ),
+    ],
+    "datatype:2x2-table-per-study": [
+        (
+            "what",
+            "Each study's counts of true positives, false negatives, false positives and true negatives.",
+            "MADA",
+        ),
+    ],
+    "datatype:estimates-at-several-dose-levels-per-study": [
+        (
+            "what",
+            "For each exposure level, the estimate against the reference level. For log relative risks: its variance, standard error or confidence interval, and the cases and the total (or person-time) at each level. For mean differences and standardized mean differences: the standard deviation and the number at each level.",
+            "DOSRES",
+        ),
+    ],
+    "outcome:binary-classification": [
+        (
+            "what",
+            "Each person's test result is positive or negative, so each study's results form a 2x2 table of true positives, false negatives, false positives and true negatives.",
+            "MADA",
+        ),
+    ],
+    "outcome:discrimination": [
+        (
+            "what",
+            "How well a prediction model distinguishes people with the outcome from people without it, measured by the c-statistic.",
+            "VALMETA",
+        ),
+    ],
+    "outcome:calibration": [
+        (
+            "what",
+            "Here it is summarised by the total observed:expected ratio, which metamisc presents as a rough guide to how well the model is calibrated overall.",
+            "VALMETA",
+        ),
+    ],
+    "outcome:two-continuous-variables": [
+        (
+            "what",
+            "Both variables are quantitative. A correlation coefficient shows how strongly, and in which direction, they are linearly related.",
+            "MF-escalc",
+        ),
+    ],
+    "outcome:one-continuous-one-binary-variable": [
+        (
+            "what",
+            "One variable is quantitative and the other has two categories, as with the point-biserial and biserial correlations.",
+            "MF-escalc",
+        ),
+    ],
+    "outcome:two-binary-variables": [
+        (
+            "what",
+            "Both variables have two categories, so each study's data form a 2x2 table, as with the phi and tetrachoric correlations.",
+            "MF-escalc",
+        ),
+    ],
+    "outcome:binary-or-time-to-event": [
+        (
+            "what",
+            "The outcome is summarised as log relative risks from case-control, incidence-rate or cumulative incidence data.",
+            "DOSRES",
+        ),
+    ],
+    "outcome:internal-consistency": [
+        (
+            "what",
+            "Here the measure is Cronbach's alpha (raw or transformed), which metafor pools as a reliability estimate.",
+            "MF-escalc",
         ),
     ],
 }

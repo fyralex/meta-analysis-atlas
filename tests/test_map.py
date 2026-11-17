@@ -742,3 +742,15 @@ def test_batch_fourteen_covers_the_interventional_framework_and_its_branches() -
 
 def test_the_network_group_card_carries_the_transitivity_caution() -> None:
     assert bm.NETWORK_CAUTIONS[0] in bm.TEACH["group:multiple-groups-network"]
+
+
+def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
+    """Branches whose only source is unread (DTA-HB, RILEY) stay without text."""
+    for cid in (
+        "group:two-or-more-index-tests-compared",
+        "group:prognostic-factor-does-the-factor-predict-the-outcome",
+        "datatype:2x2-table-per-study-and-test",
+        "outcome:any-outcome",
+    ):
+        assert cid not in bm.TEACH, cid
+    assert bm.TEACH["group:exposure-and-outcome-observational-studies"] == [bm.ADJUSTED_MEASURE]
