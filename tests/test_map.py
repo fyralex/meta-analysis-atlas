@@ -686,3 +686,17 @@ def test_batch_ten_covers_the_correlation_and_alpha_measures_from_escalc_only() 
     for c in CORRELATION_AND_ALPHA:
         lines = bm.TEACH["metric:" + c]
         assert lines and all(src == "MF-escalc" for _, _, src in lines), c
+
+
+def test_batch_eleven_covers_the_measures_whose_package_pages_were_read() -> None:
+    expected = {
+        "SESP": "MADA",
+        "CSTAT": "VALMETA",
+        "OE": "VALMETA",
+        "DR_RR": "DOSRES",
+        "DR_MD": "DOSRES",
+        "DR_SMD": "DOSRES",
+    }
+    for c, key in expected.items():
+        lines = bm.TEACH["metric:" + c]
+        assert lines and all(src == key for _, _, src in lines), c

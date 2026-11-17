@@ -2102,6 +2102,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 # Batch 8: the network methods with a source that covers them (not yet one-stage IPD in a network).
 # Batch 9: the other frameworks' methods, from the package pages only (the DTA handbook is not read yet).
 # Batch 10: the correlation and Cronbach's alpha measures, from escalc() only.
+# Batch 11: summary sensitivity and specificity, prediction model performance and dose-response trends.
 # --------------------------------------------------------------------------
 TEACH_KINDS = ("what", "use", "caution")
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
@@ -3270,6 +3271,63 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "metafor's version differs slightly from the published transformation, chosen so that the transformed value increases with alpha.",
             "MF-escalc",
+        ),
+    ],
+    "metric:SESP": [
+        (
+            "what",
+            "Summary sensitivity and false positive rate, estimated together by the bivariate model. By default reitsma() works on the logit scale for both.",
+            "MADA",
+        ),
+    ],
+    "metric:CSTAT": [
+        (
+            "what",
+            "A measure of discrimination: how well a prediction model separates people who have the outcome from those who don't. It typically ranges from 0.5 (no discrimination) to 1 (perfect discrimination).",
+            "VALMETA",
+        ),
+        (
+            "what",
+            "valmeta() pools it on the logit scale by default. When a study does not report it or its standard error, valmeta() derives them from other reported information.",
+            "VALMETA",
+        ),
+    ],
+    "metric:OE": [
+        (
+            "what",
+            "Total observed events divided by total expected events: a rough indication of a prediction model's overall calibration.",
+            "VALMETA",
+        ),
+        (
+            "what",
+            "When a study does not report it or its standard error, valmeta() derives them from other reported information. In a frequentist meta-analysis it models the within-study variation as normal (log or identity scale) or Poisson.",
+            "VALMETA",
+        ),
+    ],
+    "metric:DR_RR": [
+        (
+            "what",
+            "Models each study's log relative risks, typically each against the study's reference exposure level, as a function of dose.",
+            "DOSRES",
+        ),
+        (
+            "what",
+            "Rebuilding the covariance among a study's log relative risks needs the cases and the total (or person-time) at each level and the study design. Greenland and Longnecker's method is the default; Hamling's is the alternative.",
+            "DOSRES",
+        ),
+    ],
+    "metric:DR_MD": [
+        (
+            "what",
+            "Models each study's mean differences, typically each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"md\") needs the standard deviations.",
+            "DOSRES",
+        ),
+    ],
+    "metric:DR_SMD": [
+        (
+            "what",
+            "Models each study's standardized mean differences, typically each against the study's reference exposure level, as a function of dose. Rebuilding their covariance (covariance = \"smd\") needs the standard deviations, and method.smd chooses Cohen's, Hedges' or Glass's version.",
+            "DOSRES",
         ),
     ],
 }
