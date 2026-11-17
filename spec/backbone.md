@@ -219,6 +219,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R29 | Trim and fill and selection models work on rma.uni models only (trim and fill: no moderators). | not in v11 | MF-trimfill, MF-selmodel |
 | R30 | Meta-regression is generally not advised with fewer than ten studies. | missing in v11 | CH-10 s10.11.4 |
 | R31 | A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw |
+| R32 | In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure="PETO") also computes it study by study, so other methods could pool it; the map leaves that out (owner's decision, issue #45). | agrees | CH-10 s10.4.2, MF-escalc |
 
 ## Compared with taxonomy v11
 
