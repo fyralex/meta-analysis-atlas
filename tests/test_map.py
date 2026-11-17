@@ -450,6 +450,7 @@ def test_every_node_and_rule_has_one_card(all_cards: list[bm.Card]) -> None:
     nodes = {(t, str(p[t])) for p in paths for t in bm.NODE_TIERS}  # type: ignore[literal-required]
     nodes |= {("method", c) for c in bm.METHODS} | {("metric", c) for c in bm.METRICS}
     nodes |= {("rule", r[0]) for r in bm.RULES}
+    nodes |= {("term", t["term"]) for t in bm.GLOSSARY}
     have = [(c["tier"], c["value"]) for c in all_cards]
     assert len(have) == len(set(have))
     assert set(have) == nodes
@@ -575,7 +576,8 @@ def test_teaching_text_avoids_absolute_words_no_source_uses() -> None:
 
 def test_a_card_lists_its_teaching_text_and_cites_its_sources(all_cards: list[bm.Card]) -> None:
     for c in all_cards:
-        assert [(t["kind"], t["text"], t["src"]) for t in c["teach"]] == bm.TEACH.get(c["id"], [])
+        if c["tier"] != "term":  # a glossary card's one line is its definition, from GLOSSARY
+            assert [(t["kind"], t["text"], t["src"]) for t in c["teach"]] == bm.TEACH.get(c["id"], [])
         keys = set(source_keys(c["src"]))
         for t in c["teach"]:
             assert set(source_keys(t["src"])) <= keys, c["id"]
@@ -754,3 +756,51 @@ def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
     ):
         assert cid not in bm.TEACH, cid
     assert bm.TEACH["group:exposure-and-outcome-observational-studies"] == [bm.ADJUSTED_MEASURE]
+
+
+def test_every_glossary_term_has_a_sourced_definition(all_cards: list[bm.Card]) -> None:
+    for t in bm.GLOSSARY:
+        c = _card(all_cards, bm.card_id("term", t["term"]))
+        assert c["teach"] == [{"kind": "what", "text": t["text"], "src": t["src"]}]
+        assert set(source_keys(t["src"])) <= set(bm.SOURCES) and t["match"]
+        assert not BANNED.search(t["text"]), t["term"]
+
+
+def test_every_glossary_term_is_used_by_at_least_one_card(all_cards: list[bm.Card]) -> None:
+    """A term no card uses is unreachable from the cards (issue #6: the glossary is linked from the cards)."""
+    used = {tid for c in all_cards for tid in c["terms"]}
+    for t in bm.GLOSSARY:
+        assert bm.card_id("term", t["term"]) in used, t["term"]
+
+
+def test_cards_link_the_terms_their_text_uses(all_cards: list[bm.Card]) -> None:
+    assert "term:continuity-correction" in _card(all_cards, "method:GLMM")["terms"]
+    assert "term:transitivity" in _card(all_cards, "method:NM_GT")["terms"]
+    for c in all_cards:
+        assert set(c["terms"]) <= {bm.card_id("term", t["term"]) for t in bm.GLOSSARY}
+        assert c["id"] not in c["terms"]
+    assert "term:indirect-comparison" in _card(all_cards, "term:transitivity")["terms"]
+
+
+def test_only_network_text_links_incoherence(all_cards: list[bm.Card]) -> None:
+    """ "Inconsistency" alone also means pairwise heterogeneity (Cochrane 11.2.3.2), so only network senses match."""
+    linked = {c["id"] for c in all_cards if "term:incoherence-inconsistency" in c["terms"]}
+    assert linked == {"method:NM_GT", "method:NM_MV"}
+
+
+def test_a_term_matches_only_at_the_start_of_a_word() -> None:
+    c = bm.Card(
+        id="x",
+        tier="rule",
+        value="x",
+        title="x",
+        added=False,
+        verified=True,
+        facts=[],
+        rules=[],
+        terms=[],
+        src="",
+        notes=[bm.CardNote(text="Non-transitivity and subgroups.", src="")],
+        teach=[],
+    )
+    assert bm._terms_used(c) == ["term:subgroup-analysis"]

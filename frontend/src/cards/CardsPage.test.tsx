@@ -27,6 +27,14 @@ describe("the Cards page", PAGE, () => {
     expect(screen.getByText(`${String(cards.length)} of ${String(cards.length)} cards`)).toBeInTheDocument();
   });
 
+  it("lists the glossary, and links a card to the terms it uses", () => {
+    renderAt("/cards?card=method%3ANM_GT");
+    expect(screen.getByRole("heading", { level: 2, name: "Glossary" })).toBeInTheDocument();
+    const shown = screen.getByRole("region", { name: /Frequentist, graph-theoretical/ });
+    const link = within(shown).getByRole("link", { name: "Transitivity" });
+    expect(link).toHaveAttribute("href", "/cards?card=term%3Atransitivity");
+  });
+
   it("narrows the list as you type", () => {
     renderAt("/cards");
     fireEvent.change(screen.getByRole("searchbox", { name: "Find a card" }), {

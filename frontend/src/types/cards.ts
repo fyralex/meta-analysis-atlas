@@ -3,7 +3,8 @@
 
 import type { Tier } from "../atlas/filter";
 
-export type CardTier = Tier | "rule";
+/** A node's tier, a rule, or a glossary term. */
+export type CardTier = Tier | "rule" | "term";
 
 export interface Fact {
   label: string;
@@ -41,5 +42,7 @@ export interface Card {
   rules: string[];
   /** Teaching text; empty until the card's batch is written. */
   teach: TeachLine[];
+  /** Ids of the glossary cards for the terms its teaching text or notes use. */
+  terms: string[];
   src: string;
 }
