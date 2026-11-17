@@ -370,6 +370,10 @@ check isn't opened. The script runs:
 1. **lint, format, types and tests:** ruff, mypy `--strict`, and the map
    tests (pytest).
 2. **map files current:** regenerating `spec/` changes nothing.
+   **npm licence record current:** regenerating `docs/npm-licences.md` from
+   `frontend/package-lock.json` changes nothing, and every dependency of the
+   app has a GPL-compatible licence. Advisories `npm audit` reports that can't
+   be fixed yet are listed, with why, in `docs/npm-audit.md`.
 3. **private name scan:** `$ATLAS_PRIVATE_SCAN` prints nothing. The script
    fails if it isn't set.
 4. **frontend:** ESLint, `tsc --noEmit`, Vitest, and the production build.

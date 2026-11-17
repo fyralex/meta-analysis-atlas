@@ -29,6 +29,15 @@ if [ -n "$(git status --porcelain -- spec/)" ]; then
   exit 1
 fi
 
+echo "== npm licence record is current"
+# Regenerate docs/npm-licences.md from frontend/package-lock.json; this also fails if a
+# dependency of the app has a licence that isn't GPL-compatible (#35).
+"$PY" scripts/npm_licences.py
+if [ -n "$(git status --porcelain -- docs/npm-licences.md)" ]; then
+  echo "docs/npm-licences.md differs from the last commit: commit the regenerated file."
+  exit 1
+fi
+
 echo "== frontend (lint, types, tests, build)"
 if [ ! -d frontend/node_modules ]; then
   echo "frontend/node_modules is missing: run 'npm ci --prefix frontend' first." >&2

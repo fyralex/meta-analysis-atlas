@@ -37,5 +37,9 @@ with the dependencies they bring (MIT or BSD-3-Clause):
   three.js           https://threejs.org
   react-three-fiber  https://github.com/pmndrs/react-three-fiber
 
+Every npm package the app uses or is built with, with its version and
+licence, is listed in docs/npm-licences.md, which is generated from
+frontend/package-lock.json.
+
 Fonts used by the map page (IBM Plex) are loaded from Google Fonts and are
 licensed under the SIL Open Font License 1.1.

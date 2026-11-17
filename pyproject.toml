@@ -19,9 +19,9 @@ ignore = ["E501"]
 [tool.mypy]
 strict = true
 python_version = "3.11"
-files = ["spec", "tests"]
+files = ["spec", "tests", "scripts"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["spec"]
+pythonpath = ["spec", "scripts"]
 addopts = "-q"
