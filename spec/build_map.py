@@ -70,6 +70,7 @@ class Branch(TypedDict):
     added: bool
     verified: bool
     note: str
+    src: list[str]  # keys of SOURCES for the data this branch reads, its metrics and its note
 
 
 class Pathway(TypedDict):
@@ -566,6 +567,8 @@ def br(
     added: bool = False,
     verified: bool = True,
     note: str = "",
+    *,
+    src: list[str],
 ) -> None:
     BRANCHES.append(
         Branch(
@@ -580,6 +583,7 @@ def br(
             added=added,
             verified=verified,
             note=note,
+            src=src,
         )
     )
 
@@ -603,16 +607,16 @@ two: dict[str, tuple[str, list[str]]] = {
     "Count / person-time": ("events and person-time per arm (x1i, t1i, x2i, t2i)", ["IRR", "IRD", "IRSD"]),
 }
 for o, (inp, ms) in one.items():
-    br(F1, G1, ARM, "arm", o, inp, ms)
+    br(F1, G1, ARM, "arm", o, inp, ms, src=["MF-escalc"])
 for o, (_inp, ms) in one.items():
-    br(F1, G1, EST, "est", o, EST_IN, ms)
+    br(F1, G1, EST, "est", o, EST_IN, ms, src=["MF-uni", "CH-6"])
 for o, ms in {"Binary": ["I_P"], "Continuous": ["I_M"], "Count / person-time": ["I_R"]}.items():
-    br(F1, G1, IPD, "ipd", o, "one row per participant", ms, verified=False)
+    br(F1, G1, IPD, "ipd", o, "one row per participant", ms, verified=False, src=["CH-26"])
 for o, (inp, ms) in two.items():
-    br(F1, G2, ARM, "arm", o, inp, ms)
+    br(F1, G2, ARM, "arm", o, inp, ms, src=["MF-escalc"])
 for o, (_inp, ms) in two.items():
-    br(F1, G2, EST, "est", o, EST_IN, ms)
-br(F1, G2, EST, "est", "Time-to-event", "log hazard ratio with SE or CI", ["HR"])
+    br(F1, G2, EST, "est", o, EST_IN, ms, src=["MF-uni", "CH-6"])
+br(F1, G2, EST, "est", "Time-to-event", "log hazard ratio with SE or CI", ["HR"], src=["CH-10", "CH-6", "MF-uni"])
 br(
     F1,
     G2,
@@ -623,15 +627,26 @@ br(
     ["POR"],
     added=True,
     note="Cochrane 6.6 and 10.7: ordinal data can also be dichotomised (use Binary) or treated as continuous.",
+    src=["CH-6", "CH-10"],
 )
-br(F1, G2, "Observed minus expected and variance", "oev", "Time-to-event", "O - E and V per study", ["HR"], added=True)
+br(
+    F1,
+    G2,
+    "Observed minus expected and variance",
+    "oev",
+    "Time-to-event",
+    "O - E and V per study",
+    ["HR"],
+    added=True,
+    src=["CH-10"],
+)
 for o, ms in {
     "Binary": ["I_OR"],
     "Continuous": ["I_MD"],
     "Count / person-time": ["I_IRR"],
     "Time-to-event": ["I_HR"],
 }.items():
-    br(F1, G2, IPD, "ipd", o, "one row per participant", ms, verified=False)
+    br(F1, G2, IPD, "ipd", o, "one row per participant", ms, verified=False, src=["CH-26"])
 br(
     F1,
     G3,
@@ -641,17 +656,28 @@ br(
     "two means, two SDs, n and the within-person correlation",
     ["MC", "SMCC", "SMCR", "ROMC"],
     added=True,
+    src=["MF-escalc"],
 )
-br(F1, G3, ARM, "arm", "Binary", "paired 2x2 table", ["MPRR", "MPOR", "MPRD", "MPORC"], added=True)
+br(F1, G3, ARM, "arm", "Binary", "paired 2x2 table", ["MPRR", "MPOR", "MPRD", "MPORC"], added=True, src=["MF-escalc"])
 net: dict[str, tuple[str, list[str]]] = {
     "Binary": ("events and total per arm", ["N_OR", "N_RR", "N_RD", "N_ASD"]),
     "Continuous": ("mean, SD, n per arm", ["N_MD", "N_SMD", "N_ROM"]),
     "Count / person-time": ("events and person-time per arm", ["N_IRR", "N_IRD"]),
 }
 for o, (inp, ms) in net.items():
-    br(F1, G4, ARM, "arm", o, inp, ms, domain="network")
+    br(F1, G4, ARM, "arm", o, inp, ms, domain="network", src=["META-pw", "NM"])
 for o, (_inp, ms) in net.items():
-    br(F1, G4, "Contrast-level estimates", "est", o, "effect and SE for each pair of treatments", ms, domain="network")
+    br(
+        F1,
+        G4,
+        "Contrast-level estimates",
+        "est",
+        o,
+        "effect and SE for each pair of treatments",
+        ms,
+        domain="network",
+        src=["NM"],
+    )
 br(
     F1,
     G4,
@@ -661,9 +687,10 @@ br(
     "log hazard ratio and SE for each pair",
     ["N_HR"],
     domain="network",
+    src=["NM"],
 )
 for o, ms in {"Binary": ["N_OR"], "Continuous": ["N_MD"], "Time-to-event": ["N_HR"]}.items():
-    br(F1, G4, IPD, "ipd", o, "one row per participant", ms, domain="network", verified=False)
+    br(F1, G4, IPD, "ipd", o, "one row per participant", ms, domain="network", verified=False, src=["CH-26"])
 
 F2 = "2. Diagnostic test accuracy"
 br(
@@ -676,6 +703,7 @@ br(
     ["SESP", "SROC", "DOR", "LRP", "LRN"],
     domain="dta",
     added=True,
+    src=["MADA"],
 )
 br(
     F2,
@@ -689,6 +717,7 @@ br(
     added=True,
     verified=False,
     note="Done by adding the test as a covariate in the bivariate or HSROC model.",
+    src=["DTA-HB"],
 )
 
 F3 = "3. Prognosis"
@@ -703,6 +732,7 @@ br(
     added=True,
     verified=False,
     note="Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019.",
+    src=["RILEY"],
 )
 br(
     F3,
@@ -714,6 +744,7 @@ br(
     ["CSTAT"],
     domain="valid",
     added=True,
+    src=["VALMETA"],
 )
 br(
     F3,
@@ -725,6 +756,7 @@ br(
     ["OE"],
     domain="valid",
     added=True,
+    src=["VALMETA"],
 )
 br(
     F3,
@@ -736,6 +768,7 @@ br(
     [],
     domain="none",
     added=True,
+    src=["MF-escalc"],
 )
 
 F4 = "4. Association"
@@ -748,6 +781,7 @@ br(
     "correlation and n (ri, ni)",
     ["COR", "UCOR", "ZCOR", "PCOR"],
     added=True,
+    src=["MF-escalc"],
 )
 br(
     F4,
@@ -758,6 +792,7 @@ br(
     "mean, SD, n per group",
     ["RPB", "RBIS"],
     added=True,
+    src=["MF-escalc"],
 )
 br(
     F4,
@@ -768,6 +803,7 @@ br(
     "2x2 table",
     ["PHI", "RTET"],
     added=True,
+    src=["MF-escalc"],
 )
 br(
     F4,
@@ -780,6 +816,7 @@ br(
     added=True,
     verified=False,
     note="Guidance for non-randomized studies (Cochrane Ch. 24) not read yet.",
+    src=["CH-10"],
 )
 br(
     F4,
@@ -791,6 +828,7 @@ br(
     ["DR_RR"],
     domain="dose",
     added=True,
+    src=["DOSRES"],
 )
 br(
     F4,
@@ -802,6 +840,7 @@ br(
     ["DR_MD", "DR_SMD"],
     domain="dose",
     added=True,
+    src=["DOSRES"],
 )
 
 F5 = "5. Measurement reliability"
@@ -814,23 +853,48 @@ br(
     "alpha, number of items, n (ai, mi, ni)",
     ["ARAW", "AHW", "ABT"],
     added=True,
+    src=["MF-escalc"],
 )
 
-FRAMEWORK_NOTES = {
-    F1: "Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses are also used for prevalence and incidence.",
-    F2: "Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified.",
-    F3: "Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor entries are unverified.",
-    F4: "Not in v11 (correlation was excluded there).",
-    F5: "Not in v11. Supported by metafor.",
+# Notes on framework, group and datatype nodes: (text, source), the source written as for the rules.
+# "Not in v11" is a statement about taxonomy v11, which stays private; the source backs the rest of the note.
+FRAMEWORK_NOTES: dict[str, tuple[str, str]] = {
+    F1: (
+        "Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or "
+        "an incidence rate from single groups.",
+        "CH-10, MF-escalc",
+    ),
+    F2: (
+        "Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are "
+        "unverified.",
+        "DTA-HB, MADA",
+    ),
+    F3: (
+        "Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor "
+        "entries are unverified.",
+        "VALMETA, RILEY",
+    ),
+    F4: ("Not in v11 (correlation was excluded there).", "MF-escalc, DOSRES"),
+    F5: ("Not in v11. Supported by metafor.", "MF-escalc"),
 }
-GROUP_NOTES = {
-    G3: "Not in v11. Needed for before-and-after designs and crossover trials (Cochrane 23.2).",
-    G4: "Both common-effect and random-effects models are available. After fitting: treatment ranking "
-    "(P-score, SUCRA, rankogram) and checks of transitivity and consistency. These are outputs, not metrics.",
+GROUP_NOTES: dict[str, tuple[str, str]] = {
+    G3: (
+        "Not in v11. Needed for before-and-after designs, and for crossover trials (Cochrane 23.2).",
+        "CH-23 s23.2, MF-escalc",
+    ),
+    G4: (
+        "Both common-effect and random-effects models are available. Before fitting, judge transitivity: whether "
+        "effect modifiers are similar across the comparisons. After fitting, check consistency and rank the "
+        "treatments (P-score, SUCRA, rankogram); rankings are outputs, not metrics.",
+        "CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn, DMA",
+    ),
 }
-DATATYPE_NOTES = {
-    IPD: "Two-stage analysis: analyse each study, then pool the estimates through the Precomputed estimate branch. "
-    "One-stage analysis is shown here.",
+DATATYPE_NOTES: dict[str, tuple[str, str]] = {
+    IPD: (
+        "Two-stage analysis: analyse each study, then pool the estimates through the Precomputed estimate branch. "
+        "One-stage analysis is shown here.",
+        "CH-26 s26.4.2, s26.4.5",
+    ),
 }
 
 # --------------------------------------------------------------------------
@@ -1247,6 +1311,21 @@ def build_tree(paths: list[Pathway]) -> Node:
     return root
 
 
+class Note(TypedDict):
+    tier: str
+    value: str
+    text: str
+    src: str
+
+
+def notes() -> list[Note]:
+    """The framework, group and datatype notes, each with its source."""
+    out: list[Note] = []
+    for tier, entries in (("framework", FRAMEWORK_NOTES), ("group", GROUP_NOTES), ("datatype", DATATYPE_NOTES)):
+        out += [Note(tier=tier, value=v, text=t, src=src) for v, (t, src) in entries.items()]
+    return out
+
+
 def branch_for(fw: str, group: str, datatype: str, outcome: str) -> Branch | None:
     for b in BRANCHES:
         if (b["fw"], b["group"], b["datatype"], b["outcome"]) == (fw, group, datatype, outcome):
@@ -1258,11 +1337,11 @@ def node_info(tier: str, value: str, ctx: Mapping[str, str]) -> tuple[str, bool,
     """Return (note, flags) for a tree node."""
     note, verified, added = "", True, False
     if tier == "framework":
-        note = FRAMEWORK_NOTES.get(value, "")
+        note = FRAMEWORK_NOTES.get(value, ("", ""))[0]
     elif tier == "group":
-        note = GROUP_NOTES.get(value, "")
+        note = GROUP_NOTES.get(value, ("", ""))[0]
     elif tier == "datatype":
-        note = DATATYPE_NOTES.get(value, "")
+        note = DATATYPE_NOTES.get(value, ("", ""))[0]
     elif tier == "outcome":
         b = branch_for(ctx["framework"], ctx["group"], ctx["datatype"], value)
         if b:
@@ -1363,9 +1442,16 @@ def write_backbone_md(paths: list[Pathway], stats: str) -> None:
         "## Branches: framework, group structure, datatype, outcome",
         "",
         table(
-            ["Framework", "Group structure", "Datatype", "Outcome", "Data needed", "Status"],
-            [(b["fw"], b["group"], b["datatype"], b["outcome"], b["inputs"], flag(b)) for b in BRANCHES],
+            ["Framework", "Group structure", "Datatype", "Outcome", "Data needed", "Status", "Source"],
+            [
+                (b["fw"], b["group"], b["datatype"], b["outcome"], b["inputs"], flag(b), ", ".join(b["src"]))
+                for b in BRANCHES
+            ],
         ),
+        "",
+        "## Notes on frameworks, groups and datatypes",
+        "",
+        table(["Tier", "Node", "Note", "Source"], [(n["tier"], n["value"], n["text"], n["src"]) for n in notes()]),
         "",
         "## Metrics",
         "",
@@ -1550,6 +1636,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         branches=BRANCHES,
         rules=RULES,
         cross_cutting=CROSS,
+        notes=notes(),
         open_items=OPEN,
         unconfirmed=[{"method": me, "metric": mt, "why": why} for (me, mt), why in UNCONFIRMED.items()],
         metrics=METRICS,

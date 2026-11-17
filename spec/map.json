@@ -161,7 +161,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -178,7 +181,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -196,7 +202,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -216,7 +225,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -233,7 +246,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -251,7 +268,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -266,7 +287,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -281,7 +305,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -296,7 +323,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -315,7 +345,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -335,7 +368,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -352,7 +388,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -371,7 +410,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -391,7 +434,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -408,7 +455,11 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-uni",
+    "CH-6"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -423,7 +474,12 @@
    "domain": "pairwise",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-10",
+    "CH-6",
+    "MF-uni"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -438,7 +494,11 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": "Cochrane 6.6 and 10.7: ordinal data can also be dichotomised (use Binary) or treated as continuous."
+   "note": "Cochrane 6.6 and 10.7: ordinal data can also be dichotomised (use Binary) or treated as continuous.",
+   "src": [
+    "CH-6",
+    "CH-10"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -453,7 +513,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-10"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -468,7 +531,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -483,7 +549,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -498,7 +567,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -513,7 +585,10 @@
    "domain": "pairwise",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -531,7 +606,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -549,7 +627,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -567,7 +648,11 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "META-pw",
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -584,7 +669,11 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "META-pw",
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -600,7 +689,11 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "META-pw",
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -618,7 +711,10 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -635,7 +731,10 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -651,7 +750,10 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -666,7 +768,10 @@
    "domain": "network",
    "added": false,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "NM"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -681,7 +786,10 @@
    "domain": "network",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -696,7 +804,10 @@
    "domain": "network",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -711,7 +822,10 @@
    "domain": "network",
    "added": false,
    "verified": false,
-   "note": ""
+   "note": "",
+   "src": [
+    "CH-26"
+   ]
   },
   {
    "fw": "2. Diagnostic test accuracy",
@@ -730,7 +844,10 @@
    "domain": "dta",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MADA"
+   ]
   },
   {
    "fw": "2. Diagnostic test accuracy",
@@ -746,7 +863,10 @@
    "domain": "dta",
    "added": true,
    "verified": false,
-   "note": "Done by adding the test as a covariate in the bivariate or HSROC model."
+   "note": "Done by adding the test as a covariate in the bivariate or HSROC model.",
+   "src": [
+    "DTA-HB"
+   ]
   },
   {
    "fw": "3. Prognosis",
@@ -764,7 +884,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": false,
-   "note": "Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019."
+   "note": "Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019.",
+   "src": [
+    "RILEY"
+   ]
   },
   {
    "fw": "3. Prognosis",
@@ -779,7 +902,10 @@
    "domain": "valid",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "VALMETA"
+   ]
   },
   {
    "fw": "3. Prognosis",
@@ -794,7 +920,10 @@
    "domain": "valid",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "VALMETA"
+   ]
   },
   {
    "fw": "3. Prognosis",
@@ -807,7 +936,10 @@
    "domain": "none",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "4. Association",
@@ -825,7 +957,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "4. Association",
@@ -841,7 +976,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "4. Association",
@@ -857,7 +995,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   },
   {
    "fw": "4. Association",
@@ -874,7 +1015,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": false,
-   "note": "Guidance for non-randomized studies (Cochrane Ch. 24) not read yet."
+   "note": "Guidance for non-randomized studies (Cochrane Ch. 24) not read yet.",
+   "src": [
+    "CH-10"
+   ]
   },
   {
    "fw": "4. Association",
@@ -889,7 +1033,10 @@
    "domain": "dose",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "DOSRES"
+   ]
   },
   {
    "fw": "4. Association",
@@ -905,7 +1052,10 @@
    "domain": "dose",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "DOSRES"
+   ]
   },
   {
    "fw": "5. Measurement reliability",
@@ -922,7 +1072,10 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": ""
+   "note": "",
+   "src": [
+    "MF-escalc"
+   ]
   }
  ],
  "rules": [
@@ -1139,6 +1292,56 @@
    "Ranking (P-score, SUCRA, rankogram), league table, consistency checks.",
    "NM-man, CH-11"
   ]
+ ],
+ "notes": [
+  {
+   "tier": "framework",
+   "value": "1. Interventional (effect of an intervention)",
+   "text": "Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or an incidence rate from single groups.",
+   "src": "CH-10, MF-escalc"
+  },
+  {
+   "tier": "framework",
+   "value": "2. Diagnostic test accuracy",
+   "text": "Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified.",
+   "src": "DTA-HB, MADA"
+  },
+  {
+   "tier": "framework",
+   "value": "3. Prognosis",
+   "text": "Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor entries are unverified.",
+   "src": "VALMETA, RILEY"
+  },
+  {
+   "tier": "framework",
+   "value": "4. Association",
+   "text": "Not in v11 (correlation was excluded there).",
+   "src": "MF-escalc, DOSRES"
+  },
+  {
+   "tier": "framework",
+   "value": "5. Measurement reliability",
+   "text": "Not in v11. Supported by metafor.",
+   "src": "MF-escalc"
+  },
+  {
+   "tier": "group",
+   "value": "Change or matched pairs (same people measured twice)",
+   "text": "Not in v11. Needed for before-and-after designs, and for crossover trials (Cochrane 23.2).",
+   "src": "CH-23 s23.2, MF-escalc"
+  },
+  {
+   "tier": "group",
+   "value": "Multiple groups (network)",
+   "text": "Both common-effect and random-effects models are available. Before fitting, judge transitivity: whether effect modifiers are similar across the comparisons. After fitting, check consistency and rank the treatments (P-score, SUCRA, rankogram); rankings are outputs, not metrics.",
+   "src": "CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn, DMA"
+  },
+  {
+   "tier": "datatype",
+   "value": "Individual participant data",
+   "text": "Two-stage analysis: analyse each study, then pool the estimates through the Precomputed estimate branch. One-stage analysis is shown here.",
+   "src": "CH-26 s26.4.2, s26.4.5"
+  }
  ],
  "open_items": [
   "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",

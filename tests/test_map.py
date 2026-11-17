@@ -77,6 +77,25 @@ def test_every_cross_cutting_section_cites_known_sources(section: tuple[str, str
     assert [k for k in keys if k not in bm.SOURCES] == []
 
 
+@pytest.mark.parametrize(
+    "branch", bm.BRANCHES, ids=[" / ".join((b["fw"][:2], b["group"], b["datatype"], b["outcome"])) for b in bm.BRANCHES]
+)
+def test_every_branch_cites_known_sources(branch: bm.Branch) -> None:
+    assert branch["src"], "branch cites no source"
+    assert [k for k in branch["src"] if k not in bm.SOURCES] == []
+
+
+@pytest.mark.parametrize("note", bm.notes(), ids=[n["value"] for n in bm.notes()])
+def test_every_note_cites_known_sources(note: bm.Note) -> None:
+    keys = source_keys(note["src"])
+    assert keys, "note cites no source"
+    assert [k for k in keys if k not in bm.SOURCES] == []
+
+
+def test_every_note_is_listed() -> None:
+    assert len(bm.notes()) == len(bm.FRAMEWORK_NOTES) + len(bm.GROUP_NOTES) + len(bm.DATATYPE_NOTES) == 8
+
+
 def test_source_keys_are_well_formed_and_link_out() -> None:
     for key, (label, url) in bm.SOURCES.items():
         assert KEY_RE.match(key), key

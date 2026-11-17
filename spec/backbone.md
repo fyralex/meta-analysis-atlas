@@ -8,55 +8,68 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 
 ## Branches: framework, group structure, datatype, outcome
 
-| Framework | Group structure | Datatype | Outcome | Data needed | Status |
-|---|---|---|---|---|---|
-| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Binary | events, total (xi, ni) | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Continuous | mean, SD, n (mi, sdi, ni) | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Count / person-time | events, person-time (xi, ti) | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Binary | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Continuous | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Count / person-time | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Binary | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Continuous | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Count / person-time | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Binary | 2x2 table (ai, bi, ci, di) | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Continuous | mean, SD, n per arm | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Count / person-time | events and person-time per arm (x1i, t1i, x2i, t2i) | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Binary | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Continuous | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Count / person-time | estimate with SE, variance or CI | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Time-to-event | log hazard ratio with SE or CI | OK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Ordinal | log proportional odds ratio with SE | NEW |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Observed minus expected and variance | Time-to-event | O - E and V per study | NEW |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Binary | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Continuous | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Count / person-time | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Time-to-event | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Continuous | two means, two SDs, n and the within-person correlation | NEW |
-| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Binary | paired 2x2 table | NEW |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Binary | events and total per arm | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Continuous | mean, SD, n per arm | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Count / person-time | events and person-time per arm | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Binary | effect and SE for each pair of treatments | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Continuous | effect and SE for each pair of treatments | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Count / person-time | effect and SE for each pair of treatments | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Time-to-event | log hazard ratio and SE for each pair | OK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | CHECK |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK |
-| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | NEW |
-| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | NEW, CHECK |
-| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK |
-| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | NEW |
-| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | NEW |
-| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group | See 1. Interventional, One group |  | NEW |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | NEW |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | NEW |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | NEW |
-| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK |
-| 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW |
-| 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW |
-| 5. Measurement reliability | One group | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW |
+| Framework | Group structure | Datatype | Outcome | Data needed | Status | Source |
+|---|---|---|---|---|---|---|
+| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Binary | events, total (xi, ni) | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Continuous | mean, SD, n (mi, sdi, ni) | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Arm-level summary data | Count / person-time | events, person-time (xi, ti) | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Binary | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Continuous | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Precomputed estimate | Count / person-time | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | One group (single arm) | Individual participant data | Count / person-time | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Binary | 2x2 table (ai, bi, ci, di) | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Continuous | mean, SD, n per arm | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Arm-level summary data | Count / person-time | events and person-time per arm (x1i, t1i, x2i, t2i) | OK | MF-escalc |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Binary | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Continuous | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Count / person-time | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Time-to-event | log hazard ratio with SE or CI | OK | CH-10, CH-6, MF-uni |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Ordinal | log proportional odds ratio with SE | NEW | CH-6, CH-10 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Observed minus expected and variance | Time-to-event | O - E and V per study | NEW | CH-10 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Count / person-time | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Continuous | two means, two SDs, n and the within-person correlation | NEW | MF-escalc |
+| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Binary | paired 2x2 table | NEW | MF-escalc |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Binary | events and total per arm | OK | META-pw, NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Continuous | mean, SD, n per arm | OK | META-pw, NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Count / person-time | events and person-time per arm | OK | META-pw, NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Binary | effect and SE for each pair of treatments | OK | NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Continuous | effect and SE for each pair of treatments | OK | NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Count / person-time | effect and SE for each pair of treatments | OK | NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Time-to-event | log hazard ratio and SE for each pair | OK | NM |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
+| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | NEW | MADA |
+| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | NEW, CHECK | DTA-HB |
+| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | RILEY |
+| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | NEW | VALMETA |
+| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | NEW | VALMETA |
+| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group | See 1. Interventional, One group |  | NEW | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | NEW | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | NEW | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | NEW | MF-escalc |
+| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | CH-10 |
+| 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW | DOSRES |
+| 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW | DOSRES |
+| 5. Measurement reliability | One group | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
+
+## Notes on frameworks, groups and datatypes
+
+| Tier | Node | Note | Source |
+|---|---|---|---|
+| framework | 1. Interventional (effect of an intervention) | Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or an incidence rate from single groups. | CH-10, MF-escalc |
+| framework | 2. Diagnostic test accuracy | Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified. | DTA-HB, MADA |
+| framework | 3. Prognosis | Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor entries are unverified. | VALMETA, RILEY |
+| framework | 4. Association | Not in v11 (correlation was excluded there). | MF-escalc, DOSRES |
+| framework | 5. Measurement reliability | Not in v11. Supported by metafor. | MF-escalc |
+| group | Change or matched pairs (same people measured twice) | Not in v11. Needed for before-and-after designs, and for crossover trials (Cochrane 23.2). | CH-23 s23.2, MF-escalc |
+| group | Multiple groups (network) | Both common-effect and random-effects models are available. Before fitting, judge transitivity: whether effect modifiers are similar across the comparisons. After fitting, check consistency and rank the treatments (P-score, SUCRA, rankogram); rankings are outputs, not metrics. | CH-11 s11.2.2, s11.4.4, s11.6.4, NM, NM-man, MD-senn, DMA |
+| datatype | Individual participant data | Two-stage analysis: analyse each study, then pool the estimates through the Precomputed estimate branch. One-stage analysis is shown here. | CH-26 s26.4.2, s26.4.5 |
 
 ## Metrics
 
