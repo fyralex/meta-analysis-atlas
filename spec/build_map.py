@@ -2973,8 +2973,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "To check consistency, the Q statistic can be split into parts within designs and a remaining "
-            "inconsistency part (decomp.design()). Cochrane notes that finding no significant incoherence does not "
+            "To check consistency, its Q statistic splits into a part for each pairwise meta-analysis and a part for "
+            "the inconsistency left between them. Cochrane notes that finding no significant incoherence does not "
             "show there is none.",
             "NM, CH-11 s11.4.4.2",
         ),
@@ -3006,7 +3006,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "Like any rma.mv() model it accepts moderators, which allows network meta-regression.",
+            "Like any rma.mv() model it accepts moderators, so a network model can include them.",
             "MF-mv",
         ),
     ]
@@ -3014,7 +3014,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "method:NM_MH": [
         (
             "what",
-            "netmetabin() pools binary outcomes across a network from the arm-level counts. Its Mantel-Haenszel "
+            "netmetabin() pools binary outcomes across a network from the event counts and sample sizes of each arm, "
+            "one comparison per row (pairwise() converts arm-based data). Its Mantel-Haenszel "
             "method (Efthimiou et al. 2019) and its non-central hypergeometric method fit common effects only.",
             "NM-bin",
         ),
