@@ -39,10 +39,10 @@ describe("the app shell", PAGE, () => {
     expect(screen.getByRole("searchbox", { name: "Find a card" })).toBeInTheDocument();
   });
 
-  it.each([["/pathfinder", "Pathfinder", "#7"]])("routes %s to its page, which says it isn't built yet", (path, name, issue) => {
-    renderAt(path);
-    expect(screen.getByRole("heading", { level: 1, name })).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(`issue ${issue}`))).toBeInTheDocument();
+  it("routes /pathfinder to Pathfinder, at its first question", () => {
+    renderAt("/pathfinder");
+    expect(screen.getByRole("heading", { level: 1, name: "Pathfinder" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "What kind of question does the review ask?" })).toBeInTheDocument();
   });
 
   it("says when a page doesn't exist", () => {
