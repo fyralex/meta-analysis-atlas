@@ -10,8 +10,8 @@ Framework → Group structure → Datatype → Outcome type → Model → Method
 The map covers five frameworks (interventional, including network
 meta-analysis; diagnostic test accuracy; prognosis; association; measurement
 reliability) and 564 pathways. Every entry cites its source: the Cochrane
-Handbook, the metafor documentation, or the documentation of the R package
-that runs it. Entries that haven't been confirmed against a primary source
+Handbook, the documentation of the R package that runs it, or a methods paper
+or textbook. Entries that haven't been confirmed against a primary source
 are marked as such.
 
 ## Status
@@ -34,7 +34,8 @@ published worked example or the R package run on the same data
 
 **Atlas** shows every pathway, one layer per tier. Choosing a node keeps only
 the pathways through it, and every node shows how many would remain. A node
-that doesn't fit your choices says why, with its source. The 2D
+that doesn't fit your choices says why, citing the rule or source behind it
+where there is one. The 2D
 view works with the keyboard and screen readers; a 3D view shows the same
 nodes and counts as stacked rings you can turn.
 
@@ -44,9 +45,10 @@ nodes and counts as stacked rings you can turn.
 
 **Pathfinder** asks a few questions in a methodologist's order: the kind of
 question, what each study compares, what it reported, and the outcome. Each
-option says what it is, with its source, and options the map rules out say
-why. For binary outcomes compared between two groups or across a network, it
-asks whether events are rare, and when both models
+option says what it is, with its source, where its card has that text, and
+options the map rules out say why. For binary outcomes from arm-level counts,
+compared between two groups or across a network, it asks whether events are
+rare, and when both models
 fit it asks whether true effects are expected to differ. Neither answer
 removes a pathway: they show what the cards say, and pre-select a model with
 the other one click away ([why](docs/decisions/0005-pathfinder-advisory-questions.md)).
@@ -54,11 +56,12 @@ Its answers are shared with the Atlas.
 
 ![Pathfinder after three answers, asking about the outcome](docs/screenshots/pathfinder.png)
 
-**Cards** gives every choice and rule a card: what it is, when to use it,
-its cautions, the R function, the data it reads and the rules that limit it,
-each line with its source. A card has no teaching text where its only source
-hasn't been read yet. A glossary of the terms the cards use is linked from
-each card.
+**Cards** gives every choice and rule a card. A choice's card says what it
+is, when to use it and its cautions, each line with its source, then the R
+function, the data it reads and the rules that limit it, with the card's
+sources. A rule's card shows the rule and its sources. A choice's card has no
+teaching text where no source that covers it has been read yet. A glossary of
+14 terms is linked from the cards that use them.
 
 ![The card for Peto's method](docs/screenshots/cards.png)
 
@@ -106,16 +109,18 @@ The apps read the map from `spec/` when they are built.
 1. Open an issue that says what should change and why, with a source: a
    Cochrane Handbook section, the documentation of the R function, or a
    methods paper.
-2. Edit the data in `spec/build_map.py`: a branch, a method (with its R
-   function, the models it fits and the data it reads), a metric (with its
-   exact call, such as `escalc(measure="SMD")`) or a rule. Give every entry
-   its source. An entry not yet confirmed from a primary source is marked
-   `verified=False`.
+2. On a branch named `feat/<issue>-<slug>`, edit the data in
+   `spec/build_map.py`: a branch, a method (with its R function, the models
+   it fits and the data it reads), a metric (with its exact call, such as
+   `escalc(measure="SMD")`) or a rule. Give every entry its source. Mark an
+   entry not yet confirmed from a primary source `verified=False`, and one
+   that isn't in the reviewed draft the map started from `added=True`.
 3. Run `python3 spec/build_map.py --lock`. The diff of
-   `spec/pathways.lock.json` lists every pathway added or removed.
-4. Open a pull request that explains each change in that diff, with its
-   reference. A methodology decision also gets a short record in
-   [`docs/decisions/`](docs/decisions/).
+   `spec/pathways.lock.json` lists every pathway added or removed. Then run
+   `scripts/check.sh`; every check must pass.
+4. Open a pull request for the map change alone that explains each change in
+   that diff, with its reference. A methodology decision also gets a short
+   record in [`docs/decisions/`](docs/decisions/).
 
 Every change to the map is audited against its sources before review.
 

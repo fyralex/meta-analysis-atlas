@@ -16,8 +16,8 @@ it. Nothing runs analyses yet; no pathway is runnable.
   measurement reliability. They are generated from `spec/build_map.py` and
   pinned in `spec/pathways.lock.json` (#30).
 - A status for every pathway: 404 planned, 61 specified and 99 to check (#33).
-- A source for every branch, method, metric, rule and note (#43). Each
-  method and metric has its own name (#42).
+- A source for every entry: methods, metrics and rules from the start (#30),
+  branches and notes since #43. Each method and metric has its own name (#42).
 - Map changes, each with its reason and source:
   - the incidence rate difference for networks (#39);
   - the network standardized mean difference is Cohen's d, as `pairwise()`
@@ -27,14 +27,15 @@ it. Nothing runs analyses yet; no pathway is runnable.
 
 ### Atlas
 
-- A 2D view of every pathway, one layer per tier, with counts for every node
-  and the tier order as a setting (#36, #38).
-- "Why not?" for every node that doesn't fit the choices, with its reason
-  and source (#44, #46).
+- A 2D view of every pathway, one layer per tier, with counts for every node,
+  the tier order as a setting, and a setting to hide entries marked new
+  (#36, #38).
+- "Why not?" for every node that doesn't fit the choices, citing the rule or
+  source behind it where there is one (#44, #46).
 - A 3D view of the same nodes and counts, which falls back to 2D without
   WebGL 2 (#71).
-- Settings to hide entries marked new, and to show only runnable pathways.
-  The second stays off until a pathway is runnable (#72).
+- A setting to show only runnable pathways, which stays off until a pathway
+  is runnable (#72).
 
 ### Pathfinder
 
@@ -55,13 +56,18 @@ it. Nothing runs analyses yet; no pathway is runnable.
 
 - Local checks for every pull request, and CI and a GitHub Pages deploy at
   releases (#26, #34).
-- An audit of every pull request against its sources before review (#26,
-  #28).
+- An audit of every pull request against its sources before review, except
+  small ones that change only docs, tests or a few lines outside the map
+  (#26, #28).
 - Faster frontend tests (#50).
 
 ### Known gaps
 
-- Cards whose only source hasn't been read have no teaching text yet: those
-  that rely on the Cochrane Handbook for diagnostic test accuracy, on Riley et
-  al. 2019, and the participant-data measures (#21, #25, #58, #59).
+- Some cards have no teaching text yet: those whose only source hasn't been
+  read (the Cochrane Handbook for diagnostic test accuracy, and Riley et al.
+  2019; #21, #25), and those whose only source doesn't cover them (the
+  participant-data measures and one-stage participant-data network
+  meta-analysis, which Cochrane chapter 26 doesn't describe; #25, #59).
+- Penalised logistic regression's models, and the wording of a note on
+  bayesmeta, still need confirming from their sources (#58).
 - In the 3D view, the labels are small until a node is hovered or chosen.
