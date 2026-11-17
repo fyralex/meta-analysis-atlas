@@ -352,7 +352,7 @@ export function AtlasPage() {
               <tbody role="rowgroup">
                 {shown.map((p) => (
                   <tr key={tiers.map((t) => p[t]).join("|")} role="row">
-                    <td role="cell" data-label="Status">
+                    <td role="cell">
                       <span className="cell-label" aria-hidden="true">
                         Status
                       </span>
@@ -362,7 +362,7 @@ export function AtlasPage() {
                       </span>
                     </td>
                     {varying.map((t) => (
-                      <td key={t} role="cell" data-label={TIER_NAMES[t]}>
+                      <td key={t} role="cell">
                         <span className="cell-label" aria-hidden="true">
                           {TIER_NAMES[t]}
                         </span>
