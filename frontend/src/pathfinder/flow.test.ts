@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import lock from "../../../spec/pathways.lock.json";
-import { DEFAULT_OPTIONS, TIERS, type FilterOptions } from "../atlas/filter";
+import { DEFAULT_OPTIONS, filterPathways, reconcile, TIERS, type FilterOptions } from "../atlas/filter";
+import { map } from "../map";
 import type { Selection } from "../atlas/filter";
 import type { Pathway } from "../types/map";
 import {
@@ -11,7 +12,7 @@ import {
   atlasHref,
   choices,
   fitting,
-  modelsIn,
+  MODEL_FOR,
   nextQuestion,
   QUESTIONS,
   rareLines,
@@ -83,16 +84,33 @@ describe("Pathfinder's questions", () => {
     expect(new URLSearchParams(href.slice("/atlas?".length)).get("framework")).toBe(first);
     expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric")).toBe("/atlas");
     expect(atlasHref({}, { hideNew: true }, "metric-method-model")).toBe("/atlas?order=metric-method-model&new=hide");
+    expect(atlasHref({ framework: first }, DEFAULT_OPTIONS, "model-method-metric", "Random effects")).toContain(
+      "model=Random+effects",
+    );
   });
 
-  it("with either model pre-selected for varying effects, never end on no pathway", () => {
-    for (const end of walk({})) {
-      const found = fitting(end, DEFAULT_OPTIONS);
-      if (!asksVary(found)) continue;
-      for (const m of modelsIn(found)) {
-        expect(found.filter((p) => p.model === m).length, `${JSON.stringify(end)} ${m}`).toBeGreaterThan(0);
+  it("pre-select, for each answer on varying effects, a model the Atlas keeps and that leaves pathways", () => {
+    for (const options of [DEFAULT_OPTIONS, { hideNew: true }]) {
+      for (const end of walk({}, options)) {
+        const found = fitting(end, options);
+        if (!asksVary(found)) continue;
+        for (const model of Object.values(MODEL_FOR)) {
+          const kept = reconcile(map.pathways, { ...answered(end), model }, options);
+          expect(kept.model, `${JSON.stringify(end)} ${model}`).toBe(model);
+          expect(filterPathways(map.pathways, kept, options).length).toBeGreaterThan(0);
+        }
       }
     }
+  });
+
+  it("ask about rare events only for binary outcomes compared between two groups or across a network", () => {
+    const asked = walk({})
+      .filter((end) => asksRare(fitting(end, DEFAULT_OPTIONS)))
+      .map((end) => `${String(end.group)} / ${String(end.datatype)} / ${String(end.outcome)}`);
+    expect(asked.sort()).toEqual([
+      "Multiple groups (network) / Arm-level summary data / Binary",
+      "Two groups (pairwise) / Arm-level summary data / Binary",
+    ]);
   });
 
   it("ask about rare events only where a fitting method's card speaks of them", () => {
@@ -107,5 +125,6 @@ describe("Pathfinder's questions", () => {
     expect(lines.find((l) => l.method === "IV")?.line.kind).toBe("caution");
     expect(asksRare(binary)).toBe(true);
     expect(asksRare(fitting({ ...pairwise, outcome: "Continuous" }, DEFAULT_OPTIONS))).toBe(false);
+    expect(asksRare(fitting({ ...pairwise, outcome: "Count / person-time" }, DEFAULT_OPTIONS))).toBe(false);
   });
 });

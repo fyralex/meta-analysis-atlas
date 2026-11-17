@@ -78,11 +78,12 @@ export function unused(selection: Selection): Tier[] {
   return TIERS.filter((t) => selection[t] !== undefined && kept[t] === undefined);
 }
 
-/** The Atlas, opened on these answers and the same settings. */
-export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder): string {
+/** The Atlas, opened on these answers (and a model Pathfinder pre-selected) with the same settings. */
+export function atlasHref(selection: Selection, options: FilterOptions, order: TierOrder, model?: string): string {
   const params = new URLSearchParams();
+  const tiers: Selection = model === undefined ? answered(selection) : { ...answered(selection), model };
   for (const tier of TIERS) {
-    const value = answered(selection)[tier];
+    const value = tiers[tier];
     if (value !== undefined) params.set(tier, value);
   }
   if (order !== "model-method-metric") params.set("order", order);
@@ -153,11 +154,19 @@ export function modelsIn(found: readonly Pathway[]): string[] {
 }
 
 /**
- * Ask about rare events only where a method that fits is one its card suggests for them (a "use" line), not
- * where the only line is a caution: inverse variance carries one for every outcome, continuous ones included.
+ * Where the rare-events advice applies: binary outcomes compared between two groups (Cochrane 10.4.4.3, on
+ * dichotomous outcomes) or across a network (netmetabin()). Rates (Cochrane 10.8) and one-group data are not
+ * what those sections speak to, though the same methods fit them.
+ */
+const RARE_SCOPE = { outcome: "Binary", groups: new Set(["Two groups (pairwise)", "Multiple groups (network)"]) };
+
+/**
+ * Ask about rare events only within RARE_SCOPE, and only where a method that fits is one its card suggests for
+ * them (a "use" line), not where the only line is a caution: inverse variance carries one wherever it fits.
  */
 export function asksRare(found: readonly Pathway[]): boolean {
-  return rareLines(found).some((l) => l.line.kind === "use");
+  const inScope = found.length > 0 && found.every((p) => p.outcome === RARE_SCOPE.outcome && RARE_SCOPE.groups.has(p.group));
+  return inScope && rareLines(found).some((l) => l.line.kind === "use");
 }
 
 /** Ask whether true effects vary only where both models still fit. */

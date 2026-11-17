@@ -138,6 +138,8 @@ describe("Pathfinder", PAGE, () => {
     expect(within(model).getByRole("link", { name: "Common effect" })).toBeInTheDocument();
     expect(within(model).getByRole("link", { name: "Random effects" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
+    const atlas = screen.getByRole("link", { name: "Open them in the Atlas" }).getAttribute("href") ?? "";
+    expect(new URLSearchParams(atlas.slice(atlas.indexOf("?"))).get("model")).toBe("Random effects");
     const table = () => screen.getByRole("table", { name: /pathways that fit/ });
     expect(within(table()).queryAllByRole("link", { name: "Common effect" })).toHaveLength(0);
     fireEvent.click(within(model).getByRole("button", { name: "Show common effect pathways only" }));
@@ -145,6 +147,15 @@ describe("Pathfinder", PAGE, () => {
     fireEvent.click(screen.getByRole("button", { name: "Show both models" }));
     expect(within(table()).getAllByRole("link", { name: "Random effects" }).length).toBeGreaterThan(0);
     expect(within(table()).getAllByRole("link", { name: "Common effect" }).length).toBeGreaterThan(0);
+  });
+
+  it("keeps every fitting method's rare-events advice when one model is shown, and keeps the model", () => {
+    renderAt(`${BINARY}&vary=yes&model=Random+effects`);
+    pick(/^Yes$/);
+    expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
+    const rare = screen.getByRole("region", { name: "Rare events" });
+    // Peto is common-effect only, so its pathways are not in the table, but its card's advice still shows
+    expect(within(rare).getByRole("link", { name: "Peto" })).toBeInTheDocument();
   });
 
   it("skips the rare-events question where no method that fits says anything about it", () => {

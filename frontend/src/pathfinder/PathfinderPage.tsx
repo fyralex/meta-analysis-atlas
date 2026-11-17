@@ -168,7 +168,7 @@ function ModelAdvice({ found }: { found: readonly Pathway[] }) {
             <Link to={cardHref(c.id)}>{c.title}</Link>
           </p>
           {c.teach
-            .filter((t) => t.kind === "use" || t === c.teach.find((w) => w.kind === "what"))
+            .filter((t) => t.kind !== "what" || t === c.teach.find((w) => w.kind === "what"))
             .map((t) => (
               <div key={t.text}>
                 <p>{t.text}</p>
@@ -222,6 +222,12 @@ export function PathfinderPage() {
   const shown = model === undefined ? found : found.filter((p) => p.model === model);
   const ignored = unused(selection).filter((t) => t !== "model" || !(askVary && vary));
   const heading = useRef<HTMLHeadingElement>(null);
+  const modelHeading = useRef<HTMLHeadingElement>(null);
+  /** Switch the model shown, and keep focus in the Model section: the button pressed goes away. */
+  function showModel(m: string | undefined) {
+    update({ selection: m === undefined ? answers : { ...answers, model: m } });
+    setTimeout(() => modelHeading.current?.focus(), 0);
+  }
   const step = next?.tier ?? advice?.key ?? "results";
   // Move focus to the question (or the results) when the step changes: after an answer, a change or a restart,
   // not on first load (comparing with the last step, so StrictMode's second run of the effect changes nothing).
@@ -347,7 +353,8 @@ export function PathfinderPage() {
             <AdviceOptions
               question={advice}
               onPick={(a) => {
-                const pick = advice.key === "vary" ? MODEL_FOR[a] : undefined;
+                // "vary" pre-selects its model; "rare" keeps any model already pre-selected
+                const pick = advice.key === "vary" ? MODEL_FOR[a] : selection.model;
                 update({ selection: pick ? { ...answers, model: pick } : answers, extra: { [advice.key]: a } });
               }}
             />
@@ -367,7 +374,9 @@ export function PathfinderPage() {
 
           {askVary && vary && (
             <section className="advice" aria-labelledby="pf-model">
-              <h3 id="pf-model">Model</h3>
+              <h3 id="pf-model" ref={modelHeading} tabIndex={-1}>
+                Model
+              </h3>
               <p>
                 {model === undefined ? "Both models are shown." : `Showing ${model.toLowerCase()} pathways only.`}
               </p>
@@ -380,7 +389,7 @@ export function PathfinderPage() {
                         type="button"
                         className="link-button"
                         onClick={() => {
-                          update({ selection: { ...answers, model: m } });
+                          showModel(m);
                         }}
                       >
                         Show {m.toLowerCase()} pathways only
@@ -393,7 +402,7 @@ export function PathfinderPage() {
                       type="button"
                       className="link-button"
                       onClick={() => {
-                        update({ selection: answers });
+                        showModel(undefined);
                       }}
                     >
                       Show both models
@@ -412,12 +421,12 @@ export function PathfinderPage() {
                 {rare === "yes" ? "You said the events are rare" : "In case the events are rare"}: this is what
                 the cards of the methods here say about them. No pathway is removed.
               </p>
-              <RareAdvice found={shown} />
+              <RareAdvice found={found} />
             </section>
           )}
 
           <p>
-            <Link to={atlasHref(model === undefined ? answers : { ...answers, model }, options, order)}>
+            <Link to={atlasHref(selection, options, order, model)}>
               Open them in the Atlas
             </Link>
             , to choose the model, method and metric and see why the others don&apos;t fit.
