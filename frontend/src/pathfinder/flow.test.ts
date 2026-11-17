@@ -87,6 +87,7 @@ describe("Pathfinder's questions", () => {
     expect(atlasHref({ framework: first }, DEFAULT_OPTIONS, "model-method-metric", "Random effects")).toContain(
       "model=Random+effects",
     );
+    expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric", undefined, "3d")).toBe("/atlas?view=3d");
   });
 
   it("pre-select, for each answer on varying effects, a model the Atlas keeps and that leaves pathways", () => {

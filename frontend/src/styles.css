@@ -196,3 +196,7 @@ ul.option-reason { list-style: none; padding: 0; display: grid; gap: 0.5rem; }
 .advice { border: 1px solid var(--line); border-radius: 6px; padding: 0.5rem 1rem; margin-block: 1rem; max-width: 70ch; }
 .advice h3 { margin-top: 0.25rem; }
 .model-switch { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem; }
+
+/* Atlas 3D view (#5) */
+.atlas-3d { height: min(75vh, 720px); min-height: 380px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); touch-action: none; cursor: grab; }
+.atlas-3d:active { cursor: grabbing; }
