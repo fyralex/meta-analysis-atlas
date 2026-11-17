@@ -119,11 +119,13 @@ export function PathfinderPage() {
   const ignored = unused(selection);
   const heading = useRef<HTMLHeadingElement>(null);
   const step = next?.tier ?? "results";
-  // Move focus to the question (or the results) after each answer, change or restart; not on first load.
-  const loaded = useRef(false);
+  // Move focus to the question (or the results) when the step changes: after an answer, a change or a restart,
+  // not on first load (comparing with the last step, so StrictMode's second run of the effect changes nothing).
+  const shownStep = useRef(step);
   useEffect(() => {
-    if (loaded.current) heading.current?.focus();
-    loaded.current = true;
+    if (shownStep.current === step) return;
+    shownStep.current = step;
+    heading.current?.focus();
   }, [step]);
 
   const byStatus = STATUSES.filter((s) => found.some((p) => p.status === s)).map(
@@ -155,7 +157,7 @@ export function PathfinderPage() {
       {ignored.length > 0 && (
         <p className="note">
           Pathfinder doesn&apos;t use your {ignored.map(lower).join(", ")} choice{ignored.length === 1 ? "" : "s"} from
-          the address; {ignored.length === 1 ? "it is" : "they are"} cleared when you answer.
+          the address; {ignored.length === 1 ? "it is" : "they are"} cleared when you answer or change an answer.
         </p>
       )}
 

@@ -71,7 +71,7 @@ export function AtlasPage() {
       </p>
       <p>
         <Link to={`/pathfinder${search}`}>Answer a few questions in Pathfinder instead</Link>. It keeps your framework,
-        group structure, datatype and outcome choices.
+        group structure, datatype and outcome choices, up to the first one you haven&apos;t made.
       </p>
 
       <div className="atlas-controls">
