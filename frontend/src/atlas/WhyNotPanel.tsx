@@ -90,6 +90,13 @@ export function WhyNotPanel({ tier, label, explanation, labelOf, onClose }: Prop
           Untick &ldquo;Show only runnable pathways&rdquo; to see them.
         </p>
       )}
+      {explanation.kind === "hidden-both" && (
+        <p>
+          It fits your choices only through pathways that are marked new and aren&apos;t runnable yet, and both settings
+          hide them. Untick &ldquo;Hide entries marked new&rdquo; and &ldquo;Show only runnable pathways&rdquo; to see
+          them.
+        </p>
+      )}
       <button type="button" className="clear" onClick={onClose}>
         Close
       </button>

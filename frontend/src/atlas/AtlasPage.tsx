@@ -144,8 +144,8 @@ export function AtlasPage() {
         </label>
         {!ANY_RUNNABLE && (
           <p className="muted" id="runnable-none">
-            No pathway is runnable yet. A pathway becomes runnable once it passes a validation test against a published
-            worked example; the first ones are planned for v0.2.
+            No pathway is runnable yet. A pathway becomes runnable once it passes a validation test, against a published
+            worked example or the R package run on the same data; the first ones are planned for v0.2.
           </p>
         )}
         <fieldset className="choice">

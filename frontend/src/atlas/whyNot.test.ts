@@ -123,4 +123,11 @@ describe("why not, with only runnable pathways shown", () => {
     expect(why.kind).toBe("blocked");
     expect(explain(some, {}, "method", "IV", { hideNew: false, runnableOnly: true }).kind).toBe("not-runnable");
   });
+
+  it("names both settings when a node fits only through pathways both of them hide", () => {
+    // Penalised logistic regression's pathways are all marked new, and none is runnable.
+    const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
+    expect(map.pathways.filter((p) => p.method === "LRP").every((p) => p.added && p.status !== "runnable")).toBe(true);
+    expect(explain(some, {}, "method", "LRP", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
+  });
 });

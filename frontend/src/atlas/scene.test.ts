@@ -11,7 +11,10 @@ const F1 = "1. Interventional (effect of an intervention)";
 
 function lockCount(selection: Selection, options: FilterOptions): number {
   return lock.filter(
-    (p) => !(options.hideNew && p.added) && TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
+    (p) =>
+      !(options.hideNew && p.added) &&
+      !(options.runnableOnly && p.status !== "runnable") &&
+      TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
   ).length;
 }
 
@@ -26,7 +29,8 @@ const SELECTIONS: Selection[] = [
 
 describe("the 3D scene", () => {
   it.each(SELECTIONS)("gives every node the same count as the 2D view and the lock file, for %j", (selection) => {
-    for (const options of [DEFAULT_OPTIONS, { hideNew: true }]) {
+    // No pathway is runnable in v0.1: "runnable only" leaves every node at 0 in both views, and the counts still agree.
+    for (const options of [DEFAULT_OPTIONS, { hideNew: true }, { hideNew: false, runnableOnly: true }]) {
       for (const layer of scene(map.pathways, selection, "model-method-metric", options)) {
         const flat = tierNodes(map.pathways, selection, layer.tier, options);
         expect(layer.nodes.map((n) => [n.value, n.count, n.selected])).toEqual(

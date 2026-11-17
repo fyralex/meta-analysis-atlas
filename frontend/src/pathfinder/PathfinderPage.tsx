@@ -61,7 +61,10 @@ function Reason({ tier, value }: { tier: Tier; value: string }) {
 function WhyNot({ selection, tier, value, options }: { selection: Selection; tier: Tier; value: string; options: FilterOptions }) {
   const why = explain(map.pathways, answered(selection), tier, value, options);
   if (why.kind === "hidden-new") return <p className="muted">It is only in entries marked new, which are hidden.</p>;
-  if (why.kind === "not-runnable") return <p className="muted">None of its pathways is runnable yet.</p>;
+  if (why.kind === "not-runnable") return <p className="muted">None of its pathways that fit your answers is runnable yet.</p>;
+  if (why.kind === "hidden-both") {
+    return <p className="muted">It is only in entries marked new that aren&apos;t runnable yet, and both are hidden.</p>;
+  }
   if (why.kind !== "blocked") return <p className="muted">Not possible with your answers together.</p>;
   return (
     <ul className="option-reason">
