@@ -61,7 +61,7 @@ describe("the Cards page", PAGE, () => {
   });
 
   it("shows no teaching headings on a card whose text isn't written yet", () => {
-    renderAt("/cards?card=metric%3APR");
+    renderAt("/cards?card=rule%3AR1"); // rule cards carry no teaching text
     expect(screen.queryByRole("region", { name: "What it is" })).not.toBeInTheDocument();
   });
 
