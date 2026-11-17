@@ -176,4 +176,15 @@ describe("node labels", () => {
     expect(nodeLabel(map, "metric", "SMD_D")).toContain("Cohen's d");
     expect(nodeLabel(map, "outcome", "Binary")).toBe("Binary");
   });
+
+  it("adds the code to a name that two methods or metrics share", () => {
+    expect(nodeLabel(map, "metric", "RD")).toBe("Risk difference (RD)");
+    expect(nodeLabel(map, "metric", "N_RD")).toBe("Risk difference (N_RD)");
+    expect(nodeLabel(map, "method", "IPD1")).toBe("One-stage regression on participant data (IPD1)");
+  });
+
+  it.each(["method", "metric"] as const)("gives every %s in the map a different label", (tier) => {
+    const values = [...new Set(lock.map((p) => p[tier]))];
+    expect(new Set(values.map((v) => nodeLabel(map, tier, v))).size).toBe(values.length);
+  });
 });

@@ -22,8 +22,13 @@ describe("the app shell", () => {
     expect(within(table).getByRole("row", { name: /To check/ })).toHaveTextContent(String(counts.to_check));
   });
 
+  it("routes /atlas to the Atlas", () => {
+    renderAt("/atlas");
+    expect(screen.getByRole("heading", { level: 1, name: "Atlas" })).toBeInTheDocument();
+    expect(screen.getByRole("toolbar", { name: "Framework" })).toBeInTheDocument();
+  });
+
   it.each([
-    ["/atlas", "Atlas", "#4"],
     ["/pathfinder", "Pathfinder", "#7"],
     ["/cards", "Cards", "#6"],
   ])("routes %s to its page, which says it isn't built yet", (path, name, issue) => {

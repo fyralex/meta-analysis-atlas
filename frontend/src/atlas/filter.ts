@@ -125,9 +125,16 @@ export function reconcile(pathways: readonly Pathway[], selection: Selection, op
   return next;
 }
 
-/** A node's label: a method's or metric's name, otherwise the value itself. */
+/**
+ * A node's label: a method's or metric's name, otherwise the value itself. A few
+ * methods and metrics share a name in the map (for example a pairwise and a network
+ * risk difference); their code is added so that no two nodes look the same.
+ */
 export function nodeLabel(map: MapData, tier: Tier, value: string): string {
-  if (tier === "method") return map.methods[value]?.label ?? value;
-  if (tier === "metric") return map.metrics[value]?.label ?? value;
-  return value;
+  const entries: Record<string, { label: string }> | undefined =
+    tier === "method" ? map.methods : tier === "metric" ? map.metrics : undefined;
+  const label = entries?.[value]?.label;
+  if (entries === undefined || label === undefined) return value;
+  const shared = Object.entries(entries).some(([key, e]) => key !== value && e.label === label);
+  return shared ? `${label} (${value})` : label;
 }
