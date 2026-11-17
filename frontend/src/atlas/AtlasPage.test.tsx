@@ -7,6 +7,7 @@ import { map } from "../map";
 import { STATUSES, type Pathway } from "../types/map";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { nodeLabel, TIERS, tiersInOrder, type Selection, type Tier } from "./filter";
+import { reasonsFor } from "./whyNot";
 
 // Every count the page shows is checked against the lock file, read independently of map.json.
 const lock = lockRaw as unknown as Pathway[];
@@ -256,5 +257,53 @@ describe("the Atlas's 2D view", () => {
     renderAtlas(`?${new URLSearchParams(selection).toString()}`);
     const table = screen.getByRole("table", { name: `The ${String(expected)} matching pathways` });
     expect(within(table).getAllByRole("row")).toHaveLength(expected + 1);
+  });
+
+  describe("Why not?", () => {
+    const query = `?framework=${encodeURIComponent(F1)}&method=PETO`;
+
+    it("opens on a greyed-out node with the reason, its rule and its sources, and takes focus", () => {
+      renderAtlas(query);
+      const md = node("metric", "MD");
+      expect(md).toHaveAccessibleName(/press to see why$/);
+      fireEvent.click(md);
+      const panel = screen.getByRole("region", { name: "Why not Mean difference?" });
+      expect(document.activeElement).toBe(within(panel).getByRole("heading", { name: "Why not Mean difference?" }));
+      expect(panel).toHaveTextContent("No pathway has Mean difference with your choice of method, Peto.");
+      const [reason] = reasonsFor(["metric", "MD"], ["method", "PETO"]) ?? [];
+      expect(panel).toHaveTextContent(reason?.text ?? "missing");
+      expect(panel).toHaveTextContent("Rule R5: Peto needs 2x2 tables");
+      expect(within(panel).getByRole("link", { name: "metafor, rma.peto()" })).toHaveAttribute("href", map.sources["MF-peto"]?.[1]);
+      expect(md).toHaveAttribute("aria-pressed", "false");
+    });
+
+    it("closes and gives focus back to the node", () => {
+      renderAtlas(query);
+      fireEvent.click(node("metric", "MD"));
+      fireEvent.click(screen.getByRole("button", { name: "Close" }));
+      expect(screen.queryByRole("region", { name: /^Why not/ })).not.toBeInTheDocument();
+      expect(document.activeElement).toBe(node("metric", "MD"));
+    });
+
+    it("closes when a choice changes, and a second press on the node closes it too", () => {
+      renderAtlas(query);
+      fireEvent.click(node("metric", "MD"));
+      fireEvent.click(node("metric", "MD"));
+      expect(screen.queryByRole("region", { name: /^Why not/ })).not.toBeInTheDocument();
+      fireEvent.click(node("metric", "MD"));
+      fireEvent.click(node("model", "Common effect"));
+      expect(screen.queryByRole("region", { name: /^Why not/ })).not.toBeInTheDocument();
+    });
+
+    it("says when only hidden new entries would fit", () => {
+      // rma.mv's common-effect model is marked new; see whyNot.test.ts.
+      renderAtlas("?method=MV&new=hide");
+      const common = node("model", "Common effect");
+      expect(shownCount(common)).toBe(0);
+      fireEvent.click(common);
+      expect(screen.getByRole("region", { name: "Why not Common effect?" })).toHaveTextContent(
+        "only through entries marked new",
+      );
+    });
   });
 });

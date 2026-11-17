@@ -1,10 +1,22 @@
+import { useState } from "react";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
 import { STATUSES, type Status } from "../types/map";
-import { filterPathways, nodeLabel, type NodeSummary, tierNodes, tiersInOrder, toggle, type TierOrder } from "./filter";
+import {
+  filterPathways,
+  nodeLabel,
+  type NodeSummary,
+  type Tier,
+  tierNodes,
+  tiersInOrder,
+  toggle,
+  type TierOrder,
+} from "./filter";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { TierLayer } from "./TierLayer";
 import { useAtlasState } from "./useAtlasState";
+import { explain } from "./whyNot";
+import { WhyNotPanel } from "./WhyNotPanel";
 
 const ORDERS: { value: TierOrder; text: string }[] = [
   { value: "model-method-metric", text: "Model → Method → Metric" },
@@ -22,7 +34,21 @@ function compatibleFirst(nodes: NodeSummary[]): NodeSummary[] {
 }
 
 export function AtlasPage() {
-  const { selection, order, options, dropped, update } = useAtlasState();
+  const { selection, order, options, dropped, update: change } = useAtlasState();
+  const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
+  // Any change of choices or settings closes "Why not?": its answer was for the old ones.
+  const update: typeof change = (c) => {
+    setAsked(null);
+    change(c);
+  };
+
+  function closeWhyNot() {
+    if (!asked) return;
+    const { tier, value } = asked;
+    setAsked(null);
+    const nodes = document.querySelectorAll<HTMLButtonElement>(`#tier-${tier}-nodes button.node`);
+    [...nodes].find((b) => b.dataset.value === value)?.focus();
+  }
   const tiers = tiersInOrder(order);
   const shown = filterPathways(map.pathways, selection, options);
   const total = options.hideNew ? map.pathways.filter((p) => !p.added).length : map.pathways.length;
@@ -37,7 +63,7 @@ export function AtlasPage() {
       <h1>Atlas</h1>
       <p className="lead">
         Every pathway in the map, one layer per tier. Choose a node to keep only the pathways that go through it; each
-        node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices.
+        node shows how many pathways would remain if you chose it. A node at 0 doesn&apos;t fit your other choices: press it to see why.
         With the keyboard, Tab moves between layers and the arrow keys move between the nodes of a layer.
       </p>
 
@@ -132,7 +158,20 @@ export function AtlasPage() {
           onChoose={(value) => {
             update({ selection: toggle(map.pathways, selection, tier, value, options) });
           }}
-        />
+          onWhyNot={(value) => {
+            setAsked(asked?.tier === tier && asked.value === value ? null : { tier, value });
+          }}
+        >
+          {asked?.tier === tier && (
+            <WhyNotPanel
+              tier={tier}
+              label={nodeLabel(map, tier, asked.value)}
+              explanation={explain(map.pathways, selection, tier, asked.value, options)}
+              labelOf={(t, v) => nodeLabel(map, t, v)}
+              onClose={closeWhyNot}
+            />
+          )}
+        </TierLayer>
       ))}
 
       <h2>Matching pathways</h2>

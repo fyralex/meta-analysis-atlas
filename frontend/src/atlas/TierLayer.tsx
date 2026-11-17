@@ -1,4 +1,4 @@
-import type { KeyboardEvent } from "react";
+import type { KeyboardEvent, ReactNode } from "react";
 import { STATUS_TEXT } from "../status";
 import { STATUSES } from "../types/map";
 import type { NodeSummary } from "./filter";
@@ -11,13 +11,17 @@ interface Props {
   /** The entry's own flags, for tiers whose values are entries in the map (methods, metrics). */
   flags?: (value: string) => { added: boolean; verified: boolean } | undefined;
   onChoose: (value: string) => void;
+  /** Ask why a node with no compatible pathway can't be chosen. */
+  onWhyNot: (value: string) => void;
+  /** Shown under the layer's nodes: the "Why not?" panel, when one of them is asked about. */
+  children?: ReactNode;
 }
 
 /** What a screen reader hears: the visible label first, then the count by status. */
 function spoken(text: string, node: NodeSummary, entry?: { added: boolean; verified: boolean }): string {
   const marks = [entry?.added ? "new" : "", entry && !entry.verified ? "to check" : ""].filter(Boolean);
   const name = marks.length > 0 ? `${text} (${marks.join(", ")})` : text;
-  if (node.count === 0) return `${name}, 0 pathways: not compatible with your other choices`;
+  if (node.count === 0) return `${name}, 0 pathways: not compatible with your other choices; press to see why`;
   const parts = STATUSES.filter((s) => node.byStatus[s] > 0).map(
     (s) => `${String(node.byStatus[s])} ${STATUS_TEXT[s].name.toLowerCase()}`,
   );
@@ -28,9 +32,9 @@ function spoken(text: string, node: NodeSummary, entry?: { added: boolean; verif
 /**
  * One tier of the map: a toolbar of toggle buttons, one per value. Tab reaches the
  * group once; the arrow keys, Home and End move between its nodes. A node with no
- * compatible pathway stays focusable, so it can be read; choosing it does nothing.
+ * compatible pathway stays focusable, so it can be read; pressing it asks why not.
  */
-export function TierLayer({ id, name, nodes, label, flags, onChoose }: Props) {
+export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, children }: Props) {
   const tabStop = Math.max(
     0,
     nodes.findIndex((n) => n.selected),
@@ -50,7 +54,7 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose }: Props) {
   return (
     <section className="layer" aria-labelledby={id}>
       <h2 id={id}>{name}</h2>
-      <div className="nodes" role="toolbar" aria-orientation="horizontal" aria-labelledby={id}>
+      <div className="nodes" id={`${id}-nodes`} role="toolbar" aria-orientation="horizontal" aria-labelledby={id}>
         {nodes.map((node, i) => {
           const none = node.count === 0;
           const entry = flags?.(node.value);
@@ -65,8 +69,10 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose }: Props) {
               aria-pressed={node.selected}
               aria-disabled={none}
               tabIndex={i === tabStop ? 0 : -1}
+              data-value={node.value}
               onClick={() => {
-                onChoose(node.value); // the caller's toggle() refuses a node with no compatible pathway
+                if (none) onWhyNot(node.value);
+                else onChoose(node.value);
               }}
               onKeyDown={(e) => {
                 onKeyDown(e, i);
@@ -97,6 +103,7 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose }: Props) {
           );
         })}
       </div>
+      {children}
     </section>
   );
 }
