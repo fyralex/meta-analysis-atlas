@@ -2267,7 +2267,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell.",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell. Setting drop00=TRUE leaves them out; its documentation notes that this has sometimes been recommended.",
             "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
         ),
     ],
@@ -2294,12 +2294,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "A study with no events in the comparator group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell, which includes a group where everyone had the event.",
+            "A study with no events in either group needs a correction before it can be computed. By default escalc() adds 0.5 to each cell of any table with a zero cell, which includes a group where everyone had the event.",
             "CH-6 s6.4.1.2, MF-escalc",
         ),
         (
             "caution",
-            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell.",
+            "Cochrane leaves out studies with no events, or only events, in both groups, as they say nothing about the size of the effect. escalc() keeps them by default and corrects them like any other table with a zero cell. Setting drop00=TRUE leaves them out; its documentation notes that this has sometimes been recommended.",
             "CH-6 s6.4.1.2, CH-10 s10.4.4.2, MF-escalc",
         ),
     ],
