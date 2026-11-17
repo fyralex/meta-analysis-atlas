@@ -828,8 +828,19 @@ def test_a_method_card_names_the_group_structures_it_has_pathways_in(all_cards: 
     for code in bm.METHODS:
         card = _card(all_cards, bm.card_id("method", code))
         used = next(f["items"] for f in card["facts"] if f["label"] == "Used for")
-        groups = {str(p["group"]) for p in paths if p["method"] == code}
-        if groups:
-            assert set(used) == groups, code
+        mine = [p for p in paths if p["method"] == code]
+        several = len({p["framework"] for p in mine}) > 1
+        expected = bm._uniq(
+            f"{bm._framework_short(str(p['framework']))}: {p['group']}" if several else str(p["group"]) for p in mine
+        )
+        assert used == expected, code
     peto = _card(all_cards, "method:PETO")
     assert next(f["items"] for f in peto["facts"] if f["label"] == "Used for") == ["Two groups (pairwise)"]
+    iv = next(f["items"] for f in _card(all_cards, "method:IV")["facts"] if f["label"] == "Used for")
+    assert "Interventional: One group (single arm)" in iv and "Measurement reliability: One group" in iv
+
+
+def test_a_method_card_without_pathways_falls_back_to_its_domain() -> None:
+    card = bm._method_card("PETO", [])
+    used = next(f["items"] for f in card["facts"] if f["label"] == "Used for")
+    assert used == [bm.DOMAIN_WORDS["pairwise"]]
