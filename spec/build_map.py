@@ -2836,7 +2836,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "caution",
             "Its random-effects version uses a multiplicative heterogeneity parameter (an estimate of 1 means no "
-            "heterogeneity), not the between-study variance that the other random-effects methods here estimate.",
+            "heterogeneity) rather than a between-study variance (tau squared).",
             "META-bin",
         ),
     ],
@@ -2845,7 +2845,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "what",
             "Fits the random-effects model, whose two unknowns are the mean effect and the heterogeneity (tau), the "
             "Bayesian way: a prior for each is combined with the data into posterior distributions. bayesmeta() "
-            "computes them numerically, without MCMC sampling.",
+            "computes them numerically, with the DIRECT algorithm.",
             "BM",
         ),
         (
@@ -2856,9 +2856,9 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "Cochrane lists what it offers: it can bring in outside evidence, such as how much effects usually vary; "
-            "it allows for the imprecision of the estimated heterogeneity; and an informative heterogeneity prior "
-            "helps most when there are few studies.",
+            "Cochrane lists potential advantages: it can bring in outside evidence, such as how much effects usually "
+            "vary, and it allows for the imprecision of the estimated heterogeneity. It adds that an informative "
+            "heterogeneity prior is particularly useful when there are few studies.",
             "CH-10 s10.13",
         ),
         (
