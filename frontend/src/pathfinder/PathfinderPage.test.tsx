@@ -28,8 +28,10 @@ function renderAt(path: string) {
   );
 }
 
+/** Answer the current question: choose the option, then press Next (its label says where it goes). */
 const pick = (name: RegExp) => {
-  fireEvent.click(screen.getByRole("button", { name }));
+  fireEvent.click(screen.getByRole("radio", { name }));
+  fireEvent.click(screen.getByRole("button", { name: /^(Next|See the results)/ }));
 };
 
 // These tests render whole pages; see the note in App.test.tsx (#49).
@@ -39,19 +41,19 @@ describe("Pathfinder", PAGE, () => {
   it("asks the questions in order, keeps the answers in the address, and ends on the fitting pathways", () => {
     renderAt("/pathfinder");
     pick(/^1\. Interventional/);
-    expect(screen.getByRole("heading", { level: 2, name: "What does each study compare, or describe?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toHaveFocus();
     pick(/^Two groups \(pairwise\)/);
-    expect(screen.getByRole("heading", { level: 2, name: "What did each study report?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "What did each study report?" })).toHaveFocus();
     pick(/^Arm-level summary data/);
-    expect(screen.getByRole("heading", { level: 2, name: "What kind of outcome is it?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "What kind of outcome is it?" })).toHaveFocus();
     pick(/^Binary/);
-    expect(screen.getByRole("heading", { level: 2, name: "Are the events rare?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "Are the events rare?" })).toHaveFocus();
     pick(/^No$/);
-    expect(screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" })).toHaveFocus();
     pick(/^Not sure$/);
-    expect(screen.getByRole("heading", { level: 2, name: "Pathways that fit your answers" })).toHaveFocus();
-    fireEvent.click(screen.getByRole("button", { name: "Start again" }));
-    expect(screen.getByRole("heading", { level: 2, name: "What kind of question does the review ask?" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "Pathways that fit your answers" })).toHaveFocus();
+    fireEvent.click(screen.getByRole("button", { name: "Start again from question 1" }));
+    expect(screen.getByRole("heading", { level: 1, name: "What kind of question does the review ask?" })).toHaveFocus();
     pick(/^1\. Interventional/);
     pick(/^Two groups \(pairwise\)/);
     pick(/^Arm-level summary data/);
@@ -61,7 +63,7 @@ describe("Pathfinder", PAGE, () => {
     const params = new URLSearchParams(address());
     expect(params.get("group")).toBe("Two groups (pairwise)");
     expect(params.get("outcome")).toBe("Binary");
-    const atlas = screen.getByRole("link", { name: "Open them in the Atlas" });
+    const atlas = screen.getByRole("link", { name: /^Open these \d+ in the Atlas, with your answers already chosen$/ });
     expect(atlas.getAttribute("href")).toContain("/atlas?framework=");
     expect(screen.getByRole("table", { name: /pathways that fit/ })).toBeInTheDocument();
   });
@@ -73,32 +75,31 @@ describe("Pathfinder", PAGE, () => {
 
   it("starts from the answers in the address, and lets one be changed", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29");
-    expect(screen.getByRole("heading", { level: 2, name: "What did each study report?" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Change group structure (now Two groups (pairwise))" }));
-    expect(screen.getByRole("heading", { level: 2, name: "What does each study compare, or describe?" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "What did each study report?" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Change your answer to question 2, study design (now Two groups (pairwise))" }));
+    expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("group")).toBeNull();
   });
 
   it("says why an option is not possible, naming the answer it conflicts with", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29");
-    expect(screen.getByText(/^Not possible with your answers/)).toBeInTheDocument();
+    expect(screen.getByText(/^Why don't the other \d+ fit\?/)).toBeInTheDocument();
     expect(screen.getAllByText(/^Not with your (framework|group structure),/).length).toBeGreaterThan(0);
   });
 
   it("follows the Atlas's setting to hide new entries, and carries it to the Atlas", () => {
     renderAt("/pathfinder?new=hide");
     expect(screen.getByText(/Entries marked new are hidden/)).toBeInTheDocument();
-    const offered = screen
-      .getAllByRole("button")
-      .filter((b) => b.classList.contains("option"))
-      .map((b) => b.textContent);
+    const offered = screen.getAllByRole<HTMLInputElement>("radio").map((r) => r.value);
     expect(offered.length).toBeGreaterThan(0);
     // every option offered can be chosen: each one, picked on a fresh page, moves on to the next question
-    for (const name of offered) {
+    for (const value of offered) {
       cleanup();
       renderAt("/pathfinder?new=hide");
-      fireEvent.click(screen.getByRole("button", { name }));
-      expect(screen.getByRole("heading", { level: 2, name: "What does each study compare, or describe?" })).toBeInTheDocument();
+      const radio = screen.getAllByRole<HTMLInputElement>("radio").find((r) => r.value === value);
+      fireEvent.click(radio as HTMLInputElement);
+      fireEvent.click(screen.getByRole("button", { name: /^Next/ }));
+      expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toBeInTheDocument();
       expect(new URLSearchParams(address()).get("new")).toBe("hide");
     }
   });
@@ -114,7 +115,7 @@ describe("Pathfinder", PAGE, () => {
 
   it("on rare events, shows what the method cards say, with rule R9, and removes no pathway", () => {
     renderAt(BINARY);
-    expect(screen.getAllByRole("button", { name: /^(Yes|No|Not sure)$/ })).toHaveLength(3);
+    expect(screen.getAllByRole("radio", { name: /^(Yes|No|Not sure)$/ })).toHaveLength(3);
     pick(/^Yes$/);
     pick(/^Not sure$/);
     const rare = screen.getByRole("region", { name: "Rare events" });
@@ -130,7 +131,7 @@ describe("Pathfinder", PAGE, () => {
   it("on varying effects, pre-selects a model, shows both models' cards, and switches in one click", () => {
     renderAt(`${BINARY}&rare=no`);
     expect(
-      screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" }),
+      screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" }),
     ).toBeInTheDocument();
     pick(/^Yes, they probably differ$/);
     const model = screen.getByRole("region", { name: "Model" });
@@ -138,7 +139,7 @@ describe("Pathfinder", PAGE, () => {
     expect(within(model).getByRole("link", { name: "Common effect" })).toBeInTheDocument();
     expect(within(model).getByRole("link", { name: "Random effects" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
-    const atlas = screen.getByRole("link", { name: "Open them in the Atlas" }).getAttribute("href") ?? "";
+    const atlas = screen.getByRole("link", { name: /^Open these \d+ in the Atlas/ }).getAttribute("href") ?? "";
     expect(new URLSearchParams(atlas.slice(atlas.indexOf("?"))).get("model")).toBe("Random effects");
     const table = () => screen.getByRole("table", { name: /pathways that fit/ });
     expect(within(table()).queryAllByRole("link", { name: "Common effect" })).toHaveLength(0);
@@ -163,18 +164,57 @@ describe("Pathfinder", PAGE, () => {
       "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
         "&datatype=Arm-level+summary+data&outcome=Continuous",
     );
-    expect(screen.queryByRole("heading", { level: 2, name: "Are the events rare?" })).toBeNull();
+    expect(screen.queryByRole("heading", { level: 1, name: "Are the events rare?" })).toBeNull();
     expect(
-      screen.getByRole("heading", { level: 2, name: "Do you expect the true effects to differ between studies?" }),
+      screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" }),
     ).toBeInTheDocument();
   });
 
   it("takes back the advisory answers when an earlier answer changes", () => {
     renderAt(`${BINARY}&rare=yes&vary=yes&model=Random+effects`);
-    fireEvent.click(screen.getByRole("button", { name: "Change outcome type (now Binary)" }));
+    fireEvent.click(screen.getByRole("button", { name: "Change your answer to question 4, outcome (now Binary)" }));
     const params = new URLSearchParams(address());
     expect(params.get("rare")).toBeNull();
     expect(params.get("vary")).toBeNull();
     expect(params.get("model")).toBeNull();
+  });
+
+  it("keeps the answers in the step bar, says where Back and Next go, and needs a choice before Next", () => {
+    renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29");
+    const bar = screen.getByRole("list", { name: "Your answers, step by step" });
+    const items = within(bar).getAllByRole("listitem");
+    expect(items).toHaveLength(6);
+    expect(items[0]).toHaveTextContent("1 · Your question1. Interventional (effect of an intervention)");
+    expect(items[1]).toHaveTextContent("2 · Study designTwo groups (pairwise)");
+    expect(items[2]).toHaveAttribute("aria-current", "step");
+    const next = screen.getByRole("button", { name: "Next: question 4, outcome" });
+    expect(next).toBeDisabled();
+    fireEvent.click(screen.getByRole("radio", { name: /^Arm-level summary data/ }));
+    expect(next).toBeEnabled();
+    fireEvent.click(screen.getByRole("button", { name: "Back to question 2" }));
+    expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toBeInTheDocument();
+    expect(new URLSearchParams(address()).get("group")).toBeNull();
+  });
+
+  it("names the step after the last question from the option chosen, and marks steps not needed", () => {
+    renderAt(
+      "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
+        "&datatype=Arm-level+summary+data",
+    );
+    fireEvent.click(screen.getByRole("radio", { name: /^Binary/ }));
+    expect(screen.getByRole("button", { name: "Next: question 5, rare events?" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("radio", { name: /^Continuous/ }));
+    expect(screen.getByRole("button", { name: "Next: question 6, do effects differ?" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: /^Next/ }));
+    const bar = screen.getByRole("list", { name: "Your answers, step by step" });
+    expect(within(bar).getAllByRole("listitem")[4]).toHaveTextContent("Not needed for your answers");
+  });
+
+  it("shows the live count, and opens the Atlas with the answers chosen", () => {
+    renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29");
+    const side = screen.getByRole("complementary", { name: "With your answers so far" });
+    expect(side).toHaveTextContent("454 analyses fit");
+    const link = within(side).getByRole("link", { name: "Open these 454 in the Atlas, with your answers already chosen" });
+    expect(link.getAttribute("href")).toContain("/atlas?framework=");
   });
 });

@@ -64,8 +64,7 @@ describe("the app shell", PAGE, () => {
 
   it("routes /pathfinder to Pathfinder, at its first question", () => {
     renderAt("/pathfinder");
-    expect(screen.getByRole("heading", { level: 1, name: "Pathfinder" })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { level: 2, name: "What kind of question does the review ask?" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "What kind of question does the review ask?" })).toBeInTheDocument();
   });
 
   it("says when a page doesn't exist", () => {
