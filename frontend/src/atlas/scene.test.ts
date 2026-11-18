@@ -3,7 +3,7 @@ import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
-import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, scene } from "./scene";
+import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, scene, type SceneLayer, type SceneNode } from "./scene";
 
 // The counts are checked against the lock file, read independently of map.json, as the 2D view's tests do.
 const lock = lockRaw as unknown as Pathway[];
@@ -68,7 +68,11 @@ describe("the 3D scene", () => {
   });
 
   it("labels every possible node of an uncrowded layer, and only the busiest of a crowded one", () => {
-    for (const layer of scene(map.pathways, { framework: F1 }, "model-method-metric", DEFAULT_OPTIONS)) {
+    const layers = scene(map.pathways, { framework: F1 }, "model-method-metric", DEFAULT_OPTIONS);
+    // Both cases must be reached for this test to mean anything.
+    expect(layers.some((l) => l.nodes.filter((n) => n.count > 0).length > CROWDED)).toBe(true);
+    expect(layers.some((l) => l.nodes.filter((n) => n.count > 0).length <= CROWDED)).toBe(true);
+    for (const layer of layers) {
       const possible = layer.nodes.filter((n) => n.count > 0);
       const named = labelled(layer);
       if (possible.length <= CROWDED) {
@@ -81,5 +85,21 @@ describe("the 3D scene", () => {
       }
       expect(layer.nodes.filter((n) => n.count === 0).some((n) => named.has(n.value))).toBe(false);
     }
+  });
+
+  it("breaks ties between equally busy nodes in the map's order", () => {
+    const node = (value: string, count: number): SceneNode => ({
+      tier: "metric",
+      value,
+      label: value,
+      count,
+      status: "planned",
+      selected: false,
+      position: [0, 0, 0],
+      radius: 0.1,
+    });
+    const nodes = Array.from({ length: CROWDED + 1 }, (_, i) => node(`m${String(i)}`, 5));
+    const layer: SceneLayer = { tier: "metric", name: "Metric", y: 0, ringRadius: 3, nodes };
+    expect([...labelled(layer)]).toEqual(nodes.slice(0, LABELLED_IN_CROWD).map((n) => n.value));
   });
 });

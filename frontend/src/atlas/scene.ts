@@ -91,9 +91,9 @@ export function hasWebGL(): boolean {
 }
 
 /** A layer with more possible nodes than this is crowded: its labels would overlap. */
-export const CROWDED = 12;
+export const CROWDED = 8;
 /** In a crowded layer, only this many of the possible nodes keep a label: those with the most pathways. */
-export const LABELLED_IN_CROWD = 8;
+export const LABELLED_IN_CROWD = 6;
 
 /**
  * The nodes of a layer that show a label at rest: every possible node (count above 0), or in a crowded layer
