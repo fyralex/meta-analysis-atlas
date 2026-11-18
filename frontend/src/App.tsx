@@ -1,4 +1,4 @@
-import { NavLink, Route, Routes } from "react-router";
+import { NavLink, Route, Routes, useLocation } from "react-router";
 import { APPS } from "./apps";
 import { AtlasPage } from "./atlas/AtlasPage";
 import { CardsPage } from "./cards/CardsPage";
@@ -8,6 +8,8 @@ import { NotBuiltPage } from "./pages/NotBuiltPage";
 import { ThemeSwitch } from "./ThemeSwitch";
 
 export function App() {
+  // The home page offers the three apps as its own doors, so the header doesn't repeat them there (#92).
+  const home = useLocation().pathname === "/";
   return (
     <div className="shell">
       <a className="skip" href="#main">
@@ -17,13 +19,19 @@ export function App() {
         <NavLink to="/" className="brand">
           Meta-Analysis Atlas
         </NavLink>
-        <nav aria-label="Apps">
-          {APPS.map((a) => (
-            <NavLink key={a.path} to={a.path}>
-              {a.name}
-            </NavLink>
-          ))}
-        </nav>
+        {home ? (
+          <a className="about" href="https://github.com/fyralex/meta-analysis-atlas#readme">
+            About this project <span className="muted">(opens GitHub)</span>
+          </a>
+        ) : (
+          <nav aria-label="Apps">
+            {APPS.map((a) => (
+              <NavLink key={a.path} to={a.path}>
+                {a.name}
+              </NavLink>
+            ))}
+          </nav>
+        )}
         <ThemeSwitch />
       </header>
       <main id="main" tabIndex={-1}>
