@@ -862,6 +862,8 @@ def test_every_pathfinder_option_has_plain_words_with_a_source(all_cards: list[b
     """
     unread = UNREAD
     for c in all_cards:
+        if c["tier"] == "rule":
+            continue  # a rule's plain sentence: test_every_rule_has_a_plain_sentence_with_its_own_sources
         if c["tier"] not in ("framework", "group", "datatype", "outcome"):
             assert c["plain"] is None, c["id"]
             continue
@@ -875,6 +877,20 @@ def test_every_pathfinder_option_has_plain_words_with_a_source(all_cards: list[b
             assert not keys & unread, c["id"]
         else:
             assert keys & unread, c["id"]
+
+
+def test_every_rule_has_a_plain_sentence_with_its_own_sources(all_cards: list[bm.Card]) -> None:
+    """A rule's plain sentence restates the rule (#92, D2), so it cites exactly the rule's sources."""
+    assert set(bm.RULE_PLAIN) == {r[0] for r in bm.RULES}
+    rules = [c for c in all_cards if c["tier"] == "rule"]
+    assert len(rules) == len(bm.RULES)
+    for c in rules:
+        plain = c["plain"]
+        assert plain is not None, c["id"]
+        assert plain["title"] == bm.RULE_PLAIN[c["value"]]
+        assert plain["src"] == c["src"] and not plain["example"], c["id"]
+        assert not BANNED.search(plain["title"]), c["id"]
+        assert plain["title"].endswith("."), c["id"]
 
 
 def test_plain_words_are_only_for_cards_that_exist(all_cards: list[bm.Card]) -> None:

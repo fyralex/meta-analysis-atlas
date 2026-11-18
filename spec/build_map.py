@@ -2121,6 +2121,68 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
 
 
 # --------------------------------------------------------------------------
+# Each rule in plain words (#92, design D2), shown wherever a card lists the
+# rules behind its limits and at the top of the rule's own card. A plain
+# sentence restates its rule and adds nothing to it, so it cites the rule's
+# own sources (CLAUDE.md, rule 8).
+RULE_PLAIN: dict[str, str] = {
+    "R1": "Inverse variance can pool any effect measure, with either model, from counts or summaries for each group "
+    "or from one estimate per study.",
+    "R2": "When each study reports only its own estimate, it can be pooled only by methods that take an estimate and "
+    "its variance: inverse variance, bayesmeta or rma.mv.",
+    "R3": "Mantel-Haenszel needs counts for each group. It gives odds ratios, risk ratios and risk differences (or rate "
+    "ratios and rate differences from person-time), with a common-effect model only.",
+    "R4": "There is no separate random-effects Mantel-Haenszel method: a random-effects estimate uses inverse-variance "
+    "weights.",
+    "R5": "Peto's method needs a 2x2 table from each study, gives only the Peto odds ratio, and fits a common-effect "
+    "model only. It suits rare events, groups of similar size and small effects.",
+    "R6": "A generalized linear mixed model gives odds ratios from 2x2 tables, rate ratios from counts in two groups, "
+    "and logit proportions and log rates. Its risk ratios and risk differences are experimental.",
+    "R7": "With random effects, a generalized linear mixed model is fitted by maximum likelihood only.",
+    "R8": "A generalized linear mixed model can't be used for a measured (continuous) outcome.",
+    "R9": "When events are rare, avoid inverse variance, including the DerSimonian-Laird method.",
+    "R10": "Subgroup analysis and meta-regression need a function that takes study characteristics (moderators): "
+    "rma.uni, rma.glmm, rma.mv or bayesmeta's bmr. rma.mh and rma.peto can't.",
+    "R11": "Cumulative and leave-one-out analyses are available for rma.uni, rma.mh and rma.peto only.",
+    "R12": "Cumulative and leave-one-out analyses need a model without study characteristics (moderators).",
+    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta needs no "
+    "MCMC sampling.",
+    "R14": "Hartung-Knapp confidence intervals are for random-effects models fitted with rma.uni only.",
+    "R15": "REML is the default estimator of the between-study variance in metafor and RevMan. Cochrane also cites "
+    "Paule-Mandel, and says no estimator is best in every case.",
+    "R16": "A network meta-analysis can use either a common-effect or a random-effects model.",
+    "R17": "P-scores and SUCRA rank the treatments after a network model is fitted. They are results, not effect "
+    "measures.",
+    "R18": "A network analysis has to check that its comparisons can fairly be combined (transitivity) and that direct "
+    "and indirect evidence agree (consistency).",
+    "R19": "A network usually assumes the same between-study variance for every comparison.",
+    "R20": "Mantel-Haenszel for networks fits a common-effect model only.",
+    "R21": "With participant data, a two-stage analysis estimates an effect in each study and then pools those "
+    "estimates. A one-stage analysis fits one mixed-effects regression to all participants, stratified by study.",
+    "R22": "For a cluster-randomized trial, divide the sample size (and events) by the design effect, or multiply the "
+    "standard error by its square root.",
+    "R23": "For a crossover trial, use a paired analysis. Without paired data, estimate the standard deviation of the "
+    "differences from an assumed correlation.",
+    "R24": "When a study has three or more groups, a pairwise analysis can combine groups (the recommended option), "
+    "model the correlation between its comparisons, or use a network meta-analysis instead.",
+    "R25": "From observed minus expected events and their variance, only common-effect methods apply. Log hazard "
+    "ratios with their standard errors are pooled by inverse variance.",
+    "R26": "For diagnostic accuracy, sensitivity and specificity are pooled together (the bivariate model). Without "
+    "covariates, the HSROC model is equivalent.",
+    "R27": "To pool a prediction model's performance, pool the c-statistic on the logit scale and the ratio of observed "
+    "to expected events on the log scale, with random effects, Hartung-Knapp intervals and a prediction interval.",
+    "R28": "Tests for funnel plot asymmetry need at least 10 studies. Egger's original test is not recommended for odds "
+    "ratios or standardized mean differences.",
+    "R29": "Trim and fill and selection models work on rma.uni models only, and trim and fill also needs a model "
+    "without moderators.",
+    "R30": "Meta-regression is generally not advised with fewer than ten studies.",
+    "R31": "In a network, the standardized mean difference is Cohen's d, without the small-sample correction of "
+    "Hedges' g, so that a study with three or more groups gives comparisons that agree.",
+    "R32": "In this map, the Peto odds ratio comes only with Peto's method, the method Cochrane presents it with.",
+}
+
+
+# --------------------------------------------------------------------------
 # Teaching text for the cards, by card id: (kind, text, source). Each line
 # states its source's rule in our own words and cites the section it comes
 # from (CLAUDE.md, rule 8). Written in batches the owner reviews (issue #6).
@@ -4101,6 +4163,8 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
             title, example, src = PLAIN[c["id"]]
             c["plain"] = Plain(title=title, example=example, src=src)
             c["src"] = _join_src([c["src"], src])
+        if c["tier"] == "rule":
+            c["plain"] = Plain(title=RULE_PLAIN[c["value"]], example="", src=c["src"])
     for t in GLOSSARY:
         tc = _term_card(t)
         tc["terms"] = [x for x in _terms_used(tc) if x != tc["id"]]  # a definition links the other terms it uses
