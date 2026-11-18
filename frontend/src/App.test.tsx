@@ -58,7 +58,7 @@ describe("the app shell", PAGE, () => {
 
   it("routes /cards to the Cards page", () => {
     renderAt("/cards");
-    expect(screen.getByRole("heading", { level: 1, name: "Cards" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "Learn the building blocks" })).toBeInTheDocument();
     expect(screen.getByRole("searchbox", { name: "Find a card" })).toBeInTheDocument();
   });
 

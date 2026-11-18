@@ -438,6 +438,19 @@ describe("the Atlas's 2D view", PAGE, () => {
       expect(screen.queryByText(/^About Random effects/)).not.toBeInTheDocument();
     });
 
+    it("in a card's panel, says that card links open Cards, puts its sections under the layer, and has no Atlas link", () => {
+      renderAtlas(`?framework=${encodeURIComponent(F1)}&method=PETO`);
+      const details = screen.getByText("About Peto").closest("details") as HTMLElement;
+      // the layer's heading is an h2, so the card's sections are h3
+      expect(within(details).getByRole("heading", { level: 3, name: "Cautions" })).toBeInTheDocument();
+      expect(within(details).queryAllByRole("heading", { level: 4 })).toHaveLength(0);
+      expect(within(details).getByRole("link", { name: /^The glossary card for continuity correction/ }).parentElement).toHaveTextContent(
+        "(opens Cards)",
+      );
+      expect(details).toHaveTextContent("Rule R5 (opens its card in Cards)");
+      expect(within(details).queryByRole("link", { name: /in the Atlas/ })).toBeNull();
+    });
+
     it("shows a chosen node's flags next to its card's summary", () => {
       renderAtlas("?datatype=Individual%20participant%20data");
       const summary = screen.getByText(/^About Individual participant data/);
