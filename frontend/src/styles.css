@@ -256,3 +256,5 @@ table.pathways .cell-label { display: none; }
 .button-primary { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
 .button-primary:disabled { opacity: 0.5; cursor: not-allowed; }
 .button-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--line); }
+.technical-switch { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.9rem; color: var(--muted); }
+.technical-switch input { margin-top: 0.2rem; accent-color: var(--accent); }

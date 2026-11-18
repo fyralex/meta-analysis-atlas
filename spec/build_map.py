@@ -1901,6 +1901,12 @@ class TeachLine(TypedDict):
     src: str  # written as for the rules
 
 
+class Plain(TypedDict):
+    title: str
+    example: str  # empty where its only source hasn't been read
+    src: str
+
+
 class Card(TypedDict):
     id: str
     tier: str  # one of NODE_TIERS, "rule", or "term" (a glossary entry)
@@ -1913,6 +1919,7 @@ class Card(TypedDict):
     rules: list[str]  # ids of the rules behind a method's or metric's limits (WHY_RULE, ONLY_RULE); else empty
     teach: list[TeachLine]  # teaching text, from TEACH; empty until its batch is written
     terms: list[str]  # ids of the glossary cards for terms its teaching text or notes use (GLOSSARY)
+    plain: Plain | None  # its name in plain words and an example, for Pathfinder's options (PLAIN); else None
     src: str  # the card's sources, written as for the rules
 
 
@@ -2003,6 +2010,7 @@ def _branch_card(tier: str, value: str) -> Card:
         teach=[],
         rules=[],
         terms=[],
+        plain=None,
         src=_join_src([n["src"] for n in card_notes] + [", ".join(b["src"]) for b in bs]),
     )
 
@@ -2044,6 +2052,7 @@ def _method_card(code: str, paths: Sequence[Pathway]) -> Card:
         teach=[],
         rules=sorted({r for (mid, _), (r, _) in WHY_RULE.items() if mid == code}, key=lambda r: int(r[1:])),
         terms=[],
+        plain=None,
         src=src,
     )
 
@@ -2068,6 +2077,7 @@ def _metric_card(code: str) -> Card:
         teach=[],
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         terms=[],
+        plain=None,
         src=mt["src"],
     )
 
@@ -2086,6 +2096,7 @@ def _model_card(model: str) -> Card:
         teach=[],
         rules=[],
         terms=[],
+        plain=None,
         # the note's sources, then those of each method listed: the list comes from each method's own models
         src=_join_src([MODEL_SRC] + [", ".join(me["src"]) for me in fit]),
     )
@@ -2104,6 +2115,7 @@ def _rule_card(rid: str, text: str, src: str) -> Card:
         teach=[],
         rules=[],
         terms=[],
+        plain=None,
         src=src,
     )
 
@@ -3747,6 +3759,184 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
 
 
 # --------------------------------------------------------------------------
+# Plain words for Pathfinder's options (#92, design B): for each framework,
+# group structure, datatype and outcome, a name a newcomer understands and a
+# concrete example. The example illustrates the source cited; where the only
+# source hasn't been read, there is a plain name and no example. Technical
+# names stay on the cards and behind Pathfinder's "technical names" switch.
+PLAIN: dict[str, tuple[str, str, str]] = {
+    # frameworks
+    "framework:interventional-effect-of-an-intervention": (
+        "Does a treatment work?",
+        "For example, does a drug lower blood pressure compared with a placebo?",
+        "CH-6 s6.1.2",
+    ),
+    "framework:diagnostic-test-accuracy": (
+        "How accurate is a test?",
+        "For example, how many infections a rapid test finds, and how many people it wrongly flags.",
+        "MADA",
+    ),
+    "framework:prognosis": (
+        "How well can we predict an outcome?",
+        "For example, how well a risk score predicts heart attacks in patients it wasn't built on.",
+        "VALMETA",
+    ),
+    "framework:association": (
+        "How are two things related?",
+        "For example, how strongly weight goes with blood pressure, or how risk changes with the dose of an exposure.",
+        "MF-escalc, DOSRES",
+    ),
+    "framework:measurement-reliability": (
+        "How reliable is a measurement?",
+        "For example, Cronbach's alpha for a questionnaire, across the studies that used it.",
+        "MF-escalc",
+    ),
+    # group structures
+    "group:one-group-single-arm": (
+        "One group, with nothing to compare it with",
+        "For example, the proportion of patients who recover after a treatment, with no control group.",
+        "MF-escalc",
+    ),
+    "group:two-groups-pairwise": (
+        "Two groups compared",
+        "For example, a trial of a drug against a placebo, each patient in one group only.",
+        "CH-23 s23.2.1",
+    ),
+    "group:change-or-matched-pairs-same-people-measured-twice": (
+        "The same people measured twice, or matched pairs",
+        "For example, blood pressure before and after treatment in the same patients, or a crossover trial.",
+        "MF-escalc, CH-23 s23.2.1",
+    ),
+    "group:multiple-groups-network": (
+        "Three or more treatments compared",
+        "For example, several drugs, with each trial comparing two or three of them.",
+        "CH-11 s11.1",
+    ),
+    "group:one-index-test-against-a-reference-standard": (
+        "One test, checked in each study",
+        "Each study reports how many people the test got right and wrong, as a 2x2 table.",
+        "MADA",
+    ),
+    "group:two-or-more-index-tests-compared": ("Two or more tests compared", "", "DTA-HB"),
+    "group:prognostic-factor-does-the-factor-predict-the-outcome": (
+        "Does one factor predict the outcome?",
+        "",
+        "RILEY",
+    ),
+    "group:prediction-model-performance-external-validation": (
+        "How well a prediction model works in new data",
+        "For example, a published risk score tested in other hospitals.",
+        "VALMETA",
+    ),
+    "group:two-variables-in-one-group-correlation": (
+        "Two things measured in the same people",
+        "For example, age and bone density in one group of patients.",
+        "MF-escalc",
+    ),
+    "group:exposure-and-outcome-observational-studies": (
+        "An exposure and an outcome, from observational studies",
+        "For example, smoking and lung cancer, with each study reporting an adjusted odds ratio.",
+        "CH-10 s10.3.3",
+    ),
+    "group:dose-response": (
+        "How the outcome changes with the dose",
+        "For example, the risk of a disease at several levels of alcohol intake.",
+        "DOSRES",
+    ),
+    "group:one-group": (
+        "One group taking the measurement",
+        "For example, patients completing a questionnaire, with its Cronbach's alpha reported.",
+        "MF-escalc",
+    ),
+    # datatypes
+    "datatype:arm-level-summary-data": (
+        "Counts or summaries for each group",
+        "For example, 12 of 100 patients had a stroke with the drug and 20 of 100 with placebo; or the mean, "
+        "standard deviation and number in each group.",
+        "CH-6 s6.4.2, s6.5.2",
+    ),
+    "datatype:precomputed-estimate": (
+        "One effect estimate per study",
+        "For example, an odds ratio with its 95% confidence interval from each paper's own analysis.",
+        "CH-10 s10.3.3",
+    ),
+    "datatype:individual-participant-data": (
+        "Data on every participant",
+        "The study datasets themselves, one row per participant.",
+        "CH-26 s26.1.1",
+    ),
+    "datatype:observed-minus-expected-and-variance": (
+        "Observed minus expected events, and their variance",
+        "For example, log-rank statistics from survival analyses.",
+        "CH-10 s10.9",
+    ),
+    "datatype:contrast-level-estimates": (
+        "One estimate for each pair of treatments compared",
+        "For example, a mean difference with its standard error for each pair of arms in a three-arm trial.",
+        "NM",
+    ),
+    "datatype:2x2-table-per-study": (
+        "A 2x2 table of test results from each study",
+        "True positives, false negatives, false positives and true negatives.",
+        "MADA",
+    ),
+    "datatype:2x2-table-per-study-and-test": ("A 2x2 table for each test in each study", "", "DTA-HB"),
+    "datatype:estimates-at-several-dose-levels-per-study": (
+        "Results at several dose levels in each study",
+        "For example, relative risks for low, medium and high intake, each against none.",
+        "DOSRES",
+    ),
+    # outcome types
+    "outcome:binary": (
+        "Yes or no",
+        "For example, whether each patient died, had a stroke or recovered.",
+        "CH-6 s6.1.1",
+    ),
+    "outcome:continuous": ("A measured value", "For example, blood pressure or weight.", "CH-6 s6.1.1"),
+    "outcome:count-person-time": (
+        "Counts or rates of events",
+        "For example, the number of asthma attacks per person-year.",
+        "CH-6 s6.1.1",
+    ),
+    "outcome:time-to-event": ("Time until an event", "For example, survival time after diagnosis.", "CH-6 s6.1.1"),
+    "outcome:ordinal": ("Ordered categories", "For example, mild, moderate or severe.", "CH-6 s6.1.1"),
+    "outcome:binary-classification": (
+        "Test positive or negative",
+        "Each person's test result, positive or negative.",
+        "MADA",
+    ),
+    "outcome:any-outcome": ("Any kind of outcome", "", "RILEY, CH-10"),
+    "outcome:discrimination": (
+        "Telling apart who will have the outcome",
+        "Measured by the c-statistic.",
+        "VALMETA",
+    ),
+    "outcome:calibration": (
+        "Predicted risk against what happened",
+        "Summarised by the total observed:expected ratio.",
+        "VALMETA",
+    ),
+    "outcome:two-continuous-variables": ("Two measured values", "For example, age and bone density.", "MF-escalc"),
+    "outcome:one-continuous-one-binary-variable": (
+        "One measured value and one yes or no",
+        "For example, a test score in two groups of people.",
+        "MF-escalc",
+    ),
+    "outcome:two-binary-variables": (
+        "Two yes or no variables",
+        "For example, exposed or not and ill or not, as a 2x2 table.",
+        "MF-escalc",
+    ),
+    "outcome:binary-or-time-to-event": (
+        "Events, or time until an event",
+        "Summarised as relative risks at each dose level.",
+        "DOSRES",
+    ),
+    "outcome:internal-consistency": ("How consistent a measurement is", "Summarised by Cronbach's alpha.", "MF-escalc"),
+}
+
+
+# --------------------------------------------------------------------------
 # The glossary (issue #6): one card per term, linked from every card whose
 # teaching text or notes use it. Each entry: (term, definition in our own words,
 # source, phrases that mark the term in a card's text). A phrase matches at the
@@ -3874,6 +4064,7 @@ def _term_card(t: Term) -> Card:
         teach=[TeachLine(kind="what", text=t["text"], src=t["src"])],
         rules=[],
         terms=[],
+        plain=None,
         src=t["src"],
     )
 
@@ -3906,6 +4097,10 @@ def cards(paths: Sequence[Pathway]) -> list[Card]:
         c["teach"] = [TeachLine(kind=k, text=t, src=src) for k, t, src in TEACH.get(c["id"], [])]
         c["src"] = _join_src([c["src"]] + [line["src"] for line in c["teach"]])
         c["terms"] = _terms_used(c)
+        if c["id"] in PLAIN:
+            title, example, src = PLAIN[c["id"]]
+            c["plain"] = Plain(title=title, example=example, src=src)
+            c["src"] = _join_src([c["src"], src])
     for t in GLOSSARY:
         tc = _term_card(t)
         tc["terms"] = [x for x in _terms_used(tc) if x != tc["id"]]  # a definition links the other terms it uses
