@@ -16,7 +16,7 @@ import { MODEL_FOR, modelsIn, rareLines, type Advice } from "./flow";
 const SOURCES_LABEL = "Sources (open outside the Atlas)";
 const KIND_WORDS: Record<TeachKind, string> = { what: "More on what it is", use: "When to use it", caution: "Caution" };
 const KINDS: TeachKind[] = ["what", "use", "caution"];
-const analyses =(n: number) => `${String(n)} ${n === 1 ? "analysis" : "analyses"}`;
+const analyses = (n: number) => `${String(n)} ${n === 1 ? "analysis" : "analyses"}`;
 
 /** The models a group of analyses uses, in words: "common effect only", "both models". */
 function modelWords(models: string[]): string {
@@ -66,7 +66,10 @@ function modelReason(model: string | undefined, vary: Advice): string {
     : `${shown}, because you expect the studies to share one effect.`;
 }
 
-/** What each model's card says it is, with its source and a link to the card. */
+/**
+ * What each model's card says: its first "what it is" line, then every line on when to use it and its cautions,
+ * which carry the debate between the two models, each with its sources (CLAUDE.md rule 8).
+ */
 export function ModelCards({ models }: { models: readonly string[] }) {
   return (
     <ul className="option-reason">
@@ -74,13 +77,21 @@ export function ModelCards({ models }: { models: readonly string[] }) {
         const c = cardFor("model", m);
         if (!c) return null;
         const what = c.teach.find((t) => t.kind === "what");
+        const lines = c.teach.filter((t) => t.kind !== "what" || t === what);
         return (
           <li key={c.id}>
             <p>
               <strong>{c.title}</strong>
-              {what ? `: ${what.text}` : ""}
             </p>
-            {what && <Sources src={what.src} label={SOURCES_LABEL} />}
+            {lines.map((t) => (
+              <div key={t.text}>
+                <p>
+                  {t.kind === "what" ? "" : `${KIND_WORDS[t.kind]}: `}
+                  {t.text}
+                </p>
+                <Sources src={t.src} label={SOURCES_LABEL} />
+              </div>
+            ))}
             <Link to={cardHref(c.id)}>
               Read the card on {c.title.toLowerCase()} <span className="muted">(opens Cards)</span>
             </Link>
@@ -141,6 +152,8 @@ function MethodGroup({ method, rows }: { method: string; rows: readonly Pathway[
   const what = card?.teach.find((t) => t.kind === "what");
   const metrics = [...new Set(rows.map((p) => p.metric))];
   const statuses = STATUSES.filter((s) => rows.some((p) => p.status === s));
+  /** Analyses still to check: from the method, a metric or the pairing, so counted rather than put on the method. */
+  const checking = rows.filter((p) => p.status === "to_check").length;
   return (
     <details className="method-group">
       <summary>
@@ -149,7 +162,7 @@ function MethodGroup({ method, rows }: { method: string; rows: readonly Pathway[
         <span className="method-count muted">
           {analyses(rows.length)} · {modelWords(modelsIn(rows))}
         </span>
-        {statuses.includes("to_check") && <span className="badge badge-check">Not yet confirmed from its source</span>}
+        {checking > 0 && <span className="badge badge-check">{checking} not yet confirmed</span>}
         {rows.some((p) => p.added) && <span className="badge badge-new">new</span>}
       </summary>
       <div className="method-body">
@@ -227,8 +240,10 @@ export function Results({ found, shown, model, rare, vary, onShowModel, heading 
         {shown.length === 1 ? "1 analysis fits" : `${String(shown.length)} analyses fit`} your answers
       </h1>
       <p className="muted">
-        {statuses.map((s) => `${String(shown.filter((p) => p.status === s).length)} ${STATUS_TEXT[s].name.toLowerCase()}`).join(", ")}
-        {shown.some((p) => p.status === "runnable") ? "." : ". None of them can be run yet."}
+        {statuses
+          .map((s) => `${String(shown.filter((p) => p.status === s).length)} ${STATUS_TEXT[s].name.toLowerCase()}`)
+          .join(", ")}
+        {shown.length > 0 && (shown.some((p) => p.status === "runnable") ? "." : ". None of them can be run yet.")}
       </p>
 
       {(rare === "yes" || rare === "unsure") && <RareAdvice found={found} rare={rare} />}
@@ -236,8 +251,9 @@ export function Results({ found, shown, model, rare, vary, onShowModel, heading 
 
       <section aria-labelledby="pf-methods" className="methods">
         <h2 id="pf-methods">
-          By method <span className="muted">· open one to see what it is and its sources</span>
+          By method
         </h2>
+        <p className="muted">Open one to see what it is, its effect measures and its sources.</p>
         {methods.map((m) => (
           <MethodGroup key={m} method={m} rows={shown.filter((p) => p.method === m)} />
         ))}

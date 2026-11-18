@@ -70,7 +70,7 @@ describe("Pathfinder", PAGE, () => {
     const atlas = screen.getByRole("link", { name: /^Open these \d+ in the Atlas, with your answers already chosen$/ });
     expect(atlas.getAttribute("href")).toContain("/atlas?framework=");
     // grouped by method: each says how many analyses it has and with which models, and opens to its card text
-    const methods = screen.getByRole("region", { name: /^By method/ });
+    const methods = screen.getByRole("region", { name: "By method" });
     const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
     expect(mh).toHaveTextContent("3 analyses · common effect only");
     expect(within(mh).getByRole("link", { name: /^Read the full card on Mantel-Haenszel/ })).toBeInTheDocument();
@@ -78,14 +78,38 @@ describe("Pathfinder", PAGE, () => {
     expect(screen.getByText(/None of them can be run yet\./)).toBeInTheDocument();
   });
 
-  it("marks a method not yet confirmed from its source, and says sources open outside the Atlas", () => {
+  it("counts the analyses still to check on each method, and says sources open outside the Atlas", () => {
     renderAt(`${BINARY}&rare=no&vary=unsure`);
-    const methods = screen.getByRole("region", { name: /^By method/ });
+    // the status line: the counts by status, and that none can be run (derived from the statuses)
+    expect(screen.getByText("26 planned, 2 to check. None of them can be run yet.")).toBeInTheDocument();
+    const methods = screen.getByRole("region", { name: "By method" });
     const groups = within(methods).getAllByRole("group");
-    const unconfirmed = groups.filter((g) => within(g).queryByText("Not yet confirmed from its source"));
-    expect(unconfirmed.length).toBeGreaterThan(0);
-    for (const g of unconfirmed) expect(g).toHaveTextContent("To check");
-    expect(within(methods).getAllByText(/^Sources \(open outside the Atlas\)/).length).toBeGreaterThan(0);
+    // every analysis to check is counted on exactly one method's badge, and only methods with one have a badge
+    const badges = groups.flatMap((g) => within(g).queryAllByText(/^\d+ not yet confirmed$/));
+    expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(2);
+    for (const g of groups) {
+      expect(within(g).queryByText(/not yet confirmed$/) !== null).toBe(g.textContent.includes("To check"));
+    }
+    // the summary line's own source is in the box, as are the other lines' sources
+    const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
+    expect(within(mh).getByText(/^Sources \(open outside the Atlas\), for the line above/)).toBeInTheDocument();
+    expect(within(mh).getAllByText(/^Sources \(open outside the Atlas\):/).length).toBeGreaterThan(0);
+  });
+
+  it("gives the reason for the models shown, and keeps the debate between the two models", () => {
+    renderAt(`${BINARY}&rare=no&vary=unsure`);
+    const model = () => screen.getByRole("region", { name: "Model" });
+    expect(within(model()).getByText("Showing both models, because you answered “not sure”.")).toBeInTheDocument();
+    // what the model cards say on when to use each: the choice is debated (CLAUDE.md rule 8)
+    expect(within(model()).getAllByText(/is debated/)).toHaveLength(2);
+    expect(within(model()).getAllByText(/^Caution: /)).toHaveLength(2);
+    cleanup();
+    renderAt(`${BINARY}&rare=no&vary=no&model=Common+effect`);
+    expect(
+      within(model()).getByText("Showing common effect only, because you expect the studies to share one effect."),
+    ).toBeInTheDocument();
+    fireEvent.click(within(model()).getByRole("button", { name: /^Random effects only/ }));
+    expect(within(model()).getByText("Showing random effects only.")).toBeInTheDocument();
   });
 
   it("shows what each option is, with its source and card", () => {
@@ -140,7 +164,7 @@ describe("Pathfinder", PAGE, () => {
     expect(within(rare).getByRole("link", { name: "Inverse variance" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("rare")).toBe("yes");
     // every analysis is still listed: inverse variance included
-    const methods = screen.getByRole("region", { name: /^By method/ });
+    const methods = screen.getByRole("region", { name: "By method" });
     expect(within(methods).getByText("Inverse variance")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 1, name: "28 analyses fit your answers" })).toBeInTheDocument();
   });
@@ -160,7 +184,7 @@ describe("Pathfinder", PAGE, () => {
     const button = (name: RegExp) => within(model).getByRole("button", { name });
     expect(button(/^Random effects only \(\d+\)$/)).toHaveAttribute("aria-pressed", "true");
     expect(button(/^Both models \(28\)$/)).toHaveAttribute("aria-pressed", "false");
-    const methods = () => screen.getByRole("region", { name: /^By method/ });
+    const methods = () => screen.getByRole("region", { name: "By method" });
     // Mantel-Haenszel and Peto are common-effect only
     expect(within(methods()).queryByText("Mantel-Haenszel")).toBeNull();
     fireEvent.click(button(/^Common effect only/));

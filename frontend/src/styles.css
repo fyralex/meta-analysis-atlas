@@ -282,7 +282,7 @@ table.pathways .cell-label { display: none; }
 .more summary { cursor: pointer; color: var(--accent); }
 .methods { display: flex; flex-direction: column; gap: 10px; }
 .methods > h2 { margin: 0.5rem 0 0; }
-.methods > h2 .muted { font-size: 0.7em; font-weight: 400; }
+.methods > h2 + p { margin: 0; }
 .method-group { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; }
 .method-group[open] { border-color: var(--accent); }
 .method-group summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
@@ -300,6 +300,6 @@ table.pathways .cell-label { display: none; }
 .method-status { list-style: none; padding-left: 0; }
 .method-group summary { list-style: none; }
 .method-group summary::-webkit-details-marker { display: none; }
-.method-name::before { content: "▸" / ""; display: inline-block; width: 1.1em; color: var(--accent); transition: transform 0.15s; }
+.method-name::before { content: "▸"; content: "▸" / ""; display: inline-block; width: 1.1em; color: var(--accent); transition: transform 0.15s; }
 .method-group[open] .method-name::before { transform: rotate(90deg); }
 @media (prefers-reduced-motion: reduce) { .method-name::before { transition: none; } }
