@@ -33,7 +33,7 @@ const DOORS: Door[] = [
   {
     to: "/cards",
     title: "Learn the building blocks",
-    what: "What is a random-effects model? When is Peto's method used? A card for each choice, with its sources.",
+    what: "What is a random-effects model? When is Peto's method used? A card for each choice and rule, with its sources.",
     app: "Cards",
     detail: `${String(choiceCards)} cards and a glossary of ${String(terms)} terms · for students`,
   },
