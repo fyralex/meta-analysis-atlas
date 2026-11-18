@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
@@ -79,7 +79,13 @@ export function AtlasPage() {
     [...nodes].find((b) => b.dataset.value === value)?.focus();
   }
   const tiers = tiersInOrder(order);
-  const layers3d = view === "3d" ? scene(map.pathways, selection, order, options) : [];
+  // Memoised on the choices, by value, so the 3D view's line geometry is rebuilt only when they change.
+  const key3d = JSON.stringify([view, selection, order, options]);
+  const { layers3d, lines3d } = useMemo(() => {
+    const layers = view === "3d" ? scene(map.pathways, selection, order, options) : [];
+    return { layers3d: layers, lines3d: links(map.pathways, selection, options, layers) };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- key3d holds them all, by value
+  }, [key3d]);
   const shown = filterPathways(map.pathways, selection, options);
   const total = map.pathways.filter((p) => included(p, options)).length;
   const byStatus = Object.fromEntries(STATUSES.map((s) => [s, shown.filter((p) => p.status === s).length])) as Record<
@@ -254,7 +260,7 @@ export function AtlasPage() {
             <Suspense fallback={<p>Loading the 3D view…</p>}>
               <Atlas3D
                 layers={layers3d}
-                lines={links(map.pathways, selection, options, layers3d)}
+                lines={lines3d}
                 onPick={(n) => {
                   if (n.count > 0) update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
                   else setAsked(asked?.tier === n.tier && asked.value === n.value ? null : { tier: n.tier, value: n.value });

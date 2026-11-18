@@ -253,18 +253,26 @@ export default function Atlas3D({ layers, lines = [], onPick }: Props) {
       el.removeEventListener("wheel", onWheel);
     };
   }, []);
-  // The slow turn at rest, until the first drag, zoom or pinch (spinning goes false then).
+  // The slow turn at rest, until the first drag, zoom or pinch (spinning goes false then); the loop ends with it.
+  // It doesn't start, and stops, when the system asks for reduced motion.
   useEffect(() => {
     let frame = 0;
     let last = performance.now();
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const stopIfReduced = () => {
+      if (motion.matches) spinning.current = false;
+    };
+    motion.addEventListener("change", stopIfReduced);
     const tick = (now: number) => {
-      if (spinning.current) turn.current = { ...turn.current, y: turn.current.y + ((now - last) / 1000) * SPIN };
+      if (!spinning.current) return;
+      turn.current = { ...turn.current, y: turn.current.y + ((now - last) / 1000) * SPIN };
       last = now;
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => {
       cancelAnimationFrame(frame);
+      motion.removeEventListener("change", stopIfReduced);
     };
   }, []);
   const gap = () => {
