@@ -28,6 +28,14 @@ export interface TeachLine {
   src: string;
 }
 
+/** A choice's name in plain words, with an example, for Pathfinder's options. */
+export interface Plain {
+  title: string;
+  /** Empty where its only source hasn't been read. */
+  example: string;
+  src: string;
+}
+
 export interface Card {
   id: string;
   tier: CardTier;
@@ -44,5 +52,7 @@ export interface Card {
   teach: TeachLine[];
   /** Ids of the glossary cards for the terms its teaching text or notes use. */
   terms: string[];
+  /** Its plain name and example, for frameworks, group structures, datatypes and outcomes; else null. */
+  plain: Plain | null;
   src: string;
 }

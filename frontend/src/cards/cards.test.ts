@@ -9,6 +9,7 @@ const CARD_KEYS = [
   "facts",
   "id",
   "notes",
+  "plain",
   "rules",
   "src",
   "teach",

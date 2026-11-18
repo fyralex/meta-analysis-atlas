@@ -40,6 +40,8 @@ const lower = (t: Tier) => TIER_NAMES[t].toLowerCase();
 /** Changing one of the four answers takes back the advisory answers too: they depend on what fits. */
 const NO_ADVICE = { rare: null, vary: null };
 const fits = (n: number) => `${String(n)} ${n === 1 ? "analysis fits" : "analyses fit"}`;
+/** A choice's name in plain words where the map has one (#92), else its name in the map. */
+const plainName = (tier: Tier, value: string) => cardFor(tier, value)?.plain?.title ?? nodeLabel(map, tier, value);
 
 /** What an option is, from the first "What it is" line of its card. */
 function Reason({ tier, value }: { tier: Tier; value: string }) {
@@ -292,6 +294,7 @@ export function PathfinderPage() {
   const shown = model === undefined ? found : found.filter((p) => p.model === model);
   const ignored = unused(selection).filter((t) => t !== "model" || !(askVary && vary));
   const heading = useRef<HTMLHeadingElement>(null);
+  const [technical, setTechnical] = useState(false);
   // The answer just taken back (by Back or Change), so its question opens with that option still chosen.
   const [returning, setReturning] = useState<{ key: string; value: string } | null>(null);
   const modelHeading = useRef<HTMLHeadingElement>(null);
@@ -318,7 +321,7 @@ export function PathfinderPage() {
         n: i + 1,
         name: q.short,
         state: "done",
-        answer: nodeLabel(map, q.tier, value),
+        answer: plainName(q.tier, value),
         change: () => {
           setReturning({ key: q.tier, value });
           update({ selection: clearFrom(selection, q.tier), extra: NO_ADVICE });
@@ -416,12 +419,19 @@ export function PathfinderPage() {
                   heading={heading}
                   choices={possible.map((nd) => {
                     const card = cardFor(next.tier, nd.value);
+                    const example = card?.plain?.example;
                     return {
                       value: nd.value,
-                      label: nodeLabel(map, next.tier, nd.value),
+                      label: plainName(next.tier, nd.value),
                       body: (
                         <>
-                          <Reason tier={next.tier} value={nd.value} />
+                          {example && <p>{example}</p>}
+                          {technical && (
+                            <>
+                              <p className="muted">Technical name: {nodeLabel(map, next.tier, nd.value)}</p>
+                              <Reason tier={next.tier} value={nd.value} />
+                            </>
+                          )}
                           <p className="choice-count muted">{fits(nd.count)}</p>
                         </>
                       ),
@@ -437,7 +447,7 @@ export function PathfinderPage() {
                         <ul className="options">
                           {not.map((nd) => (
                             <li key={nd.value}>
-                              <strong>{nodeLabel(map, next.tier, nd.value)}</strong>
+                              <strong>{plainName(next.tier, nd.value)}</strong>
                               <WhyNot selection={selection} tier={next.tier} value={nd.value} options={options} />
                             </li>
                           ))}
@@ -620,6 +630,17 @@ export function PathfinderPage() {
             Open {shown.length === 1 ? "it" : `these ${String(shown.length)}`} in the Atlas, with your answers already
             chosen
           </Link>
+          <label className="technical-switch">
+            <input
+              type="checkbox"
+              id="pf-technical"
+              checked={technical}
+              onChange={(e) => {
+                setTechnical(e.target.checked);
+              }}
+            />
+            Show the technical names (for example &ldquo;Arm-level summary data&rdquo;)
+          </label>
           {doneSteps.length > 0 && (
             <button
               type="button"
