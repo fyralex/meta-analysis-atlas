@@ -4,7 +4,7 @@ Each release lists what changed, with the pull requests behind it. The map
 itself changes only through audited pull requests, and each map change
 explains its effect on the pathways.
 
-## 0.1.0 (proposed, not yet released)
+## 0.1.0 (2026-11-17)
 
 The first release: the map of analysis pathways, and three apps to explore
 it. Nothing runs analyses yet; no pathway is runnable.
@@ -33,7 +33,11 @@ it. Nothing runs analyses yet; no pathway is runnable.
 - "Why not?" for every node that doesn't fit the choices, citing the rule or
   source behind it where there is one (#44, #46).
 - A 3D view of the same nodes and counts, which falls back to 2D without
-  WebGL 2 (#71).
+  WebGL 2 (#71). Crowded layers label only their busiest nodes, so the labels
+  can be read (#89).
+- The matching-pathways table fits narrow screens: Status first, the tiers
+  every match shares in one line above it, and a card for each row on a phone.
+  A chosen node carries a check mark as well as its colour (#85).
 - A setting to show only runnable pathways, which stays off until a pathway
   is runnable (#72).
 
@@ -62,6 +66,8 @@ it. Nothing runs analyses yet; no pathway is runnable.
   small ones that change only docs, tests or a few lines outside the map
   (#26, #28).
 - Faster frontend tests (#50).
+- A favicon, and wording that matches the project's rules: what makes a
+  pathway runnable, and why a card may have no teaching text (#87).
 - A generated record of every npm package with its licence, checked to be
   GPL-compatible for what the app uses, and a list of the npm advisories
   still open in the build and test tools, with why (#75).
@@ -75,4 +81,5 @@ it. Nothing runs analyses yet; no pathway is runnable.
   meta-analysis, which Cochrane chapter 26 doesn't describe; #25, #59).
 - Penalised logistic regression's models, and the wording of a note on
   bayesmeta, still need confirming from their sources (#58).
-- In the 3D view, the labels are small until a node is hovered or chosen.
+- In the 3D view, a few long labels still overlap where nodes sit close
+  together; hovering a node shows its own.
