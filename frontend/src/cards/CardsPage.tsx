@@ -30,7 +30,7 @@ export function CardsPage() {
         A card for every choice in the map and every rule, and a glossary of the terms they use. Each card shows what
         the map holds about it: what it is and when to use it, the R call or function, the data it reads, the notes
         and rules that apply, and where the map takes them from. A rule&apos;s card shows the rule itself; a choice&apos;s
-        card has no teaching text where its only source hasn&apos;t been read yet.
+        card has no teaching text where no source that covers it has been read yet.
       </p>
 
       {id !== null && (

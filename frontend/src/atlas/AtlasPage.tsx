@@ -143,7 +143,7 @@ export function AtlasPage() {
               update({ options: { ...options, runnableOnly: e.target.checked } });
             }}
           />
-          Show only runnable pathways (validated against a published result)
+          Show only runnable pathways (with a passing validation test)
         </label>
         {!ANY_RUNNABLE && (
           <p className="muted" id="runnable-none">
