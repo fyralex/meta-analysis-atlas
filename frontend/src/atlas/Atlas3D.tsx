@@ -5,7 +5,7 @@
 import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import * as THREE from "three";
-import type { SceneLayer, SceneNode } from "./scene";
+import { labelled, type SceneLayer, type SceneNode } from "./scene";
 
 interface Props {
   layers: SceneLayer[];
@@ -58,7 +58,17 @@ function useThemeChange(): number {
 }
 
 /** A text label drawn on a canvas and shown as a sprite that always faces the camera. */
-function Label({ text, position, size, color }: { text: string; position: [number, number, number]; size: number; color: string }) {
+function Label({
+  text,
+  position,
+  size,
+  color,
+}: {
+  text: string;
+  position: [number, number, number];
+  size: number;
+  color: string;
+}) {
   const { texture, aspect } = useMemo(() => {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -93,12 +103,14 @@ function Label({ text, position, size, color }: { text: string; position: [numbe
 
 interface NodeProps {
   node: SceneNode;
+  /** Whether it shows its label at rest; a chosen or hovered node shows one anyway. */
+  named: boolean;
   colors: Palette;
   onPick: (n: SceneNode) => void;
   dragged: { current: boolean };
 }
 
-function Node({ node, colors, onPick, dragged }: NodeProps) {
+function Node({ node, named, colors, onPick, dragged }: NodeProps) {
   const [hover, setHover] = useState(false);
   const [x, y, z] = node.position;
   const color = colors.status(node.status);
@@ -141,11 +153,11 @@ function Node({ node, colors, onPick, dragged }: NodeProps) {
           <meshBasicMaterial color={color} />
         </mesh>
       )}
-      {(hover || node.selected || node.count > 0) && (
+      {(hover || node.selected || named) && (
         <Label
           text={`${node.label} (${String(node.count)})`}
           position={[x, y + node.radius + 0.18, z]}
-          size={hover || node.selected ? 0.34 : 0.22}
+          size={hover || node.selected ? 0.48 : 0.34}
           color={node.count === 0 ? colors.muted : colors.text}
         />
       )}
@@ -165,7 +177,8 @@ function Turntable({ turn, children }: { turn: { current: { x: number; y: number
 /** What the scene shows, in words, for screen readers; the 2D view has the same in full. */
 function describe(layers: SceneLayer[]): string {
   const parts = layers.map(
-    (l) => `${l.name}: ${String(l.nodes.filter((n) => n.count > 0).length)} of ${String(l.nodes.length)} nodes possible`,
+    (l) =>
+      `${l.name}: ${String(l.nodes.filter((n) => n.count > 0).length)} of ${String(l.nodes.length)} nodes possible`,
   );
   return `The map in 3D. ${parts.join("; ")}. The 2D view lists the same nodes and counts.`;
 }
@@ -174,7 +187,7 @@ export default function Atlas3D({ layers, onPick }: Props) {
   useThemeChange();
   const colors = palette();
   // Drag with one pointer to turn and tilt the stack; a press that moves is a drag, not a click.
-  const turn = useRef({ y: 0.4, x: 0.25 });
+  const turn = useRef({ y: 0.4, x: 0.5 });
   const start = useRef<{ id: number; px: number; py: number; y: number; x: number } | null>(null);
   const dragged = useRef(false);
   useEffect(
@@ -217,18 +230,28 @@ export default function Atlas3D({ layers, onPick }: Props) {
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 10, 7]} intensity={0.9} />
         <Turntable turn={turn}>
-          {layers.map((l) => (
-            <group key={l.tier}>
-              <mesh position={[0, l.y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-                <ringGeometry args={[l.ringRadius - 0.01, l.ringRadius + 0.01, 96]} />
-                <meshBasicMaterial color={colors.line} side={THREE.DoubleSide} />
-              </mesh>
-              <Label text={l.name} position={[-l.ringRadius - 1.6, l.y, 0]} size={0.4} color={colors.text} />
-              {l.nodes.map((n) => (
-                <Node key={n.value} node={n} colors={colors} onPick={onPick} dragged={dragged} />
-              ))}
-            </group>
-          ))}
+          {layers.map((l) => {
+            const named = labelled(l);
+            return (
+              <group key={l.tier}>
+                <mesh position={[0, l.y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+                  <ringGeometry args={[l.ringRadius - 0.01, l.ringRadius + 0.01, 96]} />
+                  <meshBasicMaterial color={colors.line} side={THREE.DoubleSide} />
+                </mesh>
+                <Label text={l.name} position={[-l.ringRadius - 1.6, l.y, 0]} size={0.4} color={colors.text} />
+                {l.nodes.map((n) => (
+                  <Node
+                    key={n.value}
+                    node={n}
+                    named={named.has(n.value)}
+                    colors={colors}
+                    onPick={onPick}
+                    dragged={dragged}
+                  />
+                ))}
+              </group>
+            );
+          })}
         </Turntable>
       </Canvas>
     </div>

@@ -3,7 +3,7 @@ import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
-import { hasWebGL, scene } from "./scene";
+import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, scene, type SceneLayer, type SceneNode } from "./scene";
 
 // The counts are checked against the lock file, read independently of map.json, as the 2D view's tests do.
 const lock = lockRaw as unknown as Pathway[];
@@ -65,5 +65,41 @@ describe("the 3D scene", () => {
 
   it("says there is no WebGL where the browser has none, as in this test environment", () => {
     expect(hasWebGL()).toBe(false);
+  });
+
+  it("labels every possible node of an uncrowded layer, and only the busiest of a crowded one", () => {
+    const layers = scene(map.pathways, { framework: F1 }, "model-method-metric", DEFAULT_OPTIONS);
+    // Both cases must be reached for this test to mean anything.
+    expect(layers.some((l) => l.nodes.filter((n) => n.count > 0).length > CROWDED)).toBe(true);
+    expect(layers.some((l) => l.nodes.filter((n) => n.count > 0).length <= CROWDED)).toBe(true);
+    for (const layer of layers) {
+      const possible = layer.nodes.filter((n) => n.count > 0);
+      const named = labelled(layer);
+      if (possible.length <= CROWDED) {
+        expect([...named].sort()).toEqual(possible.map((n) => n.value).sort());
+      } else {
+        expect(named.size).toBe(LABELLED_IN_CROWD);
+        const least = Math.min(...possible.filter((n) => named.has(n.value)).map((n) => n.count));
+        // No node left without a label has more pathways than one that kept its label.
+        expect(possible.filter((n) => !named.has(n.value)).every((n) => n.count <= least)).toBe(true);
+      }
+      expect(layer.nodes.filter((n) => n.count === 0).some((n) => named.has(n.value))).toBe(false);
+    }
+  });
+
+  it("breaks ties between equally busy nodes in the map's order", () => {
+    const node = (value: string, count: number): SceneNode => ({
+      tier: "metric",
+      value,
+      label: value,
+      count,
+      status: "planned",
+      selected: false,
+      position: [0, 0, 0],
+      radius: 0.1,
+    });
+    const nodes = Array.from({ length: CROWDED + 1 }, (_, i) => node(`m${String(i)}`, 5));
+    const layer: SceneLayer = { tier: "metric", name: "Metric", y: 0, ringRadius: 3, nodes };
+    expect([...labelled(layer)]).toEqual(nodes.slice(0, LABELLED_IN_CROWD).map((n) => n.value));
   });
 });
