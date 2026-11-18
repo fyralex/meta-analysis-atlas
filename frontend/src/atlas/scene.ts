@@ -3,7 +3,16 @@
 // Nothing here decides validity: a node's count, and whether it is chosen, come from tierNodes().
 
 import { STATUSES, type Pathway, type Status } from "../types/map";
-import { nodeLabel, tierNodes, tiersInOrder, type FilterOptions, type Selection, type Tier, type TierOrder } from "./filter";
+import {
+  filterPathways,
+  nodeLabel,
+  tierNodes,
+  tiersInOrder,
+  type FilterOptions,
+  type Selection,
+  type Tier,
+  type TierOrder,
+} from "./filter";
 import { map } from "../map";
 import { TIER_NAMES } from "./names";
 
@@ -72,6 +81,45 @@ export function scene(
     });
     return { tier, name: TIER_NAMES[tier], y, ringRadius, nodes };
   });
+}
+
+export interface SceneLink {
+  from: [number, number, number];
+  to: [number, number, number];
+}
+
+/**
+ * The lines between neighbouring layers, as in the prototype map (#92, design E): one for each pair of nodes that
+ * a matching pathway passes through, one layer after the other. They come from the pathways your choices leave,
+ * so they narrow as the nodes do.
+ */
+export function links(
+  pathways: readonly Pathway[],
+  selection: Selection,
+  options: FilterOptions,
+  layers: readonly SceneLayer[],
+): SceneLink[] {
+  const where = new Map<string, [number, number, number]>(
+    layers.flatMap((l) => l.nodes.map((n) => [`${l.tier}=${n.value}`, n.position] as const)),
+  );
+  const tiers = layers.map((l) => l.tier);
+  const seen = new Set<string>();
+  const out: SceneLink[] = [];
+  for (const p of filterPathways(pathways, selection, options)) {
+    for (const [i, upper] of tiers.entries()) {
+      const lower = tiers[i + 1];
+      if (lower === undefined) break;
+      const a = `${upper}=${p[upper]}`;
+      const b = `${lower}=${p[lower]}`;
+      const key = `${a}|${b}`;
+      const from = where.get(a);
+      const to = where.get(b);
+      if (seen.has(key) || !from || !to) continue;
+      seen.add(key);
+      out.push({ from, to });
+    }
+  }
+  return out;
 }
 
 /**

@@ -224,7 +224,7 @@ Everything is generated from the map. Nothing is written by hand twice.
 
 | App | What it does | Release |
 |---|---|---|
-| **Atlas** | The map in 3D (react-three-fiber) with a 2D view. One layer per tier; clicking a node narrows the map to the compatible pathways and shows how many remain; colours for status; badges for new and to-check; framework selector; tier-order toggle; node cards; "Why not?" for greyed-out nodes. The 2D view is the accessible default for screen readers and for reading an exact path | v0.1 |
+| **Atlas** | The map in 3D (react-three-fiber), its main view: one layer per tier, lines joining the nodes that go together, turning slowly until touched; drag to turn, scroll or pinch to zoom. Clicking a node narrows the map to the compatible pathways and shows how many remain; clicking it again undoes it. Colours for status; badges for new and to-check; tier-order toggle; node cards; "Why not?" for greyed-out nodes. A 2D view lists the same nodes and counts for screen readers and the keyboard, and is used where 3D can't be drawn | v0.1 |
 | **Pathfinder** | A few questions (what kind of question, how many groups, what each study reported, the outcome, whether events are rare, whether true effects are expected to vary) lead to pathways, with the reason for each step and the alternatives. Shares its selection with Atlas | v0.1 |
 | **Cards** | A teaching card for every node and rule, with references, plus a glossary. Shown inside Atlas and Pathfinder | v0.1 |
 | **Workbench** | Upload a CSV, check it against the pathway's data format, run it, and get estimates, heterogeneity, forest and funnel plots, and the exact R code | v0.2 |

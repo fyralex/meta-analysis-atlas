@@ -87,7 +87,8 @@ describe("Pathfinder's questions", () => {
     expect(atlasHref({ framework: first }, DEFAULT_OPTIONS, "model-method-metric", "Random effects")).toContain(
       "model=Random+effects",
     );
-    expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric", undefined, "3d")).toBe("/atlas?view=3d");
+    expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric", undefined, "2d")).toBe("/atlas?view=2d");
+    expect(atlasHref({}, DEFAULT_OPTIONS, "model-method-metric", undefined, "3d")).toBe("/atlas");
     expect(atlasHref({}, { hideNew: false, runnableOnly: true }, "model-method-metric")).toBe("/atlas?runnable=only");
   });
 
