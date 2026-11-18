@@ -59,9 +59,18 @@ describe("the Atlas in 3D", { timeout: 15_000 }, () => {
     const router = open(`?view=3d&rare=yes&framework=${encodeURIComponent(F1)}`);
     await screen.findByRole("list", { name: "3D nodes" });
     fireEvent.click(screen.getByRole("radio", { name: /^2D/ }));
-    expect(params(router).get("view")).toBeNull();
+    expect(params(router).get("view")).toBe("2d");
     expect(params(router).get("rare")).toBe("yes");
     expect(params(router).get("framework")).toBe(F1);
+    fireEvent.click(screen.getByRole("radio", { name: /^3D/ }));
+    expect(params(router).get("view")).toBeNull();
+    expect(params(router).get("framework")).toBe(F1);
+  });
+
+  it("opens on the 3D map where the browser can draw it (#92, design E)", async () => {
+    open("");
+    expect(await screen.findByRole("list", { name: "3D nodes" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: /^3D/ })).toBeChecked();
   });
 
   it("opens, and closes again, the why-not panel for a node no pathway fits", async () => {

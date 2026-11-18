@@ -3,7 +3,7 @@ import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
-import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, scene, type SceneLayer, type SceneNode } from "./scene";
+import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, links, scene, type SceneLayer, type SceneNode } from "./scene";
 
 // The counts are checked against the lock file, read independently of map.json, as the 2D view's tests do.
 const lock = lockRaw as unknown as Pathway[];
@@ -41,6 +41,26 @@ describe("the 3D scene", () => {
           expect(n.count, `${layer.tier}=${n.value}`).toBe(lockCount({ ...rest, [layer.tier]: n.value }, options));
         }
       }
+    }
+  });
+
+  it.each(SELECTIONS)("joins exactly the neighbouring nodes a matching pathway passes through, for %j", (selection) => {
+    for (const order of ["model-method-metric", "metric-method-model"] as const) {
+      const layers = scene(map.pathways, selection, order, DEFAULT_OPTIONS);
+      const at = (tier: string, value: string) =>
+        layers.find((l) => l.tier === tier)?.nodes.find((n) => n.value === value)?.position;
+      const tiers = tiersInOrder(order);
+      const expected = new Set<string>();
+      for (const p of lock) {
+        if (!TIERS.every((t) => selection[t] === undefined || p[t] === selection[t])) continue;
+        for (let i = 0; i + 1 < tiers.length; i++) {
+          const [a, b] = [tiers[i] ?? "framework", tiers[i + 1] ?? "framework"];
+          expected.add(JSON.stringify([at(a, p[a]), at(b, p[b])]));
+        }
+      }
+      const got = links(map.pathways, selection, DEFAULT_OPTIONS, layers).map((l) => JSON.stringify([l.from, l.to]));
+      expect(new Set(got).size).toBe(got.length);
+      expect(new Set(got)).toEqual(expected);
     }
   });
 

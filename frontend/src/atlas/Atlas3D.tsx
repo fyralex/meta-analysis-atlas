@@ -1,16 +1,28 @@
-// The 3D view of the Atlas (#5), drawn with react-three-fiber. Loaded only when chosen, so the 2D view (the
-// default) doesn't carry three.js. It draws the scene from scene.ts, the same nodes and counts as the 2D view;
-// a click on a node calls back to the page, which applies the same toggle (or opens "Why not?") as in 2D.
+// The 3D view of the Atlas (#5), drawn with react-three-fiber, and since design E of #92 the Atlas's main view,
+// as in the prototype map: layers of nodes joined by lines, turning slowly until touched. Drag to turn; the mouse
+// wheel or a two-finger pinch zooms. Loaded lazily, so pages without it don't carry three.js. It draws the scene
+// from scene.ts, the same nodes and counts as the 2D view; a click on a node calls back to the page, which applies
+// the same toggle (or opens "Why not?") as in 2D. Without onPick the map is read-only: it turns and zooms only.
 
 import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import * as THREE from "three";
-import { labelled, type SceneLayer, type SceneNode } from "./scene";
+import { labelled, type SceneLayer, type SceneLink, type SceneNode } from "./scene";
 
 interface Props {
   layers: SceneLayer[];
-  onPick: (node: SceneNode) => void;
+  /** The lines between neighbouring layers (scene.ts, links). */
+  lines?: SceneLink[];
+  /** Called when a node is clicked; leave it out for a read-only map. */
+  onPick?: (node: SceneNode) => void;
 }
+
+/** How far the wheel or a pinch can zoom, as a factor of the starting distance. */
+const ZOOM_MIN = 0.45;
+const ZOOM_MAX = 2.5;
+const clampZoom = (z: number) => Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+/** The slow turn at rest, in radians a second, as in the prototype. */
+const SPIN = 0.15;
 
 interface Palette {
   text: string;
@@ -106,7 +118,7 @@ interface NodeProps {
   /** Whether it shows its label at rest; a chosen or hovered node shows one anyway. */
   named: boolean;
   colors: Palette;
-  onPick: (n: SceneNode) => void;
+  onPick: ((n: SceneNode) => void) | undefined;
   dragged: { current: boolean };
 }
 
@@ -128,12 +140,12 @@ function Node({ node, named, colors, onPick, dragged }: NodeProps) {
         scale={hover ? 1.3 : 1}
         onClick={(e: ThreeEvent<MouseEvent>) => {
           e.stopPropagation();
-          if (!dragged.current) onPick(node);
+          if (onPick && !dragged.current) onPick(node);
         }}
         onPointerOver={(e) => {
           e.stopPropagation();
           setHover(true);
-          document.body.style.cursor = "pointer";
+          if (onPick) document.body.style.cursor = "pointer";
         }}
         onPointerOut={() => {
           setHover(false);
@@ -165,14 +177,45 @@ function Node({ node, named, colors, onPick, dragged }: NodeProps) {
   );
 }
 
-/** Turns the stack to the latest drag every frame, so a drag re-renders nothing. */
-function Turntable({ turn, children }: { turn: { current: { x: number; y: number } }; children: ReactNode }) {
+interface TurntableProps {
+  turn: { current: { x: number; y: number } };
+  zoom: { current: number };
+  distance: number;
+  children: ReactNode;
+}
+
+/** Turns the stack and places the camera from the latest drag and zoom every frame, so neither re-renders. */
+function Turntable({ turn, zoom, distance, children }: TurntableProps) {
   const group = useRef<THREE.Group>(null);
-  useFrame(() => {
+  useFrame(({ camera }) => {
     if (group.current) group.current.rotation.set(turn.current.x, turn.current.y, 0);
+    camera.position.set(0, 0, distance * zoom.current);
   });
   return <group ref={group}>{children}</group>;
 }
+
+/** The lines between neighbouring layers, drawn as one set of segments. */
+function Lines({ lines, color }: { lines: SceneLink[]; color: string }) {
+  const geometry = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(lines.flatMap((l) => [...l.from, ...l.to]), 3));
+    return g;
+  }, [lines]);
+  useEffect(
+    () => () => {
+      geometry.dispose();
+    },
+    [geometry],
+  );
+  return (
+    <lineSegments geometry={geometry}>
+      <lineBasicMaterial color={color} transparent opacity={0.35} />
+    </lineSegments>
+  );
+}
+
+/** Whether the system asks for less motion: then the map doesn't turn on its own. */
+const reducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /** What the scene shows, in words, for screen readers; the 2D view has the same in full. */
 function describe(layers: SceneLayer[]): string {
@@ -183,13 +226,51 @@ function describe(layers: SceneLayer[]): string {
   return `The map in 3D. ${parts.join("; ")}. The 2D view lists the same nodes and counts.`;
 }
 
-export default function Atlas3D({ layers, onPick }: Props) {
+export default function Atlas3D({ layers, lines = [], onPick }: Props) {
   useThemeChange();
   const colors = palette();
   // Drag with one pointer to turn and tilt the stack; a press that moves is a drag, not a click.
   const turn = useRef({ y: 0.4, x: 0.5 });
   const start = useRef<{ id: number; px: number; py: number; y: number; x: number } | null>(null);
   const dragged = useRef(false);
+  const spinning = useRef(!reducedMotion());
+  // Zoom: the mouse wheel, or two fingers pinching (their distance against where the pinch began).
+  const zoom = useRef(1);
+  const touches = useRef(new Map<number, { x: number; y: number }>());
+  const pinch = useRef<{ gap: number; zoom: number } | null>(null);
+  const box = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return;
+    // Not passive, so the page doesn't scroll while the wheel zooms the map.
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      spinning.current = false;
+      zoom.current = clampZoom(zoom.current * Math.exp(e.deltaY * 0.001));
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+    };
+  }, []);
+  // The slow turn at rest, until the first drag, zoom or pinch (spinning goes false then).
+  useEffect(() => {
+    let frame = 0;
+    let last = performance.now();
+    const tick = (now: number) => {
+      if (spinning.current) turn.current = { ...turn.current, y: turn.current.y + ((now - last) / 1000) * SPIN };
+      last = now;
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+  const gap = () => {
+    const [a, b] = [...touches.current.values()];
+    return a && b ? Math.hypot(a.x - b.x, a.y - b.y) : 0;
+  };
   useEffect(
     () => () => {
       document.body.style.cursor = "";
@@ -198,20 +279,39 @@ export default function Atlas3D({ layers, onPick }: Props) {
   );
   const height = Math.max(...layers.map((l) => l.y)) - Math.min(...layers.map((l) => l.y));
   const widest = Math.max(...layers.map((l) => l.ringRadius));
-  const end = () => {
-    start.current = null;
+  const end = (e: PointerEvent) => {
+    touches.current.delete(e.pointerId);
+    if (touches.current.size < 2) pinch.current = null;
+    if (start.current?.id === e.pointerId) start.current = null;
   };
+  const distance = height * 1.5 + widest;
   return (
     <div
+      ref={box}
       className="atlas-3d"
       role="img"
       aria-label={describe(layers)}
       onPointerDown={(e) => {
+        spinning.current = false;
+        touches.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (touches.current.size === 2) {
+          // A second finger: a pinch to zoom, not a drag.
+          start.current = null;
+          dragged.current = true;
+          pinch.current = { gap: gap(), zoom: zoom.current };
+          return;
+        }
         if (!e.isPrimary) return;
         start.current = { id: e.pointerId, px: e.clientX, py: e.clientY, ...turn.current };
         dragged.current = false;
       }}
       onPointerMove={(e) => {
+        if (touches.current.has(e.pointerId)) touches.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        const p = pinch.current;
+        if (p && p.gap > 0) {
+          zoom.current = clampZoom((p.zoom * p.gap) / Math.max(1, gap()));
+          return;
+        }
         const s = start.current;
         if (!s || e.pointerId !== s.id) return;
         const dx = e.clientX - s.px;
@@ -226,10 +326,11 @@ export default function Atlas3D({ layers, onPick }: Props) {
       onPointerUp={end}
       onPointerCancel={end}
     >
-      <Canvas camera={{ position: [0, 0, height * 1.5 + widest], fov: 45 }} dpr={[1, 2]}>
+      <Canvas camera={{ position: [0, 0, distance], fov: 45 }} dpr={[1, 2]}>
         <ambientLight intensity={0.8} />
         <directionalLight position={[5, 10, 7]} intensity={0.9} />
-        <Turntable turn={turn}>
+        <Turntable turn={turn} zoom={zoom} distance={distance}>
+          <Lines lines={lines} color={colors.muted} />
           {layers.map((l) => {
             const named = labelled(l);
             return (
