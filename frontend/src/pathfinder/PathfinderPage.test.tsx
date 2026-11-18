@@ -243,4 +243,17 @@ describe("Pathfinder", PAGE, () => {
     expect(params.get("vary")).toBeNull();
     expect(screen.getByRole("radio", { name: "No" })).toBeChecked();
   });
+
+  it("forgets a remembered answer once it is used, so a later question never opens on a stale one", () => {
+    renderAt(BINARY);
+    fireEvent.click(screen.getByRole("button", { name: "Back to question 4" }));
+    fireEvent.click(screen.getByRole("button", { name: /^Next/ }));
+    fireEvent.click(screen.getByRole("button", { name: "Start again from question 1" }));
+    pick(/^2\. Diagnostic test accuracy/);
+    pick(/^One index test/);
+    pick(/^2x2 table per study$/);
+    expect(screen.getByRole("heading", { level: 1, name: "What kind of outcome is it?" })).toBeInTheDocument();
+    expect(screen.getAllByRole("radio").every((r) => !(r as HTMLInputElement).checked)).toBe(true);
+    expect(screen.getByRole("button", { name: /^(Next|See the results)/ })).toBeDisabled();
+  });
 });

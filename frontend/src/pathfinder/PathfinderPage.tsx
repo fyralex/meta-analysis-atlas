@@ -199,7 +199,10 @@ interface QuestionProps {
 
 /** One question: its options as a radio group, then Back and Next, each saying where it goes. */
 function Question({ n, initial, text, intro, choices, after, back, nextLabel, onNext, heading }: QuestionProps) {
-  const [picked, setPicked] = useState<string | undefined>(initial);
+  // A remembered answer counts only if this question still offers it.
+  const [picked, setPicked] = useState<string | undefined>(
+    initial !== undefined && choices.some((c) => c.value === initial) ? initial : undefined,
+  );
   const hint = `q${String(n)}-hint`;
   return (
     <form
@@ -451,6 +454,7 @@ export function PathfinderPage() {
                         : afterQuestions(answer(selection, next.tier, picked))
                   }
                   onNext={(value) => {
+                    setReturning(null);
                     update({ selection: answer(selection, next.tier, value), extra: NO_ADVICE });
                   }}
                 />
@@ -487,6 +491,7 @@ export function PathfinderPage() {
                 advice.key === "rare" && askVary ? `Next: question 6, ${VARY.short.toLowerCase()}` : "See the results"
               }
               onNext={(value) => {
+                setReturning(null);
                 const a = value as Advice;
                 // "vary" pre-selects its model; "rare" keeps a model only if "vary" already chose it
                 const pick = advice.key === "vary" ? MODEL_FOR[a] : vary ? selection.model : undefined;
@@ -620,6 +625,7 @@ export function PathfinderPage() {
               type="button"
               className="link-button"
               onClick={() => {
+                setReturning(null);
                 update({ selection: {}, extra: NO_ADVICE });
               }}
             >
