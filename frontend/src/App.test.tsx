@@ -2,8 +2,8 @@ import { cleanup, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
-import { cards } from "./cards/cards";
-import { map } from "./map";
+import cardsRaw from "../../spec/cards.json";
+import lockRaw from "../../spec/pathways.lock.json";
 
 function renderAt(path: string) {
   return render(
@@ -27,10 +27,14 @@ describe("the app shell", PAGE, () => {
     const doors = within(screen.getByRole("list")).getAllByRole("link");
     expect(doors.map((d) => d.getAttribute("href"))).toEqual(["/pathfinder", "/cards", "/atlas"]);
     expect(doors.map((d) => d.querySelector(".door-where strong")?.textContent)).toEqual(["Pathfinder", "Cards", "Atlas"]);
-    const n = map.pathways.length.toLocaleString("en");
-    expect(doors[2]).toHaveTextContent(`All ${n} pathways`);
-    const terms = cards.filter((c) => c.tier === "term").length;
-    expect(doors[1]).toHaveTextContent(`${String(cards.length - terms)} explanations and a glossary of ${String(terms)} terms`);
+    // Expected counts read from the lock file and cards.json themselves, not by the page's own formulas.
+    const lock = lockRaw as unknown as { framework: string }[];
+    expect(doors[2]).toHaveTextContent(`All ${String(lock.length)} pathways`);
+    expect(doors[2]).toHaveTextContent(`across ${String(new Set(lock.map((p) => p.framework)).size)} frameworks`);
+    const raw = cardsRaw as unknown as { tier: string }[];
+    const terms = raw.filter((c) => c.tier === "term").length;
+    expect(doors[1]).toHaveTextContent(`${String(raw.length - terms)} cards and a glossary of ${String(terms)} terms`);
+    expect(doors[0]).toHaveTextContent("Answer up to 6 short questions");
   });
 
   it("doesn't repeat the doors in the header on the home page, and lists the apps on the others", () => {

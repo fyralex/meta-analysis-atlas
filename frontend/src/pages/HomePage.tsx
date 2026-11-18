@@ -1,13 +1,16 @@
 import { Link } from "react-router";
 import { cards } from "../cards/cards";
 import { map } from "../map";
+import { QUESTIONS, RARE, VARY } from "../pathfinder/flow";
 
 // The home page (#92, design A): one promise and three doors, each saying where it goes, what is there and who
 // it is for. The counts come from the map, so they stay true as it changes.
 const pathways = map.pathways.length;
 const frameworks = new Set(map.pathways.map((p) => p.framework)).size;
 const terms = cards.filter((c) => c.tier === "term").length;
-const explanations = cards.length - terms;
+const choiceCards = cards.length - terms;
+/** Pathfinder's questions at most: its four, then the two it asks only where they apply. */
+const questions = QUESTIONS.length + [RARE, VARY].length;
 
 interface Door {
   to: string;
@@ -22,7 +25,7 @@ const DOORS: Door[] = [
   {
     to: "/pathfinder",
     title: "Plan my analysis",
-    what: "Answer up to 6 short questions about your studies. See the analyses that fit, and why.",
+    what: `Answer up to ${String(questions)} short questions about your studies. See the analyses that fit, and why.`,
     app: "Pathfinder",
     detail: "For review authors",
     primary: true,
@@ -30,9 +33,9 @@ const DOORS: Door[] = [
   {
     to: "/cards",
     title: "Learn the building blocks",
-    what: "What is a random-effects model? When is Peto's method used? Short explanations, each with its source.",
+    what: "What is a random-effects model? When is Peto's method used? A card for each choice, with its sources.",
     app: "Cards",
-    detail: `${String(explanations)} explanations and a glossary of ${String(terms)} terms · for students`,
+    detail: `${String(choiceCards)} cards and a glossary of ${String(terms)} terms · for students`,
   },
   {
     to: "/atlas",
@@ -49,7 +52,7 @@ export function HomePage() {
       <div className="home-intro">
         <h1>Find the right meta-analysis for your review, and see why it fits.</h1>
         <p className="lead">
-          {pathways} ways to pool studies, each with the reason it fits or doesn&apos;t and the source behind it.
+          {pathways} ways to pool studies, with the reasons each choice fits or doesn&apos;t and the sources behind them.
         </p>
       </div>
 
@@ -74,8 +77,8 @@ export function HomePage() {
       </section>
 
       <p className="home-status muted">
-        Version 0.1 shows the map and its reasons; it doesn&apos;t run analyses yet. Running them on your own data
-        comes in version 0.2.
+        Version 0.1 shows the map and its reasons; it doesn&apos;t run analyses yet. Version 0.2 is planned to run the
+        first ones, for one and two groups, on your own data.
       </p>
     </section>
   );

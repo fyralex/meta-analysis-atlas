@@ -85,15 +85,7 @@ main:focus { outline: none; }
 .page h2 { font-size: 1.25rem; margin: 32px 0 8px; }
 .lead { max-width: 65ch; color: var(--muted); }
 .muted { color: var(--muted); }
-.count { font-size: 1.15rem; }
-.count strong { font-size: 2.2rem; font-variant-numeric: tabular-nums; margin-right: 6px; }
 
-.statuses { border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); width: 100%; max-width: 640px; }
-.statuses caption { text-align: left; font-weight: 600; padding-bottom: 6px; }
-.statuses th, .statuses td { padding: 8px 12px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
-.statuses .num { text-align: right; font-variant-numeric: tabular-nums; }
-.apps { padding-left: 1.2em; max-width: 65ch; }
-.apps li { margin-bottom: 6px; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
