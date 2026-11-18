@@ -3768,7 +3768,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
     # frameworks
     "framework:interventional-effect-of-an-intervention": (
         "What are the effects of a treatment or other intervention?",
-        "For example, does a drug lower blood pressure compared with a placebo, or which of several drugs works best?",
+        "For example, does a drug lower blood pressure compared with a placebo, or how several drugs compare with each other?",
         "CH-6 s6.1.2, CH-11 s11.1",
     ),
     "framework:diagnostic-test-accuracy": (
