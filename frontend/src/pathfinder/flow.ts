@@ -21,14 +21,16 @@ import type { Pathway } from "../types/map";
 export interface Question {
   tier: Tier;
   text: string;
+  /** Its name in the step bar. */
+  short: string;
 }
 
 /** The questions, in the order they are asked. Each one fixes the tier it names. */
 export const QUESTIONS: Question[] = [
-  { tier: "framework", text: "What kind of question does the review ask?" },
-  { tier: "group", text: "What does each study compare, or describe?" },
-  { tier: "datatype", text: "What did each study report?" },
-  { tier: "outcome", text: "What kind of outcome is it?" },
+  { tier: "framework", text: "What kind of question does the review ask?", short: "Your question" },
+  { tier: "group", text: "What does each study compare, or describe?", short: "Study design" },
+  { tier: "datatype", text: "What did each study report?", short: "What studies reported" },
+  { tier: "outcome", text: "What kind of outcome is it?", short: "Outcome" },
 ];
 
 /** The answers so far: the selection's values for the questions' tiers, kept only up to the first gap. */
@@ -121,18 +123,22 @@ export const ADVICE: Advice[] = ["yes", "no", "unsure"];
 export interface AdviceQuestion {
   key: "rare" | "vary";
   text: string;
+  /** Its name in the step bar. */
+  short: string;
   answers: Record<Advice, string>;
 }
 
 export const RARE: AdviceQuestion = {
   key: "rare",
   text: "Are the events rare?",
+  short: "Rare events?",
   answers: { yes: "Yes", no: "No", unsure: "Not sure" },
 };
 
 export const VARY: AdviceQuestion = {
   key: "vary",
   text: "Do you expect the true effects to differ between studies?",
+  short: "Do effects differ?",
   answers: { yes: "Yes, they probably differ", no: "No, they share one effect", unsure: "Not sure" },
 };
 
