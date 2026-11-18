@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, useSearchParams } from "react-router";
 import { nodeLabel, type FilterOptions, type Selection, type Tier } from "../atlas/filter";
-import { LIST_LIMIT, TIER_NAMES } from "../atlas/names";
+import { TIER_NAMES } from "../atlas/names";
 import { useAtlasState } from "../atlas/useAtlasState";
 import { explain, ruleText } from "../atlas/whyNot";
 import { cardFor, cardHref } from "../cards/cards";
 import { map } from "../map";
 import { Sources } from "../SourceList";
-import { STATUS_TEXT } from "../status";
-import { STATUSES, type Pathway } from "../types/map";
 import {
   ADVICE,
   answer,
@@ -24,18 +22,17 @@ import {
   nextQuestion,
   QUESTIONS,
   RARE,
-  rareLines,
   readAdvice,
   unused,
   VARY,
   type Advice,
   type AdviceQuestion,
 } from "./flow";
+import { ModelCards, Results } from "./Results";
 
 // Pathfinder (#7), laid out as design B of #92: a step bar that holds the answers, one question at a time with
 // Back and Next buttons that say where they go, and a side panel with the live count.
 
-const RESULT_TIERS: Tier[] = ["model", "method", "metric"];
 const lower = (t: Tier) => TIER_NAMES[t].toLowerCase();
 /** Changing one of the four answers takes back the advisory answers too: they depend on what fits. */
 const NO_ADVICE = { rare: null, vary: null };
@@ -59,7 +56,7 @@ function Reason({ tier, value }: { tier: Tier; value: string }) {
 function WhyNot({ selection, tier, value, options }: { selection: Selection; tier: Tier; value: string; options: FilterOptions }) {
   const why = explain(map.pathways, answered(selection), tier, value, options);
   if (why.kind === "hidden-new") return <p className="muted">It is only in entries marked new, which are hidden.</p>;
-  if (why.kind === "not-runnable") return <p className="muted">None of its pathways that fit your answers is runnable yet.</p>;
+  if (why.kind === "not-runnable") return <p className="muted">None of its analyses that fit your answers can be run yet.</p>;
   if (why.kind === "hidden-both") {
     return <p className="muted">It is only in entries marked new that aren&apos;t runnable yet, and both are hidden.</p>;
   }
@@ -84,58 +81,6 @@ function WhyNot({ selection, tier, value, options }: { selection: Selection; tie
           ))}
         </li>
       ))}
-    </ul>
-  );
-}
-
-/** Both models' cards: what each is, and the debate between them, as each card states it. */
-function ModelAdvice({ found }: { found: readonly Pathway[] }) {
-  const cards = modelsIn(found).flatMap((m) => {
-    const c = cardFor("model", m);
-    return c ? [c] : [];
-  });
-  return (
-    <ul className="option-reason">
-      {cards.map((c) => (
-        <li key={c.id}>
-          <p>
-            <Link to={cardHref(c.id)}>{c.title}</Link>
-          </p>
-          {c.teach
-            .filter((t) => t.kind !== "what" || t === c.teach.find((w) => w.kind === "what"))
-            .map((t) => (
-              <div key={t.text}>
-                <p>{t.text}</p>
-                <Sources src={t.src} />
-              </div>
-            ))}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-/** What the cards of the methods that fit say about rare events, with the rule behind a caution. */
-function RareAdvice({ found }: { found: readonly Pathway[] }) {
-  return (
-    <ul className="option-reason">
-      {rareLines(found).map(({ method, line }) => {
-        const card = cardFor("method", method);
-        return (
-          <li key={`${method}:${line.text}`}>
-            <p>
-              <Link to={cardHref(card?.id ?? "")}>{nodeLabel(map, "method", method)}</Link>
-              {line.kind === "caution" ? " (caution)" : ""}: {line.text}
-            </p>
-            {method === "IV" && line.kind === "caution" && (
-              <p className="rule">
-                <Link to={cardHref("rule:R9")}>Rule R9</Link>: {ruleText(map, "R9")}
-              </p>
-            )}
-            <Sources src={line.src} />
-          </li>
-        );
-      })}
     </ul>
   );
 }
@@ -297,11 +242,9 @@ export function PathfinderPage() {
   const [technical, setTechnical] = useState(false);
   // The answer just taken back (by Back or Change), so its question opens with that option still chosen.
   const [returning, setReturning] = useState<{ key: string; value: string } | null>(null);
-  const modelHeading = useRef<HTMLHeadingElement>(null);
-  /** Switch the model shown, and keep focus in the Model section: the button pressed goes away. */
+  /** Show one model's analyses, or both (undefined). */
   function showModel(m: string | undefined) {
     update({ selection: m === undefined ? answers : { ...answers, model: m } });
-    setTimeout(() => modelHeading.current?.focus(), 0);
   }
   const step = next?.tier ?? advice?.key ?? "results";
   // Move focus to the question (or the results) when the step changes: after an answer, a change or a restart,
@@ -380,7 +323,7 @@ export function PathfinderPage() {
       )}
       {options.runnableOnly && (
         <p className="note">
-          Only runnable pathways are shown, as in the Atlas.{" "}
+          Only analyses that can be run are shown, as in the Atlas.{" "}
           <button
             type="button"
             className="link-button"
@@ -481,17 +424,17 @@ export function PathfinderPage() {
               intro={
                 advice.key === "rare" ? (
                   <p>
-                    Your answer removes no pathway. It decides whether the results show what the cards of the methods
+                    Your answer removes no analysis. It decides whether the results show what the cards of the methods
                     here say about rare events.
                   </p>
                 ) : (
                   <>
                     <p>
-                      Your answer removes no pathway. &ldquo;Yes&rdquo; shows the random-effects pathways,
+                      Your answer removes no analysis. &ldquo;Yes&rdquo; shows the random-effects analyses,
                       &ldquo;No&rdquo; the common-effect ones, and the other model stays one click away. What the cards
                       say about the two models:
                     </p>
-                    <ModelAdvice found={found} />
+                    <ModelCards models={modelsIn(found)} />
                   </>
                 )
               }
@@ -511,113 +454,15 @@ export function PathfinderPage() {
           )}
 
           {!next && !advice && (
-            <section aria-labelledby="pf-results">
-              <h1 id="pf-results" ref={heading} tabIndex={-1}>
-                Pathways that fit your answers
-              </h1>
-              <p>
-                <strong>{shown.length}</strong> {shown.length === 1 ? "pathway fits" : "pathways fit"}.{" "}
-                <span className="muted">
-                  {STATUSES.filter((s) => shown.some((p) => p.status === s))
-                    .map(
-                      (s) => `${String(shown.filter((p) => p.status === s).length)} ${STATUS_TEXT[s].name.toLowerCase()}`,
-                    )
-                    .join(", ")}
-                </span>
-              </p>
-
-              {askVary && vary && (
-                <section className="advice" aria-labelledby="pf-model">
-                  <h2 id="pf-model" ref={modelHeading} tabIndex={-1}>
-                    Model
-                  </h2>
-                  <p>
-                    {model === undefined ? "Both models are shown." : `Showing ${model.toLowerCase()} pathways only.`}
-                  </p>
-                  <ul className="model-switch">
-                    {modelsIn(found)
-                      .filter((m) => m !== model)
-                      .map((m) => (
-                        <li key={m}>
-                          <button
-                            type="button"
-                            className="link-button"
-                            onClick={() => {
-                              showModel(m);
-                            }}
-                          >
-                            Show {m.toLowerCase()} pathways only
-                          </button>
-                        </li>
-                      ))}
-                    {model !== undefined && (
-                      <li>
-                        <button
-                          type="button"
-                          className="link-button"
-                          onClick={() => {
-                            showModel(undefined);
-                          }}
-                        >
-                          Show both models
-                        </button>
-                      </li>
-                    )}
-                  </ul>
-                  <ModelAdvice found={found} />
-                </section>
-              )}
-
-              {askRare && (rare === "yes" || rare === "unsure") && (
-                <section className="advice" aria-labelledby="pf-rare">
-                  <h2 id="pf-rare">Rare events</h2>
-                  <p>
-                    {rare === "yes" ? "You said the events are rare" : "In case the events are rare"}: this is what
-                    the cards of the methods that fit your answers say about them. No pathway is removed.
-                  </p>
-                  <RareAdvice found={found} />
-                </section>
-              )}
-
-              {shown.length <= LIST_LIMIT ? (
-                <div className="table-wrap">
-                  <table className="pathways">
-                    <caption className="sr-only">The {shown.length} pathways that fit</caption>
-                    <thead>
-                      <tr>
-                        {RESULT_TIERS.map((t) => (
-                          <th key={t} scope="col">
-                            {TIER_NAMES[t]}
-                          </th>
-                        ))}
-                        <th scope="col">Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {shown.map((p) => (
-                        <tr key={RESULT_TIERS.map((t) => p[t]).join("|")}>
-                          {RESULT_TIERS.map((t) => (
-                            <td key={t}>
-                              <Link to={cardHref(cardFor(t, p[t])?.id ?? "")}>{nodeLabel(map, t, p[t])}</Link>
-                            </td>
-                          ))}
-                          <td>
-                            <span className={`swatch st-${p.status}`} aria-hidden="true" />{" "}
-                            {STATUS_TEXT[p.status].name}
-                            {p.added && <span className="badge badge-new">new</span>}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="muted">
-                  {shown.length} pathways fit; the Atlas lists them once its choices narrow them to {LIST_LIMIT} or
-                  fewer.
-                </p>
-              )}
-            </section>
+            <Results
+              found={found}
+              shown={shown}
+              model={model}
+              rare={askRare ? rare : undefined}
+              vary={askVary ? vary : undefined}
+              onShowModel={showModel}
+              heading={heading}
+            />
           )}
         </div>
 

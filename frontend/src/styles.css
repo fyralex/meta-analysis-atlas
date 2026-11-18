@@ -258,3 +258,48 @@ table.pathways .cell-label { display: none; }
 .button-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--line); }
 .technical-switch { display: flex; gap: 0.6rem; align-items: flex-start; font-size: 0.9rem; color: var(--muted); }
 .technical-switch input { margin-top: 0.2rem; accent-color: var(--accent); }
+
+/* Pathfinder results, design C of #92: the answer first, advice next, then the analyses grouped by method. */
+.results { display: flex; flex-direction: column; gap: 1rem; }
+.results > h1 { margin-bottom: 0; }
+.results > p { margin: 0; }
+.callout {
+  border: 1px solid color-mix(in srgb, var(--check-text) 45%, transparent);
+  background: color-mix(in srgb, var(--check-text) 8%, var(--surface));
+  border-radius: 12px; padding: 1rem 1.25rem; max-width: 70ch;
+}
+.callout h2 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.callout > p { margin: 0 0 0.5rem; }
+.results .advice { margin-block: 0; border-radius: 12px; padding: 1rem 1.25rem; background: var(--surface); }
+.results .advice h2 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+.model-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-block: 0.5rem; }
+.chip {
+  font: inherit; font-size: 14px; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: inherit;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--pressed); border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); font-weight: 600; }
+.more summary { cursor: pointer; color: var(--accent); }
+.methods { display: flex; flex-direction: column; gap: 10px; }
+.methods > h2 { margin: 0.5rem 0 0; }
+.methods > h2 + p { margin: 0; }
+.method-group { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1.25rem; }
+.method-group[open] { border-color: var(--accent); }
+.method-group summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; }
+.method-name { font-weight: 700; font-size: 1.1rem; }
+.method-what { flex: 1 1 30ch; color: var(--muted); }
+.method-count { font-size: 14px; margin-left: auto; }
+.method-body {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem 2rem;
+  margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line);
+}
+.method-body h3 { font-size: 0.95rem; margin: 0.75rem 0 0.25rem; }
+.method-body > div > :first-child h3, .method-body > div > h3:first-child { margin-top: 0; }
+.method-teach p { margin: 0.25rem 0; }
+.method-metrics, .method-status { margin: 0; padding-left: 1.2rem; line-height: 1.6; }
+.method-status { list-style: none; padding-left: 0; }
+.method-group summary { list-style: none; }
+.method-group summary::-webkit-details-marker { display: none; }
+.method-name::before { content: "▸"; content: "▸" / ""; display: inline-block; width: 1.1em; color: var(--accent); transition: transform 0.15s; }
+.method-group[open] .method-name::before { transform: rotate(90deg); }
+@media (prefers-reduced-motion: reduce) { .method-name::before { transition: none; } }
