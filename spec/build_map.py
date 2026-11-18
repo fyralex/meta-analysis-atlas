@@ -3767,9 +3767,9 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
 PLAIN: dict[str, tuple[str, str, str]] = {
     # frameworks
     "framework:interventional-effect-of-an-intervention": (
-        "Does a treatment work?",
-        "For example, does a drug lower blood pressure compared with a placebo?",
-        "CH-6 s6.1.2",
+        "What are the effects of a treatment or other intervention?",
+        "For example, does a drug lower blood pressure compared with a placebo, or which of several drugs works best?",
+        "CH-6 s6.1.2, CH-11 s11.1",
     ),
     "framework:diagnostic-test-accuracy": (
         "How accurate is a test?",
@@ -3813,7 +3813,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "CH-11 s11.1",
     ),
     "group:one-index-test-against-a-reference-standard": (
-        "One test, checked in each study",
+        "One test, checked against a reference standard",
         "Each study reports how many people the test got right and wrong, as a 2x2 table.",
         "MADA",
     ),
@@ -3835,7 +3835,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
     ),
     "group:exposure-and-outcome-observational-studies": (
         "An exposure and an outcome, from observational studies",
-        "For example, smoking and lung cancer, with each study reporting an adjusted odds ratio.",
+        "For example, smoking and lung cancer, with each study reporting an odds ratio and its standard error.",
         "CH-10 s10.3.3",
     ),
     "group:dose-response": (
@@ -3905,7 +3905,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "Each person's test result, positive or negative.",
         "MADA",
     ),
-    "outcome:any-outcome": ("Any kind of outcome", "", "RILEY, CH-10"),
+    "outcome:any-outcome": ("Any kind of outcome", "", "RILEY"),
     "outcome:discrimination": (
         "Telling apart who will have the outcome",
         "Measured by the c-statistic.",

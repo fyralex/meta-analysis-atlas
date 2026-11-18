@@ -40,7 +40,7 @@ const PAGE = { timeout: 15_000 };
 describe("Pathfinder", PAGE, () => {
   it("asks the questions in order, keeps the answers in the address, and ends on the fitting pathways", () => {
     renderAt("/pathfinder");
-    pick(/^Does a treatment work\?$/);
+    pick(/^What are the effects of a treatment or other intervention\?$/);
     expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toHaveFocus();
     pick(/^Two groups compared$/);
     expect(screen.getByRole("heading", { level: 1, name: "What did each study report?" })).toHaveFocus();
@@ -54,7 +54,7 @@ describe("Pathfinder", PAGE, () => {
     expect(screen.getByRole("heading", { level: 1, name: "Pathways that fit your answers" })).toHaveFocus();
     fireEvent.click(screen.getByRole("button", { name: "Start again from question 1" }));
     expect(screen.getByRole("heading", { level: 1, name: "What kind of question does the review ask?" })).toHaveFocus();
-    pick(/^Does a treatment work\?$/);
+    pick(/^What are the effects of a treatment or other intervention\?$/);
     pick(/^Two groups compared$/);
     pick(/^Counts or summaries for each group$/);
     pick(/^Yes or no$/);
@@ -184,7 +184,7 @@ describe("Pathfinder", PAGE, () => {
     const bar = screen.getByRole("list", { name: "Your answers, step by step" });
     const items = within(bar).getAllByRole("listitem");
     expect(items).toHaveLength(6);
-    expect(items[0]).toHaveTextContent("1 · Your questionDoes a treatment work?");
+    expect(items[0]).toHaveTextContent("1 · Your questionWhat are the effects of a treatment or other intervention?");
     expect(items[1]).toHaveTextContent("2 · Study designTwo groups compared");
     expect(items[2]).toHaveAttribute("aria-current", "step");
     const next = screen.getByRole("button", { name: "Next: question 4, outcome" });
@@ -250,7 +250,7 @@ describe("Pathfinder", PAGE, () => {
     fireEvent.click(screen.getByRole("button", { name: /^Next/ }));
     fireEvent.click(screen.getByRole("button", { name: "Start again from question 1" }));
     pick(/^How accurate is a test\?$/);
-    pick(/^One test, checked in each study$/);
+    pick(/^One test, checked against a reference standard$/);
     pick(/^A 2x2 table of test results from each study$/);
     expect(screen.getByRole("heading", { level: 1, name: "What kind of outcome is it?" })).toBeInTheDocument();
     expect(screen.getAllByRole("radio").every((r) => !(r as HTMLInputElement).checked)).toBe(true);

@@ -672,10 +672,18 @@ def test_batch_nine_covers_the_other_frameworks_methods_with_a_readable_source()
     assert {"method:BIV", "method:HSROC", "method:VAL", "method:DR"} <= set(bm.TEACH)
 
 
+# Sources not read online yet: no teaching text or example may rest on them alone.
+UNREAD = {"DTA-HB", "DEBRAY", "RILEY"}
+
+
+def test_the_unread_sources_are_the_ones_the_map_labels_unread() -> None:
+    labelled = {k for k, (label, _) in bm.SOURCES.items() if "not read" in label or "not readable" in label}
+    assert labelled == UNREAD
+
+
 def test_no_teaching_line_cites_a_source_marked_not_read() -> None:
     """A source the map marks as not read (or not readable online) cannot back teaching text."""
-    unread = {k for k, (label, _) in bm.SOURCES.items() if "not read" in label}
-    assert {"DTA-HB", "DEBRAY", "RILEY"} <= unread
+    unread = UNREAD
     for cid, lines in bm.TEACH.items():
         for _, _, src in lines:
             assert not set(source_keys(src)) & unread, cid
@@ -848,8 +856,11 @@ def test_a_method_card_without_pathways_falls_back_to_its_domain() -> None:
 
 
 def test_every_pathfinder_option_has_plain_words_with_a_source(all_cards: list[bm.Card]) -> None:
-    """Pathfinder shows these names to newcomers (#92); each rests on a source, and an example needs a read one."""
-    unread = {k for k, (label, _) in bm.SOURCES.items() if "not read" in label}
+    """Pathfinder shows these names to newcomers (#92); each rests on a source, and an example needs a read one.
+
+    This checks that the sources were read, not that each cited section supports the words; the review does that.
+    """
+    unread = UNREAD
     for c in all_cards:
         if c["tier"] not in ("framework", "group", "datatype", "outcome"):
             assert c["plain"] is None, c["id"]
