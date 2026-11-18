@@ -328,3 +328,25 @@ table.pathways .cell-label { display: none; }
 .card-atlas { margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--line); }
 .card-atlas .button-primary { display: inline-block; text-decoration: none; }
 .card-code-label { margin: 6px 0 0; font-size: 13px; }
+
+/* Atlas, design E of #92: the 3D map with the read-only panel beside it. */
+.atlas-3d-layout { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+.atlas-3d-layout .atlas-3d-view { flex: 999 1 560px; min-width: 0; }
+.atlas-panel {
+  flex: 1 1 280px; max-width: 380px; display: flex; flex-direction: column; gap: 10px;
+  padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+}
+.atlas-panel h2 { font-size: 1.05rem; margin: 0.25rem 0 0; }
+.atlas-panel p { margin: 0; }
+.atlas-picked { display: flex; flex-direction: column; gap: 6px; }
+.atlas-picked-name { font-size: 1.2rem; font-weight: 700; }
+.atlas-next { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 4px; font-size: 14px; }
+.atlas-next li { display: flex; justify-content: space-between; gap: 12px; }
+.atlas-next .muted { font-variant-numeric: tabular-nums; }
+.atlas-chosen { margin: 0; display: grid; gap: 4px; font-size: 14px; }
+.atlas-chosen div { display: grid; grid-template-columns: minmax(7rem, auto) 1fr; gap: 8px; }
+.atlas-chosen dt { color: var(--muted); }
+.atlas-chosen dd { margin: 0; }
+.atlas-options { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; margin-block: 12px; }
+.atlas-options summary { cursor: pointer; }
+.atlas-3d:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }

@@ -229,8 +229,8 @@ describe("the Atlas's 2D view", PAGE, () => {
   it("offers the 3D view only where the browser can draw it, and shows 2D otherwise", () => {
     // The test environment has no WebGL, like a browser without it.
     renderAtlas("?view=3d");
-    expect(screen.getByRole("radio", { name: /^3D/ })).toBeDisabled();
-    expect(screen.getByRole("radio", { name: /^2D/ })).toBeChecked();
+    expect(screen.getByRole("radio", { name: /^3D map/ })).toBeDisabled();
+    expect(screen.getByRole("radio", { name: /^Text view/ })).toBeChecked();
     expect(screen.getByText(/can't draw the 3D view \(no WebGL 2\)/)).toBeInTheDocument();
     expect(screen.queryByRole("region", { name: "The map in 3D" })).toBeNull();
     for (const tier of TIERS) expect(layer(tier)).toBeInTheDocument();

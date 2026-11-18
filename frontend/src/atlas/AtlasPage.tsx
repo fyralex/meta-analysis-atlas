@@ -15,6 +15,7 @@ import {
   type TierOrder,
 } from "./filter";
 import { AboutCard } from "./AboutCard";
+import { AtlasPanel } from "./AtlasPanel";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
 import { TierLayer } from "./TierLayer";
 import { ANY_RUNNABLE, useAtlasState } from "./useAtlasState";
@@ -53,6 +54,8 @@ export function AtlasPage() {
   const view: "2d" | "3d" = params.get("view") !== "2d" && can3d ? "3d" : "2d";
   const region3d = useRef<HTMLElement>(null);
   const [asked, setAsked] = useState<{ tier: Tier; value: string } | null>(null);
+  // The dot last clicked on the 3D map and kept as a choice, for the panel beside it.
+  const [picked, setPicked] = useState<{ tier: Tier; value: string } | null>(null);
   // Any change of choices or settings closes "Why not?": its answer was for the old ones.
   // Pathfinder's advisory answers (rare, vary) belong to the choices they were given for; any change made here
   // takes them back, so they can't reach Pathfinder again on other choices.
@@ -101,8 +104,8 @@ export function AtlasPage() {
     <section className="page atlas">
       <h1>Atlas</h1>
       <p className="lead">
-        Every pathway in the map, one layer per tier. Choose a node to keep only the pathways through it; its number is
-        how many would remain. A node at 0 doesn&apos;t fit your choices: press it to see why.
+        Every pathway in the map, one layer per step. Click a dot to keep only the pathways through it, and again to
+        undo; a grey dot doesn&apos;t fit your choices: click it to see why.
         {view === "2d" && " Tab moves between layers; the arrow keys move within one."}
       </p>
       <p>
@@ -110,7 +113,15 @@ export function AtlasPage() {
         group structure, datatype and outcome choices, up to the first one you haven&apos;t made.
       </p>
 
-      <div className="atlas-controls">
+      <details className="atlas-options">
+        <summary>
+          Display options{" "}
+          <span className="muted">
+            (opens below): the order of the last three steps, entries marked new, runnable only, the text view, and
+            what the colours mean
+          </span>
+        </summary>
+        <div className="atlas-controls">
         <fieldset className="choice">
           <legend>Show the last three tiers as</legend>
           {ORDERS.map((o) => (
@@ -172,7 +183,7 @@ export function AtlasPage() {
                 setView("2d");
               }}
             />
-            2D (works with the keyboard and screen readers)
+            Text view (2D): every step&apos;s dots as buttons, for screen readers and the keyboard
           </label>
           <label>
             <input
@@ -186,7 +197,7 @@ export function AtlasPage() {
                 setView("3d");
               }}
             />
-            3D (drag to turn, click a node to choose it)
+            3D map
           </label>
           {!webgl && <p className="muted">This browser can&apos;t draw the 3D view (no WebGL 2), so the Atlas shows 2D.</p>}
           {webgl && failed3d && (
@@ -215,6 +226,7 @@ export function AtlasPage() {
           confirmed from a primary source
         </li>
       </ul>
+      </details>
 
       <div className="summary" role="status">
         <p>
@@ -247,47 +259,51 @@ export function AtlasPage() {
       )}
 
       {view === "3d" && (
-        <section className="atlas-3d-view" aria-label="The map in 3D" ref={region3d} tabIndex={-1}>
-          <p className="muted">
-            Drag to turn the map; scroll or pinch to zoom. Click a node to choose it, and again to undo; click a grey one
-            to see why it doesn&apos;t fit. The 2D view has the same nodes and counts, and works with the keyboard.
-          </p>
-          <View3DBoundary
-            onError={() => {
-              setFailed3d(true);
-            }}
-          >
-            <Suspense fallback={<p>Loading the 3D view…</p>}>
-              <Atlas3D
-                layers={layers3d}
-                lines={lines3d}
-                onPick={(n) => {
-                  if (n.count > 0) update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
-                  else setAsked(asked?.tier === n.tier && asked.value === n.value ? null : { tier: n.tier, value: n.value });
-                }}
-              />
-            </Suspense>
-          </View3DBoundary>
-          {asked && (
-            <WhyNotPanel
-              tier={asked.tier}
-              label={nodeLabel(map, asked.tier, asked.value)}
-              explanation={explain(map.pathways, selection, asked.tier, asked.value, options)}
-              labelOf={(t, v) => nodeLabel(map, t, v)}
-              onClose={closeWhyNot}
-            />
-          )}
-          {tiers
-            .filter((t) => selection[t] !== undefined)
-            .map((t) => (
-              <AboutCard
-                key={`${t}=${selection[t] ?? ""}`}
-                tier={t}
-                value={selection[t] ?? ""}
-                label={nodeLabel(map, t, selection[t] ?? "")}
-              />
-            ))}
-        </section>
+        <div className="atlas-3d-layout">
+          <section className="atlas-3d-view" aria-label="The map in 3D" ref={region3d} tabIndex={-1}>
+            <p className="muted">
+              Drag to turn the map, and let go to let it glide; scroll or pinch to zoom. With the keyboard, the arrow
+              keys turn it, + and - zoom, and 0 resets the view.
+            </p>
+            <View3DBoundary
+              onError={() => {
+                setFailed3d(true);
+              }}
+            >
+              <Suspense fallback={<p>Loading the 3D view…</p>}>
+                <Atlas3D
+                  layers={layers3d}
+                  lines={lines3d}
+                  onPick={(n) => {
+                    if (n.count > 0) {
+                      setPicked(n.selected ? null : { tier: n.tier, value: n.value });
+                      update({ selection: toggle(map.pathways, selection, n.tier, n.value, options) });
+                    } else {
+                      setAsked(asked?.tier === n.tier && asked.value === n.value ? null : { tier: n.tier, value: n.value });
+                    }
+                  }}
+                />
+              </Suspense>
+            </View3DBoundary>
+          </section>
+          <AtlasPanel
+            tiers={tiers}
+            selection={selection}
+            options={options}
+            picked={picked && selection[picked.tier] === picked.value ? picked : null}
+            whyNot={
+              asked && (
+                <WhyNotPanel
+                  tier={asked.tier}
+                  label={nodeLabel(map, asked.tier, asked.value)}
+                  explanation={explain(map.pathways, selection, asked.tier, asked.value, options)}
+                  labelOf={(t, v) => nodeLabel(map, t, v)}
+                  onClose={closeWhyNot}
+                />
+              )
+            }
+          />
+        </div>
       )}
 
       {view === "2d" &&
