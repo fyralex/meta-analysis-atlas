@@ -113,7 +113,8 @@ describe("the Cards page", PAGE, () => {
     const term = within(shown).getByRole("link", { name: /^The glossary card for continuity correction/ });
     expect(term.parentElement).toHaveTextContent("(opens on this page)");
     const rules = within(shown).getByRole("region", { name: "Why it can't be combined with some choices" });
-    expect(rules).toHaveTextContent(/Peto needs 2x2 tables.*Rule R5 \(opens the rule's card\)/);
+    // each rule in plain words, then a link to its card
+    expect(rules).toHaveTextContent(/Peto's method needs a 2x2 table.*Rule R5 \(opens the rule's card\)/);
   });
 
   it("shows a card with no teaching text yet without teaching sections, but with its facts and sources", () => {
@@ -137,7 +138,12 @@ describe("the Cards page", PAGE, () => {
   it("shows a rule's text and its sections once", () => {
     renderAt("/cards?card=rule%3AR5");
     const shown = screen.getByRole("region", { name: "Rules: Rule R5" });
-    expect(within(shown).getByRole("region", { name: "The rule" })).toHaveTextContent(/Peto needs 2x2 tables/);
+    expect(within(shown).getByRole("region", { name: "The rule as the map states it" })).toHaveTextContent(
+      /Peto needs 2x2 tables/,
+    );
+    // the plain sentence comes first (#92, D2), with the rule's own sources
+    const plain = within(shown).getByRole("region", { name: "In plain words" });
+    expect(plain).toHaveTextContent(/^Peto's method needs a 2x2 table from each study/);
     expect(within(shown).getByText(/Peto needs 2x2 tables/)).toBeInTheDocument();
     expect(within(shown).getAllByText(/s10\.4\.2/)).toHaveLength(1);
   });

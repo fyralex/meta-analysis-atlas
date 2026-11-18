@@ -21,8 +21,9 @@ interface Props {
 /** Sources go to other sites; every source line on a card says so (#92, design D). */
 export const SOURCES_LABEL = "Sources (open outside the Atlas)";
 
+/** A rule in plain words where the map has them (#92, D2), else as the map states it. */
 function ruleText(id: string): string {
-  return map.rules.find((r) => r[0] === id)?.[1] ?? "";
+  return cardById(`rule:${id}`)?.plain?.title ?? map.rules.find((r) => r[0] === id)?.[1] ?? "";
 }
 
 const isTier = (t: string): t is Tier => (TIERS as readonly string[]).includes(t);
@@ -95,6 +96,13 @@ export function CardView({ card, level, hideTitle = false, onCardsPage = false }
           <CardBadges card={card} />
         </H>
       )}
+      {tier === "rule" && card.plain && (
+        <section className="card-lead" aria-label="In plain words">
+          <p>{card.plain.title}</p>
+          {/* the plain sentence cites the rule's own sources; they are listed once, under the rule below */}
+          {card.notes[0]?.src !== card.plain.src && <Sources src={card.plain.src} label={SOURCES_LABEL} />}
+        </section>
+      )}
       {lead && (
         <section className="card-lead" aria-label="What it is">
           <p>{lead.text}</p>
@@ -166,7 +174,7 @@ export function CardView({ card, level, hideTitle = false, onCardsPage = false }
       )}
       {card.notes.length > 0 && (
         <section className="teach" aria-labelledby={`notes-${card.id}`}>
-          <S id={`notes-${card.id}`}>{tier === "rule" ? "The rule" : "Notes from the map"}</S>
+          <S id={`notes-${card.id}`}>{tier === "rule" ? "The rule as the map states it" : "Notes from the map"}</S>
           {card.notes.map((n) => (
             <div key={n.text} className="card-note">
               <p>{n.text}</p>
