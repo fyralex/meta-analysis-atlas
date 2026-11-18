@@ -38,7 +38,11 @@ const pick = (name: RegExp) => {
 const PAGE = { timeout: 15_000 };
 
 describe("Pathfinder", PAGE, () => {
-  it("asks the questions in order, keeps the answers in the address, and ends on the fitting pathways", () => {
+  const BINARY =
+    "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
+    "&datatype=Arm-level+summary+data&outcome=Binary";
+
+  it("asks the questions in order, keeps the answers in the address, and ends on the analyses that fit, by method", () => {
     renderAt("/pathfinder");
     pick(/^What are the effects of a treatment or other intervention\?$/);
     expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toHaveFocus();
@@ -51,7 +55,7 @@ describe("Pathfinder", PAGE, () => {
     pick(/^No$/);
     expect(screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" })).toHaveFocus();
     pick(/^Not sure$/);
-    expect(screen.getByRole("heading", { level: 1, name: "Pathways that fit your answers" })).toHaveFocus();
+    expect(screen.getByRole("heading", { level: 1, name: "28 analyses fit your answers" })).toHaveFocus();
     fireEvent.click(screen.getByRole("button", { name: "Start again from question 1" }));
     expect(screen.getByRole("heading", { level: 1, name: "What kind of question does the review ask?" })).toHaveFocus();
     pick(/^What are the effects of a treatment or other intervention\?$/);
@@ -65,7 +69,23 @@ describe("Pathfinder", PAGE, () => {
     expect(params.get("outcome")).toBe("Binary");
     const atlas = screen.getByRole("link", { name: /^Open these \d+ in the Atlas, with your answers already chosen$/ });
     expect(atlas.getAttribute("href")).toContain("/atlas?framework=");
-    expect(screen.getByRole("table", { name: /pathways that fit/ })).toBeInTheDocument();
+    // grouped by method: each says how many analyses it has and with which models, and opens to its card text
+    const methods = screen.getByRole("region", { name: /^By method/ });
+    const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
+    expect(mh).toHaveTextContent("3 analyses · common effect only");
+    expect(within(mh).getByRole("link", { name: /^Read the full card on Mantel-Haenszel/ })).toBeInTheDocument();
+    expect(within(mh).getByText(/^Planned/)).toBeInTheDocument();
+    expect(screen.getByText(/None of them can be run yet\./)).toBeInTheDocument();
+  });
+
+  it("marks a method not yet confirmed from its source, and says sources open outside the Atlas", () => {
+    renderAt(`${BINARY}&rare=no&vary=unsure`);
+    const methods = screen.getByRole("region", { name: /^By method/ });
+    const groups = within(methods).getAllByRole("group");
+    const unconfirmed = groups.filter((g) => within(g).queryByText("Not yet confirmed from its source"));
+    expect(unconfirmed.length).toBeGreaterThan(0);
+    for (const g of unconfirmed) expect(g).toHaveTextContent("To check");
+    expect(within(methods).getAllByText(/^Sources \(open outside the Atlas\)/).length).toBeGreaterThan(0);
   });
 
   it("shows what each option is, with its source and card", () => {
@@ -109,52 +129,55 @@ describe("Pathfinder", PAGE, () => {
     expect(screen.getByText(/doesn't use your model choice/)).toBeInTheDocument();
   });
 
-  const BINARY =
-    "/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
-    "&datatype=Arm-level+summary+data&outcome=Binary";
-
   it("on rare events, shows what the method cards say, with rule R9, and removes no pathway", () => {
     renderAt(BINARY);
     expect(screen.getAllByRole("radio", { name: /^(Yes|No|Not sure)$/ })).toHaveLength(3);
     pick(/^Yes$/);
     pick(/^Not sure$/);
-    const rare = screen.getByRole("region", { name: "Rare events" });
+    const rare = screen.getByRole("region", { name: "Your events are rare" });
     expect(within(rare).getByRole("link", { name: "Rule R9" })).toBeInTheDocument();
     expect(within(rare).getByRole("link", { name: "Peto" })).toBeInTheDocument();
     expect(within(rare).getByRole("link", { name: "Inverse variance" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("rare")).toBe("yes");
-    // every pathway is still listed: inverse variance included
-    const table = screen.getByRole("table", { name: /pathways that fit/ });
-    expect(within(table).getAllByRole("link", { name: "Inverse variance" }).length).toBeGreaterThan(0);
+    // every analysis is still listed: inverse variance included
+    const methods = screen.getByRole("region", { name: /^By method/ });
+    expect(within(methods).getByText("Inverse variance")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "28 analyses fit your answers" })).toBeInTheDocument();
   });
 
-  it("on varying effects, pre-selects a model, shows both models' cards, and switches in one click", () => {
+  it("on varying effects, pre-selects a model, says why, and switches with pressed buttons that give counts", () => {
     renderAt(`${BINARY}&rare=no`);
     expect(
       screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" }),
     ).toBeInTheDocument();
     pick(/^Yes, they probably differ$/);
     const model = screen.getByRole("region", { name: "Model" });
-    expect(within(model).getByText("Showing random effects pathways only.")).toBeInTheDocument();
-    expect(within(model).getByRole("link", { name: "Common effect" })).toBeInTheDocument();
-    expect(within(model).getByRole("link", { name: "Random effects" })).toBeInTheDocument();
+    expect(within(model).getByText("Showing random effects only, because you expect the true effects to differ.")).toBeInTheDocument();
+    expect(within(model).getByRole("link", { name: /^Read the card on common effect/ })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
     const atlas = screen.getByRole("link", { name: /^Open these \d+ in the Atlas/ }).getAttribute("href") ?? "";
     expect(new URLSearchParams(atlas.slice(atlas.indexOf("?"))).get("model")).toBe("Random effects");
-    const table = () => screen.getByRole("table", { name: /pathways that fit/ });
-    expect(within(table()).queryAllByRole("link", { name: "Common effect" })).toHaveLength(0);
-    fireEvent.click(within(model).getByRole("button", { name: "Show common effect pathways only" }));
-    expect(within(table()).queryAllByRole("link", { name: "Random effects" })).toHaveLength(0);
-    fireEvent.click(screen.getByRole("button", { name: "Show both models" }));
-    expect(within(table()).getAllByRole("link", { name: "Random effects" }).length).toBeGreaterThan(0);
-    expect(within(table()).getAllByRole("link", { name: "Common effect" }).length).toBeGreaterThan(0);
+    const button = (name: RegExp) => within(model).getByRole("button", { name });
+    expect(button(/^Random effects only \(\d+\)$/)).toHaveAttribute("aria-pressed", "true");
+    expect(button(/^Both models \(28\)$/)).toHaveAttribute("aria-pressed", "false");
+    const methods = () => screen.getByRole("region", { name: /^By method/ });
+    // Mantel-Haenszel and Peto are common-effect only
+    expect(within(methods()).queryByText("Mantel-Haenszel")).toBeNull();
+    fireEvent.click(button(/^Common effect only/));
+    expect(button(/^Common effect only/)).toHaveAttribute("aria-pressed", "true");
+    expect(within(model).getByText("Showing common effect only.")).toBeInTheDocument();
+    expect(within(methods()).getByText("Mantel-Haenszel")).toBeInTheDocument();
+    expect(within(methods()).queryByText("Bayesian normal-normal hierarchical model")).toBeNull();
+    fireEvent.click(button(/^Both models/));
+    expect(screen.getByRole("heading", { level: 1, name: "28 analyses fit your answers" })).toBeInTheDocument();
+    expect(new URLSearchParams(address()).get("model")).toBeNull();
   });
 
   it("keeps every fitting method's rare-events advice when one model is shown, and keeps the model", () => {
     renderAt(`${BINARY}&vary=yes&model=Random+effects`);
     pick(/^Yes$/);
     expect(new URLSearchParams(address()).get("model")).toBe("Random effects");
-    const rare = screen.getByRole("region", { name: "Rare events" });
+    const rare = screen.getByRole("region", { name: "Your events are rare" });
     // Peto is common-effect only, so its pathways are not in the table, but its card's advice still shows
     expect(within(rare).getByRole("link", { name: "Peto" })).toBeInTheDocument();
   });
