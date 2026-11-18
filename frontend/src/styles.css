@@ -245,8 +245,10 @@ table.pathways .cell-label { display: none; }
 .choice.picked { border: 2px solid var(--accent); }
 .choice-label { display: flex; gap: 0.9rem; align-items: flex-start; padding: 1rem 1.1rem 0.6rem; cursor: pointer; }
 .choice-label input { margin-top: 0.25rem; width: 1.15rem; height: 1.15rem; accent-color: var(--accent); flex: none; }
-.choice-text { display: flex; flex-direction: column; gap: 0.3rem; }
-.choice-text strong { font-size: 1.05rem; }
+.choice-label strong { font-size: 1.05rem; }
+.choice-body { padding: 0 1.1rem 0.4rem 3.15rem; }
+.choice-body p { margin: 0.2rem 0; }
+.question-hint { margin: 0.5rem 0 0; font-size: 0.9rem; }
 .choice-count { font-size: 0.85rem; }
 .choice-card { display: inline-block; margin: 0 1.1rem 0.8rem 3.15rem; font-size: 0.9rem; }
 .question-buttons { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }

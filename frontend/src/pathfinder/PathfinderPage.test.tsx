@@ -76,7 +76,7 @@ describe("Pathfinder", PAGE, () => {
   it("starts from the answers in the address, and lets one be changed", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29");
     expect(screen.getByRole("heading", { level: 1, name: "What did each study report?" })).toBeInTheDocument();
-    fireEvent.click(screen.getByRole("button", { name: "Change your answer to question 2, study design (now Two groups (pairwise))" }));
+    fireEvent.click(screen.getByRole("button", { name: "Change this answer: question 2, study design (now Two groups (pairwise))" }));
     expect(screen.getByRole("heading", { level: 1, name: "What does each study compare, or describe?" })).toBeInTheDocument();
     expect(new URLSearchParams(address()).get("group")).toBeNull();
   });
@@ -172,7 +172,7 @@ describe("Pathfinder", PAGE, () => {
 
   it("takes back the advisory answers when an earlier answer changes", () => {
     renderAt(`${BINARY}&rare=yes&vary=yes&model=Random+effects`);
-    fireEvent.click(screen.getByRole("button", { name: "Change your answer to question 4, outcome (now Binary)" }));
+    fireEvent.click(screen.getByRole("button", { name: "Change this answer: question 4, outcome (now Binary)" }));
     const params = new URLSearchParams(address());
     expect(params.get("rare")).toBeNull();
     expect(params.get("vary")).toBeNull();
@@ -216,5 +216,31 @@ describe("Pathfinder", PAGE, () => {
     expect(side).toHaveTextContent("454 analyses fit");
     const link = within(side).getByRole("link", { name: "Open these 454 in the Atlas, with your answers already chosen" });
     expect(link.getAttribute("href")).toContain("/atlas?framework=");
+  });
+
+  it("names each Change button with its visible words first, and keeps the earlier choice when going back", () => {
+    renderAt(BINARY);
+    const change = screen.getByRole("button", { name: /^Change this answer: question 4, outcome/ });
+    expect(change).toHaveTextContent("Change this answer");
+    fireEvent.click(screen.getByRole("button", { name: "Back to question 4" }));
+    expect(screen.getByRole("radio", { name: "Binary" })).toBeChecked();
+    expect(screen.getByRole("button", { name: "Next: question 5, rare events?" })).toBeEnabled();
+  });
+
+  it("labels each option with its name only, and describes it with what it is and how many fit", () => {
+    renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29");
+    const radio = screen.getByRole("radio", { name: "Arm-level summary data" });
+    expect(radio).toHaveAccessibleDescription(/77 analyses fit/);
+    expect(screen.getByText("Choose an answer to go on.")).toBeInTheDocument();
+  });
+
+  it("going back from question 6 to question 5 takes back both advisory answers", () => {
+    renderAt(`${BINARY}&rare=no`);
+    expect(screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Back to question 5" }));
+    const params = new URLSearchParams(address());
+    expect(params.get("rare")).toBeNull();
+    expect(params.get("vary")).toBeNull();
+    expect(screen.getByRole("radio", { name: "No" })).toBeChecked();
   });
 });

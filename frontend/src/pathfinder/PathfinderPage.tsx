@@ -46,10 +46,10 @@ function Reason({ tier, value }: { tier: Tier; value: string }) {
   const what = cardFor(tier, value)?.teach.find((t) => t.kind === "what");
   if (!what) return null;
   return (
-    <span className="option-reason">
-      <span>{what.text}</span>
+    <div className="option-reason">
+      <p>{what.text}</p>
       <Sources src={what.src} />
-    </span>
+    </div>
   );
 }
 
@@ -161,7 +161,7 @@ function StepBar({ steps }: { steps: Step[] }) {
               <button
                 type="button"
                 className="link-button"
-                aria-label={`Change your answer to question ${String(s.n)}, ${s.name.toLowerCase()} (now ${s.answer ?? ""})`}
+                aria-label={`Change this answer: question ${String(s.n)}, ${s.name.toLowerCase()} (now ${s.answer ?? ""})`}
                 onClick={s.change}
               >
                 Change this answer
@@ -185,6 +185,8 @@ interface Choice {
 
 interface QuestionProps {
   n: number;
+  /** The option chosen before, when the reader comes back to this question. */
+  initial?: string | undefined;
   text: string;
   intro?: ReactNode;
   choices: Choice[];
@@ -196,8 +198,9 @@ interface QuestionProps {
 }
 
 /** One question: its options as a radio group, then Back and Next, each saying where it goes. */
-function Question({ n, text, intro, choices, after, back, nextLabel, onNext, heading }: QuestionProps) {
-  const [picked, setPicked] = useState<string | undefined>(undefined);
+function Question({ n, initial, text, intro, choices, after, back, nextLabel, onNext, heading }: QuestionProps) {
+  const [picked, setPicked] = useState<string | undefined>(initial);
+  const hint = `q${String(n)}-hint`;
   return (
     <form
       className="question"
@@ -213,30 +216,37 @@ function Question({ n, text, intro, choices, after, back, nextLabel, onNext, hea
       {intro}
       <fieldset className="choices">
         <legend className="sr-only">{text}</legend>
-        {choices.map((c) => (
-          <div key={c.value} className={picked === c.value ? "choice picked" : "choice"}>
-            <label className="choice-label">
-              <input
-                type="radio"
-                name={`q${String(n)}`}
-                value={c.value}
-                checked={picked === c.value}
-                onChange={() => {
-                  setPicked(c.value);
-                }}
-              />
-              <span className="choice-text">
+        {choices.map((c, i) => {
+          // The label is the option's name; what it is, its sources and its count describe it.
+          const desc = `q${String(n)}-o${String(i)}`;
+          return (
+            <div key={c.value} className={picked === c.value ? "choice picked" : "choice"}>
+              <label className="choice-label">
+                <input
+                  type="radio"
+                  name={`q${String(n)}`}
+                  value={c.value}
+                  checked={picked === c.value}
+                  aria-describedby={c.body ? desc : undefined}
+                  onChange={() => {
+                    setPicked(c.value);
+                  }}
+                />
                 <strong>{c.label}</strong>
-                {c.body}
-              </span>
-            </label>
-            {c.card && (
-              <Link className="choice-card" to={cardHref(c.card.id)}>
-                More on {c.card.title} <span className="muted">(opens Cards)</span>
-              </Link>
-            )}
-          </div>
-        ))}
+              </label>
+              {c.body && (
+                <div className="choice-body" id={desc}>
+                  {c.body}
+                </div>
+              )}
+              {c.card && (
+                <Link className="choice-card" to={cardHref(c.card.id)}>
+                  More on {c.card.title} <span className="muted">(opens Cards)</span>
+                </Link>
+              )}
+            </div>
+          );
+        })}
       </fieldset>
       {after}
       <div className="question-buttons">
@@ -245,10 +255,20 @@ function Question({ n, text, intro, choices, after, back, nextLabel, onNext, hea
             {back.label}
           </button>
         )}
-        <button type="submit" className="button-primary" disabled={picked === undefined}>
+        <button
+          type="submit"
+          className="button-primary"
+          disabled={picked === undefined}
+          aria-describedby={picked === undefined ? hint : undefined}
+        >
           {nextLabel(picked)}
         </button>
       </div>
+      {picked === undefined && (
+        <p className="muted question-hint" id={hint}>
+          Choose an answer to go on.
+        </p>
+      )}
     </form>
   );
 }
@@ -269,6 +289,8 @@ export function PathfinderPage() {
   const shown = model === undefined ? found : found.filter((p) => p.model === model);
   const ignored = unused(selection).filter((t) => t !== "model" || !(askVary && vary));
   const heading = useRef<HTMLHeadingElement>(null);
+  // The answer just taken back (by Back or Change), so its question opens with that option still chosen.
+  const [returning, setReturning] = useState<{ key: string; value: string } | null>(null);
   const modelHeading = useRef<HTMLHeadingElement>(null);
   /** Switch the model shown, and keep focus in the Model section: the button pressed goes away. */
   function showModel(m: string | undefined) {
@@ -295,6 +317,7 @@ export function PathfinderPage() {
         state: "done",
         answer: nodeLabel(map, q.tier, value),
         change: () => {
+          setReturning({ key: q.tier, value });
           update({ selection: clearFrom(selection, q.tier), extra: NO_ADVICE });
         },
       };
@@ -302,8 +325,9 @@ export function PathfinderPage() {
     return { n: i + 1, name: q.short, state: next?.tier === q.tier ? "current" : "todo" };
   });
   const adviceStep = (q: AdviceQuestion, n: number, given: Advice | undefined, applies: boolean, clear: object): Step => {
-    if (next !== undefined || (q.key === "vary" && advice === RARE)) return { n, name: q.short, state: "todo" };
+    if (next !== undefined) return { n, name: q.short, state: "todo" };
     if (!applies) return { n, name: q.short, state: "skipped" };
+    if (q.key === "vary" && advice === RARE) return { n, name: q.short, state: "todo" };
     if (given) {
       return {
         n,
@@ -311,6 +335,7 @@ export function PathfinderPage() {
         state: "done",
         answer: q.answers[given],
         change: () => {
+          setReturning({ key: q.key, value: given });
           update({ selection: answers, extra: clear as Record<string, null> });
         },
       };
@@ -383,6 +408,7 @@ export function PathfinderPage() {
                 <Question
                   key={next.tier}
                   n={i + 1}
+                  initial={returning?.key === next.tier ? returning.value : undefined}
                   text={next.text}
                   heading={heading}
                   choices={possible.map((nd) => {
@@ -393,7 +419,7 @@ export function PathfinderPage() {
                       body: (
                         <>
                           <Reason tier={next.tier} value={nd.value} />
-                          <span className="choice-count muted">{fits(nd.count)}</span>
+                          <p className="choice-count muted">{fits(nd.count)}</p>
                         </>
                       ),
                       ...(card ? { card: { id: card.id, title: card.title } } : {}),
@@ -435,6 +461,7 @@ export function PathfinderPage() {
             <Question
               key={advice.key}
               n={advice.key === "rare" ? 5 : 6}
+              initial={returning?.key === advice.key ? returning.value : undefined}
               text={advice.text}
               heading={heading}
               intro={
