@@ -289,9 +289,10 @@ spec/build_map.py ──generates──▶ spec/map.json ──build──▶ fr
                                                            Atlas · Pathfinder · Cards
 ```
 
-**v0.2 (running analyses).** How R runs is decided by a spike issue first:
-webR (R in the browser, keeps the app static) if metafor and the needed
-packages work there, otherwise the server stack below.
+**v0.2 (running analyses).** R runs on a server: the stack below, with a
+Python API and a Plumber R service. A spike (#91) showed webR could run
+metafor; the owner chose the server
+([decision 0006](docs/decisions/0006-r-on-the-server.md)).
 
 ```
 Browser: React 19 + TypeScript (strict), D3 plots, react-three-fiber map
