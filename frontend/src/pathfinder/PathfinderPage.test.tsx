@@ -174,6 +174,8 @@ describe("Pathfinder", PAGE, () => {
     expect(
       screen.getByRole("heading", { level: 1, name: "Do you expect the true effects to differ between studies?" }),
     ).toBeInTheDocument();
+    // the question shows the debate between the two models where the choice is made (CLAUDE.md rule 8)
+    expect(screen.getAllByText(/is debated/)).toHaveLength(2);
     pick(/^Yes, they probably differ$/);
     const model = screen.getByRole("region", { name: "Model" });
     expect(within(model).getByText("Showing random effects only, because you expect the true effects to differ.")).toBeInTheDocument();
