@@ -85,15 +85,6 @@ main:focus { outline: none; }
 .page h2 { font-size: 1.25rem; margin: 32px 0 8px; }
 .lead { max-width: 65ch; color: var(--muted); }
 .muted { color: var(--muted); }
-.count { font-size: 1.15rem; }
-.count strong { font-size: 2.2rem; font-variant-numeric: tabular-nums; margin-right: 6px; }
-
-.statuses { border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); width: 100%; max-width: 640px; }
-.statuses caption { text-align: left; font-weight: 600; padding-bottom: 6px; }
-.statuses th, .statuses td { padding: 8px 12px; border-top: 1px solid var(--line); text-align: left; vertical-align: top; }
-.statuses .num { text-align: right; font-variant-numeric: tabular-nums; }
-.apps { padding-left: 1.2em; max-width: 65ch; }
-.apps li { margin-bottom: 6px; }
 
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -215,3 +206,18 @@ table.pathways .cell-label { display: none; }
   table.pathways td { border: none; padding: 0.15rem 0; display: grid; grid-template-columns: 9rem 1fr; gap: 0.5rem; }
   table.pathways .cell-label { display: block; color: var(--muted); font-size: 0.9em; }
 }
+
+/* Home page (#92, design A): one promise and three doors */
+.home { display: flex; flex-direction: column; gap: 2.5rem; }
+.home-intro h1 { font-size: clamp(2rem, 4vw, 2.75rem); line-height: 1.12; max-width: 22ch; margin-bottom: 0.75rem; text-wrap: balance; }
+.home-doors h2 { font-size: 1.35rem; margin: 0 0 1rem; }
+.doors { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.25rem; }
+.door { display: flex; flex-direction: column; gap: 0.85rem; height: 100%; box-sizing: border-box; padding: 1.6rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; color: var(--text); text-decoration: none; }
+.door:hover { border-color: var(--accent); }
+.door-primary { border: 2px solid var(--accent); }
+.door-title { font-size: 1.5rem; font-weight: 700; line-height: 1.2; }
+.door-what { line-height: 1.5; color: var(--muted); }
+.door-where { display: flex; flex-direction: column; gap: 0.15rem; margin-top: auto; padding-top: 0.85rem; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--muted); }
+.door-where strong { color: var(--text); }
+.home-status { padding-top: 1.5rem; border-top: 1px solid var(--line); font-size: 0.9rem; }
+.top .about { font-size: 0.95rem; }

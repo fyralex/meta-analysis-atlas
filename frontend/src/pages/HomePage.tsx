@@ -1,43 +1,85 @@
 import { Link } from "react-router";
-import { APPS } from "../apps";
-import { countByStatus, map } from "../map";
-import { STATUS_TEXT } from "../status";
-import type { Status } from "../types/map";
+import { cards } from "../cards/cards";
+import { map } from "../map";
+import { QUESTIONS, RARE, VARY } from "../pathfinder/flow";
+
+// The home page (#92, design A): one promise and three doors, each saying where it goes, what is there and who
+// it is for. The counts come from the map, so they stay true as it changes.
+const pathways = map.pathways.length;
+const frameworks = new Set(map.pathways.map((p) => p.framework)).size;
+const terms = cards.filter((c) => c.tier === "term").length;
+const choiceCards = cards.length - terms;
+/** Pathfinder's questions at most: its four, then the two it asks only where they apply. */
+const questions = QUESTIONS.length + [RARE, VARY].length;
+
+interface Door {
+  to: string;
+  title: string;
+  what: string;
+  app: string;
+  detail: string;
+  primary?: boolean;
+}
+
+const DOORS: Door[] = [
+  {
+    to: "/pathfinder",
+    title: "Plan my analysis",
+    what: `Answer up to ${String(questions)} short questions about your studies. See the analyses that fit, and why.`,
+    app: "Pathfinder",
+    detail: "For review authors",
+    primary: true,
+  },
+  {
+    to: "/cards",
+    title: "Learn the building blocks",
+    what: "What is a random-effects model? When is Peto's method used? A card for each choice and rule, with its sources.",
+    app: "Cards",
+    detail: `${String(choiceCards)} cards and a glossary of ${String(terms)} terms · for students`,
+  },
+  {
+    to: "/atlas",
+    title: "See the whole map",
+    what: `Every pathway across ${String(frameworks)} frameworks, and the rules that decide which choices go together.`,
+    app: "Atlas",
+    detail: `All ${String(pathways)} pathways · for methodologists`,
+  },
+];
 
 export function HomePage() {
-  const counts = countByStatus(map);
   return (
-    <section className="page">
-      <h1>A map of meta-analysis pathways</h1>
-      <p className="lead">
-        A pathway is one choice at each step a methodologist asks about: framework, group structure, datatype,
-        outcome, model, method and metric. The map shows which combinations are valid, and why.
-      </p>
+    <section className="page home">
+      <div className="home-intro">
+        <h1>Find the right meta-analysis for your review, and see why it fits.</h1>
+        <p className="lead">
+          {pathways} ways to pool studies, with the reasons each choice fits or doesn&apos;t and the sources behind them.
+        </p>
+      </div>
 
-      <p className="count">
-        <strong>{map.pathways.length.toLocaleString("en")}</strong> pathways in the map
-      </p>
-      <table className="statuses">
-        <caption>Pathways by status</caption>
-        <tbody>
-          {(Object.keys(STATUS_TEXT) as Status[]).map((s) => (
-            <tr key={s}>
-              <th scope="row">{STATUS_TEXT[s].name}</th>
-              <td className="num">{counts[s]}</td>
-              <td>{STATUS_TEXT[s].meaning}</td>
-            </tr>
+      <section aria-labelledby="doors" className="home-doors">
+        <h2 id="doors">What would you like to do?</h2>
+        <ul className="doors">
+          {DOORS.map((d) => (
+            <li key={d.to}>
+              <Link to={d.to} className={d.primary ? "door door-primary" : "door"}>
+                <span className="door-title">{d.title}</span>
+                <span className="door-what">{d.what}</span>
+                <span className="door-where">
+                  <span>
+                    Opens <strong>{d.app}</strong>
+                  </span>
+                  <span>{d.detail}</span>
+                </span>
+              </Link>
+            </li>
           ))}
-        </tbody>
-      </table>
+        </ul>
+      </section>
 
-      <h2>The apps</h2>
-      <ul className="apps">
-        {APPS.map((a) => (
-          <li key={a.path}>
-            <Link to={a.path}>{a.name}</Link>: {a.what} <span className="muted">{a.state}</span>
-          </li>
-        ))}
-      </ul>
+      <p className="home-status muted">
+        Version 0.1 shows the map and its reasons; it doesn&apos;t run analyses yet. Version 0.2 is planned to run the
+        first ones, for one and two groups, on your own data.
+      </p>
     </section>
   );
 }

@@ -1,8 +1,9 @@
-import { render, screen, within } from "@testing-library/react";
+import { cleanup, render, screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { App } from "./App";
-import { countByStatus, map } from "./map";
+import cardsRaw from "../../spec/cards.json";
+import lockRaw from "../../spec/pathways.lock.json";
 
 function renderAt(path: string) {
   return render(
@@ -18,13 +19,35 @@ function renderAt(path: string) {
 const PAGE = { timeout: 15_000 };
 
 describe("the app shell", PAGE, () => {
-  it("shows the pathway count and the counts by status from map.json", () => {
+  it("opens on three doors, each saying where it goes, with counts from the map", () => {
     renderAt("/");
-    expect(screen.getByText(map.pathways.length.toLocaleString("en"))).toBeInTheDocument();
-    const table = screen.getByRole("table", { name: "Pathways by status" });
-    const counts = countByStatus(map);
-    expect(within(table).getByRole("row", { name: /Planned/ })).toHaveTextContent(String(counts.planned));
-    expect(within(table).getByRole("row", { name: /To check/ })).toHaveTextContent(String(counts.to_check));
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Find the right meta-analysis for your review, and see why it fits." }),
+    ).toBeInTheDocument();
+    const doors = within(screen.getByRole("list")).getAllByRole("link");
+    expect(doors.map((d) => d.getAttribute("href"))).toEqual(["/pathfinder", "/cards", "/atlas"]);
+    expect(doors.map((d) => d.querySelector(".door-where strong")?.textContent)).toEqual(["Pathfinder", "Cards", "Atlas"]);
+    // Expected counts read from the lock file and cards.json themselves, not by the page's own formulas.
+    const lock = lockRaw as unknown as { framework: string }[];
+    expect(doors[2]).toHaveTextContent(`All ${String(lock.length)} pathways`);
+    expect(doors[2]).toHaveTextContent(`across ${String(new Set(lock.map((p) => p.framework)).size)} frameworks`);
+    const raw = cardsRaw as unknown as { tier: string }[];
+    const terms = raw.filter((c) => c.tier === "term").length;
+    expect(doors[1]).toHaveTextContent(`${String(raw.length - terms)} cards and a glossary of ${String(terms)} terms`);
+    expect(doors[0]).toHaveTextContent("Answer up to 6 short questions");
+  });
+
+  it("doesn't repeat the doors in the header on the home page, and lists the apps on the others", () => {
+    renderAt("/");
+    expect(screen.queryByRole("navigation", { name: "Apps" })).toBeNull();
+    expect(screen.getByRole("link", { name: /About this project/ })).toHaveAttribute(
+      "href",
+      "https://github.com/fyralex/meta-analysis-atlas#readme",
+    );
+    cleanup();
+    renderAt("/atlas");
+    const nav = screen.getByRole("navigation", { name: "Apps" });
+    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Pathfinder", "Cards", "Atlas"]);
   });
 
   it("routes /atlas to the Atlas", () => {
