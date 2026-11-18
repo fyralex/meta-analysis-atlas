@@ -2153,8 +2153,8 @@ RULE_PLAIN: dict[str, str] = {
     "R16": "A network meta-analysis can use either a common-effect or a random-effects model.",
     "R17": "P-scores and SUCRA rank the treatments after a network model is fitted. They are results, not effect "
     "measures.",
-    "R18": "A network analysis has to check that its comparisons can fairly be combined (transitivity) and that direct "
-    "and indirect evidence agree (consistency).",
+    "R18": "A network analysis has to check that the studies behind each comparison are similar in the things that "
+    "change the effect (transitivity), and that direct and indirect evidence agree (consistency).",
     "R19": "A network usually assumes the same between-study variance for every comparison.",
     "R20": "Mantel-Haenszel for networks fits a common-effect model only.",
     "R21": "With participant data, a two-stage analysis estimates an effect in each study and then pools those "
@@ -2163,10 +2163,10 @@ RULE_PLAIN: dict[str, str] = {
     "standard error by its square root.",
     "R23": "For a crossover trial, use a paired analysis. Without paired data, estimate the standard deviation of the "
     "differences from an assumed correlation.",
-    "R24": "When a study has three or more groups, a pairwise analysis can combine groups (the recommended option), "
+    "R24": "When a study has three or more groups, a pairwise analysis can combine groups (recommended in most situations), "
     "model the correlation between its comparisons, or use a network meta-analysis instead.",
-    "R25": "From observed minus expected events and their variance, only common-effect methods apply. Log hazard "
-    "ratios with their standard errors are pooled by inverse variance.",
+    "R25": "For time-to-event outcomes given as observed minus expected events and their variance, only "
+    "common-effect methods apply. Log hazard ratios with their standard errors are pooled by inverse variance.",
     "R26": "For diagnostic accuracy, sensitivity and specificity are pooled together (the bivariate model). Without "
     "covariates, the HSROC model is equivalent.",
     "R27": "To pool a prediction model's performance, pool the c-statistic on the logit scale and the ratio of observed "
