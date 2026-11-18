@@ -13,7 +13,8 @@ export function AboutCard({ tier, value, label }: { tier: Tier; value: string; l
         About {label}
         <CardBadges card={card} />
       </summary>
-      <CardView card={card} level={3} hideTitle />
+      {/* level 2: the panel sits under the layer's h2, so the card's sections are h3 */}
+      <CardView card={card} level={2} hideTitle />
       <p>
         <Link to={cardHref(card.id)}>Open this card on the Cards page</Link>
       </p>

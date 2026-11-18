@@ -121,7 +121,7 @@ export function CardsPage() {
                 {chosen.title}
                 <CardBadges card={chosen} />
               </h2>
-              <CardView card={chosen} level={2} hideTitle atlasLink />
+              <CardView card={chosen} level={2} hideTitle onCardsPage />
             </>
           ) : (
             <>

@@ -11,8 +11,11 @@ interface Props {
   level: 2 | 3 | 4;
   /** Leave the title out where the page already names the card, with its badges (CardBadges). */
   hideTitle?: boolean;
-  /** Add a link to the card's analyses in the Atlas (the Cards page; not inside the Atlas itself). */
-  atlasLink?: boolean;
+  /**
+   * Shown on the Cards page itself: links to other cards open on this page, and the card ends with a link to its
+   * analyses in the Atlas. Elsewhere (the Atlas's About panels) links to cards open the Cards page.
+   */
+  onCardsPage?: boolean;
 }
 
 /** Sources go to other sites; every source line on a card says so (#92, design D). */
@@ -46,7 +49,7 @@ export function CardBadges({ card }: { card: Card }) {
 }
 
 /** A glossary term used on a card: its definition opens in place, with its sources and its own card. */
-function TermInPlace({ id }: { id: string }) {
+function TermInPlace({ id, onCardsPage }: { id: string; onCardsPage: boolean }) {
   const term = cardById(id);
   if (!term) return null;
   const what = term.teach.filter((t) => t.kind === "what");
@@ -62,7 +65,8 @@ function TermInPlace({ id }: { id: string }) {
         </div>
       ))}
       <Link to={cardHref(term.id)}>
-        The glossary card for {term.title.toLowerCase()} <span className="muted">(opens on this page)</span>
+        The glossary card for {term.title.toLowerCase()}{" "}
+        <span className="muted">{onCardsPage ? "(opens on this page)" : "(opens Cards)"}</span>
       </Link>
     </details>
   );
@@ -72,7 +76,7 @@ function TermInPlace({ id }: { id: string }) {
  * One teaching card, laid out as design D of #92: what it is first, then the facts at a glance, when to use it,
  * its cautions, the R call, the rules behind its limits and the terms it uses, each line with its sources.
  */
-export function CardView({ card, level, hideTitle = false, atlasLink = false }: Props) {
+export function CardView({ card, level, hideTitle = false, onCardsPage = false }: Props) {
   const H = `h${String(level)}` as "h2" | "h3" | "h4";
   const S = `h${String(level + 1)}` as "h3" | "h4" | "h5";
   const whats = card.teach.filter((t) => t.kind === "what");
@@ -151,15 +155,18 @@ export function CardView({ card, level, hideTitle = false, atlasLink = false }: 
         <section className="teach" aria-labelledby={`r-${card.id}`}>
           <S id={`r-${card.id}`}>In R</S>
           {code.map((f) => (
-            <pre key={f.label} className="card-code">
-              <code>{f.items.join("\n")}</code>
-            </pre>
+            <div key={f.label}>
+              <p className="card-code-label muted">{f.label}</p>
+              <pre className="card-code">
+                <code>{f.items.join("\n")}</code>
+              </pre>
+            </div>
           ))}
         </section>
       )}
       {card.notes.length > 0 && (
         <section className="teach" aria-labelledby={`notes-${card.id}`}>
-          <S id={`notes-${card.id}`}>Notes from the map</S>
+          <S id={`notes-${card.id}`}>{tier === "rule" ? "The rule" : "Notes from the map"}</S>
           {card.notes.map((n) => (
             <div key={n.text} className="card-note">
               <p>{n.text}</p>
@@ -175,7 +182,7 @@ export function CardView({ card, level, hideTitle = false, atlasLink = false }: 
             {card.rules.map((r) => (
               <li key={r}>
                 {ruleText(r)} <Link to={cardHref(`rule:${r}`)}>Rule {r}</Link>{" "}
-                <span className="muted">(opens the rule&apos;s card)</span>
+                <span className="muted">{onCardsPage ? "(opens the rule's card)" : "(opens its card in Cards)"}</span>
               </li>
             ))}
           </ul>
@@ -185,14 +192,14 @@ export function CardView({ card, level, hideTitle = false, atlasLink = false }: 
         <section className="teach" aria-labelledby={`terms-${card.id}`}>
           <S id={`terms-${card.id}`}>Terms on this card</S>
           {card.terms.map((t) => (
-            <TermInPlace key={t} id={t} />
+            <TermInPlace key={t} id={t} onCardsPage={onCardsPage} />
           ))}
         </section>
       )}
       {!(card.notes.length === 1 && card.notes[0]?.src === card.src) && (
         <Sources src={card.src} label="Where the map takes this from (opens outside the Atlas)" />
       )}
-      {atlasLink && isTier(tier) && analyses > 0 && (
+      {onCardsPage && isTier(tier) && analyses > 0 && (
         <p className="card-atlas">
           <Link className="button-primary" to={`/atlas?${new URLSearchParams({ [tier]: card.value }).toString()}`}>
             See {analyses === 1 ? "its 1 analysis" : `its ${String(analyses)} analyses`} in the Atlas, with{" "}

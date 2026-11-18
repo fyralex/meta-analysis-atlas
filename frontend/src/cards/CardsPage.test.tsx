@@ -110,20 +110,34 @@ describe("the Cards page", PAGE, () => {
     expect(within(shown).getByRole("region", { name: "When to use it" })).toBeInTheDocument();
     // the R call has its own section, and the rules say what they mean, with where the rule's card opens
     expect(within(shown).getByRole("region", { name: "In R" })).toHaveTextContent("metafor::rma.peto()");
+    const term = within(shown).getByRole("link", { name: /^The glossary card for continuity correction/ });
+    expect(term.parentElement).toHaveTextContent("(opens on this page)");
     const rules = within(shown).getByRole("region", { name: "Why it can't be combined with some choices" });
     expect(rules).toHaveTextContent(/Peto needs 2x2 tables.*Rule R5 \(opens the rule's card\)/);
   });
 
-  it("shows no teaching headings on a card whose text isn't written yet", () => {
-    const blank = cards.find((c) => c.teach.length === 0); // any card whose batch isn't written yet
+  it("shows a card with no teaching text yet without teaching sections, but with its facts and sources", () => {
+    const blank = cards.find((c) => c.teach.length === 0 && c.facts.length > 0); // a batch not written yet
     expect(blank).toBeDefined();
     renderAt(`/cards?card=${encodeURIComponent(blank?.id ?? "")}`);
-    expect(screen.queryByRole("region", { name: "What it is" })).not.toBeInTheDocument();
+    const shown = screen.getByRole("region", { name: new RegExp(`: ${blank?.title ?? "missing"}$`) });
+    expect(within(shown).queryByRole("region", { name: "What it is" })).not.toBeInTheDocument();
+    expect(within(shown).getByRole("region", { name: "At a glance" })).toHaveTextContent(blank?.facts[0]?.label ?? "x");
+    expect(within(shown).getByText(/^Where the map takes this from/)).toBeInTheDocument();
+  });
+
+  it("offers cards to start from when none is open, and opens them on this page", () => {
+    renderAt("/cards");
+    const place = screen.getByRole("region", { name: "Card" });
+    const links = within(place).getAllByRole("link");
+    expect(links.map((a) => a.textContent)).toEqual(["Random effects", "Peto", "Continuity correction"]);
+    expect(links[1]).toHaveAttribute("href", "/cards?card=method%3APETO");
   });
 
   it("shows a rule's text and its sections once", () => {
     renderAt("/cards?card=rule%3AR5");
     const shown = screen.getByRole("region", { name: "Rules: Rule R5" });
+    expect(within(shown).getByRole("region", { name: "The rule" })).toHaveTextContent(/Peto needs 2x2 tables/);
     expect(within(shown).getByText(/Peto needs 2x2 tables/)).toBeInTheDocument();
     expect(within(shown).getAllByText(/s10\.4\.2/)).toHaveLength(1);
   });
