@@ -29,7 +29,7 @@ export interface SceneLayer {
 
 /** Vertical distance between layers, and the smallest ring. */
 const LAYER_GAP = 2.2;
-const MIN_RING = 1.2;
+const MIN_RING = 2.6;
 
 /** The status most of a node's pathways have; ties go to the status listed first (runnable before planned). */
 function mainStatus(byStatus: Record<Status, number>): Status | "none" {
@@ -88,4 +88,20 @@ export function hasWebGL(): boolean {
   } catch {
     return false;
   }
+}
+
+/** A layer with more possible nodes than this is crowded: its labels would overlap. */
+export const CROWDED = 12;
+/** In a crowded layer, only this many of the possible nodes keep a label: those with the most pathways. */
+export const LABELLED_IN_CROWD = 8;
+
+/**
+ * The nodes of a layer that show a label at rest: every possible node (count above 0), or in a crowded layer
+ * the ones with the most pathways, the map's order breaking ties. A chosen or hovered node shows one anyway.
+ */
+export function labelled(layer: SceneLayer): Set<string> {
+  const possible = layer.nodes.filter((n) => n.count > 0);
+  if (possible.length <= CROWDED) return new Set(possible.map((n) => n.value));
+  const top = [...possible].sort((a, b) => b.count - a.count).slice(0, LABELLED_IN_CROWD);
+  return new Set(top.map((n) => n.value));
 }

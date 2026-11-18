@@ -3,7 +3,7 @@ import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
-import { hasWebGL, scene } from "./scene";
+import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, scene } from "./scene";
 
 // The counts are checked against the lock file, read independently of map.json, as the 2D view's tests do.
 const lock = lockRaw as unknown as Pathway[];
@@ -65,5 +65,21 @@ describe("the 3D scene", () => {
 
   it("says there is no WebGL where the browser has none, as in this test environment", () => {
     expect(hasWebGL()).toBe(false);
+  });
+
+  it("labels every possible node of an uncrowded layer, and only the busiest of a crowded one", () => {
+    for (const layer of scene(map.pathways, { framework: F1 }, "model-method-metric", DEFAULT_OPTIONS)) {
+      const possible = layer.nodes.filter((n) => n.count > 0);
+      const named = labelled(layer);
+      if (possible.length <= CROWDED) {
+        expect([...named].sort()).toEqual(possible.map((n) => n.value).sort());
+      } else {
+        expect(named.size).toBe(LABELLED_IN_CROWD);
+        const least = Math.min(...possible.filter((n) => named.has(n.value)).map((n) => n.count));
+        // No node left without a label has more pathways than one that kept its label.
+        expect(possible.filter((n) => !named.has(n.value)).every((n) => n.count <= least)).toBe(true);
+      }
+      expect(layer.nodes.filter((n) => n.count === 0).some((n) => named.has(n.value))).toBe(false);
+    }
   });
 });
