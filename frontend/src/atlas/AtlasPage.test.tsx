@@ -288,8 +288,8 @@ describe("the Atlas's 2D view", PAGE, () => {
     const re = node("model", "Random effects");
     const rows = lock.filter((p) => p.framework === F1 && p.model === "Random effects");
     const planned = rows.filter((p) => p.status === "planned").length;
-    const added = rows.filter((p) => p.new).length;
-    expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(added)} new$`));
+    const marked = rows.filter((p) => p.new).length;
+    expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(marked)} new$`));
   });
 
   it("is one tab stop per layer, with the arrow keys moving between its nodes", () => {

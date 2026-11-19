@@ -190,7 +190,9 @@ there and run it; never edit the generated files.
 - `added`: `True` when the entry is not in taxonomy v11 (the reviewed
   draft this map started from). Added entries stay visible with a "new"
   badge until the methodologist accepts or rejects them, one GitHub issue
-  per family;
+  per family. An accepted entry goes in the `ACCEPTED_*` tables with its
+  issue and keeps `added`; the generator writes `new` (added and not yet
+  accepted), which the apps use for the badge;
 - every metric carries its exact call, for example Hedges' g is
   `escalc(measure="SMD")` and Cohen's d is `escalc(measure="SMD",
   correct=FALSE)`;
