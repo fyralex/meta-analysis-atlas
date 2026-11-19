@@ -272,15 +272,16 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
 
 
 def test_network_metrics_name_their_escalc_measure_for_rma_mv(all_cards: list[bm.Card]) -> None:
-    """Each network metric rma.mv takes from arm-level data names its escalc() measure on its card (#113)."""
+    """Each confirmed network metric rma.mv takes from arm-level data names its escalc() measure on its card (#113)."""
     arm_mv = {
         p["metric"] for p in bm.pathways() if p["method"] == "NM_MV" and p["datatype"] == "Arm-level summary data"
     }
-    assert set(bm.NETWORK_ESCALC) == arm_mv
-    assert bm.NETWORK_ESCALC["N_SMD"] == 'escalc(measure="SMD", correct=FALSE)'  # Cohen's d: decision 0003
+    unconfirmed = {mt for (me, mt) in bm.UNCONFIRMED if me == "NM_MV"}
+    assert unconfirmed == {"N_SMD"}  # decision 0003: how rma.mv networks take an SMD isn't confirmed
+    assert set(bm.NETWORK_ESCALC) == arm_mv - unconfirmed
     for code, call in bm.NETWORK_ESCALC.items():
         card = _card(all_cards, bm.card_id("metric", code))
-        assert {"label": "With rma.mv, from arm-level data", "items": [call], "code": True} in card["facts"]
+        assert {"label": bm.NETWORK_ESCALC_LABEL, "items": [call], "code": True} in card["facts"]
         assert "MF-escalc" in card["src"]
 
 
@@ -579,7 +580,7 @@ def test_peto_odds_ratio_card_lists_r32(all_cards: list[bm.Card]) -> None:
 def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:
     for code, mt in bm.METRICS.items():
         card = next(c for c in all_cards if c["id"] == "metric:" + code)
-        label = "R call, with netmeta" if code in bm.NETWORK_ESCALC else "R call"
+        label = "R call, with netmeta" if mt["call"].startswith("netmeta(") else "R call"
         assert card["facts"][0] == {"label": label, "items": [mt["call"]], "code": True}
 
 
