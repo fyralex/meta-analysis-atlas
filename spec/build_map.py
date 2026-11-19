@@ -2396,14 +2396,16 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "use",
             "The confidence interval for the random-effects mean can use the Hartung-Knapp-Sidik-Jonkman adjustment "
-            '(test="knha" in rma.uni()), which inflates the variance and uses a t distribution. RevMan prompts for '
-            "it when the between-study variance is estimated above zero and there are more than two studies.",
+            '(test="knha" in rma.uni()), which adjusts the standard error, usually upwards, and uses a t '
+            "distribution. RevMan prompts for it when the between-study variance is estimated above zero and there "
+            "are more than two studies.",
             "CH-10 s10.10.4.4, MF-uni",
         ),
         (
             "caution",
             "Cochrane notes the Hartung-Knapp-Sidik-Jonkman interval can be too narrow when no heterogeneity is "
-            "estimated, and too wide when there are few studies, especially two or three.",
+            "estimated, and too wide when there are few studies, especially two or three; with two or three it "
+            "suggests comparing it with the standard interval in a sensitivity analysis.",
             "CH-10 s10.10.4.4, s10.10.4.5",
         ),
         (
