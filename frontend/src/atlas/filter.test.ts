@@ -149,11 +149,12 @@ describe("choosing nodes", () => {
   });
 
   it("drops only the choice that is empty on its own, keeping the others", () => {
-    // In the copy, the summary sensitivity and specificity (a diagnostic metric) is new everywhere: with new entries
-    // shown both choices meet, and hiding them empties the metric only.
-    const selection = { model: "Random effects", metric: "SESP" };
+    // In the copy, every diagnostic accuracy pathway is new: with new entries shown both choices meet, and hiding them
+    // empties the framework on its own. The framework is the first tier, so only the check of each choice on its own
+    // (not the trimming of the latest choices) can drop it while keeping the model after it.
+    const selection = { framework: DTA, model: "Random effects" };
     expect(filterPathways(marked, selection, DEFAULT_OPTIONS)).not.toHaveLength(0);
-    expect(filterPathways(marked, { metric: "SESP" }, HIDE_NEW)).toHaveLength(0);
+    expect(filterPathways(marked, { framework: DTA }, HIDE_NEW)).toHaveLength(0);
     expect(filterPathways(marked, { model: "Random effects" }, HIDE_NEW)).not.toHaveLength(0);
     expect(reconcile(marked, selection, HIDE_NEW)).toEqual({ model: "Random effects" });
   });
