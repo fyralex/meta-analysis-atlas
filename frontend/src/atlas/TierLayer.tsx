@@ -1,12 +1,14 @@
 import type { KeyboardEvent, ReactNode } from "react";
 import { STATUS_TEXT } from "../status";
 import { STATUSES } from "../types/map";
+import type { FamilyGroup } from "./families";
 import type { NodeSummary } from "./filter";
 
 interface Props {
   id: string;
   name: string;
-  nodes: NodeSummary[];
+  /** The nodes in groups: the metric tier's families (#78), or one group with every node. */
+  groups: FamilyGroup<NodeSummary>[];
   label: (value: string) => string;
   /** The entry's own flags, for tiers whose values are entries in the map (methods, metrics). */
   flags?: (value: string) => { new: boolean; verified: boolean } | undefined;
@@ -36,7 +38,8 @@ function spoken(text: string, node: NodeSummary, entry?: { new: boolean; verifie
  * group once; the arrow keys, Home and End move between its nodes. A node with no
  * compatible pathway stays focusable, so it can be read; pressing it asks why not.
  */
-export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, asked, children }: Props) {
+export function TierLayer({ id, name, groups, label, flags, onChoose, onWhyNot, asked, children }: Props) {
+  const nodes = groups.flatMap((g) => g.items);
   const tabStop = Math.max(
     0,
     nodes.findIndex((n) => n.selected),
@@ -44,12 +47,17 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, a
 
   function onKeyDown(e: KeyboardEvent<HTMLButtonElement>, index: number) {
     const last = nodes.length - 1;
-    const target = { ArrowRight: index + 1, ArrowDown: index + 1, ArrowLeft: index - 1, ArrowUp: index - 1, Home: 0, End: last }[
-      e.key
-    ];
+    const target = {
+      ArrowRight: index + 1,
+      ArrowDown: index + 1,
+      ArrowLeft: index - 1,
+      ArrowUp: index - 1,
+      Home: 0,
+      End: last,
+    }[e.key];
     if (target === undefined) return;
     e.preventDefault();
-    const buttons = e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>("button.node");
+    const buttons = e.currentTarget.closest("[role=toolbar]")?.querySelectorAll<HTMLButtonElement>("button.node");
     buttons?.[Math.min(last, Math.max(0, target))]?.focus();
   }
 
@@ -57,55 +65,64 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, a
     <section className="layer" aria-labelledby={id}>
       <h2 id={id}>{name}</h2>
       <div className="nodes" id={`${id}-nodes`} role="toolbar" aria-orientation="horizontal" aria-labelledby={id}>
-        {nodes.map((node, i) => {
-          const none = node.count === 0;
-          const entry = flags?.(node.value);
-          const isNew = entry?.new === true;
-          const toCheck = entry !== undefined && !entry.verified;
-          return (
-            <button
-              key={node.value}
-              type="button"
-              className="node"
-              aria-label={spoken(label(node.value), node, entry)}
-              aria-pressed={node.selected}
-              aria-disabled={none}
-              {...(none
-                ? { "aria-expanded": asked === node.value, "aria-controls": `why-not-panel-${id.replace(/^tier-/, "")}` }
-                : {})}
-              tabIndex={i === tabStop ? 0 : -1}
-              data-value={node.value}
-              onClick={() => {
-                if (none) onWhyNot(node.value);
-                else onChoose(node.value);
-              }}
-              onKeyDown={(e) => {
-                onKeyDown(e, i);
-              }}
-            >
-              <span className="node-label">{label(node.value)}</span>
-              <span className="node-meta" aria-hidden="true">
-                {node.selected && <span className="node-check">✓</span>}
-                <span className="node-count">{node.count}</span>
-                {isNew && (
-                  <span className="badge badge-new">
-                    new
-                  </span>
-                )}
-                {toCheck && (
-                  <span className="badge badge-check">
-                    to check
-                  </span>
-                )}
-              </span>
-              {!none && (
-                <span className="node-bar" aria-hidden="true">
-                  {STATUSES.filter((s) => node.byStatus[s] > 0).map((s) => (
-                    <span key={s} className={`seg st-${s}`} style={{ flexGrow: node.byStatus[s] }} />
-                  ))}
+        {groups.map((g, gi) => {
+          const before = groups.slice(0, gi).reduce((n, h) => n + h.items.length, 0);
+          const buttons = g.items.map((node, k) => {
+            const i = before + k;
+            const none = node.count === 0;
+            const entry = flags?.(node.value);
+            const isNew = entry?.new === true;
+            const toCheck = entry !== undefined && !entry.verified;
+            return (
+              <button
+                key={node.value}
+                type="button"
+                className="node"
+                aria-label={spoken(label(node.value), node, entry)}
+                aria-pressed={node.selected}
+                aria-disabled={none}
+                {...(none
+                  ? {
+                      "aria-expanded": asked === node.value,
+                      "aria-controls": `why-not-panel-${id.replace(/^tier-/, "")}`,
+                    }
+                  : {})}
+                tabIndex={i === tabStop ? 0 : -1}
+                data-value={node.value}
+                onClick={() => {
+                  if (none) onWhyNot(node.value);
+                  else onChoose(node.value);
+                }}
+                onKeyDown={(e) => {
+                  onKeyDown(e, i);
+                }}
+              >
+                <span className="node-label">{label(node.value)}</span>
+                <span className="node-meta" aria-hidden="true">
+                  {node.selected && <span className="node-check">✓</span>}
+                  <span className="node-count">{node.count}</span>
+                  {isNew && <span className="badge badge-new">new</span>}
+                  {toCheck && <span className="badge badge-check">to check</span>}
                 </span>
-              )}
-            </button>
+                {!none && (
+                  <span className="node-bar" aria-hidden="true">
+                    {STATUSES.filter((s) => node.byStatus[s] > 0).map((s) => (
+                      <span key={s} className={`seg st-${s}`} style={{ flexGrow: node.byStatus[s] }} />
+                    ))}
+                  </span>
+                )}
+              </button>
+            );
+          });
+          if (g.family === undefined) return buttons;
+          const familyId = `${id}-family-${String(gi)}`;
+          return (
+            <div key={g.family} className="node-family" role="group" aria-labelledby={familyId}>
+              <span className="node-family-name" id={familyId}>
+                {g.family}
+              </span>
+              {buttons}
+            </div>
           );
         })}
       </div>

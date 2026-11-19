@@ -14,6 +14,7 @@ import {
   type TierOrder,
 } from "./filter";
 import { map } from "../map";
+import { byFamily } from "./families";
 import { TIER_NAMES } from "./names";
 
 export interface SceneNode {
@@ -34,6 +35,8 @@ export interface SceneLayer {
   y: number;
   ringRadius: number;
   nodes: SceneNode[];
+  /** The metric tier's families (#78): each one's name, placed outside the ring by the middle of its nodes. */
+  groups: { name: string; position: [number, number, number] }[];
 }
 
 /** Vertical distance between layers, and the smallest ring. */
@@ -63,11 +66,28 @@ export function scene(
   const tiers = tiersInOrder(order);
   const top = ((tiers.length - 1) * LAYER_GAP) / 2;
   return tiers.map((tier, i) => {
-    const summaries = tierNodes(pathways, selection, tier, options);
+    // The metric tier's nodes sit by family, with an empty place on the ring between families (#78).
+    const families = byFamily(tier, tierNodes(pathways, selection, tier, options), (n) => n.value);
+    const summaries = families.flatMap((g) => g.items);
     const ringRadius = Math.max(MIN_RING, Math.sqrt(summaries.length) * 0.75);
     const y = top - i * LAYER_GAP;
+    const gap = families.length > 1 ? 1 : 0;
+    const places = Math.max(1, summaries.length + gap * families.length);
+    const slot: number[] = [];
+    const groups: SceneLayer["groups"] = [];
+    let at = 0;
+    for (const g of families) {
+      const first = at;
+      for (let k = 0; k < g.items.length; k += 1) slot.push(at++);
+      if (g.family !== undefined && gap > 0) {
+        const mid = (2 * Math.PI * (first + at - 1)) / 2 / places;
+        const r = ringRadius + 0.9;
+        groups.push({ name: g.family, position: [r * Math.cos(mid), y + 0.35, r * Math.sin(mid)] });
+      }
+      at += gap;
+    }
     const nodes = summaries.map((n, j): SceneNode => {
-      const angle = (2 * Math.PI * j) / Math.max(1, summaries.length);
+      const angle = (2 * Math.PI * (slot[j] ?? j)) / places;
       return {
         tier,
         value: n.value,
@@ -79,7 +99,7 @@ export function scene(
         radius: n.count === 0 ? 0.08 : 0.1 + 0.05 * Math.log10(1 + n.count),
       };
     });
-    return { tier, name: TIER_NAMES[tier], y, ringRadius, nodes };
+    return { tier, name: TIER_NAMES[tier], y, ringRadius, nodes, groups };
   });
 }
 

@@ -1,4 +1,5 @@
 import { lazy, Suspense, useMemo, useRef, useState } from "react";
+import { byFamily } from "./families";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
@@ -313,7 +314,7 @@ export function AtlasPage() {
           key={tier}
           id={`tier-${tier}`}
           name={TIER_NAMES[tier]}
-          nodes={compatibleFirst(tierNodes(map.pathways, selection, tier, options))}
+          groups={byFamily(tier, compatibleFirst(tierNodes(map.pathways, selection, tier, options)), (n) => n.value)}
           label={(value) => nodeLabel(map, tier, value)}
           {...(tier === "method" || tier === "metric" ? { flags: (value: string) => entryFlags(tier, value) } : {})}
           onChoose={(value) => {

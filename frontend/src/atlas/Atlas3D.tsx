@@ -442,6 +442,10 @@ export default function Atlas3D({ layers, lines = [], onPick, compact = false, d
                   <meshBasicMaterial color={colors.line} side={THREE.DoubleSide} />
                 </mesh>
                 <Label text={l.name} position={[-l.ringRadius - 1.6, l.y, 0]} size={0.4} color={colors.text} />
+                {!compact &&
+                  l.groups.map((g) => (
+                    <Label key={g.name} text={g.name} position={g.position} size={0.34} color={colors.muted} />
+                  ))}
                 {l.nodes.map((n) => (
                   <Node
                     key={n.value}

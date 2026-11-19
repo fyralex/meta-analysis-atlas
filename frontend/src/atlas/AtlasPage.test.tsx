@@ -153,9 +153,18 @@ describe("the Atlas's 2D view", PAGE, () => {
     expect(lockCount({ framework: F1, model: "Random effects", datatype: "Observed minus expected and variance" })).toBe(0);
     renderAtlas(`?framework=${encodeURIComponent(F1)}&model=Random%20effects`);
     for (const tier of TIERS) {
-      const counts = nodes(tier).map(shownCount);
-      const firstZero = counts.indexOf(0);
-      if (firstZero >= 0) expect(counts.slice(firstZero).every((n) => n === 0), tier).toBe(true);
+      // the metric tier is grouped by family (#78): compatible first within each family
+      const runs =
+        tier === "metric"
+          ? within(layer(tier))
+              .getAllByRole("group")
+              .map((g) => within(g).getAllByRole("button"))
+          : [nodes(tier)];
+      for (const run of runs) {
+        const counts = run.map(shownCount);
+        const firstZero = counts.indexOf(0);
+        if (firstZero >= 0) expect(counts.slice(firstZero).every((n) => n === 0), tier).toBe(true);
+      }
     }
   });
 
