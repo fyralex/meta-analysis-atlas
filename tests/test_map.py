@@ -339,6 +339,18 @@ def test_every_cochrane_chapter_source_says_when_it_was_updated() -> None:
         assert re.search(r"\(updated [A-Z][a-z]+ \d{4}\)", label), key
 
 
+def test_prognostic_factors_are_pooled_with_random_effects_only() -> None:
+    """Riley et al. 2019 (Box 2): a common prognostic effect isn't sensible (rule R34, #22)."""
+    pf = [p for p in bm.pathways() if p["group"].startswith("Prognostic factor")]
+    assert pf and {p["model"] for p in pf} == {bm.RANDOM}
+    assert all(p["verified"] for p in pf)
+    reasons = bm.why_not(bm.pathways())[("group", pf[0]["group"])][("model", bm.COMMON)]
+    assert [r["rule"] for r in reasons] == ["R34"]
+    # prediction model performance keeps both models (Debray et al. 2017 says "usually" random effects)
+    perf = {p["model"] for p in bm.pathways() if p["group"].startswith("Prediction model performance")}
+    assert perf == {bm.COMMON, bm.RANDOM}
+
+
 # --- status and milestone --------------------------------------------------------
 
 
@@ -795,7 +807,7 @@ def test_batch_nine_covers_the_other_frameworks_methods_with_a_readable_source()
 
 
 # Sources not read online yet: no teaching text or example may rest on them alone.
-UNREAD = {"DTA-HB", "DEBRAY", "RILEY"}
+UNREAD = {"DTA-HB"}  # Riley 2019 and Debray 2017 were read from PDFs the owner supplied (#22)
 
 
 def test_the_unread_sources_are_the_ones_the_map_labels_unread() -> None:
@@ -877,10 +889,9 @@ def test_the_network_group_card_carries_the_transitivity_caution() -> None:
 
 
 def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
-    """Branches whose only source is unread (DTA-HB, RILEY) stay without text."""
+    """Branches whose only source is unread (DTA-HB) stay without teaching text; "Any outcome" has none yet."""
     for cid in (
         "group:two-or-more-index-tests-compared",
-        "group:prognostic-factor-does-the-factor-predict-the-outcome",
         "datatype:2x2-table-per-study-and-test",
         "outcome:any-outcome",
     ):

@@ -142,11 +142,11 @@
    "https://rdrr.io/cran/metamisc/man/valmeta.html"
   ],
   "DEBRAY": [
-   "Debray et al. 2017, BMJ 356:i6460, prediction model performance (not readable online)",
+   "Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript)",
    "https://www.bmj.com/content/356/bmj.i6460"
   ],
   "RILEY": [
-   "Riley et al. 2019, BMJ 364:k4597, prognostic factor studies (not readable online)",
+   "Riley et al. 2019, BMJ 364:k4597, prognostic factor studies",
    "https://www.bmj.com/content/364/bmj.k4597"
   ],
   "DOSRES": [
@@ -943,8 +943,8 @@
    ],
    "domain": "pairwise",
    "added": true,
-   "verified": false,
-   "note": "Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019.",
+   "verified": true,
+   "note": "Riley et al. 2019: focus on adjusted estimates (Step 1); consider pooling each type of estimate, adjusted and unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects only (Box 2, rule R34).",
    "src": [
     "RILEY"
    ],
@@ -1348,6 +1348,12 @@
    "gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference.",
    "v11 wrong: offers every network measure for gemtc",
    "GEMTC"
+  ],
+  [
+   "R34",
+   "Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the true effect is expected to differ between them, and call a random-effects approach essential. The map offers random effects only for them.",
+   "not in v11",
+   "RILEY"
   ]
  ],
  "cross_cutting": [
@@ -1429,7 +1435,6 @@
  ],
  "open_items": [
   "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
-  "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
   "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).",
@@ -2077,7 +2082,7 @@
    "call": "enter log HR and its SE",
    "src": "RILEY",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2087,7 +2092,7 @@
    "call": "enter log OR and its SE",
    "src": "RILEY",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2097,7 +2102,7 @@
    "call": "enter log RR and its SE",
    "src": "RILEY",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2107,7 +2112,7 @@
    "call": "enter MD and its SE",
    "src": "RILEY",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Differences"
@@ -9152,42 +9157,14 @@
    "group": "Prognostic factor (does the factor predict the outcome?)",
    "datatype": "Precomputed estimate",
    "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "IV",
-   "metric": "PF_HR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
    "model": "Random effects",
    "method": "IV",
    "metric": "PF_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "IV",
-   "metric": "PF_OR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9197,25 +9174,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "PF_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "IV",
-   "metric": "PF_RR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9225,25 +9188,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "PF_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "IV",
-   "metric": "PF_MD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9253,11 +9202,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "PF_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9267,11 +9216,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "PF_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9281,11 +9230,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "PF_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9295,11 +9244,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "PF_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9309,25 +9258,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "PF_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "MV",
-   "metric": "PF_HR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9337,25 +9272,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "PF_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "MV",
-   "metric": "PF_OR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9365,25 +9286,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "PF_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "MV",
-   "metric": "PF_RR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9393,25 +9300,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "PF_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "3. Prognosis",
-   "group": "Prognostic factor (does the factor predict the outcome?)",
-   "datatype": "Precomputed estimate",
-   "outcome": "Any outcome",
-   "model": "Common effect",
-   "method": "MV",
-   "metric": "PF_MD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
@@ -9421,11 +9314,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "PF_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",
