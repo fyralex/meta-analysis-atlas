@@ -31,6 +31,10 @@ function lockCount(selection: Selection, hideNew = false, status?: Status): numb
 }
 
 const frameworks = [...new Set(lock.map((p) => p.framework))];
+// A copy of the map with every diagnostic accuracy pathway marked new: since #21 to #24 were accepted, almost
+// nothing in the real map is new, so the "hide new" logic is tested on this copy.
+const DTA = frameworks.find((f) => f.startsWith("2.")) ?? "";
+const marked: Pathway[] = all.map((p) => (p.framework === DTA ? { ...p, new: true } : p));
 
 describe("filtering by framework", () => {
   it.each(frameworks)("%s: the count equals the lock file's", (framework) => {
@@ -138,21 +142,20 @@ describe("choosing nodes", () => {
   });
 
   it("drops choices that hiding new entries leaves empty", () => {
-    // Every diagnostic accuracy pathway is new, so hiding them empties this choice.
-    const dta = frameworks.find((f) => f.startsWith("2.")) ?? "";
-    expect(lockCount({ framework: dta }, true)).toBe(0);
-    expect(reconcile(all, { framework: dta }, HIDE_NEW)).toEqual({});
+    // In the copy, every diagnostic accuracy pathway is new, so hiding them empties this choice.
+    expect(reconcile(marked, { framework: DTA }, HIDE_NEW)).toEqual({});
     const kept = { framework: frameworks[0] ?? "" };
-    expect(reconcile(all, kept, HIDE_NEW)).toEqual(kept);
+    expect(reconcile(marked, kept, HIDE_NEW)).toEqual(kept);
   });
 
   it("drops only the choice that is empty on its own, keeping the others", () => {
-    // Every raw Cronbach's alpha pathway is still new (#24): with new entries shown the three choices meet, and hiding
-    // them empties the metric only, while the datatype and model still match without it.
-    const selection = { datatype: "Arm-level summary data", model: "Random effects", metric: "ARAW" };
-    expect(lockCount(selection)).toBeGreaterThan(0);
-    expect(lockCount({ metric: "ARAW" }, true)).toBe(0);
-    expect(reconcile(all, selection, HIDE_NEW)).toEqual({ datatype: selection.datatype, model: selection.model });
+    // In the copy, the summary sensitivity and specificity (a diagnostic metric) is new everywhere: with new entries
+    // shown both choices meet, and hiding them empties the metric only.
+    const selection = { model: "Random effects", metric: "SESP" };
+    expect(filterPathways(marked, selection, DEFAULT_OPTIONS)).not.toHaveLength(0);
+    expect(filterPathways(marked, { metric: "SESP" }, HIDE_NEW)).toHaveLength(0);
+    expect(filterPathways(marked, { model: "Random effects" }, HIDE_NEW)).not.toHaveLength(0);
+    expect(reconcile(marked, selection, HIDE_NEW)).toEqual({ model: "Random effects" });
   });
 
   it("drops a value the map doesn't have, keeping the valid choices after it", () => {

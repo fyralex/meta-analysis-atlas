@@ -12,6 +12,9 @@ import { reasonsFor } from "./whyNot";
 // Every count the page shows is checked against the lock file, read independently of map.json.
 const lock = lockRaw as unknown as Pathway[];
 const F1 = "1. Interventional (effect of an intervention)";
+/** The only pathways still marked new since #21 to #24 were accepted: the one-stage IPD network method's
+ * common-effect model (#59). */
+const IPD_COMMON = "?method=NM_IPD&model=Common+effect";
 
 function lockCount(selection: Selection, hideNew = false): number {
   return lock.filter(
@@ -193,31 +196,31 @@ describe("the Atlas's 2D view", PAGE, () => {
   });
 
   it("drops a choice that matches nothing once new entries are hidden, and says so", () => {
-    // Every diagnostic accuracy pathway is new, so hiding new entries leaves the choice matching nothing.
-    expect(lockCount({ framework: "2. Diagnostic test accuracy" }, true)).toBe(0);
-    renderAtlas(`?framework=${encodeURIComponent("2. Diagnostic test accuracy")}&new=hide`);
+    // The one-stage IPD network method's common-effect pathways are new (#59): hiding them leaves the two choices
+    // matching nothing together, so the later one, the method, is cleared.
+    expect(lockCount({ method: "NM_IPD", model: "Common effect" }, true)).toBe(0);
+    renderAtlas(`${IPD_COMMON}&new=hide`);
     expect(summary()).toContain(
-      "Cleared your choice of framework: with your other choices and settings, it matched no pathway.",
+      "Cleared your choice of method: with your other choices and settings, it matched no pathway.",
     );
-    expect(summary()).toContain(`${String(lockCount({}, true))} of`);
+    expect(summary()).toContain(`${String(lockCount({ model: "Common effect" }, true))} of`);
   });
 
   it("says so when ticking 'hide new' clears a choice", () => {
-    renderAtlas(`?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`);
+    renderAtlas(IPD_COMMON);
     expect(summary()).not.toContain("Cleared");
     fireEvent.click(screen.getByRole("checkbox", { name: /Hide entries marked new/ }));
-    expect(summary()).toContain("Cleared your choice of framework");
-    expect(summary()).toContain(`${String(lockCount({}, true))} of`);
+    expect(summary()).toContain("Cleared your choice of method");
+    expect(summary()).toContain(`${String(lockCount({ model: "Common effect" }, true))} of`);
     fireEvent.click(node("model", "Random effects"));
     expect(summary()).not.toContain("Cleared");
   });
 
   it("shows the cleared note only on the address it was worked out for", () => {
-    const dta = `?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`;
-    const router = createMemoryRouter([{ path: "*", element: <App /> }], { initialEntries: [`/atlas${dta}`] });
+    const router = createMemoryRouter([{ path: "*", element: <App /> }], { initialEntries: [`/atlas${IPD_COMMON}`] });
     render(<RouterProvider router={router} />);
     fireEvent.click(screen.getByRole("checkbox", { name: /Hide entries marked new/ }));
-    expect(summary()).toContain("Cleared your choice of framework");
+    expect(summary()).toContain("Cleared your choice of method");
     // Back to the opening map, where the framework is unchosen for another reason.
     act(() => {
       void router.navigate("/atlas");
@@ -293,13 +296,14 @@ describe("the Atlas's 2D view", PAGE, () => {
   });
 
   it("gives screen readers each node's count by status", () => {
-    // the whole map: since #111 no interventional pathway is new, and a count of 0 isn't spoken
+    // The whole map, and the common-effect node: the only pathways still marked new are common-effect ones (#59),
+    // and a count of 0 isn't spoken.
     renderAtlas();
-    const re = node("model", "Random effects");
-    const rows = lock.filter((p) => p.model === "Random effects");
+    const re = node("model", "Common effect");
+    const rows = lock.filter((p) => p.model === "Common effect");
     const planned = rows.filter((p) => p.status === "planned").length;
     const marked = rows.filter((p) => p.new).length;
-    expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(marked)} new$`));
+    expect(re).toHaveAccessibleName(new RegExp(`^Common effect, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(marked)} new$`));
   });
 
   it("is one tab stop per layer, with the arrow keys moving between its nodes", () => {

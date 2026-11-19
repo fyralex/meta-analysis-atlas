@@ -265,7 +265,7 @@ def test_every_accepted_entry_is_an_added_one() -> None:
         *bm.ACCEPTED_MODELS.values(),
         *bm.ACCEPTED_BRANCHES.values(),
     }
-    assert issues == {11, 14, 16, 17, 18, 19, 20, 111}
+    assert issues == {11, 14, 16, 17, 18, 19, 20, 21, 22, 23, 24, 111}
 
 
 def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
@@ -657,13 +657,13 @@ def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
     """New when every branch under the node is new; to check when none of them is confirmed."""
     f1 = _card(all_cards, "framework:interventional-effect-of-an-intervention")  # some branches new, some to check
     assert (f1["added"], f1["verified"]) == (False, True)
-    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # all new, one confirmed
-    assert (dta["added"], dta["new"], dta["verified"]) == (True, True, True)
+    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # not in v11, accepted; one branch confirmed
+    assert (dta["added"], dta["new"], dta["verified"]) == (True, False, True)  # accepted (#21)
     ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
     assert ipd["verified"] is False
     assert {
         "label": "Branches under it",
-        "items": ["2 in all: 1 confirmed, 1 still to check; 2 new, not yet accepted"],
+        "items": ["2 in all: 1 confirmed, 1 still to check; 0 new, not yet accepted"],
         "code": False,
     } in dta["facts"]
 

@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 3; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -709,7 +709,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 - framework: 2. Diagnostic test accuracy  (10)
   - group: One index test against a reference standard  (8)
     - datatype: 2x2 table per study  (8)
-      - outcome: Binary classification [NEW]  (8)
+      - outcome: Binary classification  (8)
         - model: Random effects  (5)
           - method: Bivariate model (Reitsma)  (1)
             - metric: Summary sensitivity and specificity (estimated jointly)
@@ -726,7 +726,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Negative likelihood ratio [CHECK]
   - group: Two or more index tests compared  (2)
     - datatype: 2x2 table per study and test  (2)
-      - outcome: Binary classification [NEW] [CHECK]  (2)
+      - outcome: Binary classification [CHECK]  (2)
         - model: Random effects  (2)
           - method: Bivariate model (Reitsma)  (1)
             - metric: Summary sensitivity and specificity (estimated jointly)
@@ -735,7 +735,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 - framework: 3. Prognosis  (24)
   - group: Prognostic factor (does the factor predict the outcome?)  (20)
     - datatype: Precomputed estimate  (20)
-      - outcome: Any outcome [NEW] [CHECK]  (20)
+      - outcome: Any outcome [CHECK]  (20)
         - model: Common effect  (8)
           - method: Inverse variance  (4)
             - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
@@ -765,14 +765,14 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Adjusted mean difference [CHECK]
   - group: Prediction model performance (external validation)  (4)
     - datatype: Precomputed estimate  (4)
-      - outcome: Discrimination [NEW]  (2)
+      - outcome: Discrimination  (2)
         - model: Common effect  (1)
           - method: Meta-analysis of prediction model performance  (1)
             - metric: c-statistic (logit scale)
         - model: Random effects  (1)
           - method: Meta-analysis of prediction model performance  (1)
             - metric: c-statistic (logit scale)
-      - outcome: Calibration [NEW]  (2)
+      - outcome: Calibration  (2)
         - model: Common effect  (1)
           - method: Meta-analysis of prediction model performance  (1)
             - metric: Total observed:expected ratio (log scale)
@@ -782,7 +782,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 - framework: 4. Association  (61)
   - group: Two variables in one group (correlation)  (40)
     - datatype: Arm-level summary data  (40)
-      - outcome: Two continuous variables [NEW]  (20)
+      - outcome: Two continuous variables  (20)
         - model: Common effect  (8)
           - method: Inverse variance  (4)
             - metric: Raw correlation
@@ -810,7 +810,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Bias-corrected correlation
             - metric: Fisher's z-transformed correlation
             - metric: Partial correlation
-      - outcome: One continuous, one binary variable [NEW]  (10)
+      - outcome: One continuous, one binary variable  (10)
         - model: Common effect  (4)
           - method: Inverse variance  (2)
             - metric: Point-biserial correlation
@@ -828,7 +828,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
           - method: Multilevel / multivariate  (2)
             - metric: Point-biserial correlation
             - metric: Biserial correlation
-      - outcome: Two binary variables [NEW]  (10)
+      - outcome: Two binary variables  (10)
         - model: Common effect  (4)
           - method: Inverse variance  (2)
             - metric: Phi coefficient
@@ -848,7 +848,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Tetrachoric correlation
   - group: Exposure and outcome (observational studies)  (15)
     - datatype: Precomputed estimate  (15)
-      - outcome: Any outcome [NEW]  (15)
+      - outcome: Any outcome  (15)
         - model: Common effect  (6)
           - method: Inverse variance  (3)
             - metric: Adjusted odds ratio (log), exposure
@@ -873,14 +873,14 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Adjusted hazard ratio (log), exposure
   - group: Dose-response  (6)
     - datatype: Estimates at several dose levels per study  (6)
-      - outcome: Binary or time-to-event [NEW]  (2)
+      - outcome: Binary or time-to-event  (2)
         - model: Common effect  (1)
           - method: Dose-response meta-analysis  (1)
             - metric: Trend in log relative risk per unit of dose
         - model: Random effects  (1)
           - method: Dose-response meta-analysis  (1)
             - metric: Trend in log relative risk per unit of dose
-      - outcome: Continuous [NEW]  (4)
+      - outcome: Continuous  (4)
         - model: Common effect  (2)
           - method: Dose-response meta-analysis  (2)
             - metric: Trend in mean difference per unit of dose
@@ -892,7 +892,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 - framework: 5. Measurement reliability  (15)
   - group: One group (one instrument)  (15)
     - datatype: Arm-level summary data  (15)
-      - outcome: Internal consistency [NEW]  (15)
+      - outcome: Internal consistency  (15)
         - model: Common effect  (6)
           - method: Inverse variance  (3)
             - metric: Raw Cronbach's alpha
