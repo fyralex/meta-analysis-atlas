@@ -134,7 +134,15 @@
    "https://rdrr.io/cran/mada/man/reitsma.html"
   ],
   "DTA-HB": [
-   "Cochrane Handbook for Diagnostic Test Accuracy v2.0, Ch. 9 and 10 (PDF needs a Cochrane account; not read)",
+   "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 9 (updated July 2023), understanding meta-analysis",
+   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy"
+  ],
+  "DTA-10": [
+   "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis",
+   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy"
+  ],
+  "DTA-10S": [
+   "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 supplement, code (version 2.0, July 2023)",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy"
   ],
   "VALMETA": [
@@ -904,6 +912,8 @@
    "verified": true,
    "note": "",
    "src": [
+    "DTA-HB",
+    "DTA-10",
     "MADA"
    ],
    "new": false
@@ -921,10 +931,11 @@
    ],
    "domain": "dta",
    "added": true,
-   "verified": false,
-   "note": "Done by adding the test as a covariate in the bivariate or HSROC model.",
+   "verified": true,
+   "note": "Done by adding the test as a covariate in the bivariate or HSROC model; studies that compare the tests directly are preferred (Cochrane DTA Handbook 9.4.7).",
    "src": [
-    "DTA-HB"
+    "DTA-HB",
+    "DTA-10"
    ],
    "new": false
   },
@@ -1354,6 +1365,12 @@
    "Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the true effect is expected to differ between them, and call a random-effects approach essential. The map offers random effects only for them.",
    "not in v11",
    "RILEY"
+  ],
+  [
+   "R35",
+   "Diagnostic accuracy: the diagnostic odds ratio and the likelihood ratios are computed from the bivariate model at the summary point, not pooled on their own. Cochrane's handbook notes that pooling likelihood ratios separately ignores the correlation between them and can give impossible values.",
+   "not in v11",
+   "DTA-HB s9.3.1, s9.4, DTA-10"
   ]
  ],
  "cross_cutting": [
@@ -1393,8 +1410,8 @@
   {
    "tier": "framework",
    "value": "2. Diagnostic test accuracy",
-   "text": "Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified.",
-   "src": "DTA-HB, MADA"
+   "text": "Not in v11. Confirmed from the Cochrane diagnostic accuracy handbook, Ch. 9 and 10.",
+   "src": "DTA-HB, DTA-10"
   },
   {
    "tier": "framework",
@@ -1434,10 +1451,8 @@
   }
  ],
  "open_items": [
-  "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
   "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
-  "Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
  ],
  "unconfirmed": [
@@ -2009,8 +2024,8 @@
   },
   "SESP": {
    "label": "Summary sensitivity and specificity (estimated jointly)",
-   "call": "mada::reitsma()",
-   "src": "MADA",
+   "call": "glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec | study), family = binomial)",
+   "src": "DTA-10S",
    "added": false,
    "verified": true,
    "only": null,
@@ -2019,40 +2034,40 @@
   },
   "SROC": {
    "label": "Summary ROC curve",
-   "call": "HSROC model",
-   "src": "DTA-HB",
+   "call": "dtametaTMB::fitRutterGatsonis()",
+   "src": "DTMB",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Diagnostic accuracy"
   },
   "DOR": {
    "label": "Diagnostic odds ratio",
-   "call": "mada::madauni()",
-   "src": "DTA-HB",
+   "call": "exp(logit(sens) + logit(spec)) from the bivariate model",
+   "src": "DTA-10S",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Diagnostic accuracy"
   },
   "LRP": {
    "label": "Positive likelihood ratio",
-   "call": "mada::madauni()",
-   "src": "DTA-HB",
+   "call": "sens / (1 - spec) from the bivariate model",
+   "src": "DTA-10S",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Diagnostic accuracy"
   },
   "LRN": {
    "label": "Negative likelihood ratio",
-   "call": "mada::madauni()",
-   "src": "DTA-HB",
+   "call": "(1 - sens) / spec from the bivariate model",
+   "src": "DTA-10S",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Diagnostic accuracy"
@@ -2706,7 +2721,7 @@
   },
   "BIV": {
    "label": "Bivariate model (Reitsma)",
-   "fn": "mada::reitsma()",
+   "fn": "lme4::glmer() (binomial GLMM)",
    "domain": "dta",
    "takes": [
     "tab"
@@ -2720,12 +2735,16 @@
     "meta-regression"
    ],
    "src": [
-    "MADA"
+    "DTA-10",
+    "DTA-HB"
    ],
    "metrics": [
+    "DOR",
+    "LRN",
+    "LRP",
     "SESP"
    ],
-   "note": "Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates.",
+   "note": "A binomial GLMM, as Cochrane fits it (Ch. 10.2.3); covariates give meta-regression and test comparisons (10.4.3). The diagnostic odds ratio and likelihood ratios are computed from it at the summary point (rule R35). Equivalent to the HSROC model when there are no covariates.",
    "added": false,
    "verified": true,
    "added_models": [],
@@ -2748,6 +2767,7 @@
    ],
    "src": [
     "DTMB",
+    "DTA-HB",
     "MADA"
    ],
    "metrics": [
@@ -2756,34 +2776,6 @@
    "note": "Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() study-level covariates.",
    "added": false,
    "verified": true,
-   "added_models": [],
-   "new": false
-  },
-  "DTA_UNI": {
-   "label": "Univariate pooling",
-   "fn": "mada::madauni()",
-   "domain": "dta",
-   "takes": [
-    "tab"
-   ],
-   "models": [
-    "Common effect",
-    "Random effects"
-   ],
-   "analysis": [
-    "standard"
-   ],
-   "src": [
-    "DTA-HB"
-   ],
-   "metrics": [
-    "DOR",
-    "LRN",
-    "LRP"
-   ],
-   "note": "Ignores the correlation between sensitivity and specificity.",
-   "added": false,
-   "verified": false,
    "added_models": [],
    "new": false
   },
@@ -9032,97 +9024,55 @@
    "datatype": "2x2 table per study",
    "outcome": "Binary classification",
    "model": "Random effects",
+   "method": "BIV",
+   "metric": "DOR",
+   "verified": true,
+   "added": true,
+   "new": false,
+   "milestone": "v0.4",
+   "status": "planned"
+  },
+  {
+   "framework": "2. Diagnostic test accuracy",
+   "group": "One index test against a reference standard",
+   "datatype": "2x2 table per study",
+   "outcome": "Binary classification",
+   "model": "Random effects",
+   "method": "BIV",
+   "metric": "LRP",
+   "verified": true,
+   "added": true,
+   "new": false,
+   "milestone": "v0.4",
+   "status": "planned"
+  },
+  {
+   "framework": "2. Diagnostic test accuracy",
+   "group": "One index test against a reference standard",
+   "datatype": "2x2 table per study",
+   "outcome": "Binary classification",
+   "model": "Random effects",
+   "method": "BIV",
+   "metric": "LRN",
+   "verified": true,
+   "added": true,
+   "new": false,
+   "milestone": "v0.4",
+   "status": "planned"
+  },
+  {
+   "framework": "2. Diagnostic test accuracy",
+   "group": "One index test against a reference standard",
+   "datatype": "2x2 table per study",
+   "outcome": "Binary classification",
+   "model": "Random effects",
    "method": "HSROC",
    "metric": "SROC",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Common effect",
-   "method": "DTA_UNI",
-   "metric": "DOR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Random effects",
-   "method": "DTA_UNI",
-   "metric": "DOR",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Common effect",
-   "method": "DTA_UNI",
-   "metric": "LRP",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Random effects",
-   "method": "DTA_UNI",
-   "metric": "LRP",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Common effect",
-   "method": "DTA_UNI",
-   "metric": "LRN",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
-  },
-  {
-   "framework": "2. Diagnostic test accuracy",
-   "group": "One index test against a reference standard",
-   "datatype": "2x2 table per study",
-   "outcome": "Binary classification",
-   "model": "Random effects",
-   "method": "DTA_UNI",
-   "metric": "LRN",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -9132,11 +9082,11 @@
    "model": "Random effects",
    "method": "BIV",
    "metric": "SESP",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "2. Diagnostic test accuracy",
@@ -9146,11 +9096,11 @@
    "model": "Random effects",
    "method": "HSROC",
    "metric": "SROC",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.4",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "3. Prognosis",

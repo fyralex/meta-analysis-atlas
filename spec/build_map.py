@@ -151,8 +151,17 @@ SOURCES: dict[str, tuple[str, str]] = {
     "META-cont": ("meta, metacont()", "https://rdrr.io/cran/meta/man/metacont.html"),
     "DMA": ("Harrer et al., Doing Meta-Analysis in R, network chapter", "https://doing-meta.guide/netwma.html"),
     "MADA": ("mada, reitsma()", "https://rdrr.io/cran/mada/man/reitsma.html"),
+    # Read from copies the owner supplied (the chapters need a Cochrane account online), #21.
     "DTA-HB": (
-        "Cochrane Handbook for Diagnostic Test Accuracy v2.0, Ch. 9 and 10 (PDF needs a Cochrane account; not read)",
+        "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 9 (updated July 2023), understanding meta-analysis",
+        "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy",
+    ),
+    "DTA-10": (
+        "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis",
+        "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy",
+    ),
+    "DTA-10S": (
+        "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 supplement, code (version 2.0, July 2023)",
         "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy",
     ),
     "VALMETA": ("metamisc, valmeta()", "https://rdrr.io/cran/metamisc/man/valmeta.html"),
@@ -257,11 +266,16 @@ METRICS: dict[str, Metric] = {
     "N_IRD": m("Incidence rate difference (network)", 'netmeta(sm="IRD")', "NM"),
     "N_HR": m("Hazard ratio", 'netmeta(sm="HR")', "NM"),
     # diagnostic test accuracy
-    "SESP": m("Summary sensitivity and specificity (estimated jointly)", "mada::reitsma()", "MADA"),
-    "SROC": m("Summary ROC curve", "HSROC model", "DTA-HB", verified=False),
-    "DOR": m("Diagnostic odds ratio", "mada::madauni()", "DTA-HB", verified=False),
-    "LRP": m("Positive likelihood ratio", "mada::madauni()", "DTA-HB", verified=False),
-    "LRN": m("Negative likelihood ratio", "mada::madauni()", "DTA-HB", verified=False),
+    "SESP": m(
+        "Summary sensitivity and specificity (estimated jointly)",
+        "glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec | study), family = binomial)",
+        "DTA-10S",
+    ),
+    "SROC": m("Summary ROC curve", "dtametaTMB::fitRutterGatsonis()", "DTMB"),
+    # Computed from the bivariate model at the summary point (Ch. 9.4; Ch. 10 supplement, Appendix 5), rule R35.
+    "DOR": m("Diagnostic odds ratio", "exp(logit(sens) + logit(spec)) from the bivariate model", "DTA-10S"),
+    "LRP": m("Positive likelihood ratio", "sens / (1 - spec) from the bivariate model", "DTA-10S"),
+    "LRN": m("Negative likelihood ratio", "(1 - sens) / spec from the bivariate model", "DTA-10S"),
     # prognosis
     "CSTAT": m("c-statistic (logit scale)", 'valmeta(measure="cstat")', "VALMETA"),
     "OE": m("Total observed:expected ratio (log scale)", 'valmeta(measure="OE")', "VALMETA"),
@@ -610,15 +624,16 @@ METHODS: dict[str, Method] = {
     # diagnostic test accuracy
     "BIV": meth(
         "Bivariate model (Reitsma)",
-        "mada::reitsma()",
+        "lme4::glmer() (binomial GLMM)",
         "dta",
         ["tab"],
         [RANDOM],
         [STD, SUB, REG],
-        ["MADA"],
-        metrics={"SESP"},
-        note="Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there "
-        "are no covariates.",
+        ["DTA-10", "DTA-HB"],
+        metrics={"SESP", "DOR", "LRP", "LRN"},
+        note="A binomial GLMM, as Cochrane fits it (Ch. 10.2.3); covariates give meta-regression and test "
+        "comparisons (10.4.3). The diagnostic odds ratio and likelihood ratios are computed from it at the summary "
+        "point (rule R35). Equivalent to the HSROC model when there are no covariates.",
     ),
     "HSROC": meth(
         "Hierarchical summary ROC model (Rutter and Gatsonis)",
@@ -627,23 +642,11 @@ METHODS: dict[str, Method] = {
         ["tab"],
         [RANDOM],
         [STD, SUB, REG],
-        ["DTMB", "MADA"],
+        ["DTMB", "DTA-HB", "MADA"],
         metrics={"SROC"},
         note="Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can "
         "vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() "
         "study-level covariates.",
-    ),
-    "DTA_UNI": meth(
-        "Univariate pooling",
-        "mada::madauni()",
-        "dta",
-        ["tab"],
-        [COMMON, RANDOM],
-        [STD],
-        ["DTA-HB"],
-        metrics={"DOR", "LRP", "LRN"},
-        verified=False,
-        note="Ignores the correlation between sensitivity and specificity.",
     ),
     # prognosis
     "VAL": meth(
@@ -824,7 +827,7 @@ br(
     ["SESP", "SROC", "DOR", "LRP", "LRN"],
     domain="dta",
     added=True,
-    src=["MADA"],
+    src=["DTA-HB", "DTA-10", "MADA"],
 )
 br(
     F2,
@@ -836,9 +839,9 @@ br(
     ["SESP", "SROC"],
     domain="dta",
     added=True,
-    verified=False,
-    note="Done by adding the test as a covariate in the bivariate or HSROC model.",
-    src=["DTA-HB"],
+    note="Done by adding the test as a covariate in the bivariate or HSROC model; studies that compare the tests "
+    "directly are preferred (Cochrane DTA Handbook 9.4.7).",
+    src=["DTA-HB", "DTA-10"],
 )
 
 F3 = "3. Prognosis"
@@ -1046,9 +1049,8 @@ FRAMEWORK_NOTES: dict[str, tuple[str, str]] = {
         "CH-10, MF-escalc",
     ),
     F2: (
-        "Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are "
-        "unverified.",
-        "DTA-HB, MADA",
+        "Not in v11. Confirmed from the Cochrane diagnostic accuracy handbook, Ch. 9 and 10.",
+        "DTA-HB, DTA-10",
     ),
     F3: (
         "Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor "
@@ -1266,6 +1268,14 @@ RULES: list[tuple[str, str, str, str]] = [
         "not in v11",
         "RILEY",
     ),
+    (
+        "R35",
+        "Diagnostic accuracy: the diagnostic odds ratio and the likelihood ratios are computed from the bivariate "
+        "model at the summary point, not pooled on their own. Cochrane's handbook notes that pooling likelihood "
+        "ratios separately ignores the correlation between them and can give impossible values.",
+        "not in v11",
+        "DTA-HB s9.3.1, s9.4, DTA-10",
+    ),
 ]
 
 CROSS: list[tuple[str, str, str]] = [
@@ -1294,10 +1304,8 @@ CROSS: list[tuple[str, str, str]] = [
 ]
 
 OPEN = [
-    "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
     "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
-    "Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
 ]
@@ -1653,7 +1661,7 @@ def write_tree_md(tree: Node, stats: str) -> None:
 
 def table(headers: Sequence[str], rows: Iterable[Sequence[object]]) -> str:
     out = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
-    out += ["| " + " | ".join(str(c).replace("|", "/") for c in r) + " |" for r in rows]
+    out += ["| " + " | ".join(str(c).replace("|", "\\|") for c in r) + " |" for r in rows]
     return "\n".join(out)
 
 
@@ -2472,6 +2480,8 @@ RULE_PLAIN: dict[str, str] = {
     "and rate ratios; not risk or rate differences, arcsine differences or ratios of means.",
     "R34": "A prognostic factor's effect is expected to vary between studies, so the map pools it with random effects "
     "only.",
+    "R35": "A test's diagnostic odds ratio and likelihood ratios come from the bivariate model's summary sensitivity "
+    "and specificity, rather than being pooled one by one.",
 }
 
 
@@ -3533,40 +3543,62 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "method:BIV": [
         (
             "what",
-            "Fits the bivariate random-effects model of Reitsma et al. (2005) to each study's 2x2 counts, pooling "
-            "transformed sensitivity and false positive rate together.",
-            "MADA",
+            "Pools logit sensitivity and logit specificity together, with random effects for both and the "
+            "correlation between them, while each study's counts follow a binomial distribution.",
+            "DTA-HB s9.4.1",
         ),
         (
             "what",
-            "Harbord et al. (2007) showed it to be equivalent to the hierarchical summary ROC model of Rutter and "
-            "Gatsonis.",
-            "MADA",
+            "With no covariates it is equivalent to the hierarchical summary ROC model of Rutter and Gatsonis; the two "
+            "differ only in how they are parametrized.",
+            "DTA-HB s9.4",
         ),
         (
             "use",
-            "Covariates enter through its formula, for meta-regression. Variance components are estimated by REML "
-            "by default.",
-            "MADA",
+            "Cochrane's handbook fits it in R with lme4's glmer(), a binomial GLMM. Adding covariates gives "
+            "meta-regression, and a covariate for test type compares tests. The diagnostic odds ratio and likelihood "
+            "ratios are computed from its summary point.",
+            "DTA-10 s10.2.3, s10.4.3, DTA-HB s9.4",
+        ),
+        (
+            "use",
+            "Cochrane prefers a summary point in most cases, as it is easier to interpret, but only for studies that "
+            "share a common threshold: averaging sensitivity and specificity across mixed thresholds gives a result "
+            "with no clear meaning.",
+            "DTA-HB s9.3, s9.3.1",
         ),
         (
             "caution",
-            "By default, when any cell of any study is zero, 0.5 is added to every cell of every study; "
-            'correction.control = "single" limits it to the studies with a zero.',
-            "MADA",
+            "The handbook doesn't recommend packages that replace the binomial within-study distribution by a normal "
+            "approximation, such as mada and mvmeta: the approximation can bias results and needs a continuity "
+            "correction for zero cells.",
+            "DTA-10 s10.2.3",
         ),
         (
             "caution",
-            "Standard errors are given only for the summary parameters. Likelihood ratios and predictive values need "
-            "other functions in mada.",
-            "MADA",
+            "With few studies, its five parameters are hard to estimate and the fit may not converge. When "
+            "sensitivity or specificity shows little heterogeneity, the handbook discusses keeping a random effect on "
+            "only the other one.",
+            "DTA-HB s9.4.8",
         ),
     ],
     "method:HSROC": [
         (
             "what",
-            "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al., which mada's "
-            "reitsma() fits.",
+            "Models an underlying ROC curve for each study, with random effects for accuracy (the log diagnostic "
+            "odds ratio) and threshold, and a shape parameter shared by all studies, to estimate a summary ROC curve.",
+            "DTA-HB s9.4.3",
+        ),
+        (
+            "use",
+            "Suits studies that use different thresholds, where a summary curve describes how sensitivity and "
+            "specificity trade off. With little variation in threshold the curve's shape is hard to estimate.",
+            "DTA-HB s9.3.1",
+        ),
+        (
+            "what",
+            "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al. when there "
+            "are no covariates.",
             "MADA",
         ),
         (
@@ -3747,8 +3779,74 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:SESP": [
         (
             "what",
-            "Summary sensitivity and false positive rate, estimated together by the bivariate model. By default reitsma() works on the logit scale for both.",
-            "MADA",
+            "Summary sensitivity and specificity at a common threshold, estimated together by the bivariate model on the logit scale.",
+            "DTA-HB s9.4.1",
+        ),
+    ],
+    "metric:DOR": [
+        (
+            "what",
+            "The odds of a positive result among people with the condition, divided by the odds among people "
+            "without it; computed from the bivariate model's summary sensitivity and specificity, with a confidence "
+            "interval by the delta method.",
+            "DTA-10S, DTA-HB s9.4",
+        ),
+    ],
+    "metric:LRP": [
+        (
+            "what",
+            "How much more likely a positive result is in people with the condition than in people without it: "
+            "sensitivity divided by 1 minus specificity, computed at the bivariate model's summary point.",
+            "DTA-10S, DTA-HB s9.4",
+        ),
+        (
+            "caution",
+            "Pooling likelihood ratios on their own ignores the correlation between them and can give impossible "
+            "values, so the map computes them from the bivariate model (rule R35).",
+            "DTA-HB s9.3.1",
+        ),
+    ],
+    "metric:LRN": [
+        (
+            "what",
+            "The chance of a negative result in people with the condition relative to people without it, usually "
+            "below 1: 1 minus sensitivity, divided by specificity, computed at the bivariate model's summary point.",
+            "DTA-10S, DTA-HB s9.4",
+        ),
+        (
+            "caution",
+            "Pooling likelihood ratios on their own ignores the correlation between them and can give impossible "
+            "values, so the map computes them from the bivariate model (rule R35).",
+            "DTA-HB s9.3.1",
+        ),
+    ],
+    "metric:SROC": [
+        (
+            "what",
+            "A curve showing how summary sensitivity and specificity trade off as the threshold for a positive "
+            "result varies, estimated by the HSROC model from studies with different thresholds.",
+            "DTA-HB s9.3.1, s9.4.3",
+        ),
+    ],
+    "group:two-or-more-index-tests-compared": [
+        (
+            "what",
+            "Studies report the accuracy of two or more tests for the same condition; a covariate for test type in "
+            "the bivariate or HSROC model compares them.",
+            "DTA-HB s9.4.7",
+        ),
+        (
+            "use",
+            "Comparisons from studies that applied both tests to the same people, or randomized people between them, "
+            "are less prone to bias than comparisons across all studies that evaluated one or both tests, and the "
+            "handbook says to rely on them where possible, though such studies are often few.",
+            "DTA-HB s9.4.7, s9.4.7.5",
+        ),
+        (
+            "caution",
+            "Comparing summary sensitivities is misleading when studies used different thresholds; summary curves "
+            "from the HSROC model are then more informative.",
+            "DTA-HB s9.4.7.4",
         ),
     ],
     "metric:CSTAT": [
@@ -4316,7 +4414,11 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "Each study reports how many people the test got right and wrong, as a 2x2 table.",
         "MADA",
     ),
-    "group:two-or-more-index-tests-compared": ("Two or more tests compared", "", "DTA-HB"),
+    "group:two-or-more-index-tests-compared": (
+        "Two or more tests compared",
+        "For example, CT against MRI for diagnosing coronary artery disease.",
+        "DTA-HB s9.4.7.3",
+    ),
     "group:prognostic-factor-does-the-factor-predict-the-outcome": (
         "Does one factor predict the outcome?",
         "For example, whether C reactive protein predicts death or heart attack in people with stable coronary "
@@ -4381,7 +4483,12 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "True positives, false negatives, false positives and true negatives.",
         "MADA",
     ),
-    "datatype:2x2-table-per-study-and-test": ("A 2x2 table for each test in each study", "", "DTA-HB"),
+    "datatype:2x2-table-per-study-and-test": (
+        "A 2x2 table for each test in each study",
+        "True positives, false negatives, false positives and true negatives for each test, against the same "
+        "reference standard.",
+        "DTA-HB",
+    ),
     "datatype:estimates-at-several-dose-levels-per-study": (
         "Results at several dose levels in each study",
         "For example, relative risks for low, medium and high intake, each against none.",
