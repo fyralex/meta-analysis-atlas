@@ -289,7 +289,9 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
 
 
 def test_network_metrics_name_each_engines_call(all_cards: list[bm.Card]) -> None:
-    """gemtc and multinma name a likelihood and link: each confirmed network metric they take shows it (#123)."""
+    """gemtc and multinma name a likelihood and link: each network metric they take, in a pairing not marked
+    unconfirmed (UNCONFIRMED, UNCONFIRMED_INPUT), shows it (#123). The pathways may still be to check for
+    other reasons, such as an unconfirmed branch."""
     by_kind = {(b["fw"], b["group"], b["datatype"], b["outcome"]): b["kind"] for b in bm.BRANCHES}
     for label, key, method, datatype, calls in bm.NETWORK_ENGINE_CALLS:
         confirmed = {

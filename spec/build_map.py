@@ -350,7 +350,7 @@ FAMILY_OF: dict[str, str] = {code: fam for fam, codes in METRIC_FAMILIES.items()
 # A network metric's call above is netmeta's. A contrast-based rma.mv (NM_MV) network takes the same measure, computed
 # from arm-level data with escalc() (#113); a multi-arm study also needs the covariances of its comparisons (vcalc(),
 # see the MV card). Left out: the hazard ratio, which has no escalc measure; the standardized mean difference, whose
-# pairing with rma.mv is unconfirmed (UNCONFIRMED, decision 0003); and gemtc, whose measures are #40.
+# pairing with rma.mv is unconfirmed (UNCONFIRMED, decision 0003). gemtc and multinma follow below.
 NETWORK_ESCALC: dict[str, str] = {
     "N_OR": E % "OR",
     "N_RR": E % "RR",
@@ -3780,6 +3780,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "By default, pairwise() adds 0.5 to the counts of a study with a zero count.",
             "META-pw",
+        ),
+        (
+            "caution",
+            "gemtc fits it with its Poisson likelihood and log link, from events and exposure, but labels the result "
+            "a hazard ratio.",
+            "GEMTC",
         ),
     ],
     "metric:N_IRD": [
