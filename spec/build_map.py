@@ -140,6 +140,8 @@ SOURCES: dict[str, tuple[str, str]] = {
     "BM-bmr": ("bayesmeta, bmr()", "https://rdrr.io/cran/bayesmeta/man/bmr.html"),
     "NM": ("netmeta, netmeta()", "https://rdrr.io/cran/netmeta/man/netmeta.html"),
     "NM-bin": ("netmeta, netmetabin()", "https://rdrr.io/cran/netmeta/man/netmetabin.html"),
+    "GEMTC": ("gemtc, mtc.model()", "https://rdrr.io/cran/gemtc/man/mtc.model.html"),
+    "GEMTC-net": ("gemtc, mtc.network()", "https://rdrr.io/cran/gemtc/man/mtc.network.html"),
     "NM-man": ("netmeta manual", "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"),
     "META-bin": ("meta, metabin()", "https://rdrr.io/cran/meta/man/metabin.html"),
     "META-pw": ("meta, pairwise(), Details", "https://rdrr.io/cran/meta/man/pairwise.html"),
@@ -491,10 +493,12 @@ METHODS: dict[str, Method] = {
         ["arm", "est"],
         [COMMON, RANDOM],
         [STD, REG],
-        ["DMA", "CH-11"],
-        verified=False,
+        ["DMA", "CH-11", "GEMTC", "GEMTC-net"],
+        metrics={"N_OR", "N_RR", "N_MD", "N_SMD", "N_IRR", "N_HR"},
         added_models=[COMMON],
-        note="Supports meta-regression. Common-effect option not confirmed from the manual.",
+        note='Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds '
+        "ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its "
+        "Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check.",
     ),
     "NM_IPD": meth(
         "One-stage regression on participant data (network)",
@@ -1127,6 +1131,14 @@ RULES: list[tuple[str, str, str, str]] = [
         "agrees",
         "CH-10 s10.4.2, MF-escalc",
     ),
+    (
+        "R33",
+        "gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean "
+        "difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no "
+        "likelihood for the risk difference, arcsine difference, ratio of means or rate difference.",
+        "v11 wrong: offers every network measure for gemtc",
+        "GEMTC",
+    ),
 ]
 
 CROSS: list[tuple[str, str, str]] = [
@@ -1160,7 +1172,7 @@ OPEN = [
     "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
     "Choose the R implementation for the HSROC model and for O - E and V data.",
     "Confirm R packages for one-stage IPD, pairwise and network.",
-    "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
+    "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
     "Read the rest of the bayesmeta manual.",
@@ -1180,7 +1192,7 @@ OPEN = [
 # check that it is really absent.
 # --------------------------------------------------------------------------
 V11_SUMMARY_PATHWAYS = 226  # v11's interventional summary-data pathways
-V11_KEPT = 200  # of those, in the map unchanged
+V11_KEPT = 194  # of those, in the map unchanged
 CONTRAST = "Contrast-level estimates"
 COUNT = "Count / person-time"
 
@@ -1236,7 +1248,22 @@ for _dt in (ARM, CONTRAST):
                 )
             )
         V11_MERGED_INTO.append((F1, G4, _dt, "Continuous", RANDOM, _me, "N_SMD"))
-# v11's 4 network IRD pathways were dropped with no reason and restored in issue #29.
+# v11's 4 network IRD pathways were dropped with no reason and restored in issue #29; gemtc's 2 of them went again
+# with its RD and ROM pathways, which gemtc has no likelihood for (R33, issue #40).
+for _dt in (ARM, CONTRAST):
+    for _o, _code, _name in (("Binary", "N_RD", "RD"), ("Continuous", "N_ROM", "ROM"), (COUNT, "N_IRD", "IRD")):
+        V11_REMOVED.append(
+            V11Change(
+                group=G4,
+                datatype=_dt,
+                outcome=_o,
+                model=RANDOM,
+                method="NM_BAYES",
+                metric=_code,
+                v11_metric=_name,
+                reason="R33: gemtc has no likelihood for this measure",
+            )
+        )
 for _model in (COMMON, RANDOM):
     for _code in ("RR", "RD"):
         V11_REMOVED.append(
@@ -1313,7 +1340,12 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
     (
         "NM_BAYES",
         "N_SMD",
-    ): "R31's source covers netmeta; gemtc's measures are still to confirm (issue #40)",
+    ): "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)",
+}
+# Pairs of a method and an input it reads (a branch kind) whose pairing is not confirmed: their pathways are to check.
+UNCONFIRMED_INPUT: dict[tuple[str, str], str] = {
+    ("NM_BAYES", "est"): "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale "
+    "diff is on or how it is matched to a likelihood (issue #40)",
 }
 
 
@@ -1329,7 +1361,13 @@ def pathways() -> list[Pathway]:
                     continue
                 if mt["only"] and mid not in mt["only"]:
                     continue
-                verified = b["verified"] and me["verified"] and mt["verified"] and (mid, code) not in UNCONFIRMED
+                verified = (
+                    b["verified"]
+                    and me["verified"]
+                    and mt["verified"]
+                    and (mid, code) not in UNCONFIRMED
+                    and (mid, b["kind"]) not in UNCONFIRMED_INPUT
+                )
                 milestone = milestone_of(b["fw"], mid)
                 for model in me["models"]:
                     out.append(
@@ -1600,6 +1638,13 @@ def write_backbone_md(paths: list[Pathway], stats: str) -> None:
             [(METHODS[me]["label"], METRICS[mt]["label"], why) for (me, mt), why in UNCONFIRMED.items()],
         ),
         "",
+        "Methods whose reading of an input is not confirmed (input codes as under Methods); its pathways are to check.",
+        "",
+        table(
+            ["Method", "Input", "Why"],
+            [(METHODS[me]["label"], kind, why) for (me, kind), why in UNCONFIRMED_INPUT.items()],
+        ),
+        "",
         "## Sections that apply across the tree",
         "",
         table(["Section", "Content", "Source"], CROSS),
@@ -1720,6 +1765,7 @@ WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
     ("GLMM", "takes"): ("R2", True),
     ("OEV", "models"): ("R25", False),  # R25 states RevMan's limit, which the map follows (decision 0007)
     ("NM_MH", "models"): ("R20", True),
+    ("NM_BAYES", "metrics"): ("R33", True),
 }
 # A second reason for a method's limit, where another rule explains what the first leaves open (#82): R3 says
 # Mantel-Haenszel is common-effect only; R4 says why there is no random-effects Mantel-Haenszel to offer.
@@ -2280,6 +2326,8 @@ RULE_PLAIN: dict[str, str] = {
     "R31": "In a network, the standardized mean difference is Cohen's d, without the small-sample correction of "
     "Hedges' g, so that a study with three or more groups gives comparisons that agree.",
     "R32": "In this map, the Peto odds ratio comes only with Peto's method, the method Cochrane presents it with.",
+    "R33": "gemtc's network models give odds ratios, risk ratios, mean differences, standardized mean differences "
+    "and rate ratios; not risk or rate differences, arcsine differences or ratios of means.",
 }
 
 
@@ -4359,6 +4407,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         notes=notes(),
         open_items=OPEN,
         unconfirmed=[{"method": me, "metric": mt, "why": why} for (me, mt), why in UNCONFIRMED.items()],
+        unconfirmed_input=[{"method": me, "input": kind, "why": why} for (me, kind), why in UNCONFIRMED_INPUT.items()],
         metrics={k: {**v, "new": metric_new(k)} for k, v in METRICS.items()},
         methods={k: {**v, "new": method_new(k)} for k, v in METHODS.items()},
         pathways=paths,

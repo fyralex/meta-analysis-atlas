@@ -150,7 +150,7 @@ def test_metrics_reserved_for_one_method_name_real_methods() -> None:
 
 
 def test_v11_counts_add_up() -> None:
-    assert len(bm.V11_REMOVED) == 26
+    assert len(bm.V11_REMOVED) == 32
     assert bm.V11_KEPT + len(bm.V11_REMOVED) == bm.V11_SUMMARY_PATHWAYS == 226
 
 
@@ -177,11 +177,12 @@ def test_network_count_data_offers_rate_ratio_and_difference() -> None:
     v11_ird = {
         (bm.F1, bm.G4, dt, bm.COUNT, bm.RANDOM, me, "N_IRD")
         for dt in (bm.ARM, bm.CONTRAST)
-        for me in ("NM_MV", "NM_BAYES")
+        for me in ("NM_MV",)  # gemtc's went again in #40: it has no likelihood for a rate difference (R33)
     }
     by_key = {bm.pathway_key(p): p for p in bm.pathways()}
     assert v11_ird <= set(by_key)
     assert [k for k in v11_ird if by_key[k]["added"]] == []
+    assert not [p for p in by_key.values() if p["method"] == "NM_BAYES" and p["metric"] == "N_IRD"]
 
 
 def test_the_network_smd_is_cohens_d() -> None:
@@ -204,6 +205,20 @@ def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
         assert allowed is None or metric in allowed
     paired = [p for p in bm.pathways() if (p["method"], p["metric"]) in bm.UNCONFIRMED]
     assert {(p["method"], p["metric"]) for p in paired} == set(bm.UNCONFIRMED), "a pair generates no pathway"
+    assert {p["status"] for p in paired} == {"to_check"}
+
+
+def test_unconfirmed_inputs_name_real_methods_and_inputs() -> None:
+    assert bm.UNCONFIRMED_INPUT
+    kind_of = {(b["fw"], b["group"], b["datatype"], b["outcome"]): b["kind"] for b in bm.BRANCHES}
+    for method, kind in bm.UNCONFIRMED_INPUT:
+        assert method in bm.METHODS and kind in bm.METHODS[method]["takes"]
+    paired = [
+        p
+        for p in bm.pathways()
+        if (p["method"], kind_of[(p["framework"], p["group"], p["datatype"], p["outcome"])]) in bm.UNCONFIRMED_INPUT
+    ]
+    assert paired, "an input pair generates no pathway"
     assert {p["status"] for p in paired} == {"to_check"}
 
 

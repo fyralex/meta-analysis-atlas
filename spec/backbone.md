@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 110; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
+Counts: pathways in total 548; interventional 438; interventional, in v11's scope 208; of those, confirmed 189; not in v11 340; of those, new (not yet accepted) 110; still to check 73; status runnable 0; status planned 412; status specified 63; status to_check 73.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -174,7 +174,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | accepted #19 | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
-| Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11 | CHECK | Supports meta-regression. Common-effect option not confirmed from the manual. |
+| Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check. |
 | One-stage regression on participant data (network) | `mixed-effects regression, frequentist or Bayesian` | Random effects | ipd | standard | CH-26 | CHECK |  |
 | Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |
 | Hierarchical summary ROC model (Rutter and Gatsonis) | `implementation not chosen` | Random effects | tab | standard, subgroup, meta-regression | DTA-HB, MADA | CHECK | Used when studies apply different thresholds. |
@@ -220,10 +220,11 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R30 | Meta-regression is generally not advised with fewer than ten studies. | missing in v11 | CH-10 s10.11.4 |
 | R31 | A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw |
 | R32 | In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure="PETO") also computes it study by study; this map doesn't offer pooling it with another method. | agrees | CH-10 s10.4.2, MF-escalc |
+| R33 | gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference. | v11 wrong: offers every network measure for gemtc | GEMTC |
 
 ## Compared with taxonomy v11
 
-Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged and 26 are not, each below with its reason. Merging Cohen's d and Hedges' g gives 4 network SMD pathways. v11's one-stage IPD pathways are not compared.
+Of v11's 226 interventional summary-data pathways, 194 are in the map unchanged and 32 are not, each below with its reason. Merging Cohen's d and Hedges' g gives 4 network SMD pathways. v11's one-stage IPD pathways are not compared.
 
 | Group | Datatype | Outcome | Model | Method | v11 metric | Reason |
 |---|---|---|---|---|---|---|
@@ -249,6 +250,12 @@ Of v11's 226 interventional summary-data pathways, 200 are in the map unchanged 
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Frequentist, multivariate | Hedges' g | R31: one network SMD, Cohen's d (N_SMD) |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Cohen's d | R31: one network SMD, Cohen's d (N_SMD) |
 | Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | Hedges' g | R31: one network SMD, Cohen's d (N_SMD) |
+| Multiple groups (network) | Arm-level summary data | Binary | Random effects | Bayesian hierarchical (MCMC) | RD | R33: gemtc has no likelihood for this measure |
+| Multiple groups (network) | Arm-level summary data | Continuous | Random effects | Bayesian hierarchical (MCMC) | ROM | R33: gemtc has no likelihood for this measure |
+| Multiple groups (network) | Arm-level summary data | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | R33: gemtc has no likelihood for this measure |
+| Multiple groups (network) | Contrast-level estimates | Binary | Random effects | Bayesian hierarchical (MCMC) | RD | R33: gemtc has no likelihood for this measure |
+| Multiple groups (network) | Contrast-level estimates | Continuous | Random effects | Bayesian hierarchical (MCMC) | ROM | R33: gemtc has no likelihood for this measure |
+| Multiple groups (network) | Contrast-level estimates | Count / person-time | Random effects | Bayesian hierarchical (MCMC) | IRD | R33: gemtc has no likelihood for this measure |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Common effect | Generalized linear mixed model | RD | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
 | Two groups (pairwise) | Arm-level summary data | Binary | Random effects | Generalized linear mixed model | RR | R6: GLMM gives OR for 2x2 tables; RR and RD are experimental |
@@ -261,7 +268,13 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 | Method | Metric | Why |
 |---|---|---|
 | Frequentist, multivariate | Standardized mean difference (Cohen's d) | R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation |
-| Bayesian hierarchical (MCMC) | Standardized mean difference (Cohen's d) | R31's source covers netmeta; gemtc's measures are still to confirm (issue #40) |
+| Bayesian hierarchical (MCMC) | Standardized mean difference (Cohen's d) | gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31) |
+
+Methods whose reading of an input is not confirmed (input codes as under Methods); its pathways are to check.
+
+| Method | Input | Why |
+|---|---|---|
+| Bayesian hierarchical (MCMC) | est | gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale diff is on or how it is matched to a likelihood (issue #40) |
 
 ## Sections that apply across the tree
 
@@ -280,7 +293,7 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 3. Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.
 4. Choose the R implementation for the HSROC model and for O - E and V data.
 5. Confirm R packages for one-stage IPD, pairwise and network.
-6. Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).
+6. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
 7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 8. Read the rest of the bayesmeta manual.
 9. Record the Handbook version and the date of each chapter.
@@ -313,6 +326,8 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 | BM-bmr | bayesmeta, bmr() | https://rdrr.io/cran/bayesmeta/man/bmr.html |
 | NM | netmeta, netmeta() | https://rdrr.io/cran/netmeta/man/netmeta.html |
 | NM-bin | netmeta, netmetabin() | https://rdrr.io/cran/netmeta/man/netmetabin.html |
+| GEMTC | gemtc, mtc.model() | https://rdrr.io/cran/gemtc/man/mtc.model.html |
+| GEMTC-net | gemtc, mtc.network() | https://rdrr.io/cran/gemtc/man/mtc.network.html |
 | NM-man | netmeta manual | https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html |
 | META-bin | meta, metabin() | https://rdrr.io/cran/meta/man/metabin.html |
 | META-pw | meta, pairwise(), Details | https://rdrr.io/cran/meta/man/pairwise.html |

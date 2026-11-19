@@ -79,15 +79,19 @@ describe("Pathfinder", PAGE, () => {
   });
 
   it("counts the analyses still to check on each method", () => {
-    // Network binary data: the Bayesian network method's analyses are still to check.
-    renderAt(`${BINARY.replace("Two+groups+%28pairwise%29", "Multiple+groups+%28network%29")}&rare=no&vary=unsure`);
+    // Network binary contrasts: the Bayesian network method's analyses are still to check (#40).
+    const network = BINARY.replace("Two+groups+%28pairwise%29", "Multiple+groups+%28network%29").replace(
+      "Arm-level+summary+data",
+      "Contrast-level+estimates",
+    );
+    renderAt(`${network}&rare=no&vary=unsure`);
     // the status line: the counts by status, and that none can be run (derived from the statuses)
-    expect(screen.getByText(/^\d+ planned, 8 to check\. None of them can be run yet\.$/)).toBeInTheDocument();
+    expect(screen.getByText(/^\d+ planned, 4 to check\. None of them can be run yet\.$/)).toBeInTheDocument();
     const methods = screen.getByRole("region", { name: "By method" });
     const groups = within(methods).getAllByRole("group");
     // every analysis to check is counted on a method's badge
     const badges = groups.flatMap((g) => within(g).queryAllByText(/^\d+ not yet confirmed$/));
-    expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(8);
+    expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(4);
     // only the Bayesian network method's analyses are still to check, so only its group has a badge
     expect(badges).toHaveLength(1);
     expect(groups.find((g) => badges[0] !== undefined && g.contains(badges[0]))).toHaveTextContent("Bayesian hierarchical");
@@ -268,8 +272,8 @@ describe("Pathfinder", PAGE, () => {
   it("shows the live count, and opens the Atlas with the answers chosen", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29");
     const side = screen.getByRole("complementary", { name: "With your answers so far" });
-    expect(side).toHaveTextContent("454 analyses fit");
-    const link = within(side).getByRole("link", { name: "Open these 454 in the Atlas, with your answers already chosen" });
+    expect(side).toHaveTextContent("438 analyses fit");
+    const link = within(side).getByRole("link", { name: "Open these 438 in the Atlas, with your answers already chosen" });
     expect(link.getAttribute("href")).toContain("/atlas?framework=");
   });
 

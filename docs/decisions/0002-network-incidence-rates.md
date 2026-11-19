@@ -26,6 +26,8 @@ for contrast-level estimates.
 - **Same convention as the other network metrics.** Like `N_OR` or `N_MD`,
   the metric's call is netmeta's. The `rma.mv` and gemtc networks reuse the
   metric with their own engine's status: gemtc pathways stay to check.
+  (Superseded for gemtc by decision 0010: gemtc has no likelihood for a rate
+  difference, so its IRD pathways were removed.)
 
 ## Effect on the map
 
