@@ -1018,7 +1018,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ),
     (
         "R25",
-        "Time-to-event from O - E and V: RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
+        "Time-to-event from O - E and V: Cochrane notes that RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
         "missing in v11",
         "CH-10 s10.9",
     ),
@@ -2184,8 +2184,8 @@ RULE_PLAIN: dict[str, str] = {
     "R24": "When a study has three or more groups, a pairwise analysis can combine groups (recommended in most situations), "
     "model the correlation between its comparisons, or use a network meta-analysis instead. Choosing one pair of groups, "
     "or splitting the shared group, is not generally recommended.",
-    "R25": "For time-to-event outcomes given as observed minus expected events and their variance, RevMan offers "
-    "common-effect methods only, and this map follows it. Log hazard ratios with their standard errors are pooled by "
+    "R25": "For time-to-event outcomes given as observed minus expected events and their variance, Cochrane notes "
+    "that RevMan offers common-effect methods only, and this map follows it. Log hazard ratios with their standard errors are pooled by "
     "inverse variance.",
     "R26": "For diagnostic accuracy, sensitivity and specificity are pooled together (the bivariate model). Without "
     "covariates, the HSROC model is equivalent.",

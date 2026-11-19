@@ -1225,7 +1225,7 @@
   ],
   [
    "R25",
-   "Time-to-event from O - E and V: RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
+   "Time-to-event from O - E and V: Cochrane notes that RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
    "missing in v11",
    "CH-10 s10.9"
   ],
