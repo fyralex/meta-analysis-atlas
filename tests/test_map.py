@@ -250,7 +250,7 @@ def test_every_accepted_entry_is_an_added_one() -> None:
         *bm.ACCEPTED_MODELS.values(),
         *bm.ACCEPTED_BRANCHES.values(),
     }
-    assert issues == {11, 14, 16, 17, 18, 19}
+    assert issues == {11, 14, 16, 17, 18, 19, 20}
 
 
 def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
@@ -259,7 +259,8 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
     by_key = {bm.pathway_key(p): p for p in bm.pathways()}
     paired = [p for p in by_key.values() if p["group"] == bm.G3]
     assert paired and all(p["added"] and not p["new"] for p in paired)  # #16
-    assert all(p["new"] for p in by_key.values() if p["method"] == "LRP")  # #20, still open
+    lrp = [p for p in by_key.values() if p["method"] == "LRP"]
+    assert len(lrp) == 2 and all(p["verified"] and not p["new"] for p in lrp)  # #20 and #58
     assert all(p["new"] for p in by_key.values() if p["metric"] == "N_ASD")  # in no accepted family
     mv_common = [
         p

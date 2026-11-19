@@ -147,9 +147,9 @@ describe("choosing nodes", () => {
   });
 
   it("drops only the choice that is empty on its own, keeping the others", () => {
-    // Every penalised logistic regression pathway is still new (#20); the framework and datatype match without it.
-    expect(lockCount({ method: "LRP" }, true)).toBe(0);
-    const selection = { framework: frameworks[0] ?? "", datatype: "Arm-level summary data", method: "LRP" };
+    // Every network arcsine difference pathway is still new; the framework and datatype match without it.
+    expect(lockCount({ metric: "N_ASD" }, true)).toBe(0);
+    const selection = { framework: frameworks[0] ?? "", datatype: "Arm-level summary data", metric: "N_ASD" };
     expect(reconcile(all, selection, HIDE_NEW)).toEqual({ framework: selection.framework, datatype: selection.datatype });
   });
 
