@@ -162,6 +162,8 @@ SOURCES: dict[str, tuple[str, str]] = {
         "https://www.bmj.com/content/364/bmj.k4597",
     ),
     "DOSRES": ("dosresmeta, dosresmeta()", "https://rdrr.io/cran/dosresmeta/man/dosresmeta.html"),
+    "MULTINMA": ("multinma, nma()", "https://dmphillippo.github.io/multinma/reference/nma.html"),
+    "MULTINMA-ipd": ("multinma, set_ipd()", "https://dmphillippo.github.io/multinma/reference/set_ipd.html"),
 }
 
 # --------------------------------------------------------------------------
@@ -566,13 +568,16 @@ METHODS: dict[str, Method] = {
     ),
     "NM_IPD": meth(
         "One-stage regression on participant data (network)",
-        "mixed-effects regression, frequentist or Bayesian",
+        "multinma::nma() with set_ipd()",
         "network",
         ["ipd"],
-        [RANDOM],
-        [STD],
-        ["CH-26"],
-        verified=False,
+        [COMMON, RANDOM],
+        [STD, REG],
+        ["MULTINMA", "MULTINMA-ipd"],
+        added_models=[COMMON],
+        note="A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. "
+        "Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and "
+        "survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59).",
     ),
     # diagnostic test accuracy
     "BIV": meth(
@@ -1235,7 +1240,7 @@ OPEN = [
     "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
     "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
     "Choose the R implementation for the HSROC model and for O - E and V data.",
-    "Confirm R packages for one-stage IPD, pairwise and network.",
+    "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
@@ -1406,6 +1411,10 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
         "N_SMD",
     ): "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)",
 }
+UNCONFIRMED[("NM_IPD", "N_HR")] = (
+    "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page "
+    "doesn't say which give a hazard ratio (#59)"
+)
 # Pairs of a method and an input it reads (a branch kind) whose pairing is not confirmed: their pathways are to check.
 UNCONFIRMED_INPUT: dict[tuple[str, str], str] = {
     ("NM_BAYES", "est"): "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale "
@@ -3282,6 +3291,21 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             'Tests use the normal distribution by default. test="t" uses a t distribution but, unlike the '
             'Hartung-Knapp option (test="knha") in rma.uni(), does not adjust the standard errors.',
             "MF-mv",
+        ),
+    ],
+    "method:NM_IPD": [
+        (
+            "what",
+            "Fits one model to the participant data of every study in the network, in a Bayesian framework (Stan): "
+            "multinma's set_ipd() takes the individual patient data, and nma() fits the network with fixed or "
+            "random treatment effects.",
+            "MULTINMA-ipd, MULTINMA",
+        ),
+        (
+            "use",
+            "Participant-level covariates can enter a regression, as prognostic factors or effect modifiers of the "
+            "treatment effect.",
+            "MULTINMA",
         ),
     ],
     "method:IPD1": [

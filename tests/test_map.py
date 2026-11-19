@@ -277,7 +277,9 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
     lrp = [p for p in by_key.values() if p["method"] == "LRP"]
     assert len(lrp) == 2 and all(p["verified"] and not p["new"] for p in lrp)  # #20 and #58
     assert all(not p["new"] for p in by_key.values() if p["metric"] == "N_ASD")  # #111
-    assert not any(p["new"] for p in by_key.values() if p["framework"] == bm.F1)  # every family in it is decided
+    # every family in it is decided, except the common-effect model #59 added to one-stage IPD networks
+    still_new = {(p["method"], p["model"]) for p in by_key.values() if p["framework"] == bm.F1 and p["new"]}
+    assert still_new == {("NM_IPD", bm.COMMON)}
     mv_common = [
         p
         for p in by_key.values()

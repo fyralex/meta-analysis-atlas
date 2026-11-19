@@ -148,6 +148,14 @@
   "DOSRES": [
    "dosresmeta, dosresmeta()",
    "https://rdrr.io/cran/dosresmeta/man/dosresmeta.html"
+  ],
+  "MULTINMA": [
+   "multinma, nma()",
+   "https://dmphillippo.github.io/multinma/reference/nma.html"
+  ],
+  "MULTINMA-ipd": [
+   "multinma, set_ipd()",
+   "https://dmphillippo.github.io/multinma/reference/set_ipd.html"
   ]
  },
  "branches": [
@@ -1415,7 +1423,7 @@
   "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
   "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
   "Choose the R implementation for the HSROC model and for O - E and V data.",
-  "Confirm R packages for one-stage IPD, pairwise and network.",
+  "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).",
   "Read the rest of the bayesmeta manual.",
@@ -1432,6 +1440,11 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
+  },
+  {
+   "method": "NM_IPD",
+   "metric": "N_HR",
+   "why": "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#59)"
   }
  ],
  "unconfirmed_input": [
@@ -2653,25 +2666,30 @@
   },
   "NM_IPD": {
    "label": "One-stage regression on participant data (network)",
-   "fn": "mixed-effects regression, frequentist or Bayesian",
+   "fn": "multinma::nma() with set_ipd()",
    "domain": "network",
    "takes": [
     "ipd"
    ],
    "models": [
+    "Common effect",
     "Random effects"
    ],
    "analysis": [
-    "standard"
+    "standard",
+    "meta-regression"
    ],
    "src": [
-    "CH-26"
+    "MULTINMA",
+    "MULTINMA-ipd"
    ],
    "metrics": null,
-   "note": "",
+   "note": "A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59).",
    "added": false,
-   "verified": false,
-   "added_models": [],
+   "verified": true,
+   "added_models": [
+    "Common effect"
+   ],
    "new": false
   },
   "BIV": {
@@ -8903,6 +8921,20 @@
    "group": "Multiple groups (network)",
    "datatype": "Individual participant data",
    "outcome": "Binary",
+   "model": "Common effect",
+   "method": "NM_IPD",
+   "metric": "N_OR",
+   "verified": false,
+   "added": true,
+   "new": true,
+   "milestone": "Later",
+   "status": "to_check"
+  },
+  {
+   "framework": "1. Interventional (effect of an intervention)",
+   "group": "Multiple groups (network)",
+   "datatype": "Individual participant data",
+   "outcome": "Binary",
    "model": "Random effects",
    "method": "NM_IPD",
    "metric": "N_OR",
@@ -8917,12 +8949,40 @@
    "group": "Multiple groups (network)",
    "datatype": "Individual participant data",
    "outcome": "Continuous",
+   "model": "Common effect",
+   "method": "NM_IPD",
+   "metric": "N_MD",
+   "verified": false,
+   "added": true,
+   "new": true,
+   "milestone": "Later",
+   "status": "to_check"
+  },
+  {
+   "framework": "1. Interventional (effect of an intervention)",
+   "group": "Multiple groups (network)",
+   "datatype": "Individual participant data",
+   "outcome": "Continuous",
    "model": "Random effects",
    "method": "NM_IPD",
    "metric": "N_MD",
    "verified": false,
    "added": false,
    "new": false,
+   "milestone": "Later",
+   "status": "to_check"
+  },
+  {
+   "framework": "1. Interventional (effect of an intervention)",
+   "group": "Multiple groups (network)",
+   "datatype": "Individual participant data",
+   "outcome": "Time-to-event",
+   "model": "Common effect",
+   "method": "NM_IPD",
+   "metric": "N_HR",
+   "verified": false,
+   "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
