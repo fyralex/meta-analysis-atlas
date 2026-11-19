@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 75; status runnable 0; status planned 412; status specified 64; status to_check 75.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -53,7 +53,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | NEW | MF-escalc |
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | NEW | MF-escalc |
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | NEW | MF-escalc |
-| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | CH-10 |
+| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW | CH-24, CH-10 |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW | DOSRES |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW | DOSRES |
 | 5. Measurement reliability | One group (one instrument) | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
@@ -148,9 +148,9 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | PHI | Phi coefficient | `escalc(measure="PHI")` | MF-escalc | OK |
 | RTET | Tetrachoric correlation | `escalc(measure="RTET")` | MF-escalc | OK |
 | PCOR | Partial correlation | `escalc(measure="PCOR")` | MF-escalc | OK |
-| EX_OR | Adjusted odds ratio (log), exposure | `enter log OR and its SE` | CH-10 | CHECK |
-| EX_RR | Adjusted risk ratio (log), exposure | `enter log RR and its SE` | CH-10 | CHECK |
-| EX_HR | Adjusted hazard ratio (log), exposure | `enter log HR and its SE` | CH-10 | CHECK |
+| EX_OR | Adjusted odds ratio (log), exposure | `enter log OR and its SE` | CH-24 | OK |
+| EX_RR | Adjusted risk ratio (log), exposure | `enter log RR and its SE` | CH-24 | OK |
+| EX_HR | Adjusted hazard ratio (log), exposure | `enter log HR and its SE` | CH-24 | OK |
 | DR_RR | Trend in log relative risk per unit of dose | `dosresmeta(logrr ~ dose)` | DOSRES | OK |
 | DR_MD | Trend in mean difference per unit of dose | `dosresmeta(covariance="md")` | DOSRES | OK |
 | DR_SMD | Trend in standardized mean difference per unit of dose | `dosresmeta(covariance="smd")` | DOSRES | OK |
@@ -291,10 +291,9 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 
 1. Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.
 2. Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.
-3. Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.
-4. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
-5. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-6. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+3. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
+4. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
+5. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 
 ## Sources
 
@@ -317,6 +316,7 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | CH-10 | Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10 |
 | CH-11 | Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-11 |
 | CH-13 | Cochrane Handbook Ch. 13 (updated August 2024), missing results | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13 |
+| CH-24 | Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24 |
 | CH-23 | Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23 |
 | CH-26 | Cochrane Handbook Ch. 26 (updated October 2019), individual participant data | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26 |
 | BM | bayesmeta manual (version 3.5) | https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html |

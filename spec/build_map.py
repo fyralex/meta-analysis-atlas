@@ -136,6 +136,7 @@ SOURCES: dict[str, tuple[str, str]] = {
     "CH-10": ("Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis", CH + "10"),
     "CH-11": ("Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis", CH + "11"),
     "CH-13": ("Cochrane Handbook Ch. 13 (updated August 2024), missing results", CH + "13"),
+    "CH-24": ("Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies", CH + "24"),
     "CH-23": ("Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials", CH + "23"),
     "CH-26": ("Cochrane Handbook Ch. 26 (updated October 2019), individual participant data", CH + "26"),
     "BM": ("bayesmeta manual (version 3.5)", "https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html"),
@@ -277,9 +278,9 @@ METRICS: dict[str, Metric] = {
     "PHI": m("Phi coefficient", E % "PHI"),
     "RTET": m("Tetrachoric correlation", E % "RTET"),
     "PCOR": m("Partial correlation", E % "PCOR"),
-    "EX_OR": m("Adjusted odds ratio (log), exposure", "enter log OR and its SE", "CH-10", verified=False),
-    "EX_RR": m("Adjusted risk ratio (log), exposure", "enter log RR and its SE", "CH-10", verified=False),
-    "EX_HR": m("Adjusted hazard ratio (log), exposure", "enter log HR and its SE", "CH-10", verified=False),
+    "EX_OR": m("Adjusted odds ratio (log), exposure", "enter log OR and its SE", "CH-24"),
+    "EX_RR": m("Adjusted risk ratio (log), exposure", "enter log RR and its SE", "CH-24"),
+    "EX_HR": m("Adjusted hazard ratio (log), exposure", "enter log HR and its SE", "CH-24"),
     "DR_RR": m("Trend in log relative risk per unit of dose", "dosresmeta(logrr ~ dose)", "DOSRES"),
     "DR_MD": m("Trend in mean difference per unit of dose", 'dosresmeta(covariance="md")', "DOSRES"),
     "DR_SMD": m("Trend in standardized mean difference per unit of dose", 'dosresmeta(covariance="smd")', "DOSRES"),
@@ -934,9 +935,10 @@ br(
     "adjusted estimate with SE or CI",
     ["EX_OR", "EX_RR", "EX_HR"],
     added=True,
-    verified=False,
-    note="Guidance for non-randomized studies (Cochrane Ch. 24) not read yet.",
-    src=["CH-10"],
+    note="Cochrane Ch. 24 is written for non-randomized studies of interventions; the map applies it to exposures "
+    "by analogy (#23). It prefers adjusted estimates (24.4.1), pooled by the generic inverse-variance method "
+    "(24.6.2.1).",
+    src=["CH-24", "CH-10"],
 )
 br(
     F4,
@@ -1266,7 +1268,6 @@ CROSS: list[tuple[str, str, str]] = [
 OPEN = [
     "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
     "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
-    "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
     "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
@@ -4043,6 +4044,31 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     ],
     "group:exposure-and-outcome-observational-studies": [
         ADJUSTED_MEASURE,
+        (
+            "use",
+            "Cochrane's guidance here is written for non-randomized studies of interventions, and the map applies it "
+            "to exposures by analogy. It prefers adjusted estimates to unadjusted ones and, where a study reports "
+            "several, the one judged least at risk of bias from confounding.",
+            "CH-24 s24.4.1",
+        ),
+        (
+            "use",
+            "Cochrane says random effects should be the default for these studies, with a reason given for using a "
+            "common-effect model instead.",
+            "CH-24 s24.6.2.1",
+        ),
+        (
+            "caution",
+            "Cochrane says randomized trials and non-randomized studies should not be combined in one meta-analysis, "
+            "and studies with very different designs should be analysed separately.",
+            "CH-24 s24.6.2.1",
+        ),
+        (
+            "caution",
+            "Studies may adjust for different confounders in different ways, which Cochrane names as a source of "
+            "heterogeneity.",
+            "CH-24 s24.6.2.2",
+        ),
     ],
     "group:dose-response": [
         (

@@ -885,7 +885,10 @@ def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
         "outcome:any-outcome",
     ):
         assert cid not in bm.TEACH, cid
-    assert bm.TEACH["group:exposure-and-outcome-observational-studies"] == [bm.ADJUSTED_MEASURE]
+    # the exposure-outcome group now has a read source, Cochrane Ch. 24, applied by analogy (#23)
+    exposure = bm.TEACH["group:exposure-and-outcome-observational-studies"]
+    assert exposure[0] == bm.ADJUSTED_MEASURE
+    assert all("CH-24" in src for _, _, src in exposure[1:])
 
 
 def test_every_glossary_term_has_a_sourced_definition(all_cards: list[bm.Card]) -> None:
