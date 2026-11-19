@@ -300,6 +300,13 @@ def test_network_metrics_name_their_escalc_measure_for_rma_mv(all_cards: list[bm
         assert "MF-escalc" in card["src"]
 
 
+def test_every_metric_is_in_exactly_one_family() -> None:
+    """The Atlas groups the metric tier by family (#78): each metric in one family, and no unknown code."""
+    listed = [code for codes in bm.METRIC_FAMILIES.values() for code in codes]
+    assert sorted(listed) == sorted(bm.METRICS)
+    assert len(listed) == len(set(listed))
+
+
 # --- status and milestone --------------------------------------------------------
 
 

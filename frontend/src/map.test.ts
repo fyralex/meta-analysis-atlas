@@ -44,6 +44,7 @@ describe("spec/map.json as the frontend reads it", () => {
       expect(typeof m.src, code).toBe("string");
       expect(typeof m.verified, code).toBe("boolean");
       expect(m.only === null || Array.isArray(m.only), code).toBe(true);
+      expect(map.metric_families, code).toContain(m.family);
     }
     for (const [id, m] of Object.entries(map.methods)) {
       expect(typeof m.label, id).toBe("string");
