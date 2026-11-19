@@ -78,18 +78,24 @@ describe("Pathfinder", PAGE, () => {
     expect(screen.getByText(/None of them can be run yet\./)).toBeInTheDocument();
   });
 
-  it("counts the analyses still to check on each method, and says sources open outside the Atlas", () => {
-    renderAt(`${BINARY}&rare=no&vary=unsure`);
+  it("counts the analyses still to check on each method", () => {
+    // Network binary data: the Bayesian network method's analyses are still to check.
+    renderAt(`${BINARY.replace("Two+groups+%28pairwise%29", "Multiple+groups+%28network%29")}&rare=no&vary=unsure`);
     // the status line: the counts by status, and that none can be run (derived from the statuses)
-    expect(screen.getByText("26 planned, 2 to check. None of them can be run yet.")).toBeInTheDocument();
+    expect(screen.getByText(/^\d+ planned, 8 to check\. None of them can be run yet\.$/)).toBeInTheDocument();
     const methods = screen.getByRole("region", { name: "By method" });
     const groups = within(methods).getAllByRole("group");
-    // every analysis to check is counted on exactly one method's badge, and only methods with one have a badge
+    // every analysis to check is counted on a method's badge
     const badges = groups.flatMap((g) => within(g).queryAllByText(/^\d+ not yet confirmed$/));
-    expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(2);
-    for (const g of groups) {
-      expect(within(g).queryByText(/not yet confirmed$/) !== null).toBe(g.textContent.includes("To check"));
-    }
+    expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(8);
+    // only the Bayesian network method's analyses are still to check, so only its group has a badge
+    expect(badges).toHaveLength(1);
+    expect(groups.find((g) => badges[0] !== undefined && g.contains(badges[0]))).toHaveTextContent("Bayesian hierarchical");
+  });
+
+  it("says sources open outside the Atlas", () => {
+    renderAt(`${BINARY}&rare=no&vary=unsure`);
+    const methods = screen.getByRole("region", { name: "By method" });
     // the summary line's own source is in the box, as are the other lines' sources
     const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
     expect(within(mh).getByText(/^Sources \(open outside the Atlas\), for the line above/)).toBeInTheDocument();

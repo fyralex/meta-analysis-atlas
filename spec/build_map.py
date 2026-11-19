@@ -379,9 +379,9 @@ METHODS: dict[str, Method] = {
         ["META-bin"],
         metrics={"OR"},
         added=True,
-        verified=False,
-        note="Handles single and double zero studies without a continuity correction. "
-        "Which models it fits is not confirmed.",
+        note="Handles single and double zero studies without a continuity correction. Reports a common-effect and "
+        "a random-effects result; the random-effects one uses a multiplicative heterogeneity parameter (phi), not "
+        "a between-study variance.",
     ),
     "BAYES": meth(
         "Bayesian normal-normal hierarchical model",
@@ -391,7 +391,8 @@ METHODS: dict[str, Method] = {
         [RANDOM],
         [STD, SUB, REG],
         ["BM", "BM-bmr"],
-        note="No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out "
+        note="Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT "
+        "algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out "
         "function found in the manual.",
     ),
     "MV": meth(
@@ -865,7 +866,7 @@ ACCEPTED_METRICS: dict[str, int] = {
     "POR": 17,
     **dict.fromkeys(["PRZ", "MNLN", "IRS", "IRFT", "IRSD", "SMDH", "SMD1"], 18),
 }
-ACCEPTED_METHODS: dict[str, int] = {"OEV": 17, "NM_GT": 19, "NM_MH": 19}
+ACCEPTED_METHODS: dict[str, int] = {"OEV": 17, "NM_GT": 19, "NM_MH": 19, "LRP": 20}
 ACCEPTED_MODELS: dict[tuple[str, str], int] = {("MV", COMMON): 14, ("NM_MV", COMMON): 11, ("NM_BAYES", COMMON): 11}
 ACCEPTED_BRANCHES: dict[tuple[str, str, str, str], int] = {
     (F1, G3, ARM, "Continuous"): 16,
@@ -995,7 +996,8 @@ RULES: list[tuple[str, str, str, str]] = [
     ("R12", "Cumulative and leave-one-out need a model without moderators.", "missing in v11", "MF-cumul, MF-l1o"),
     (
         "R13",
-        "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It needs no MCMC.",
+        "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the "
+        "posterior numerically (a grid approximation and the DIRECT algorithm).",
         "answers v11's open question",
         "BM",
     ),
@@ -1144,7 +1146,6 @@ OPEN = [
     "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
-    "Confirm which models penalised logistic regression (metabin LRP) fits.",
     "Read the rest of the bayesmeta manual.",
     "Record the Handbook version and the date of each chapter.",
     "Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function.",
@@ -2224,8 +2225,8 @@ RULE_PLAIN: dict[str, str] = {
     "rma.uni, rma.glmm, rma.mv or bayesmeta's bmr. rma.mh and rma.peto can't.",
     "R11": "Cumulative and leave-one-out analyses are available for rma.uni, rma.mh and rma.peto only.",
     "R12": "Cumulative and leave-one-out analyses need a model without study characteristics (moderators).",
-    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta needs no "
-    "MCMC sampling.",
+    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta "
+    "computes its results numerically, with a grid approximation and the DIRECT algorithm.",
     "R14": "Hartung-Knapp confidence intervals are for random-effects models fitted with rma.uni only.",
     "R15": "REML is the default estimator of the between-study variance in metafor and RevMan. Cochrane also cites "
     "Paule-Mandel, and says no estimator is best in every case.",

@@ -1200,7 +1200,7 @@
   ],
   [
    "R13",
-   "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It needs no MCMC.",
+   "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the posterior numerically (a grid approximation and the DIRECT algorithm).",
    "answers v11's open question",
    "BM"
   ],
@@ -1404,7 +1404,6 @@
   "Confirm R packages for one-stage IPD, pairwise and network.",
   "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).",
-  "Confirm which models penalised logistic regression (metabin LRP) fits.",
   "Read the rest of the bayesmeta manual.",
   "Record the Handbook version and the date of each chapter.",
   "Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function."
@@ -2305,11 +2304,11 @@
    "metrics": [
     "OR"
    ],
-   "note": "Handles single and double zero studies without a continuity correction. Which models it fits is not confirmed.",
+   "note": "Handles single and double zero studies without a continuity correction. Reports a common-effect and a random-effects result; the random-effects one uses a multiplicative heterogeneity parameter (phi), not a between-study variance.",
    "added": true,
-   "verified": false,
+   "verified": true,
    "added_models": [],
-   "new": true
+   "new": false
   },
   "BAYES": {
    "label": "Bayesian normal-normal hierarchical model",
@@ -2332,7 +2331,7 @@
     "BM-bmr"
    ],
    "metrics": null,
-   "note": "No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual.",
+   "note": "Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual.",
    "added": false,
    "verified": true,
    "added_models": [],
@@ -4807,11 +4806,11 @@
    "model": "Common effect",
    "method": "LRP",
    "metric": "OR",
-   "verified": false,
+   "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -4821,11 +4820,11 @@
    "model": "Random effects",
    "method": "LRP",
    "metric": "OR",
-   "verified": false,
+   "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",

@@ -105,12 +105,12 @@ describe("explaining a greyed-out node", () => {
   });
 
   it("says when only hidden new entries would fit", () => {
-    // Penalised logistic regression is new (added, not yet accepted: #20), and so is every pathway through it,
+    // The network arcsine difference is new (added, in no accepted family), and so is every pathway through it,
     // while random effects has other pathways.
-    expect(lock.filter((p) => p.method === "LRP").every((p) => p.new)).toBe(true);
+    expect(lock.filter((p) => p.metric === "N_ASD").every((p) => p.new)).toBe(true);
     expect(lock.some((p) => !p.new && p.model === "Random effects")).toBe(true);
-    expect(explain(lock, { model: "Random effects" }, "method", "LRP", HIDE)).toEqual({ kind: "hidden-new" });
-    expect(explain(lock, { model: "Random effects" }, "method", "LRP", SHOW).kind).not.toBe("hidden-new");
+    expect(explain(lock, { model: "Random effects" }, "metric", "N_ASD", HIDE)).toEqual({ kind: "hidden-new" });
+    expect(explain(lock, { model: "Random effects" }, "metric", "N_ASD", SHOW).kind).not.toBe("hidden-new");
   });
 });
 
@@ -125,9 +125,9 @@ describe("why not, with only runnable pathways shown", () => {
   });
 
   it("names both settings when a node fits only through pathways both of them hide", () => {
-    // Penalised logistic regression's pathways are all marked new, and none is runnable.
+    // The network arcsine difference's pathways are all marked new, and none is runnable.
     const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
-    expect(map.pathways.filter((p) => p.method === "LRP").every((p) => p.new && p.status !== "runnable")).toBe(true);
-    expect(explain(some, {}, "method", "LRP", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
+    expect(map.pathways.filter((p) => p.metric === "N_ASD").every((p) => p.new && p.status !== "runnable")).toBe(true);
+    expect(explain(some, {}, "metric", "N_ASD", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
   });
 });

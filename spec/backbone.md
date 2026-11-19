@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 124; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 122; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -166,8 +166,8 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | Mantel-Haenszel | `metafor::rma.mh()` | Common effect | arm | standard, cumulative, leave-one-out | MF-mh, CH-10 | OK | No moderators. Generally preferred to inverse variance for common-effect binary analyses (Cochrane 10.4.1). |
 | Peto | `metafor::rma.peto()` | Common effect | arm | standard, cumulative, leave-one-out | MF-peto, CH-10 | OK | For rare events, balanced arms and small effects. Not a default (Cochrane 10.4.2). |
 | Generalized linear mixed model | `metafor::rma.glmm()` | Common effect, Random effects | arm | standard, subgroup, meta-regression | MF-glmm | OK | Common effect is method="EE"; random effects uses maximum likelihood only. RR and RD are experimental. No cumulative or leave-one-out function. |
-| Penalised logistic regression (rare events) | `meta::metabin(method="LRP")` | Common effect, Random effects | arm | standard | META-bin | NEW, CHECK | Handles single and double zero studies without a continuity correction. Which models it fits is not confirmed. |
-| Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
+| Penalised logistic regression (rare events) | `meta::metabin(method="LRP")` | Common effect, Random effects | arm | standard | META-bin | accepted #20 | Handles single and double zero studies without a continuity correction. Reports a common-effect and a random-effects result; the random-effects one uses a multiplicative heterogeneity parameter (phi), not a between-study variance. |
+| Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
 | Multilevel / multivariate | `metafor::rma.mv() with vcalc()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MF-mv | OK | For studies that contribute several dependent estimates. Without a random term it fits a fixed-effects model (v11 says random only). REML or ML. No Hartung-Knapp, cumulative or leave-one-out function. |
 | Observed minus expected and variance (log-rank / Peto) | `computed as (O-E)/V with variance 1/V` | Common effect | oev | standard | CH-10 | accepted #17, CHECK | Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet. |
 | One-stage regression on participant data (pairwise) | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
@@ -200,7 +200,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R10 | Subgroup analysis and meta-regression need moderators: available in rma.uni, rma.glmm, rma.mv and bayesmeta (bmr); not in rma.mh or rma.peto. | agrees; answers v11's open question on bayesmeta | MF-uni, MF-glmm, MF-mv, BM-bmr |
 | R11 | Cumulative and leave-one-out functions exist for rma.uni, rma.mh and rma.peto only. | v11 wrong for GLMM and rma.mv | MF-cumul, MF-l1o |
 | R12 | Cumulative and leave-one-out need a model without moderators. | missing in v11 | MF-cumul, MF-l1o |
-| R13 | bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It needs no MCMC. | answers v11's open question | BM |
+| R13 | bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the posterior numerically (a grid approximation and the DIRECT algorithm). | answers v11's open question | BM |
 | R14 | Hartung-Knapp intervals apply to rma.uni random-effects models only. | agrees | MF-uni, MF-mv |
 | R15 | REML is the default in metafor and RevMan. Cochrane also cites Paule-Mandel and says no estimator is universally preferable. | v11 overstates: calls REML Cochrane's preference | CH-10 s10.10.4.4 |
 | R16 | Network meta-analysis can use a common-effect or a random-effects model. Chapter 11 never mentions excluding the common-effect model; netmeta and the rma.mv example fit both. | v11 wrong: excludes fixed effect | CH-11, NM, MD-senn |
@@ -282,10 +282,9 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 5. Confirm R packages for one-stage IPD, pairwise and network.
 6. Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).
 7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
-8. Confirm which models penalised logistic regression (metabin LRP) fits.
-9. Read the rest of the bayesmeta manual.
-10. Record the Handbook version and the date of each chapter.
-11. Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function.
+8. Read the rest of the bayesmeta manual.
+9. Record the Handbook version and the date of each chapter.
+10. Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function.
 
 ## Sources
 

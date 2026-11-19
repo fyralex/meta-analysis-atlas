@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 124; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 122; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
 
 - framework: 1. Interventional (effect of an intervention)  (454)
   - group: One group (single arm)  (137)
@@ -225,7 +225,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Peto odds ratio (log)
           - method: Generalized linear mixed model  (1)
             - metric: Odds ratio (log)
-          - method: Penalised logistic regression (rare events) [NEW] [CHECK]  (1)
+          - method: Penalised logistic regression (rare events)  (1)
             - metric: Odds ratio (log)
           - method: Multilevel / multivariate  (4)
             - metric: Odds ratio (log)
@@ -240,7 +240,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Arcsine square-root risk difference
           - method: Generalized linear mixed model  (1)
             - metric: Odds ratio (log)
-          - method: Penalised logistic regression (rare events) [NEW] [CHECK]  (1)
+          - method: Penalised logistic regression (rare events)  (1)
             - metric: Odds ratio (log)
           - method: Bayesian normal-normal hierarchical model  (4)
             - metric: Odds ratio (log)

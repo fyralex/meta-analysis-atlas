@@ -22,8 +22,8 @@ analyses yet.** Each pathway has a status:
 | Status | Pathways | Meaning |
 |---|---|---|
 | Planned | 404 | Confirmed from its sources; its engine is on the roadmap |
-| Specified | 61 | Confirmed from its sources; not planned yet |
-| To check | 99 | Not yet confirmed from a primary source |
+| Specified | 63 | Confirmed from its sources; not planned yet |
+| To check | 97 | Not yet confirmed from a primary source |
 | Runnable | 0 | Passes a validation test against a published worked example or the R package itself; none yet |
 
 A pathway becomes runnable only when it passes a validation test, against a
