@@ -5,8 +5,8 @@ don't edit it by hand. `scripts/check.sh` fails if it is out of date, and
 if a dependency of the app has a licence that isn't compatible with
 GPL-3.0-or-later.
 
-285 packages (each name and version once): 22 the app depends on, 263 used only to build and test it.
-By licence: MIT 222, Apache-2.0 19, MPL-2.0 12, ISC 11, BSD-2-Clause 8, BSD-3-Clause 4, BlueOak-1.0.0 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
+288 packages (each name and version once): 22 the app depends on, 266 used only to build and test it.
+By licence: MIT 222, Apache-2.0 22, MPL-2.0 12, ISC 11, BSD-2-Clause 8, BSD-3-Clause 4, BlueOak-1.0.0 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
 
 ## Dependencies of the app
 
@@ -97,6 +97,7 @@ Split by npm's dev flag: what the app's build can bundle, with their own depende
 | `@keyv/serialize` | 1.1.1 | MIT |
 | `@napi-rs/wasm-runtime` | 1.2.6 | MIT |
 | `@oxc-project/types` | 0.156.0 | MIT |
+| `@playwright/test` | 1.64.1 | Apache-2.0 |
 | `@rolldown/binding-android-arm-eabi` | 1.2.19 | MIT |
 | `@rolldown/binding-android-arm64` | 1.2.19 | MIT |
 | `@rolldown/binding-darwin-arm64` | 1.2.19 | MIT |
@@ -256,6 +257,8 @@ Split by npm's dev flag: what the app's build can bundle, with their own depende
 | `path-key` | 3.1.1 | MIT |
 | `picocolors` | 1.1.1 | ISC |
 | `picomatch` | 4.0.7 | MIT |
+| `playwright` | 1.64.1 | Apache-2.0 |
+| `playwright-core` | 1.64.1 | Apache-2.0 |
 | `postcss` | 8.5.33 | MIT |
 | `prelude-ls` | 1.2.1 | MIT |
 | `pretty-format` | 27.5.1 | MIT |
