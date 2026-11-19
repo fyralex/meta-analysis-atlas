@@ -73,13 +73,13 @@
    "Cochrane Handbook Ch. 13 (updated August 2024), missing results",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13"
   ],
-  "CH-24": [
-   "Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies",
-   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24"
-  ],
   "CH-23": [
    "Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23"
+  ],
+  "CH-24": [
+   "Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies",
+   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24"
   ],
   "CH-26": [
    "Cochrane Handbook Ch. 26 (updated October 2019), individual participant data",
@@ -1082,7 +1082,7 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": "Cochrane Ch. 24 is written for non-randomized studies of interventions; the map applies it to exposures by analogy (#23). It prefers adjusted estimates (24.4.1), pooled by the generic inverse-variance method (24.6.2.1).",
+   "note": "Cochrane Ch. 24 is written for non-randomized studies of interventions; the map applies it to exposures by analogy (#23). It prefers adjusted estimates (24.4.1) and names the generic inverse-variance method as suitable for pooling them (24.6.2.1).",
    "src": [
     "CH-24",
     "CH-10"

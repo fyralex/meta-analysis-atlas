@@ -316,8 +316,8 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | CH-10 | Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10 |
 | CH-11 | Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-11 |
 | CH-13 | Cochrane Handbook Ch. 13 (updated August 2024), missing results | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13 |
-| CH-24 | Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24 |
 | CH-23 | Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23 |
+| CH-24 | Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24 |
 | CH-26 | Cochrane Handbook Ch. 26 (updated October 2019), individual participant data | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26 |
 | BM | bayesmeta manual (version 3.5) | https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html |
 | BM-bmr | bayesmeta, bmr() | https://rdrr.io/cran/bayesmeta/man/bmr.html |

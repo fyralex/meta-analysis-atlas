@@ -136,8 +136,8 @@ SOURCES: dict[str, tuple[str, str]] = {
     "CH-10": ("Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis", CH + "10"),
     "CH-11": ("Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis", CH + "11"),
     "CH-13": ("Cochrane Handbook Ch. 13 (updated August 2024), missing results", CH + "13"),
-    "CH-24": ("Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies", CH + "24"),
     "CH-23": ("Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials", CH + "23"),
+    "CH-24": ("Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies", CH + "24"),
     "CH-26": ("Cochrane Handbook Ch. 26 (updated October 2019), individual participant data", CH + "26"),
     "BM": ("bayesmeta manual (version 3.5)", "https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html"),
     "BM-bmr": ("bayesmeta, bmr()", "https://rdrr.io/cran/bayesmeta/man/bmr.html"),
@@ -936,8 +936,8 @@ br(
     ["EX_OR", "EX_RR", "EX_HR"],
     added=True,
     note="Cochrane Ch. 24 is written for non-randomized studies of interventions; the map applies it to exposures "
-    "by analogy (#23). It prefers adjusted estimates (24.4.1), pooled by the generic inverse-variance method "
-    "(24.6.2.1).",
+    "by analogy (#23). It prefers adjusted estimates (24.4.1) and names the generic inverse-variance method as "
+    "suitable for pooling them (24.6.2.1).",
     src=["CH-24", "CH-10"],
 )
 br(
@@ -2468,6 +2468,13 @@ ADJUSTED_MEASURE: tuple[str, str, str] = (
     "standard error, including those from non-randomized studies.",
     "CH-10 s10.3.3",
 )
+# The exposure-outcome branch's source is written for interventions (#23, decision 0013).
+EXPOSURE_ANALOGY: tuple[str, str, str] = (
+    "use",
+    "Cochrane prefers adjusted estimates in non-randomized studies of interventions; the map applies that guidance "
+    "to exposures by analogy.",
+    "CH-24 s24.4.1",
+)
 # Cautions that hold for every network method, whatever fits the model (Cochrane 11.2.2, 11.3.1).
 NETWORK_CAUTIONS: list[tuple[str, str, str]] = [
     (
@@ -3821,10 +3828,11 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "NM",
         ),
     ],
-    "metric:EX_OR": [ADJUSTED_MEASURE],
-    "metric:EX_RR": [ADJUSTED_MEASURE],
+    "metric:EX_OR": [ADJUSTED_MEASURE, EXPOSURE_ANALOGY],
+    "metric:EX_RR": [ADJUSTED_MEASURE, EXPOSURE_ANALOGY],
     "metric:EX_HR": [
         ADJUSTED_MEASURE,
+        EXPOSURE_ANALOGY,
         (
             "what",
             "Cochrane notes that log hazard ratios from Cox proportional hazards models, with their standard errors, "
