@@ -300,7 +300,7 @@
 {"text": "Proportional odds ratio (log) goes only with the datatype: Precomputed estimate.", "rule": "", "src": "CH-6, CH-10"},
 {"text": "Proportional odds ratio (log) goes only with the framework: 1. Interventional (effect of an intervention).", "rule": "", "src": "CH-6, CH-10"},
 {"text": "In this map, Inverse variance takes arm-level data or precomputed estimates, not O - E and V.", "rule": "", "src": "MF-uni, CH-10"},
-{"text": "Observed minus expected and variance (log-rank / Peto) fits a common-effect model only.", "rule": "R25", "src": "CH-10 s10.9"},
+{"text": "In this map, Observed minus expected and variance (log-rank / Peto) fits a common-effect model only.", "rule": "R25", "src": "CH-10 s10.9"},
 {"text": "In this map, Bayesian normal-normal hierarchical model takes arm-level data or precomputed estimates, not O - E and V.", "rule": "", "src": "BM, BM-bmr"},
 {"text": "In this map, Multilevel / multivariate takes arm-level data or precomputed estimates, not O - E and V.", "rule": "", "src": "MF-mv"},
 {"text": "Observed minus expected and variance goes only with the framework: 1. Interventional (effect of an intervention).", "rule": "", "src": "CH-10"},

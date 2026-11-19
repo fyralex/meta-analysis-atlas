@@ -1012,13 +1012,13 @@ RULES: list[tuple[str, str, str, str]] = [
     ),
     (
         "R24",
-        "Study with three or more arms in a pairwise analysis: combine arms (recommended), model the correlation, or use a network.",
+        "Study with three or more arms in a pairwise analysis: combine arms (recommended in most situations), model the correlation, or use a network. Choosing one pair, or splitting the shared group, is not generally recommended.",
         "missing in v11",
         "CH-23 s23.3.4",
     ),
     (
         "R25",
-        "Time-to-event from O - E and V: fixed-effect methods only; log hazard ratios with SEs are pooled by inverse variance.",
+        "Time-to-event from O - E and V: Cochrane notes that RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
         "missing in v11",
         "CH-10 s10.9",
     ),
@@ -1645,7 +1645,7 @@ WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
     ("PETO", "takes"): ("R2", True),
     ("GLMM", "metrics"): ("R6", False),  # R6 also lists RR and RD as experimental
     ("GLMM", "takes"): ("R2", True),
-    ("OEV", "models"): ("R25", True),
+    ("OEV", "models"): ("R25", False),  # R25 states RevMan's limit, which the map follows (decision 0007)
     ("NM_MH", "models"): ("R20", True),
 }
 # A second reason for a method's limit, where another rule explains what the first leaves open (#82): R3 says
@@ -2182,9 +2182,11 @@ RULE_PLAIN: dict[str, str] = {
     "R23": "For a crossover trial, use a paired analysis. Without paired data, estimate the standard deviation of the "
     "differences from an assumed correlation.",
     "R24": "When a study has three or more groups, a pairwise analysis can combine groups (recommended in most situations), "
-    "model the correlation between its comparisons, or use a network meta-analysis instead.",
-    "R25": "For time-to-event outcomes given as observed minus expected events and their variance, only "
-    "common-effect methods apply. Log hazard ratios with their standard errors are pooled by inverse variance.",
+    "model the correlation between its comparisons, or use a network meta-analysis instead. Choosing one pair of groups, "
+    "or splitting the shared group, is not generally recommended.",
+    "R25": "For time-to-event outcomes given as observed minus expected events and their variance, Cochrane notes "
+    "that RevMan offers common-effect methods only, and this map follows it. Log hazard ratios with their standard errors are pooled by "
+    "inverse variance.",
     "R26": "For diagnostic accuracy, sensitivity and specificity are pooled together (the bivariate model). Without "
     "covariates, the HSROC model is equivalent.",
     "R27": "To pool a prediction model's performance, pool the c-statistic on the logit scale and the ratio of observed "

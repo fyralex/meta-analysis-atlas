@@ -348,7 +348,7 @@ def test_every_why_not_reason_cites_known_sources_and_rules(
         (
             ("model", "Random effects"),
             ("datatype", "Observed minus expected and variance"),
-            "Observed minus expected and variance (log-rank / Peto) fits a common-effect model only.",
+            "In this map, Observed minus expected and variance (log-rank / Peto) fits a common-effect model only.",
             "R25",
         ),
         (
