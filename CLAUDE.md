@@ -340,8 +340,9 @@ committed, and the checks confirm that it's current.
 - **Map (`spec/`):** Python 3.11, standard library only for generation; ruff,
   mypy `--strict`, pytest.
 - **Frontend:** React 19, TypeScript strict, Vite, react-three-fiber, D3.
-  Tooled with ESLint, `tsc --noEmit`, and Vitest with
-  `@testing-library/react` 16. Deployed to GitHub Pages.
+  Tooled with ESLint, `tsc --noEmit`, Vitest with
+  `@testing-library/react` 16, and Playwright for browser tests. Deployed to
+  GitHub Pages.
 - **From v0.2, server option:** FastAPI, Pydantic 2, httpx; R 4.5 with
   Plumber, metafor and jsonlite pinned with renv (lintr, styler, testthat);
   Docker Compose with `frontend` (nginx), `backend` and `r_service`, each with
@@ -358,6 +359,9 @@ committed, and the checks confirm that it's current.
   - from v0.2, every `runnable` pathway has at least one validation test.
 - **Frontend tests:** the map's filtering logic (its counts must equal the
   lock file's), the question flow, and card rendering.
+- **Browser tests** (Playwright, `frontend/e2e/`, at releases): each app at
+  360, 768 and 1280 px in both themes, with no console error and no sideways
+  scroll, and the Atlas drawing its 3D map.
 - **From v0.2:** unit tests for the plan builder and request validation;
   validation tests (`@pytest.mark.integration`) against published examples
   (metafor's documented datasets, Borenstein et al. 2009, Viechtbauer 2005,
@@ -384,7 +388,11 @@ check isn't opened. The script runs:
 **At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
 same script in a clean environment only when a milestone is closed, a `v*`
 tag is pushed, or it's started by hand (`workflow_dispatch`). It never runs on
-pull requests. The private scan runs locally only. A release isn't published
+pull requests. It then runs the browser tests (Playwright, `frontend/e2e/`):
+each app in Chromium at 360, 768 and 1280 px, in both themes, failing on a
+console error or a page that scrolls sideways. Run them locally with
+`npm --prefix frontend run e2e` before a release, or for a PR that changes
+layout. The private scan runs locally only. A release isn't published
 until CI passes. From v0.2, CI adds the backend, `r_service` and validation jobs,
 and the advisor scenarios run the same way.
 
@@ -397,6 +405,7 @@ python3 spec/build_map.py                     # regenerate the map files
 python3 spec/build_map.py --lock              # also rewrite spec/pathways.lock.json after a map change
 npm --prefix frontend run dev                 # the apps, at http://localhost:5173
 scripts/check.sh                              # every local check for a PR
+npm --prefix frontend run e2e                 # the browser tests (Playwright; run at releases)
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
 gh workflow run CI                            # start CI by hand (it also runs at releases)
 ```

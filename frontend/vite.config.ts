@@ -1,9 +1,9 @@
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vitest/config";
 
-// GitHub Pages serves the site under /meta-analysis-atlas/.
-export default defineConfig(({ command }) => ({
-  base: command === "build" ? "/meta-analysis-atlas/" : "/",
+// GitHub Pages serves the site under /meta-analysis-atlas/; `vite preview` serves the build there too (#83).
+export default defineConfig(({ command, isPreview }) => ({
+  base: command === "build" || isPreview === true ? "/meta-analysis-atlas/" : "/",
   plugins: [react()],
   // The map is read from ../spec/map.json at build time.
   server: { fs: { allow: [".", "../spec"] } },
@@ -13,6 +13,8 @@ export default defineConfig(({ command }) => ({
   build: { chunkSizeWarningLimit: 950 },
   test: {
     environment: "jsdom",
+    // e2e/ holds the browser tests, which Playwright runs (#83).
+    include: ["src/**/*.test.{ts,tsx}"],
     setupFiles: ["./src/test-setup.ts"],
   },
 }));

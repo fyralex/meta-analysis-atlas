@@ -37,3 +37,7 @@ jobs:
         run: sh scripts/check.sh
         env:
           PYTHON: python
+      # Browser tests (#83): each app in Chromium at 360, 768 and 1280 px, in both themes.
+      - run: npx --prefix frontend playwright install --with-deps chromium
+      - name: Browser tests (Playwright)
+        run: npm --prefix frontend run e2e
