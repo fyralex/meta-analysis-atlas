@@ -105,12 +105,12 @@ describe("explaining a greyed-out node", () => {
   });
 
   it("says when only hidden new entries would fit", () => {
-    // The network arcsine difference is new (added, in no accepted family), and so is every pathway through it,
+    // Raw Cronbach's alpha is new (the reliability framework, #24, is undecided), and so is every pathway through it,
     // while random effects has other pathways.
-    expect(lock.filter((p) => p.metric === "N_ASD").every((p) => p.new)).toBe(true);
+    expect(lock.filter((p) => p.metric === "ARAW").every((p) => p.new)).toBe(true);
     expect(lock.some((p) => !p.new && p.model === "Random effects")).toBe(true);
-    expect(explain(lock, { model: "Random effects" }, "metric", "N_ASD", HIDE)).toEqual({ kind: "hidden-new" });
-    expect(explain(lock, { model: "Random effects" }, "metric", "N_ASD", SHOW).kind).not.toBe("hidden-new");
+    expect(explain(lock, { model: "Random effects" }, "metric", "ARAW", HIDE)).toEqual({ kind: "hidden-new" });
+    expect(explain(lock, { model: "Random effects" }, "metric", "ARAW", SHOW).kind).not.toBe("hidden-new");
   });
 });
 
@@ -125,9 +125,9 @@ describe("why not, with only runnable pathways shown", () => {
   });
 
   it("names both settings when a node fits only through pathways both of them hide", () => {
-    // The network arcsine difference's pathways are all marked new, and none is runnable.
+    // Raw Cronbach's alpha's pathways are all marked new, and none is runnable.
     const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
-    expect(map.pathways.filter((p) => p.metric === "N_ASD").every((p) => p.new && p.status !== "runnable")).toBe(true);
-    expect(explain(some, {}, "metric", "N_ASD", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
+    expect(map.pathways.filter((p) => p.metric === "ARAW").every((p) => p.new && p.status !== "runnable")).toBe(true);
+    expect(explain(some, {}, "metric", "ARAW", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
   });
 });

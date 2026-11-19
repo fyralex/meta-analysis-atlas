@@ -147,10 +147,12 @@ describe("choosing nodes", () => {
   });
 
   it("drops only the choice that is empty on its own, keeping the others", () => {
-    // Every network arcsine difference pathway is still new; the framework and datatype match without it.
-    expect(lockCount({ metric: "N_ASD" }, true)).toBe(0);
-    const selection = { framework: frameworks[0] ?? "", datatype: "Arm-level summary data", metric: "N_ASD" };
-    expect(reconcile(all, selection, HIDE_NEW)).toEqual({ framework: selection.framework, datatype: selection.datatype });
+    // Every raw Cronbach's alpha pathway is still new (#24): with new entries shown the three choices meet, and hiding
+    // them empties the metric only, while the datatype and model still match without it.
+    const selection = { datatype: "Arm-level summary data", model: "Random effects", metric: "ARAW" };
+    expect(lockCount(selection)).toBeGreaterThan(0);
+    expect(lockCount({ metric: "ARAW" }, true)).toBe(0);
+    expect(reconcile(all, selection, HIDE_NEW)).toEqual({ datatype: selection.datatype, model: selection.model });
   });
 
   it("drops a value the map doesn't have, keeping the valid choices after it", () => {

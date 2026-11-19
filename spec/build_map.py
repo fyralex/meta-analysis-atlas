@@ -865,6 +865,7 @@ ACCEPTED_METRICS: dict[str, int] = {
     **dict.fromkeys(["MC", "SMCC", "SMCR", "ROMC", "MPRR", "MPOR", "MPRD", "MPORC"], 16),
     "POR": 17,
     **dict.fromkeys(["PRZ", "MNLN", "IRS", "IRFT", "IRSD", "SMDH", "SMD1"], 18),
+    "N_ASD": 111,
 }
 ACCEPTED_METHODS: dict[str, int] = {"OEV": 17, "NM_GT": 19, "NM_MH": 19, "LRP": 20}
 ACCEPTED_MODELS: dict[tuple[str, str], int] = {("MV", COMMON): 14, ("NM_MV", COMMON): 11, ("NM_BAYES", COMMON): 11}

@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 122; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 110; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
 
 - framework: 1. Interventional (effect of an intervention)  (454)
   - group: One group (single arm)  (137)
@@ -524,12 +524,12 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Mantel-Haenszel for networks (sparse binary data)  (3)
             - metric: Odds ratio
             - metric: Risk ratio
@@ -538,23 +538,23 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
         - model: Random effects  (12)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
       - outcome: Continuous  (18)
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical  (3)
@@ -610,33 +610,33 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
         - model: Random effects  (12)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Frequentist, multivariate  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
           - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-            - metric: Arcsine difference [NEW]
+            - metric: Arcsine difference
       - outcome: Continuous  (18)
         - model: Common effect  (9)
           - method: Frequentist, graph-theoretical  (3)
