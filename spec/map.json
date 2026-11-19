@@ -1853,7 +1853,7 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": true
+   "new": false
   },
   "N_MD": {
    "label": "Mean difference (network)",
@@ -7454,7 +7454,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7468,7 +7468,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7566,7 +7566,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7580,7 +7580,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7720,7 +7720,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7734,7 +7734,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8252,7 +8252,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8266,7 +8266,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8364,7 +8364,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8378,7 +8378,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8476,7 +8476,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8490,7 +8490,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
-   "new": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },

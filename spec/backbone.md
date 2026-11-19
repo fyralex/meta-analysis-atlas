@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 122; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 110; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -122,7 +122,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | N_OR | Odds ratio | `netmeta(sm="OR")` | NM | OK |
 | N_RR | Risk ratio | `netmeta(sm="RR")` | NM | OK |
 | N_RD | Risk difference (network) | `netmeta(sm="RD")` | NM | OK |
-| N_ASD | Arcsine difference | `netmeta(sm="ASD")` | NM | NEW |
+| N_ASD | Arcsine difference | `netmeta(sm="ASD")` | NM | accepted #111 |
 | N_MD | Mean difference (network) | `netmeta(sm="MD")` | NM | OK |
 | N_SMD | Standardized mean difference (Cohen's d) | `netmeta(sm="SMD")` | META-pw | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |

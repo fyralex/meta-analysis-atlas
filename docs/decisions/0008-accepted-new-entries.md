@@ -27,11 +27,10 @@ saying what was checked.
 
 ## Still new
 
-- The arcsine difference for networks (`N_ASD`), which no family issue
-  covers yet.
 - The diagnostic accuracy, prognosis, association and reliability frameworks
   (#21 to #24).
 
 Penalised logistic regression (#20) was still new when this was decided. It
 was accepted later the same day, once its models were confirmed (#58); see
-decision 0009.
+decision 0009. The arcsine difference for networks (`N_ASD`), which no family
+issue covered, was accepted the same day too (#111).

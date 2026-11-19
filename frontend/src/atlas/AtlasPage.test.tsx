@@ -284,9 +284,10 @@ describe("the Atlas's 2D view", PAGE, () => {
   });
 
   it("gives screen readers each node's count by status", () => {
-    renderAtlas(`?framework=${encodeURIComponent(F1)}`);
+    // the whole map: since #111 no interventional pathway is new, and a count of 0 isn't spoken
+    renderAtlas();
     const re = node("model", "Random effects");
-    const rows = lock.filter((p) => p.framework === F1 && p.model === "Random effects");
+    const rows = lock.filter((p) => p.model === "Random effects");
     const planned = rows.filter((p) => p.status === "planned").length;
     const marked = rows.filter((p) => p.new).length;
     expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(marked)} new$`));
