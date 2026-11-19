@@ -35,11 +35,11 @@ export function PathMap({ selection, order, options }: Props) {
         }}
       >
         <Suspense fallback={<p className="muted">Loading the map…</p>}>
-          <Atlas3D layers={layers} lines={lines} compact />
+          <Atlas3D layers={layers} lines={lines} compact describedBy="path-map-caption" />
         </Suspense>
       </View3DBoundary>
-      <figcaption className="muted">
-        Your answers so far, lit as a path through the map. Drag to turn it; scroll to zoom.
+      <figcaption className="muted" id="path-map-caption">
+        Your answers so far, lit as a path through the map; it can't be clicked. Drag to turn it; scroll to zoom.
       </figcaption>
     </figure>
   );

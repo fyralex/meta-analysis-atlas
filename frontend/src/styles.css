@@ -354,4 +354,5 @@ table.pathways .cell-label { display: none; }
 /* Pathfinder's small read-only map, design E2 of #92. */
 .path-map { margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .path-map figcaption { font-size: 13px; line-height: 1.5; }
-.atlas-3d.atlas-3d-small { height: 280px; min-height: 0; border-radius: 10px; }
+/* pan-y: on a phone, a vertical swipe that starts on the small map still scrolls the page. */
+.atlas-3d.atlas-3d-small { height: 280px; min-height: 0; border-radius: 10px; touch-action: pan-y; }

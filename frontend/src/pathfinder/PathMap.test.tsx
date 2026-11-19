@@ -15,12 +15,19 @@ vi.mock("../atlas/Atlas3D", () => ({
     layers,
     onPick,
     compact,
+    describedBy,
   }: {
     layers: SceneLayer[];
     onPick?: (n: SceneNode) => void;
     compact?: boolean;
+    describedBy?: string;
   }) => (
-    <ul aria-label="small map" data-readonly={String(onPick === undefined)} data-compact={String(compact === true)}>
+    <ul
+      aria-label="small map"
+      aria-describedby={describedBy}
+      data-readonly={String(onPick === undefined)}
+      data-compact={String(compact === true)}
+    >
       {layers
         .flatMap((l) => l.nodes)
         .filter((n) => n.selected)
@@ -48,12 +55,22 @@ describe("Pathfinder's small map", { timeout: 15_000 }, () => {
       `framework: ${F1}`,
       "group: Two groups (pairwise)",
     ]);
-    expect(screen.getByText(/Your answers so far, lit as a path through the map/)).toBeInTheDocument();
+    // described by its caption, which says it can't be clicked
+    expect(small).toHaveAccessibleDescription(/lit as a path through the map; it can't be clicked/);
   });
 
   it("lights only the answers, not choices from the address that Pathfinder doesn't use", async () => {
     open(`?framework=${encodeURIComponent(F1)}&model=Random+effects`);
     const small = await screen.findByRole("list", { name: "small map" });
     expect([...small.querySelectorAll("li")].map((li) => li.textContent)).toEqual([`framework: ${F1}`]);
+  });
+
+  it("lights the model too once \"Do effects differ?\" has chosen one", async () => {
+    open(
+      `?framework=${encodeURIComponent(F1)}&group=Two+groups+%28pairwise%29&datatype=Arm-level+summary+data` +
+        "&outcome=Binary&rare=no&vary=yes&model=Random+effects",
+    );
+    const small = await screen.findByRole("list", { name: "small map" });
+    expect([...small.querySelectorAll("li")].map((li) => li.textContent)).toContain("model: Random effects");
   });
 });

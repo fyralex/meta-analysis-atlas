@@ -19,6 +19,8 @@ interface Props {
   onPick?: (node: SceneNode) => void;
   /** A small map (Pathfinder's side panel): shorter, and only the chosen or hovered nodes are labelled. */
   compact?: boolean;
+  /** The id of text that describes the map further, such as a caption. */
+  describedBy?: string;
 }
 
 /** How quickly a glide slows after a drag: the share of its speed kept every 1/60 s. */
@@ -243,7 +245,7 @@ function describe(layers: SceneLayer[]): string {
   return `The map in 3D. ${parts.join("; ")}. The arrow keys turn it, + and - zoom, 0 resets the view.`;
 }
 
-export default function Atlas3D({ layers, lines = [], onPick, compact = false }: Props) {
+export default function Atlas3D({ layers, lines = [], onPick, compact = false, describedBy }: Props) {
   useThemeChange();
   const colors = palette();
   // Drag with one pointer to turn and tilt the stack; a press that moves is a drag, not a click.
@@ -356,6 +358,7 @@ export default function Atlas3D({ layers, lines = [], onPick, compact = false }:
       role="application"
       aria-roledescription="3D map"
       aria-label={describe(layers)}
+      aria-describedby={describedBy}
       tabIndex={0}
       onKeyDown={(e) => {
         const action = keyAction(e);
