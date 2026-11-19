@@ -211,8 +211,8 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R21 | IPD: two-stage analysis joins the precomputed pathway. One-stage analysis needs a mixed-effects regression stratified by study. | agrees | CH-26 s26.4.2, s26.4.5 |
 | R22 | Cluster-randomized trial: divide the sample size (and events) by the design effect 1 + (M - 1) x ICC, or multiply the SE by its square root. | agrees | CH-23 s23.1.4-23.1.6 |
 | R23 | Crossover trial: use a paired analysis; without paired data, impute the SD of differences from an assumed correlation. | v11 wrong: applies the cluster formula | CH-23 s23.2.5-23.2.7 |
-| R24 | Study with three or more arms in a pairwise analysis: combine arms (recommended), model the correlation, or use a network. | missing in v11 | CH-23 s23.3.4 |
-| R25 | Time-to-event from O - E and V: fixed-effect methods only; log hazard ratios with SEs are pooled by inverse variance. | missing in v11 | CH-10 s10.9 |
+| R24 | Study with three or more arms in a pairwise analysis: combine arms (recommended in most situations), model the correlation, or use a network. Choosing one pair, or splitting the shared group, is not generally recommended. | missing in v11 | CH-23 s23.3.4 |
+| R25 | Time-to-event from O - E and V: RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance. | missing in v11 | CH-10 s10.9 |
 | R26 | Diagnostic accuracy: sensitivity and specificity are pooled jointly (bivariate model); the HSROC model is equivalent without covariates. | not in v11 | MADA |
 | R27 | Prediction model performance: pool the c-statistic on the logit scale and O:E on the log scale, random effects with Hartung-Knapp and a prediction interval. | not in v11 | VALMETA |
 | R28 | Tests for funnel plot asymmetry need at least 10 studies; Egger's original test is not recommended for odds ratios or SMDs. | not in v11 | CH-13 s13.3.4.4 |

@@ -1219,13 +1219,13 @@
   ],
   [
    "R24",
-   "Study with three or more arms in a pairwise analysis: combine arms (recommended), model the correlation, or use a network.",
+   "Study with three or more arms in a pairwise analysis: combine arms (recommended in most situations), model the correlation, or use a network. Choosing one pair, or splitting the shared group, is not generally recommended.",
    "missing in v11",
    "CH-23 s23.3.4"
   ],
   [
    "R25",
-   "Time-to-event from O - E and V: fixed-effect methods only; log hazard ratios with SEs are pooled by inverse variance.",
+   "Time-to-event from O - E and V: RevMan offers fixed-effect methods only, and this map follows it; log hazard ratios with SEs are pooled by inverse variance.",
    "missing in v11",
    "CH-10 s10.9"
   ],
