@@ -34,3 +34,8 @@ Penalised logistic regression (#20) was still new when this was decided. It
 was accepted later the same day, once its models were confirmed (#58); see
 decision 0009. The arcsine difference for networks (`N_ASD`), which no family
 issue covered, was accepted the same day too (#111).
+
+The diagnostic accuracy, prognosis, association and reliability frameworks
+(#21 to #24) were accepted the same day as well (`ACCEPTED_FRAMEWORKS`); their
+unconfirmed branches stay to check. What remains new is the common-effect
+model #59 added to one-stage IPD network meta-analysis.

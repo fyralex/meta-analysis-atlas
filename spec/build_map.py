@@ -1000,6 +1000,14 @@ def branch_key(b: Branch) -> tuple[str, str, str, str]:
     return (b["fw"], b["group"], b["datatype"], b["outcome"])
 
 
+# Frameworks accepted whole, each with its issue (2026-11-19): every added branch in them is accepted. Branches
+# still unconfirmed stay to check; accepting changes only the "new" badge.
+ACCEPTED_FRAMEWORKS: dict[str, int] = {F2: 21, F3: 22, F4: 23, F5: 24}
+ACCEPTED_BRANCHES.update(
+    {branch_key(b): ACCEPTED_FRAMEWORKS[b["fw"]] for b in BRANCHES if b["added"] and b["fw"] in ACCEPTED_FRAMEWORKS}
+)
+
+
 # "New" = added and not yet accepted: these keep the badge.
 def metric_new(code: str) -> bool:
     return METRICS[code]["added"] and code not in ACCEPTED_METRICS
@@ -1270,6 +1278,7 @@ OPEN = [
     "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
     "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
+    "Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
 ]

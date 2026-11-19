@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 3; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -44,19 +44,19 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
-| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | NEW | MADA |
-| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | NEW, CHECK | DTA-HB |
-| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | RILEY |
-| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | NEW | VALMETA |
-| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | NEW | VALMETA |
-| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group (single arm) | See 1. Interventional, One group (single arm) |  | NEW | MF-escalc |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | NEW | MF-escalc |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | NEW | MF-escalc |
-| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | NEW | MF-escalc |
-| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW | CH-24, CH-10 |
-| 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW | DOSRES |
-| 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW | DOSRES |
-| 5. Measurement reliability | One group (one instrument) | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
+| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | accepted #21 | MADA |
+| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | accepted #21, CHECK | DTA-HB |
+| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #22, CHECK | RILEY |
+| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | accepted #22 | VALMETA |
+| 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | accepted #22 | VALMETA |
+| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group (single arm) | See 1. Interventional, One group (single arm) |  | accepted #22 | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | accepted #23 | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | accepted #23 | MF-escalc |
+| 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | accepted #23 | MF-escalc |
+| 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #23 | CH-24, CH-10 |
+| 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | accepted #23 | DOSRES |
+| 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | accepted #23 | DOSRES |
+| 5. Measurement reliability | One group (one instrument) | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | accepted #24 | MF-escalc |
 
 ## Notes on frameworks, groups and datatypes
 
@@ -293,7 +293,8 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 2. Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.
 3. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
 4. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-5. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+5. Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).
+6. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 
 ## Sources
 

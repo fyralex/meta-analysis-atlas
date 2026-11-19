@@ -105,12 +105,12 @@ describe("explaining a greyed-out node", () => {
   });
 
   it("says when only hidden new entries would fit", () => {
-    // Raw Cronbach's alpha is new (the reliability framework, #24, is undecided), and so is every pathway through it,
-    // while random effects has other pathways.
-    expect(lock.filter((p) => p.metric === "ARAW").every((p) => p.new)).toBe(true);
-    expect(lock.some((p) => !p.new && p.model === "Random effects")).toBe(true);
-    expect(explain(lock, { model: "Random effects" }, "metric", "ARAW", HIDE)).toEqual({ kind: "hidden-new" });
-    expect(explain(lock, { model: "Random effects" }, "metric", "ARAW", SHOW).kind).not.toBe("hidden-new");
+    // The one-stage IPD network method's common-effect model is new (#59), while the method and the model each have
+    // other pathways that aren't.
+    expect(lock.filter((p) => p.method === "NM_IPD" && p.model === "Common effect").every((p) => p.new)).toBe(true);
+    expect(lock.some((p) => !p.new && p.method === "NM_IPD")).toBe(true);
+    expect(explain(lock, { method: "NM_IPD" }, "model", "Common effect", HIDE)).toEqual({ kind: "hidden-new" });
+    expect(explain(lock, { method: "NM_IPD" }, "model", "Common effect", SHOW).kind).not.toBe("hidden-new");
   });
 });
 
@@ -125,9 +125,12 @@ describe("why not, with only runnable pathways shown", () => {
   });
 
   it("names both settings when a node fits only through pathways both of them hide", () => {
-    // Raw Cronbach's alpha's pathways are all marked new, and none is runnable.
+    // NM_IPD's common-effect pathways are all marked new (#59), and none is runnable.
     const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
-    expect(map.pathways.filter((p) => p.metric === "ARAW").every((p) => p.new && p.status !== "runnable")).toBe(true);
-    expect(explain(some, {}, "metric", "ARAW", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
+    const ipdCommon = map.pathways.filter((p) => p.method === "NM_IPD" && p.model === "Common effect");
+    expect(ipdCommon.every((p) => p.new && p.status !== "runnable")).toBe(true);
+    expect(explain(some, { method: "NM_IPD" }, "model", "Common effect", { hideNew: true, runnableOnly: true }).kind).toBe(
+      "hidden-both",
+    );
   });
 });
