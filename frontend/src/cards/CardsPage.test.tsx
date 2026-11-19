@@ -105,7 +105,7 @@ describe("the Cards page", PAGE, () => {
     const shown = screen.getByRole("region", { name: "Method: Peto" });
     const cautions = within(shown).getByRole("region", { name: "Cautions" });
     expect(cautions).toHaveTextContent("not recommend it as a default");
-    expect(cautions).toHaveTextContent("Cochrane Handbook Ch. 10, meta-analysis (s10.4.2)");
+    expect(cautions).toHaveTextContent("Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis (s10.4.2)");
     expect(within(shown).getByRole("region", { name: "What it is" })).toBeInTheDocument();
     expect(within(shown).getByRole("region", { name: "When to use it" })).toBeInTheDocument();
     // the R call has its own section, and the rules say what they mean, with where the rule's card opens

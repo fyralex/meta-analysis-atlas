@@ -200,7 +200,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R10 | Subgroup analysis and meta-regression need moderators: available in rma.uni, rma.glmm, rma.mv and bayesmeta (bmr); not in rma.mh or rma.peto. | agrees; answers v11's open question on bayesmeta | MF-uni, MF-glmm, MF-mv, BM-bmr |
 | R11 | Cumulative and leave-one-out functions exist for rma.uni, rma.mh and rma.peto only. | v11 wrong for GLMM and rma.mv | MF-cumul, MF-l1o |
 | R12 | Cumulative and leave-one-out need a model without moderators. | missing in v11 | MF-cumul, MF-l1o |
-| R13 | bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the posterior numerically (a grid approximation and the DIRECT algorithm). | answers v11's open question | BM |
+| R13 | bayesmeta has no cumulative or leave-one-out function: none is in its manual's index. It computes the posterior numerically (a grid approximation and the DIRECT algorithm). | answers v11's open question | BM |
 | R14 | Hartung-Knapp intervals apply to rma.uni random-effects models only. | agrees | MF-uni, MF-mv |
 | R15 | REML is the default in metafor and RevMan. Cochrane also cites Paule-Mandel and says no estimator is universally preferable. | v11 overstates: calls REML Cochrane's preference | CH-10 s10.10.4.4 |
 | R16 | Network meta-analysis can use a common-effect or a random-effects model. Chapter 11 never mentions excluding the common-effect model; netmeta and the rma.mv example fit both. | v11 wrong: excludes fixed effect | CH-11, NM, MD-senn |
@@ -296,9 +296,6 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 5. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
 6. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
 7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
-8. Read the rest of the bayesmeta manual.
-9. Record the Handbook version and the date of each chapter.
-10. Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function.
 
 ## Sources
 
@@ -317,13 +314,13 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | MF-trimfill | metafor, trimfill() | https://wviechtb.github.io/metafor/reference/trimfill.html |
 | MF-selmodel | metafor, selmodel() | https://wviechtb.github.io/metafor/reference/selmodel.html |
 | MD-senn | metadat, dat.senn2013 (network models with rma.mv) | https://wviechtb.github.io/metadat/reference/dat.senn2013.html |
-| CH-6 | Cochrane Handbook Ch. 6, effect measures | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-06 |
-| CH-10 | Cochrane Handbook Ch. 10, meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10 |
-| CH-11 | Cochrane Handbook Ch. 11, network meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-11 |
-| CH-13 | Cochrane Handbook Ch. 13, missing results | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13 |
-| CH-23 | Cochrane Handbook Ch. 23, variants on randomized trials | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23 |
-| CH-26 | Cochrane Handbook Ch. 26, individual participant data | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26 |
-| BM | bayesmeta manual | https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html |
+| CH-6 | Cochrane Handbook Ch. 6 (updated August 2023), effect measures | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-06 |
+| CH-10 | Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10 |
+| CH-11 | Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-11 |
+| CH-13 | Cochrane Handbook Ch. 13 (updated August 2024), missing results | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13 |
+| CH-23 | Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23 |
+| CH-26 | Cochrane Handbook Ch. 26 (updated October 2019), individual participant data | https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26 |
+| BM | bayesmeta manual (version 3.5) | https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html |
 | BM-bmr | bayesmeta, bmr() | https://rdrr.io/cran/bayesmeta/man/bmr.html |
 | NM | netmeta, netmeta() | https://rdrr.io/cran/netmeta/man/netmeta.html |
 | NM-bin | netmeta, netmetabin() | https://rdrr.io/cran/netmeta/man/netmetabin.html |
