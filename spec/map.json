@@ -967,9 +967,9 @@
   {
    "fw": "3. Prognosis",
    "group": "Overall prognosis (average risk or rate)",
-   "datatype": "Same as One group",
+   "datatype": "Same as One group (single arm)",
    "kind": "none",
-   "outcome": "See 1. Interventional, One group",
+   "outcome": "See 1. Interventional, One group (single arm)",
    "inputs": "",
    "metrics": [],
    "domain": "none",
@@ -1105,7 +1105,7 @@
   },
   {
    "fw": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "kind": "arm",
    "outcome": "Internal consistency",
@@ -10372,7 +10372,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10386,7 +10386,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10400,7 +10400,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10414,7 +10414,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10428,7 +10428,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10442,7 +10442,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10456,7 +10456,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10470,7 +10470,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10484,7 +10484,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10498,7 +10498,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10512,7 +10512,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10526,7 +10526,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10540,7 +10540,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",
@@ -10554,7 +10554,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Common effect",
@@ -10568,7 +10568,7 @@
   },
   {
    "framework": "5. Measurement reliability",
-   "group": "One group",
+   "group": "One group (one instrument)",
    "datatype": "Arm-level summary data",
    "outcome": "Internal consistency",
    "model": "Random effects",

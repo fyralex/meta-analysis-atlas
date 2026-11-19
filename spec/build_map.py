@@ -764,9 +764,9 @@ br(
 br(
     F3,
     "Overall prognosis (average risk or rate)",
-    "Same as One group",
+    "Same as One group (single arm)",
     "none",
-    "See 1. Interventional, One group",
+    "See 1. Interventional, One group (single arm)",
     "",
     [],
     domain="none",
@@ -849,7 +849,7 @@ br(
 F5 = "5. Measurement reliability"
 br(
     F5,
-    "One group",
+    "One group (one instrument)",
     ARM,
     "arm",
     "Internal consistency",
@@ -2102,7 +2102,7 @@ def _method_card(code: str, paths: Sequence[Pathway]) -> Card:
     # "Used for" names the group structures the method has pathways in, not its whole domain: Peto and
     # Mantel-Haenszel are pairwise methods but take two groups only (#74).
     mine = [p for p in paths if p["method"] == code]
-    # Across frameworks, a group's name alone can repeat ("One group"): name the framework too.
+    # Across frameworks, a group's name alone may repeat: name the framework too.
     several = len({p["framework"] for p in mine}) > 1
     groups = _uniq(
         f"{_framework_short(str(p['framework']))}: {p['group']}" if several else str(p["group"]) for p in mine
@@ -3853,7 +3853,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "DOSRES",
         ),
     ],
-    "group:one-group": [
+    "group:one-group-one-instrument": [
         (
             "what",
             "Each study reports Cronbach's alpha for the instrument, with the number of items and the sample size.",
@@ -4018,7 +4018,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "For example, the risk of a disease at several levels of alcohol intake.",
         "DOSRES",
     ),
-    "group:one-group": (
+    "group:one-group-one-instrument": (
         "One group taking the measurement",
         "For example, patients completing a questionnaire, with its Cronbach's alpha reported.",
         "MF-escalc",

@@ -897,7 +897,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Trend in mean difference per unit of dose
             - metric: Trend in standardized mean difference per unit of dose
 - framework: 5. Measurement reliability  (15)
-  - group: One group  (15)
+  - group: One group (one instrument)  (15)
     - datatype: Arm-level summary data  (15)
       - outcome: Internal consistency [NEW]  (15)
         - model: Common effect  (6)
@@ -922,4 +922,4 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Raw Cronbach's alpha
             - metric: Cronbach's alpha, Hakstian-Whalen transformation
             - metric: Cronbach's alpha, Bonett transformation
-- framework: 3. Prognosis / Overall prognosis (average risk or rate): See 1. Interventional, One group
+- framework: 3. Prognosis / Overall prognosis (average risk or rate): See 1. Interventional, One group (single arm)

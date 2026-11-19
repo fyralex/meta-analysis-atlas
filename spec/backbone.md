@@ -49,14 +49,14 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | RILEY |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | NEW | VALMETA |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | NEW | VALMETA |
-| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group | See 1. Interventional, One group |  | NEW | MF-escalc |
+| 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group (single arm) | See 1. Interventional, One group (single arm) |  | NEW | MF-escalc |
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two continuous variables | correlation and n (ri, ni) | NEW | MF-escalc |
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | One continuous, one binary variable | mean, SD, n per group | NEW | MF-escalc |
 | 4. Association | Two variables in one group (correlation) | Arm-level summary data | Two binary variables | 2x2 table | NEW | MF-escalc |
 | 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | CH-10 |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW | DOSRES |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW | DOSRES |
-| 5. Measurement reliability | One group | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
+| 5. Measurement reliability | One group (one instrument) | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
 
 ## Notes on frameworks, groups and datatypes
 
