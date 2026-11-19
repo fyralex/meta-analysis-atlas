@@ -2,6 +2,7 @@ import { cleanup, fireEvent, render, screen, within } from "@testing-library/rea
 import { MemoryRouter, Route, Routes, useLocation } from "react-router";
 import { describe, expect, it } from "vitest";
 import { PathfinderPage } from "./PathfinderPage";
+import { map } from "../map";
 
 /** The page address, shown so a test can read it. */
 function Address() {
@@ -272,8 +273,9 @@ describe("Pathfinder", PAGE, () => {
   it("shows the live count, and opens the Atlas with the answers chosen", () => {
     renderAt("/pathfinder?framework=1.+Interventional+%28effect+of+an+intervention%29");
     const side = screen.getByRole("complementary", { name: "With your answers so far" });
-    expect(side).toHaveTextContent("438 analyses fit");
-    const link = within(side).getByRole("link", { name: "Open these 438 in the Atlas, with your answers already chosen" });
+    const n = String(map.pathways.filter((p) => p.framework === "1. Interventional (effect of an intervention)").length);
+    expect(side).toHaveTextContent(`${n} analyses fit`);
+    const link = within(side).getByRole("link", { name: `Open these ${n} in the Atlas, with your answers already chosen` });
     expect(link.getAttribute("href")).toContain("/atlas?framework=");
   });
 

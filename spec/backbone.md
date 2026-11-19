@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 548; interventional 438; interventional, in v11's scope 208; of those, confirmed 189; not in v11 340; of those, new (not yet accepted) 110; still to check 73; status runnable 0; status planned 412; status specified 63; status to_check 73.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 76; status runnable 0; status planned 412; status specified 63; status to_check 76.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -175,7 +175,7 @@ Counts: pathways in total 548; interventional 438; interventional, in v11's scop
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
 | Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check. |
-| One-stage regression on participant data (network) | `mixed-effects regression, frequentist or Bayesian` | Random effects | ipd | standard | CH-26 | CHECK |  |
+| One-stage regression on participant data (network) | `multinma::nma() with set_ipd()` | Common effect, Random effects | ipd | standard, meta-regression | MULTINMA, MULTINMA-ipd | OK | A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data (#59). |
 | Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |
 | Hierarchical summary ROC model (Rutter and Gatsonis) | `implementation not chosen` | Random effects | tab | standard, subgroup, meta-regression | DTA-HB, MADA | CHECK | Used when studies apply different thresholds. |
 | Univariate pooling | `mada::madauni()` | Common effect, Random effects | tab | standard | DTA-HB | CHECK | Ignores the correlation between sensitivity and specificity. |
@@ -292,7 +292,7 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 2. Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.
 3. Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.
 4. Choose the R implementation for the HSROC model and for O - E and V data.
-5. Confirm R packages for one-stage IPD, pairwise and network.
+5. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
 6. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
 7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 8. Read the rest of the bayesmeta manual.
@@ -339,3 +339,5 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (not readable online) | https://www.bmj.com/content/356/bmj.i6460 |
 | RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies (not readable online) | https://www.bmj.com/content/364/bmj.k4597 |
 | DOSRES | dosresmeta, dosresmeta() | https://rdrr.io/cran/dosresmeta/man/dosresmeta.html |
+| MULTINMA | multinma, nma() | https://dmphillippo.github.io/multinma/reference/nma.html |
+| MULTINMA-ipd | multinma, set_ipd() | https://dmphillippo.github.io/multinma/reference/set_ipd.html |

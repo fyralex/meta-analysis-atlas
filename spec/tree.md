@@ -3,9 +3,9 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 548; interventional 438; interventional, in v11's scope 208; of those, confirmed 189; not in v11 340; of those, new (not yet accepted) 110; still to check 73; status runnable 0; status planned 412; status specified 63; status to_check 73.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 76; status runnable 0; status planned 412; status specified 63; status to_check 76.
 
-- framework: 1. Interventional (effect of an intervention)  (438)
+- framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
     - datatype: Arm-level summary data  (69)
       - outcome: Binary  (32)
@@ -516,7 +516,7 @@ Counts: pathways in total 548; interventional 438; interventional, in v11's scop
             - metric: Matched-pairs marginal odds ratio (log)
             - metric: Matched-pairs marginal risk difference
             - metric: Matched-pairs conditional odds ratio (log)
-  - group: Multiple groups (network)  (104)
+  - group: Multiple groups (network)  (107)
     - datatype: Arm-level summary data  (49)
       - outcome: Binary  (23)
         - model: Common effect  (13)
@@ -684,18 +684,27 @@ Counts: pathways in total 548; interventional 438; interventional, in v11's scop
             - metric: Hazard ratio
           - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Hazard ratio
-    - datatype: Individual participant data  (3)
-      - outcome: Binary [CHECK]  (1)
-        - model: Random effects  (1)
-          - method: One-stage regression on participant data (network) [CHECK]  (1)
+    - datatype: Individual participant data  (6)
+      - outcome: Binary [CHECK]  (2)
+        - model: Common effect  (1)
+          - method: One-stage regression on participant data (network)  (1)
             - metric: Odds ratio
-      - outcome: Continuous [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (network) [CHECK]  (1)
+          - method: One-stage regression on participant data (network)  (1)
+            - metric: Odds ratio
+      - outcome: Continuous [CHECK]  (2)
+        - model: Common effect  (1)
+          - method: One-stage regression on participant data (network)  (1)
             - metric: Mean difference (network)
-      - outcome: Time-to-event [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (network) [CHECK]  (1)
+          - method: One-stage regression on participant data (network)  (1)
+            - metric: Mean difference (network)
+      - outcome: Time-to-event [CHECK]  (2)
+        - model: Common effect  (1)
+          - method: One-stage regression on participant data (network)  (1)
+            - metric: Hazard ratio
+        - model: Random effects  (1)
+          - method: One-stage regression on participant data (network)  (1)
             - metric: Hazard ratio
 - framework: 2. Diagnostic test accuracy  (10)
   - group: One index test against a reference standard  (8)
