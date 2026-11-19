@@ -32,38 +32,42 @@ published worked example or the R package run on the same data
 
 ## The apps
 
-**Atlas** shows every pathway, one layer per tier. Choosing a node keeps only
-the pathways through it, and every node shows how many would remain. A node
-that doesn't fit your choices says why, citing the rule or source behind it
-where there is one. The 2D
-view works with the keyboard and screen readers; a 3D view shows the same
-nodes and counts as stacked rings you can turn.
+**Pathfinder** asks up to six questions, one at a time, in a methodologist's
+order: the kind of question, what each study compares, what it reported, and
+the outcome. Each option is named in plain words, with an example and its
+source; a switch shows the technical names. Options the map rules out say
+why. For binary outcomes from arm-level counts, compared between two groups or
+across a network, it asks whether events are rare, and when both models fit
+it asks whether true effects are expected to differ. Neither answer removes a
+pathway ([why](docs/decisions/0005-pathfinder-advisory-questions.md)). The
+side panel shows the answers so far as a path on a small, read-only 3D map.
 
-![The Atlas in 2D, with the interventional framework and two-group studies chosen](docs/screenshots/atlas-2d.png)
+![Pathfinder after two answers, asking what each study reported](docs/screenshots/pathfinder.png)
 
-![The Atlas in 3D: the seven tiers as stacked rings](docs/screenshots/atlas-3d.png)
+The results come answer first: how many analyses fit, then the advice the
+answers asked for, then the analyses grouped by method. Each method opens to
+what its card says, its effect measures, its status and its sources.
 
-**Pathfinder** asks a few questions in a methodologist's order: the kind of
-question, what each study compares, what it reported, and the outcome. Each
-option says what it is, with its source, where its card has that text, and
-options the map rules out say why. For binary outcomes from arm-level counts,
-compared between two groups or across a network, it asks whether events are
-rare, and when both models
-fit it asks whether true effects are expected to differ. Neither answer
-removes a pathway: they show what the cards say, and pre-select a model with
-the other one click away ([why](docs/decisions/0005-pathfinder-advisory-questions.md)).
-Its answers are shared with the Atlas.
+![Pathfinder's results for a two-group binary outcome](docs/screenshots/results.png)
 
-![Pathfinder after three answers, asking about the outcome](docs/screenshots/pathfinder.png)
-
-**Cards** gives every choice and rule a card. A choice's card says what it
-is, when to use it and its cautions, each line with its source, then the R
-function, the data it reads and the rules that limit it, with the card's
-sources. A rule's card shows the rule and its sources. A choice's card has no
-teaching text where no source that covers it has been read yet. A glossary of
-14 terms is linked from the cards that use them.
+**Cards** gives every choice, rule and glossary term a card. A choice's card
+says what it is, then when to use it and its cautions, each line with its
+source, then the R call, the rules behind its limits (each in plain words) and
+the terms it uses, which open on the card. A choice's card has no teaching
+text where no source that covers it has been read yet.
 
 ![The card for Peto's method](docs/screenshots/cards.png)
+
+**Atlas** shows every pathway as a 3D map: one layer per tier, with lines
+joining the nodes that go together. Drag to turn it, scroll to zoom; the
+arrow keys and + and - work too. Clicking a node keeps only the pathways
+through it, and again undoes it. A grey node says why it doesn't fit, citing
+the rule or source behind it where there is one. Beside the map, a read-only
+panel shows what was clicked and the options at the next step. A text view
+lists the same nodes and counts for screen readers and the keyboard, and is
+used where 3D can't be drawn.
+
+![The Atlas: the 3D map with two choices made, and the panel beside it](docs/screenshots/atlas-3d.png)
 
 ## How the map is built
 
@@ -141,7 +145,7 @@ including changes to the methodology. The rules are in
 
 | Release | Scope |
 |---|---|
-| v0.1 | The map with all five frameworks; Atlas (2D and 3D), Pathfinder and Cards |
+| v0.1 | The map with all five frameworks; Atlas (3D, with a text view), Pathfinder and Cards |
 | v0.2 | Running analyses on your own data or on published examples, with the exact R code shown; one-group and two-group metafor pathways made runnable through validation tests |
 | v0.3 | Network meta-analysis, Bayesian and multilevel models |
 | v0.4 | Diagnostic accuracy, prognosis, and a methods advisor |

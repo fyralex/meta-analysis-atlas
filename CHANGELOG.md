@@ -4,6 +4,56 @@ Each release lists what changed, with the pull requests behind it. The map
 itself changes only through audited pull requests, and each map change
 explains its effect on the pathways.
 
+## 0.1.1 (2026-11-18)
+
+A redesign for first-time visitors (#92), and four corrections to the
+map's teaching text. The pathways are unchanged: 564, of which 404 are
+planned, 61 specified and 99 to check. Nothing is runnable yet.
+
+### Home and Pathfinder
+
+- **Home page:** one promise and three doors, each saying where it goes and
+  who it is for (#94).
+- **Pathfinder** asks one question at a time, with a step bar that holds the
+  answers, and Back and Next buttons that say where they go (#95).
+- **Plain names:** the options are named in plain words, each with an
+  example and its source. A switch shows the technical names (#96).
+- **Results, answer first:** how many analyses fit, any advice on rare events,
+  then a model filter that says why it shows what it shows. The analyses are
+  grouped by method, each opening to its card text and sources (#97).
+- **Small map:** the side panel shows the answers so far as a path on a small,
+  read-only 3D map (#104).
+
+### Cards
+
+- **Layout:** the list of cards sits beside the open card, grouped as
+  Pathfinder asks its questions (#98).
+- **Answer first:** a card opens with what it is, then when to use it, its
+  cautions, the R call, the rules behind its limits, and the terms it uses.
+  A term opens in place, on the card (#98).
+- **Rules in plain words:** each rule has a plain sentence, citing the rule's
+  own sources (#99, #101).
+
+### Atlas
+
+- **3D first:** the Atlas opens on the 3D map, as in the prototype, with lines
+  joining the nodes that go together (#102).
+- **Handles like Google Earth:** it stays still until moved, and a drag glides
+  to a stop. Scroll to zoom towards the pointer, or pinch to zoom. The arrow
+  keys turn it and + and - zoom; with Ctrl or Cmd, those keys still zoom the
+  page (#103).
+- **Read-only panel:** beside the map, a panel follows the clicks. It shows
+  what was clicked, the options at the next step, and the choices so far.
+  The settings fold into "Display options", and the 2D view is now the text
+  view, used where 3D can't be drawn (#103).
+
+### The map's teaching text
+
+- "Why not?" for Mantel-Haenszel with random effects also cites rule R4 (#105).
+- R24 says combining groups is recommended in most situations (#106).
+- R25 says the fixed-effect-only limit for O - E and V data is RevMan's,
+  which the map follows (#106; decision 0007).
+
 ## 0.1.0 (2026-11-17)
 
 The first release: the map of analysis pathways, and three apps to explore
