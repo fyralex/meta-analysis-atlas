@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 3; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
+Counts: pathways in total 543; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 335; of those, new (not yet accepted) 3; still to check 40; status runnable 0; status planned 424; status specified 79; status to_check 40.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -732,37 +732,26 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Summary sensitivity and specificity (estimated jointly)
           - method: Hierarchical summary ROC model (Rutter and Gatsonis)  (1)
             - metric: Summary ROC curve [CHECK]
-- framework: 3. Prognosis  (24)
-  - group: Prognostic factor (does the factor predict the outcome?)  (20)
-    - datatype: Precomputed estimate  (20)
-      - outcome: Any outcome [CHECK]  (20)
-        - model: Common effect  (8)
-          - method: Inverse variance  (4)
-            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted mean difference [CHECK]
-          - method: Multilevel / multivariate  (4)
-            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted mean difference [CHECK]
+- framework: 3. Prognosis  (16)
+  - group: Prognostic factor (does the factor predict the outcome?)  (12)
+    - datatype: Precomputed estimate  (12)
+      - outcome: Any outcome  (12)
         - model: Random effects  (12)
           - method: Inverse variance  (4)
-            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted mean difference [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor
+            - metric: Adjusted odds ratio (log), prognostic factor
+            - metric: Adjusted risk ratio (log), prognostic factor
+            - metric: Adjusted mean difference
           - method: Bayesian normal-normal hierarchical model  (4)
-            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted mean difference [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor
+            - metric: Adjusted odds ratio (log), prognostic factor
+            - metric: Adjusted risk ratio (log), prognostic factor
+            - metric: Adjusted mean difference
           - method: Multilevel / multivariate  (4)
-            - metric: Adjusted hazard ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted odds ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted risk ratio (log), prognostic factor [CHECK]
-            - metric: Adjusted mean difference [CHECK]
+            - metric: Adjusted hazard ratio (log), prognostic factor
+            - metric: Adjusted odds ratio (log), prognostic factor
+            - metric: Adjusted risk ratio (log), prognostic factor
+            - metric: Adjusted mean difference
   - group: Prediction model performance (external validation)  (4)
     - datatype: Precomputed estimate  (4)
       - outcome: Discrimination  (2)

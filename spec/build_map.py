@@ -157,11 +157,11 @@ SOURCES: dict[str, tuple[str, str]] = {
     ),
     "VALMETA": ("metamisc, valmeta()", "https://rdrr.io/cran/metamisc/man/valmeta.html"),
     "DEBRAY": (
-        "Debray et al. 2017, BMJ 356:i6460, prediction model performance (not readable online)",
+        "Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript)",
         "https://www.bmj.com/content/356/bmj.i6460",
     ),
     "RILEY": (
-        "Riley et al. 2019, BMJ 364:k4597, prognostic factor studies (not readable online)",
+        "Riley et al. 2019, BMJ 364:k4597, prognostic factor studies",
         "https://www.bmj.com/content/364/bmj.k4597",
     ),
     "DOSRES": ("dosresmeta, dosresmeta()", "https://rdrr.io/cran/dosresmeta/man/dosresmeta.html"),
@@ -265,10 +265,10 @@ METRICS: dict[str, Metric] = {
     # prognosis
     "CSTAT": m("c-statistic (logit scale)", 'valmeta(measure="cstat")', "VALMETA"),
     "OE": m("Total observed:expected ratio (log scale)", 'valmeta(measure="OE")', "VALMETA"),
-    "PF_HR": m("Adjusted hazard ratio (log), prognostic factor", "enter log HR and its SE", "RILEY", verified=False),
-    "PF_OR": m("Adjusted odds ratio (log), prognostic factor", "enter log OR and its SE", "RILEY", verified=False),
-    "PF_RR": m("Adjusted risk ratio (log), prognostic factor", "enter log RR and its SE", "RILEY", verified=False),
-    "PF_MD": m("Adjusted mean difference", "enter MD and its SE", "RILEY", verified=False),
+    "PF_HR": m("Adjusted hazard ratio (log), prognostic factor", "enter log HR and its SE", "RILEY"),
+    "PF_OR": m("Adjusted odds ratio (log), prognostic factor", "enter log OR and its SE", "RILEY"),
+    "PF_RR": m("Adjusted risk ratio (log), prognostic factor", "enter log RR and its SE", "RILEY"),
+    "PF_MD": m("Adjusted mean difference", "enter MD and its SE", "RILEY"),
     # association
     "COR": m("Raw correlation", E % "COR"),
     "UCOR": m("Bias-corrected correlation", E % "UCOR"),
@@ -851,8 +851,9 @@ br(
     "adjusted estimate with SE or CI",
     ["PF_HR", "PF_OR", "PF_RR", "PF_MD"],
     added=True,
-    verified=False,
-    note="Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019.",
+    note="Riley et al. 2019: focus on adjusted estimates (Step 1); pool each type of estimate, adjusted and "
+    "unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects only (Box 2, "
+    "rule R34).",
     src=["RILEY"],
 )
 br(
@@ -1006,6 +1007,17 @@ ACCEPTED_FRAMEWORKS: dict[str, int] = {F2: 21, F3: 22, F4: 23, F5: 24}
 ACCEPTED_BRANCHES.update(
     {branch_key(b): ACCEPTED_FRAMEWORKS[b["fw"]] for b in BRANCHES if b["added"] and b["fw"] in ACCEPTED_FRAMEWORKS}
 )
+
+# Branches that allow only some models, whatever the method fits, each with the rule that says why (#22).
+BRANCH_MODELS: dict[tuple[str, str, str, str], tuple[list[str], str]] = {
+    (F3, "Prognostic factor (does the factor predict the outcome?)", EST, "Any outcome"): ([RANDOM], "R34"),
+}
+
+
+def branch_models(b: Branch) -> list[str] | None:
+    """The models a branch allows, or None when any model its methods fit will do."""
+    limit = BRANCH_MODELS.get(branch_key(b))
+    return None if limit is None else limit[0]
 
 
 # "New" = added and not yet accepted: these keep the badge.
@@ -1246,6 +1258,14 @@ RULES: list[tuple[str, str, str, str]] = [
         "v11 wrong: offers every network measure for gemtc",
         "GEMTC",
     ),
+    (
+        "R34",
+        "For prognostic factor studies, Riley et al. consider a common (fixed) prognostic effect not sensible, since "
+        "the true effect is likely to vary from study to study, and a random-effects approach essential. The map "
+        "offers random effects only for them.",
+        "not in v11",
+        "RILEY",
+    ),
 ]
 
 CROSS: list[tuple[str, str, str]] = [
@@ -1275,7 +1295,6 @@ CROSS: list[tuple[str, str, str]] = [
 
 OPEN = [
     "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
-    "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
     "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).",
@@ -1476,7 +1495,10 @@ def pathways() -> list[Pathway]:
                     and (mid, b["kind"]) not in UNCONFIRMED_INPUT
                 )
                 milestone = milestone_of(b["fw"], mid)
+                allowed = branch_models(b)
                 for model in me["models"]:
+                    if allowed is not None and model not in allowed:
+                        continue
                     out.append(
                         Pathway(
                             framework=b["fw"],
@@ -1886,7 +1908,7 @@ ALSO_RULE: dict[tuple[str, str], tuple[str, str]] = {
 # The rule behind a metric's "only with" limit, by metric. R32 states it as the map's choice, so the reason
 # keeps "In this map, ".
 ONLY_RULE: dict[str, str] = {"PETO": "R32"}
-CHECKS = ("domain", "takes", "metrics", "only", "models")
+CHECKS = ("domain", "takes", "metrics", "only", "models", "branch_models")
 Choice = tuple[str, str]  # (tier, value)
 
 
@@ -1914,6 +1936,9 @@ def _combinations() -> Iterator[tuple[Branch, str, str, str, list[str]]]:
                         fails.append("only")
                     if model not in me["models"]:
                         fails.append("models")
+                    allowed = branch_models(b)
+                    if allowed is not None and model not in allowed:
+                        fails.append("branch_models")
                     yield b, mid, code, model, fails
 
 
@@ -1941,6 +1966,11 @@ def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Rea
         rule, stated = ONLY_RULE.get(code, ""), False
     if check == "takes" and b["kind"] != "est" and rule == "R2":
         rule, stated = "", False
+    if check == "branch_models":
+        allowed, rule = BRANCH_MODELS[branch_key(b)]
+        text = "For %s, the map offers %s only." % (b["group"], " or ".join(MODEL_WORDS[m] for m in allowed))
+        src = next(r[3] for r in RULES if r[0] == rule)
+        return Reason(text="In this map, " + text, rule=rule, src=src)
     if check == "domain":
         others = [k for k, m in METHODS.items() if m["domain"] == b["domain"]]
         text = "%s is offered for %s; for %s, the map offers: %s." % (
@@ -2437,6 +2467,8 @@ RULE_PLAIN: dict[str, str] = {
     "R32": "In this map, the Peto odds ratio comes only with Peto's method, the method Cochrane presents it with.",
     "R33": "gemtc's network models give odds ratios, risk ratios, mean differences, standardized mean differences "
     "and rate ratios; not risk or rate differences, arcsine differences or ratios of means.",
+    "R34": "A prognostic factor's effect is expected to vary between studies, so the map pools it with random effects "
+    "only.",
 }
 
 
@@ -4051,6 +4083,54 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Each study validates the same prediction model and reports its performance, such as the c-statistic or the observed:expected ratio.",
             "VALMETA",
         ),
+        (
+            "use",
+            "Debray et al. advise pooling the c-statistic on the logit scale and the total O:E ratio on the log scale, "
+            "with random effects estimated by REML, Hartung-Knapp-Sidik-Jonkman confidence intervals and an "
+            "approximate prediction interval.",
+            "DEBRAY",
+        ),
+        (
+            "caution",
+            "Debray et al. expect heterogeneity, since validation studies differ in design and case-mix, so they say "
+            "the meta-analysis should usually allow for it with random effects rather than a common-effect model.",
+            "DEBRAY",
+        ),
+        (
+            "caution",
+            "Prediction intervals are usually very wide with fewer than ten studies, and a c-statistic from a "
+            "time-to-event model can be one of several versions, so check which a study reports.",
+            "DEBRAY",
+        ),
+    ],
+    "group:prognostic-factor-does-the-factor-predict-the-outcome": [
+        (
+            "what",
+            "Each study reports the prognostic effect of a factor, such as a hazard ratio, odds ratio, risk ratio or "
+            "mean difference, with its standard error or confidence interval.",
+            "RILEY",
+        ),
+        (
+            "use",
+            "Riley et al. recommend focusing on estimates adjusted for other established prognostic factors, and "
+            "pooling separately each type of estimate, adjusted and unadjusted estimates, each cut-point or trend, and "
+            "each method of measurement. Ideally the adjusted estimates in one meta-analysis share at least a "
+            "predefined core set of adjustment factors.",
+            "RILEY",
+        ),
+        (
+            "use",
+            "They describe a random-effects model on the log scale (REML, DerSimonian-Laird or Bayesian), with "
+            "Hartung-Knapp confidence intervals and a prediction interval for the effect in a new population.",
+            "RILEY",
+        ),
+        (
+            "caution",
+            "Publication bias and selective reporting are common in prognosis research and can show as small-study "
+            "effects on a funnel plot; Riley et al. advise checking them, ideally also among the studies at low risk "
+            "of bias.",
+            "RILEY",
+        ),
     ],
     "group:two-variables-in-one-group-correlation": [
         (
@@ -4236,7 +4316,8 @@ PLAIN: dict[str, tuple[str, str, str]] = {
     "group:two-or-more-index-tests-compared": ("Two or more tests compared", "", "DTA-HB"),
     "group:prognostic-factor-does-the-factor-predict-the-outcome": (
         "Does one factor predict the outcome?",
-        "",
+        "For example, whether C reactive protein predicts death or heart attack in people with stable coronary "
+        "disease, with each study reporting a risk ratio adjusted for age, sex and other known factors.",
         "RILEY",
     ),
     "group:prediction-model-performance-external-validation": (
@@ -4321,7 +4402,12 @@ PLAIN: dict[str, tuple[str, str, str]] = {
         "Each person's test result, positive or negative.",
         "MADA",
     ),
-    "outcome:any-outcome": ("Any kind of outcome", "", "RILEY"),
+    "outcome:any-outcome": (
+        "Any kind of outcome",
+        "For example, death, disease progression or a complication, measured as an event over time, a yes-or-no "
+        "outcome or a continuous one.",
+        "RILEY",
+    ),
     "outcome:discrimination": (
         "Telling apart who will have the outcome",
         "Measured by the c-statistic.",

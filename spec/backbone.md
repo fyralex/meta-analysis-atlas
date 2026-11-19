@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 3; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
+Counts: pathways in total 543; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 335; of those, new (not yet accepted) 3; still to check 40; status runnable 0; status planned 424; status specified 79; status to_check 40.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -46,7 +46,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
 | 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | accepted #21 | MADA |
 | 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | accepted #21, CHECK | DTA-HB |
-| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #22, CHECK | RILEY |
+| 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #22 | RILEY |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | accepted #22 | VALMETA |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | accepted #22 | VALMETA |
 | 3. Prognosis | Overall prognosis (average risk or rate) | Same as One group (single arm) | See 1. Interventional, One group (single arm) |  | accepted #22 | MF-escalc |
@@ -136,10 +136,10 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | LRN | Negative likelihood ratio | `mada::madauni()` | DTA-HB | CHECK |
 | CSTAT | c-statistic (logit scale) | `valmeta(measure="cstat")` | VALMETA | OK |
 | OE | Total observed:expected ratio (log scale) | `valmeta(measure="OE")` | VALMETA | OK |
-| PF_HR | Adjusted hazard ratio (log), prognostic factor | `enter log HR and its SE` | RILEY | CHECK |
-| PF_OR | Adjusted odds ratio (log), prognostic factor | `enter log OR and its SE` | RILEY | CHECK |
-| PF_RR | Adjusted risk ratio (log), prognostic factor | `enter log RR and its SE` | RILEY | CHECK |
-| PF_MD | Adjusted mean difference | `enter MD and its SE` | RILEY | CHECK |
+| PF_HR | Adjusted hazard ratio (log), prognostic factor | `enter log HR and its SE` | RILEY | OK |
+| PF_OR | Adjusted odds ratio (log), prognostic factor | `enter log OR and its SE` | RILEY | OK |
+| PF_RR | Adjusted risk ratio (log), prognostic factor | `enter log RR and its SE` | RILEY | OK |
+| PF_MD | Adjusted mean difference | `enter MD and its SE` | RILEY | OK |
 | COR | Raw correlation | `escalc(measure="COR")` | MF-escalc | OK |
 | UCOR | Bias-corrected correlation | `escalc(measure="UCOR")` | MF-escalc | OK |
 | ZCOR | Fisher's z-transformed correlation | `escalc(measure="ZCOR")` | MF-escalc | OK |
@@ -221,6 +221,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R31 | A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw |
 | R32 | In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure="PETO") also computes it study by study; this map doesn't offer pooling it with another method. | agrees | CH-10 s10.4.2, MF-escalc |
 | R33 | gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference. | v11 wrong: offers every network measure for gemtc | GEMTC |
+| R34 | For prognostic factor studies, Riley et al. consider a common (fixed) prognostic effect not sensible, since the true effect is likely to vary from study to study, and a random-effects approach essential. The map offers random effects only for them. | not in v11 | RILEY |
 
 ## Compared with taxonomy v11
 
@@ -290,11 +291,10 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 ## Still to check
 
 1. Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.
-2. Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.
-3. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
-4. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-5. Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).
-6. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+2. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
+3. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
+4. Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).
+5. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 
 ## Sources
 
@@ -334,8 +334,8 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | MADA | mada, reitsma() | https://rdrr.io/cran/mada/man/reitsma.html |
 | DTA-HB | Cochrane Handbook for Diagnostic Test Accuracy v2.0, Ch. 9 and 10 (PDF needs a Cochrane account; not read) | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
 | VALMETA | metamisc, valmeta() | https://rdrr.io/cran/metamisc/man/valmeta.html |
-| DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (not readable online) | https://www.bmj.com/content/356/bmj.i6460 |
-| RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies (not readable online) | https://www.bmj.com/content/364/bmj.k4597 |
+| DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript) | https://www.bmj.com/content/356/bmj.i6460 |
+| RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies | https://www.bmj.com/content/364/bmj.k4597 |
 | DOSRES | dosresmeta, dosresmeta() | https://rdrr.io/cran/dosresmeta/man/dosresmeta.html |
 | DTMB | dtametaTMB, fitRutterGatsonis() | https://cran.r-project.org/web/packages/dtametaTMB/refman/dtametaTMB.html |
 | MULTINMA | multinma, nma() | https://dmphillippo.github.io/multinma/reference/nma.html |
