@@ -130,13 +130,15 @@ SOURCES: dict[str, tuple[str, str]] = {
         "metadat, dat.senn2013 (network models with rma.mv)",
         "https://wviechtb.github.io/metadat/reference/dat.senn2013.html",
     ),
-    "CH-6": ("Cochrane Handbook Ch. 6, effect measures", CH + "06"),
-    "CH-10": ("Cochrane Handbook Ch. 10, meta-analysis", CH + "10"),
-    "CH-11": ("Cochrane Handbook Ch. 11, network meta-analysis", CH + "11"),
-    "CH-13": ("Cochrane Handbook Ch. 13, missing results", CH + "13"),
-    "CH-23": ("Cochrane Handbook Ch. 23, variants on randomized trials", CH + "23"),
-    "CH-26": ("Cochrane Handbook Ch. 26, individual participant data", CH + "26"),
-    "BM": ("bayesmeta manual", "https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html"),
+    # Each chapter's "last updated" date, as its page gives it (read 2026-11-19); Ch. 10 and 23 are in version 6.5.1,
+    # the others in 6.5 (#25).
+    "CH-6": ("Cochrane Handbook Ch. 6 (updated August 2023), effect measures", CH + "06"),
+    "CH-10": ("Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis", CH + "10"),
+    "CH-11": ("Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis", CH + "11"),
+    "CH-13": ("Cochrane Handbook Ch. 13 (updated August 2024), missing results", CH + "13"),
+    "CH-23": ("Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials", CH + "23"),
+    "CH-26": ("Cochrane Handbook Ch. 26 (updated October 2019), individual participant data", CH + "26"),
+    "BM": ("bayesmeta manual (version 3.5)", "https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html"),
     "BM-bmr": ("bayesmeta, bmr()", "https://rdrr.io/cran/bayesmeta/man/bmr.html"),
     "NM": ("netmeta, netmeta()", "https://rdrr.io/cran/netmeta/man/netmeta.html"),
     "NM-bin": ("netmeta, netmetabin()", "https://rdrr.io/cran/netmeta/man/netmetabin.html"),
@@ -1086,7 +1088,7 @@ RULES: list[tuple[str, str, str, str]] = [
     ("R12", "Cumulative and leave-one-out need a model without moderators.", "missing in v11", "MF-cumul, MF-l1o"),
     (
         "R13",
-        "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the "
+        "bayesmeta has no cumulative or leave-one-out function: none is in its manual's index. It computes the "
         "posterior numerically (a grid approximation and the DIRECT algorithm).",
         "answers v11's open question",
         "BM",
@@ -1244,9 +1246,6 @@ OPEN = [
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
-    "Read the rest of the bayesmeta manual.",
-    "Record the Handbook version and the date of each chapter.",
-    "Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function.",
 ]
 
 
@@ -2364,8 +2363,8 @@ RULE_PLAIN: dict[str, str] = {
     "rma.uni, rma.glmm, rma.mv or bayesmeta's bmr. rma.mh and rma.peto can't.",
     "R11": "Cumulative and leave-one-out analyses are available for rma.uni, rma.mh and rma.peto only.",
     "R12": "Cumulative and leave-one-out analyses need a model without study characteristics (moderators).",
-    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta "
-    "computes its results numerically, with a grid approximation and the DIRECT algorithm.",
+    "R13": "bayesmeta has no function for cumulative or leave-one-out analysis. It computes its results "
+    "numerically, with a grid approximation and the DIRECT algorithm.",
     "R14": "Hartung-Knapp confidence intervals are for random-effects models fitted with rma.uni only.",
     "R15": "REML is the default estimator of the between-study variance in metafor and RevMan. Cochrane also cites "
     "Paule-Mandel, and says no estimator is best in every case.",

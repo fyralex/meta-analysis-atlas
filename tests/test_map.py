@@ -309,6 +309,14 @@ def test_every_metric_is_in_exactly_one_family() -> None:
     assert len(listed) == len(set(listed))
 
 
+def test_every_cochrane_chapter_source_says_when_it_was_updated() -> None:
+    """Chapters change between Handbook versions (Ch. 10 and 23 in November 2026): each says its date (#25)."""
+    chapters = {k: label for k, (label, _) in bm.SOURCES.items() if k.startswith("CH-")}
+    assert chapters
+    for key, label in chapters.items():
+        assert re.search(r"\(updated [A-Z][a-z]+ \d{4}\)", label), key
+
+
 # --- status and milestone --------------------------------------------------------
 
 

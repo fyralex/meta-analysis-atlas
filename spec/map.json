@@ -58,31 +58,31 @@
    "https://wviechtb.github.io/metadat/reference/dat.senn2013.html"
   ],
   "CH-6": [
-   "Cochrane Handbook Ch. 6, effect measures",
+   "Cochrane Handbook Ch. 6 (updated August 2023), effect measures",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-06"
   ],
   "CH-10": [
-   "Cochrane Handbook Ch. 10, meta-analysis",
+   "Cochrane Handbook Ch. 10 (updated November 2026), meta-analysis",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-10"
   ],
   "CH-11": [
-   "Cochrane Handbook Ch. 11, network meta-analysis",
+   "Cochrane Handbook Ch. 11 (updated October 2019), network meta-analysis",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-11"
   ],
   "CH-13": [
-   "Cochrane Handbook Ch. 13, missing results",
+   "Cochrane Handbook Ch. 13 (updated August 2024), missing results",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-13"
   ],
   "CH-23": [
-   "Cochrane Handbook Ch. 23, variants on randomized trials",
+   "Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23"
   ],
   "CH-26": [
-   "Cochrane Handbook Ch. 26, individual participant data",
+   "Cochrane Handbook Ch. 26 (updated October 2019), individual participant data",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26"
   ],
   "BM": [
-   "bayesmeta manual",
+   "bayesmeta manual (version 3.5)",
    "https://cran.r-project.org/web/packages/bayesmeta/refman/bayesmeta.html"
   ],
   "BM-bmr": [
@@ -1216,7 +1216,7 @@
   ],
   [
    "R13",
-   "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the posterior numerically (a grid approximation and the DIRECT algorithm).",
+   "bayesmeta has no cumulative or leave-one-out function: none is in its manual's index. It computes the posterior numerically (a grid approximation and the DIRECT algorithm).",
    "answers v11's open question",
    "BM"
   ],
@@ -1425,10 +1425,7 @@
   "Choose the R implementation for the HSROC model and for O - E and V data.",
   "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
-  "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).",
-  "Read the rest of the bayesmeta manual.",
-  "Record the Handbook version and the date of each chapter.",
-  "Decide whether to offer refit loops for cumulative and leave-one-out where the package has no function."
+  "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
  ],
  "unconfirmed": [
   {
