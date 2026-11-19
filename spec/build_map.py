@@ -282,7 +282,8 @@ METRICS: dict[str, Metric] = {
 }
 
 # Metric families, in the order the Atlas shows them (#78). A grouping for reading the map, not a rule: it
-# changes no pathway. Ratios and differences are between groups; proportions, means and rates are of one group.
+# changes no pathway. Ratios and differences compare two conditions (groups, time points or levels of a factor);
+# proportions, means and rates describe one group.
 METRIC_FAMILIES: dict[str, list[str]] = {
     "Proportions": ["PR", "PLN", "PLO", "PAS", "PFT", "PRZ", "I_P"],
     "Means": ["MN", "SMN", "MNLN", "I_M"],
