@@ -33,7 +33,7 @@ export function CardBadges({ card }: { card: Card }) {
   return (
     <>
       {/* the spaces keep an accessible name from running the title and the badges together */}
-      {card.added && (
+      {card.new && (
         <>
           {" "}
           <span className="badge badge-new">new</span>

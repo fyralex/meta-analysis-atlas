@@ -8,6 +8,7 @@ const CARD_KEYS = [
   "added",
   "facts",
   "id",
+  "new",
   "notes",
   "plain",
   "rules",

@@ -163,7 +163,7 @@ function MethodGroup({ method, rows }: { method: string; rows: readonly Pathway[
           {analyses(rows.length)} · {modelWords(modelsIn(rows))}
         </span>
         {checking > 0 && <span className="badge badge-check">{checking} not yet confirmed</span>}
-        {rows.some((p) => p.added) && <span className="badge badge-new">new</span>}
+        {rows.some((p) => p.new) && <span className="badge badge-new">new</span>}
       </summary>
       <div className="method-body">
         <div>

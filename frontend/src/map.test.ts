@@ -12,6 +12,7 @@ const PATHWAY_KEYS: (keyof Pathway)[] = [
   "metric",
   "milestone",
   "model",
+  "new",
   "outcome",
   "status",
   "verified",
@@ -32,6 +33,7 @@ describe("spec/map.json as the frontend reads it", () => {
         expect(typeof p[f]).toBe("string");
       }
       expect(typeof p.added).toBe("boolean");
+      expect(typeof p.new).toBe("boolean");
     }
   });
 

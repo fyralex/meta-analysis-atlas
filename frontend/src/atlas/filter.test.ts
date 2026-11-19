@@ -24,7 +24,7 @@ const HIDE_NEW = { hideNew: true };
 function lockCount(selection: Selection, hideNew = false, status?: Status): number {
   return lock.filter(
     (p) =>
-      !(hideNew && p.added) &&
+      !(hideNew && p.new) &&
       (status === undefined || p.status === status) &&
       TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
   ).length;
@@ -68,7 +68,7 @@ describe("every node's count", () => {
   it("splits each count by status and counts the new pathways", () => {
     for (const node of tierNodes(all, {}, "method", DEFAULT_OPTIONS)) {
       expect(Object.values(node.byStatus).reduce((a, b) => a + b, 0)).toBe(node.count);
-      expect(node.newCount).toBe(lock.filter((p) => p.method === node.value && p.added).length);
+      expect(node.newCount).toBe(lock.filter((p) => p.method === node.value && p.new).length);
     }
   });
 
@@ -80,7 +80,7 @@ describe("every node's count", () => {
 
   it("leaves out new pathways when they are hidden", () => {
     const nodes = tierNodes(all, {}, "framework", HIDE_NEW);
-    expect(nodes.map((n) => n.value)).toEqual([...new Set(lock.filter((p) => !p.added).map((p) => p.framework))]);
+    expect(nodes.map((n) => n.value)).toEqual([...new Set(lock.filter((p) => !p.new).map((p) => p.framework))]);
     expect(nodes.every((n) => n.newCount === 0)).toBe(true);
   });
 });
@@ -147,10 +147,9 @@ describe("choosing nodes", () => {
   });
 
   it("drops only the choice that is empty on its own, keeping the others", () => {
-    // Every change-or-matched-pairs pathway is new; the framework and datatype still match without it.
-    const group = "Change or matched pairs (same people measured twice)";
-    expect(lockCount({ group }, true)).toBe(0);
-    const selection = { framework: frameworks[0] ?? "", group, datatype: "Arm-level summary data" };
+    // Every penalised logistic regression pathway is still new (#20); the framework and datatype match without it.
+    expect(lockCount({ method: "LRP" }, true)).toBe(0);
+    const selection = { framework: frameworks[0] ?? "", datatype: "Arm-level summary data", method: "LRP" };
     expect(reconcile(all, selection, HIDE_NEW)).toEqual({ framework: selection.framework, datatype: selection.datatype });
   });
 
@@ -210,7 +209,7 @@ describe("showing only runnable pathways", () => {
 
   it("combines with hiding new entries", () => {
     const both = filterPathways(some, {}, { hideNew: true, runnableOnly: true });
-    expect(both).toHaveLength(some.filter((p) => p.status === "runnable" && !p.added).length);
+    expect(both).toHaveLength(some.filter((p) => p.status === "runnable" && !p.new).length);
   });
 
   it("changes nothing when it is off", () => {

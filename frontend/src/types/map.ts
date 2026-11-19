@@ -14,6 +14,8 @@ export interface Pathway {
   metric: string;
   verified: boolean;
   added: boolean;
+  /** Added and not yet accepted by the methodologist: shows the "new" badge. */
+  new: boolean;
   milestone: string;
   status: Status;
 }
@@ -23,6 +25,8 @@ export interface Metric {
   call: string;
   src: string;
   added: boolean;
+  /** Added and not yet accepted by the methodologist: shows the "new" badge. */
+  new: boolean;
   verified: boolean;
   only: string[] | null;
 }
@@ -38,6 +42,8 @@ export interface Method {
   metrics: string[] | null;
   note: string;
   added: boolean;
+  /** Added and not yet accepted by the methodologist: shows the "new" badge. */
+  new: boolean;
   verified: boolean;
   added_models: string[];
 }
@@ -52,6 +58,8 @@ export interface Branch {
   metrics: string[];
   domain: string;
   added: boolean;
+  /** Added and not yet accepted by the methodologist: shows the "new" badge. */
+  new: boolean;
   verified: boolean;
   note: string;
   /** Keys of `sources` for the data this branch reads, its metrics and its note. */

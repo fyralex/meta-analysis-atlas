@@ -15,7 +15,7 @@ const F1 = "1. Interventional (effect of an intervention)";
 
 function lockCount(selection: Selection, hideNew = false): number {
   return lock.filter(
-    (p) => !(hideNew && p.added) && TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
+    (p) => !(hideNew && p.new) && TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
   ).length;
 }
 
@@ -78,7 +78,7 @@ function summary(): string {
  * node shows the lock file's facet count, and the summary's counts by status match.
  */
 function expectCountsMatchLock(selection: Selection, hideNew = false) {
-  const kept = lock.filter((p) => !(hideNew && p.added));
+  const kept = lock.filter((p) => !(hideNew && p.new));
   const matching = kept.filter((p) => TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]));
   const text = summary(); // role queries walk the whole page: each is made once
   for (const status of STATUSES) {
@@ -253,7 +253,7 @@ describe("the Atlas's 2D view", PAGE, () => {
   it.each(["method", "metric"] as const)(
     "marks a %s new or to check from its own entry, whatever is chosen",
     (tier) => {
-      const entries: Record<string, { added: boolean; verified: boolean }> = tier === "method" ? map.methods : map.metrics;
+      const entries: Record<string, { new: boolean; verified: boolean }> = tier === "method" ? map.methods : map.metrics;
       for (const query of ["", `?framework=${encodeURIComponent("2. Diagnostic test accuracy")}`]) {
         renderAtlas(query);
         for (const button of nodes(tier)) {
@@ -261,7 +261,7 @@ describe("the Atlas's 2D view", PAGE, () => {
           expect(entry).toBeDefined();
           const badges = [...button.querySelectorAll(".badge")].map((b) => b.textContent);
           expect(badges, valueOf(tier, button)).toEqual([
-            ...(entry?.added ? ["new"] : []),
+            ...(entry?.new ? ["new"] : []),
             ...(entry?.verified ? [] : ["to check"]),
           ]);
         }
@@ -288,8 +288,8 @@ describe("the Atlas's 2D view", PAGE, () => {
     const re = node("model", "Random effects");
     const rows = lock.filter((p) => p.framework === F1 && p.model === "Random effects");
     const planned = rows.filter((p) => p.status === "planned").length;
-    const added = rows.filter((p) => p.added).length;
-    expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(added)} new$`));
+    const marked = rows.filter((p) => p.new).length;
+    expect(re).toHaveAccessibleName(new RegExp(`^Random effects, ${String(rows.length)} pathways: .*${String(planned)} planned.*${String(marked)} new$`));
   });
 
   it("is one tab stop per layer, with the arrow keys moving between its nodes", () => {
@@ -412,16 +412,8 @@ describe("the Atlas's 2D view", PAGE, () => {
       expect(screen.queryByRole("region", { name: /^Why not/ })).not.toBeInTheDocument();
     });
 
-    it("says when only hidden new entries would fit", () => {
-      // rma.mv's common-effect model is marked new; see whyNot.test.ts.
-      renderAtlas("?method=MV&new=hide");
-      const common = node("model", "Common effect");
-      expect(shownCount(common)).toBe(0);
-      fireEvent.click(common);
-      expect(screen.getByRole("region", { name: "Why not Common effect?" })).toHaveTextContent(
-        "only through entries marked new",
-      );
-    });
+    // "Only through entries marked new" is tested in whyNot.test.ts: since #108 no node the Atlas draws is greyed
+    // out by "hide new" alone: no two choices that both have pathways not marked new meet only in new ones.
   });
 
   describe("cards", () => {

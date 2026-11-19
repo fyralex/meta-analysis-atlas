@@ -54,7 +54,7 @@ describe("Pathfinder's questions", () => {
     for (const end of ends) {
       const found = fitting(end, hide);
       expect(found.length, JSON.stringify(end)).toBeGreaterThan(0);
-      for (const p of found) expect(p.added, key(p)).toBe(false);
+      for (const p of found) expect(p.new, key(p)).toBe(false);
     }
   });
 

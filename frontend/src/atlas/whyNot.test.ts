@@ -105,12 +105,12 @@ describe("explaining a greyed-out node", () => {
   });
 
   it("says when only hidden new entries would fit", () => {
-    // rma.mv's common-effect model is new (the map added it), while rma.mv and common effect each have other pathways.
-    expect(lock.some((p) => !p.added && p.method === "MV")).toBe(true);
-    expect(lock.some((p) => !p.added && p.model === "Common effect")).toBe(true);
-    expect(lock.some((p) => !p.added && p.method === "MV" && p.model === "Common effect")).toBe(false);
-    expect(explain(lock, { method: "MV" }, "model", "Common effect", HIDE)).toEqual({ kind: "hidden-new" });
-    expect(explain(lock, { method: "MV" }, "model", "Common effect", SHOW).kind).not.toBe("hidden-new");
+    // Penalised logistic regression is new (added, not yet accepted: #20), and so is every pathway through it,
+    // while random effects has other pathways.
+    expect(lock.filter((p) => p.method === "LRP").every((p) => p.new)).toBe(true);
+    expect(lock.some((p) => !p.new && p.model === "Random effects")).toBe(true);
+    expect(explain(lock, { model: "Random effects" }, "method", "LRP", HIDE)).toEqual({ kind: "hidden-new" });
+    expect(explain(lock, { model: "Random effects" }, "method", "LRP", SHOW).kind).not.toBe("hidden-new");
   });
 });
 
@@ -127,7 +127,7 @@ describe("why not, with only runnable pathways shown", () => {
   it("names both settings when a node fits only through pathways both of them hide", () => {
     // Penalised logistic regression's pathways are all marked new, and none is runnable.
     const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
-    expect(map.pathways.filter((p) => p.method === "LRP").every((p) => p.added && p.status !== "runnable")).toBe(true);
+    expect(map.pathways.filter((p) => p.method === "LRP").every((p) => p.new && p.status !== "runnable")).toBe(true);
     expect(explain(some, {}, "method", "LRP", { hideNew: true, runnableOnly: true }).kind).toBe("hidden-both");
   });
 });

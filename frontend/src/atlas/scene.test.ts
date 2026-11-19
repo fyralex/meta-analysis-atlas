@@ -12,7 +12,7 @@ const F1 = "1. Interventional (effect of an intervention)";
 function lockCount(selection: Selection, options: FilterOptions): number {
   return lock.filter(
     (p) =>
-      !(options.hideNew && p.added) &&
+      !(options.hideNew && p.new) &&
       !(options.runnableOnly && p.status !== "runnable") &&
       TIERS.every((t) => selection[t] === undefined || p[t] === selection[t]),
   ).length;
@@ -56,7 +56,7 @@ describe("the 3D scene", () => {
       const tiers = tiersInOrder(order);
       const expected = new Set<string>();
       for (const p of lock) {
-        if (options.hideNew && p.added) continue;
+        if (options.hideNew && p.new) continue;
         if (!TIERS.every((t) => selection[t] === undefined || p[t] === selection[t])) continue;
         for (let i = 0; i + 1 < tiers.length; i++) {
           const [a, b] = [tiers[i] ?? "framework", tiers[i + 1] ?? "framework"];

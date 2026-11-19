@@ -234,6 +234,44 @@ def test_v11_scope_holds_the_kept_and_merged_pathways() -> None:
     assert len(in_scope) == bm.V11_KEPT + len(bm.V11_MERGED_INTO)
 
 
+# --- accepted new entries --------------------------------------------------------
+
+
+def test_every_accepted_entry_is_an_added_one() -> None:
+    """ACCEPTED_* only lists entries the map added (not in v11), each with the issue that accepted it."""
+    assert [k for k in bm.ACCEPTED_METRICS if not bm.METRICS[k]["added"]] == []
+    assert [k for k in bm.ACCEPTED_METHODS if not bm.METHODS[k]["added"]] == []
+    assert [k for k in bm.ACCEPTED_MODELS if k[1] not in bm.METHODS[k[0]]["added_models"]] == []
+    added_branches = {bm.branch_key(b) for b in bm.BRANCHES if b["added"]}
+    assert [k for k in bm.ACCEPTED_BRANCHES if k not in added_branches] == []
+    issues = {
+        *bm.ACCEPTED_METRICS.values(),
+        *bm.ACCEPTED_METHODS.values(),
+        *bm.ACCEPTED_MODELS.values(),
+        *bm.ACCEPTED_BRANCHES.values(),
+    }
+    assert issues == {11, 14, 16, 17, 18, 19}
+
+
+def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
+    for p in bm.pathways():
+        assert not p["new"] or p["added"], p
+    by_key = {bm.pathway_key(p): p for p in bm.pathways()}
+    paired = [p for p in by_key.values() if p["group"] == bm.G3]
+    assert paired and all(p["added"] and not p["new"] for p in paired)  # #16
+    assert all(p["new"] for p in by_key.values() if p["method"] == "LRP")  # #20, still open
+    assert all(p["new"] for p in by_key.values() if p["metric"] == "N_ASD")  # in no accepted family
+    mv_common = [
+        p
+        for p in by_key.values()
+        if p["method"] in ("MV", "NM_MV")
+        and p["model"] == bm.COMMON
+        and p["framework"] == bm.F1
+        and p["metric"] != "N_ASD"
+    ]
+    assert mv_common and not any(p["new"] for p in mv_common)  # #14 and #11
+
+
 # --- status and milestone --------------------------------------------------------
 
 
@@ -552,12 +590,12 @@ def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
     f1 = _card(all_cards, "framework:interventional-effect-of-an-intervention")  # some branches new, some to check
     assert (f1["added"], f1["verified"]) == (False, True)
     dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # all new, one confirmed
-    assert (dta["added"], dta["verified"]) == (True, True)
+    assert (dta["added"], dta["new"], dta["verified"]) == (True, True, True)
     ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
     assert ipd["verified"] is False
     assert {
         "label": "Branches under it",
-        "items": ["2 in all: 1 confirmed, 1 still to check; 2 new"],
+        "items": ["2 in all: 1 confirmed, 1 still to check; 2 new, not yet accepted"],
         "code": False,
     } in dta["facts"]
 
@@ -819,6 +857,7 @@ def test_a_term_matches_only_at_the_start_of_a_word() -> None:
         value="x",
         title="x",
         added=False,
+        new=False,
         verified=True,
         facts=[],
         rules=[],

@@ -33,7 +33,7 @@ const ORDERS: { value: TierOrder; text: string }[] = [
 ];
 
 /** A method's or metric's own flags: "new" means not in the reviewed draft; "to check", not yet confirmed. */
-function entryFlags(tier: "method" | "metric", value: string): { added: boolean; verified: boolean } | undefined {
+function entryFlags(tier: "method" | "metric", value: string): { new: boolean; verified: boolean } | undefined {
   return tier === "method" ? map.methods[value] : map.metrics[value];
 }
 
@@ -384,7 +384,7 @@ export function AtlasPage() {
                       </span>
                       <span>
                         <span className={`swatch st-${p.status}`} aria-hidden="true" /> {STATUS_TEXT[p.status].name}
-                        {p.added && <span className="badge badge-new">new</span>}
+                        {p.new && <span className="badge badge-new">new</span>}
                       </span>
                     </td>
                     {varying.map((t) => (
