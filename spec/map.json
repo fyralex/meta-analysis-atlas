@@ -1440,6 +1440,11 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
+  },
+  {
+   "method": "NM_IPD",
+   "metric": "N_HR",
+   "why": "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#59)"
   }
  ],
  "unconfirmed_input": [
@@ -2679,7 +2684,7 @@
     "MULTINMA-ipd"
    ],
    "metrics": null,
-   "note": "A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data (#59).",
+   "note": "A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59).",
    "added": false,
    "verified": true,
    "added_models": [

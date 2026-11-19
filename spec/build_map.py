@@ -577,7 +577,7 @@ METHODS: dict[str, Method] = {
         added_models=[COMMON],
         note="A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. "
         "Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and "
-        "survival models for time-to-event data (#59).",
+        "survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59).",
     ),
     # diagnostic test accuracy
     "BIV": meth(
@@ -1411,6 +1411,10 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
         "N_SMD",
     ): "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)",
 }
+UNCONFIRMED[("NM_IPD", "N_HR")] = (
+    "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page "
+    "doesn't say which give a hazard ratio (#59)"
+)
 # Pairs of a method and an input it reads (a branch kind) whose pairing is not confirmed: their pathways are to check.
 UNCONFIRMED_INPUT: dict[tuple[str, str], str] = {
     ("NM_BAYES", "est"): "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale "
@@ -3293,8 +3297,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "what",
             "Fits one model to the participant data of every study in the network, in a Bayesian framework (Stan): "
-            "multinma's set_ipd() takes one row per participant, and nma() fits the network with fixed or random "
-            "treatment effects.",
+            "multinma's set_ipd() takes the individual patient data, and nma() fits the network with fixed or "
+            "random treatment effects.",
             "MULTINMA-ipd, MULTINMA",
         ),
         (
