@@ -141,6 +141,10 @@
    "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy"
   ],
+  "DTA-10S": [
+   "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 supplement, code (version 2.0, July 2023)",
+   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy"
+  ],
   "VALMETA": [
    "metamisc, valmeta()",
    "https://rdrr.io/cran/metamisc/man/valmeta.html"
@@ -2021,7 +2025,7 @@
   "SESP": {
    "label": "Summary sensitivity and specificity (estimated jointly)",
    "call": "glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec | study), family = binomial)",
-   "src": "DTA-10",
+   "src": "DTA-10S",
    "added": false,
    "verified": true,
    "only": null,
@@ -2031,7 +2035,7 @@
   "SROC": {
    "label": "Summary ROC curve",
    "call": "dtametaTMB::fitRutterGatsonis()",
-   "src": "DTA-HB",
+   "src": "DTMB",
    "added": false,
    "verified": true,
    "only": null,
@@ -2041,7 +2045,7 @@
   "DOR": {
    "label": "Diagnostic odds ratio",
    "call": "exp(logit(sens) + logit(spec)) from the bivariate model",
-   "src": "DTA-10",
+   "src": "DTA-10S",
    "added": false,
    "verified": true,
    "only": null,
@@ -2051,7 +2055,7 @@
   "LRP": {
    "label": "Positive likelihood ratio",
    "call": "sens / (1 - spec) from the bivariate model",
-   "src": "DTA-10",
+   "src": "DTA-10S",
    "added": false,
    "verified": true,
    "only": null,
@@ -2061,7 +2065,7 @@
   "LRN": {
    "label": "Negative likelihood ratio",
    "call": "(1 - sens) / spec from the bivariate model",
-   "src": "DTA-10",
+   "src": "DTA-10S",
    "added": false,
    "verified": true,
    "only": null,

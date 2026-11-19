@@ -129,11 +129,11 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
 | N_IRD | Incidence rate difference (network) | `netmeta(sm="IRD")` | NM | OK |
 | N_HR | Hazard ratio | `netmeta(sm="HR")` | NM | OK |
-| SESP | Summary sensitivity and specificity (estimated jointly) | `glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec / study), family = binomial)` | DTA-10 | OK |
-| SROC | Summary ROC curve | `dtametaTMB::fitRutterGatsonis()` | DTA-HB | OK |
-| DOR | Diagnostic odds ratio | `exp(logit(sens) + logit(spec)) from the bivariate model` | DTA-10 | OK |
-| LRP | Positive likelihood ratio | `sens / (1 - spec) from the bivariate model` | DTA-10 | OK |
-| LRN | Negative likelihood ratio | `(1 - sens) / spec from the bivariate model` | DTA-10 | OK |
+| SESP | Summary sensitivity and specificity (estimated jointly) | `glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec \| study), family = binomial)` | DTA-10S | OK |
+| SROC | Summary ROC curve | `dtametaTMB::fitRutterGatsonis()` | DTMB | OK |
+| DOR | Diagnostic odds ratio | `exp(logit(sens) + logit(spec)) from the bivariate model` | DTA-10S | OK |
+| LRP | Positive likelihood ratio | `sens / (1 - spec) from the bivariate model` | DTA-10S | OK |
+| LRN | Negative likelihood ratio | `(1 - sens) / spec from the bivariate model` | DTA-10S | OK |
 | CSTAT | c-statistic (logit scale) | `valmeta(measure="cstat")` | VALMETA | OK |
 | OE | Total observed:expected ratio (log scale) | `valmeta(measure="OE")` | VALMETA | OK |
 | PF_HR | Adjusted hazard ratio (log), prognostic factor | `enter log HR and its SE` | RILEY | OK |
@@ -332,6 +332,7 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | MADA | mada, reitsma() | https://rdrr.io/cran/mada/man/reitsma.html |
 | DTA-HB | Cochrane Handbook for Diagnostic Test Accuracy, Ch. 9 (updated July 2023), understanding meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
 | DTA-10 | Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
+| DTA-10S | Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 supplement, code (version 2.0, July 2023) | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
 | VALMETA | metamisc, valmeta() | https://rdrr.io/cran/metamisc/man/valmeta.html |
 | DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript) | https://www.bmj.com/content/356/bmj.i6460 |
 | RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies | https://www.bmj.com/content/364/bmj.k4597 |

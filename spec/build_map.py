@@ -160,6 +160,10 @@ SOURCES: dict[str, tuple[str, str]] = {
         "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis",
         "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy",
     ),
+    "DTA-10S": (
+        "Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 supplement, code (version 2.0, July 2023)",
+        "https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy",
+    ),
     "VALMETA": ("metamisc, valmeta()", "https://rdrr.io/cran/metamisc/man/valmeta.html"),
     "DEBRAY": (
         "Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript)",
@@ -265,13 +269,13 @@ METRICS: dict[str, Metric] = {
     "SESP": m(
         "Summary sensitivity and specificity (estimated jointly)",
         "glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec | study), family = binomial)",
-        "DTA-10",
+        "DTA-10S",
     ),
-    "SROC": m("Summary ROC curve", "dtametaTMB::fitRutterGatsonis()", "DTA-HB"),
+    "SROC": m("Summary ROC curve", "dtametaTMB::fitRutterGatsonis()", "DTMB"),
     # Computed from the bivariate model at the summary point (Ch. 9.4; Ch. 10 supplement, Appendix 5), rule R35.
-    "DOR": m("Diagnostic odds ratio", "exp(logit(sens) + logit(spec)) from the bivariate model", "DTA-10"),
-    "LRP": m("Positive likelihood ratio", "sens / (1 - spec) from the bivariate model", "DTA-10"),
-    "LRN": m("Negative likelihood ratio", "(1 - sens) / spec from the bivariate model", "DTA-10"),
+    "DOR": m("Diagnostic odds ratio", "exp(logit(sens) + logit(spec)) from the bivariate model", "DTA-10S"),
+    "LRP": m("Positive likelihood ratio", "sens / (1 - spec) from the bivariate model", "DTA-10S"),
+    "LRN": m("Negative likelihood ratio", "(1 - sens) / spec from the bivariate model", "DTA-10S"),
     # prognosis
     "CSTAT": m("c-statistic (logit scale)", 'valmeta(measure="cstat")', "VALMETA"),
     "OE": m("Total observed:expected ratio (log scale)", 'valmeta(measure="OE")', "VALMETA"),
@@ -1657,7 +1661,7 @@ def write_tree_md(tree: Node, stats: str) -> None:
 
 def table(headers: Sequence[str], rows: Iterable[Sequence[object]]) -> str:
     out = ["| " + " | ".join(headers) + " |", "|" + "---|" * len(headers)]
-    out += ["| " + " | ".join(str(c).replace("|", "/") for c in r) + " |" for r in rows]
+    out += ["| " + " | ".join(str(c).replace("|", "\\|") for c in r) + " |" for r in rows]
     return "\n".join(out)
 
 
@@ -3572,8 +3576,9 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "caution",
-            "With few studies, its five parameters are hard to estimate and the fit may not converge; the handbook "
-            "discusses simplifying the model, for example to a random effect on only one of the two.",
+            "With few studies, its five parameters are hard to estimate and the fit may not converge. When "
+            "sensitivity or specificity shows little heterogeneity, the handbook discusses keeping a random effect on "
+            "only the other one.",
             "DTA-HB s9.4.8",
         ),
     ],
@@ -3592,8 +3597,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "what",
-            "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al., which mada's "
-            "reitsma() fits.",
+            "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al. when there "
+            "are no covariates.",
             "MADA",
         ),
         (
@@ -3784,7 +3789,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "The odds of a positive result among people with the condition, divided by the odds among people "
             "without it; computed from the bivariate model's summary sensitivity and specificity, with a confidence "
             "interval by the delta method.",
-            "DTA-10, DTA-HB s9.4",
+            "DTA-10S, DTA-HB s9.4",
         ),
     ],
     "metric:LRP": [
@@ -3792,7 +3797,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "what",
             "How much more likely a positive result is in people with the condition than in people without it: "
             "sensitivity divided by 1 minus specificity, computed at the bivariate model's summary point.",
-            "DTA-10, DTA-HB s9.4",
+            "DTA-10S, DTA-HB s9.4",
         ),
         (
             "caution",
@@ -3804,9 +3809,9 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
     "metric:LRN": [
         (
             "what",
-            "How much more likely a negative result is in people with the condition than in people without it: 1 "
-            "minus sensitivity, divided by specificity, computed at the bivariate model's summary point.",
-            "DTA-10, DTA-HB s9.4",
+            "The chance of a negative result in people with the condition relative to people without it, usually "
+            "below 1: 1 minus sensitivity, divided by specificity, computed at the bivariate model's summary point.",
+            "DTA-10S, DTA-HB s9.4",
         ),
         (
             "caution",
@@ -3833,8 +3838,8 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "use",
             "Comparisons from studies that applied both tests to the same people, or randomized people between them, "
-            "are less prone to bias than comparisons across studies that each evaluated one test, and the handbook "
-            "says to rely on them where possible.",
+            "are less prone to bias than comparisons across all studies that evaluated one or both tests, and the "
+            "handbook says to rely on them where possible, though such studies are often few.",
             "DTA-HB s9.4.7, s9.4.7.5",
         ),
         (
@@ -4412,7 +4417,7 @@ PLAIN: dict[str, tuple[str, str, str]] = {
     "group:two-or-more-index-tests-compared": (
         "Two or more tests compared",
         "For example, CT against MRI for diagnosing coronary artery disease.",
-        "DTA-HB",
+        "DTA-HB s9.4.7.3",
     ),
     "group:prognostic-factor-does-the-factor-predict-the-outcome": (
         "Does one factor predict the outcome?",
