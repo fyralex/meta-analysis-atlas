@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 76; status runnable 0; status planned 412; status specified 63; status to_check 76.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 75; status runnable 0; status planned 412; status specified 64; status to_check 75.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -439,7 +439,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
     - datatype: Observed minus expected and variance  (1)
       - outcome: Time-to-event  (1)
         - model: Common effect  (1)
-          - method: Observed minus expected and variance (log-rank / Peto) [CHECK]  (1)
+          - method: Observed minus expected and variance (log-rank / Peto)  (1)
             - metric: Hazard ratio (log)
     - datatype: Individual participant data  (4)
       - outcome: Binary [CHECK]  (1)
@@ -713,7 +713,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
         - model: Random effects  (5)
           - method: Bivariate model (Reitsma)  (1)
             - metric: Summary sensitivity and specificity (estimated jointly)
-          - method: Hierarchical summary ROC model (Rutter and Gatsonis) [CHECK]  (1)
+          - method: Hierarchical summary ROC model (Rutter and Gatsonis)  (1)
             - metric: Summary ROC curve [CHECK]
           - method: Univariate pooling [CHECK]  (3)
             - metric: Diagnostic odds ratio [CHECK]
@@ -730,7 +730,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
         - model: Random effects  (2)
           - method: Bivariate model (Reitsma)  (1)
             - metric: Summary sensitivity and specificity (estimated jointly)
-          - method: Hierarchical summary ROC model (Rutter and Gatsonis) [CHECK]  (1)
+          - method: Hierarchical summary ROC model (Rutter and Gatsonis)  (1)
             - metric: Summary ROC curve [CHECK]
 - framework: 3. Prognosis  (24)
   - group: Prognostic factor (does the factor predict the outcome?)  (20)

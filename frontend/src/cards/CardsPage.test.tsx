@@ -149,8 +149,8 @@ describe("the Cards page", PAGE, () => {
   });
 
   it("shows an opened card's flags in its heading", () => {
-    renderAt("/cards?card=method%3AOEV");
-    const heading = screen.getByRole("heading", { level: 2, name: /^Observed minus expected/ });
+    renderAt("/cards?card=method%3AIPD1"); // still to check: its R package isn't confirmed (#25)
+    const heading = screen.getByRole("heading", { level: 2, name: /^One-stage regression on participant data/ });
     expect(heading).toHaveAccessibleName(/ to check$/);
   });
 

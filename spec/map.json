@@ -149,6 +149,10 @@
    "dosresmeta, dosresmeta()",
    "https://rdrr.io/cran/dosresmeta/man/dosresmeta.html"
   ],
+  "DTMB": [
+   "dtametaTMB, fitRutterGatsonis()",
+   "https://cran.r-project.org/web/packages/dtametaTMB/refman/dtametaTMB.html"
+  ],
   "MULTINMA": [
    "multinma, nma()",
    "https://dmphillippo.github.io/multinma/reference/nma.html"
@@ -1422,7 +1426,6 @@
   "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
   "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
   "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
-  "Choose the R implementation for the HSROC model and for O - E and V data.",
   "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
@@ -2493,7 +2496,7 @@
   },
   "OEV": {
    "label": "Observed minus expected and variance (log-rank / Peto)",
-   "fn": "computed as (O-E)/V with variance 1/V",
+   "fn": "metafor::rma.uni(yi = (O - E) / V, vi = 1 / V, method = \"EE\")",
    "domain": "pairwise",
    "takes": [
     "oev"
@@ -2505,12 +2508,14 @@
     "standard"
    ],
    "src": [
-    "CH-10"
+    "CH-6",
+    "CH-10",
+    "MF-uni"
    ],
    "metrics": null,
-   "note": "Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet.",
+   "note": "Cochrane 6.8.2: each study's log hazard ratio is (O - E)/V, with standard error 1/sqrt(V). Pooled with inverse-variance weights in metafor's equal-effects model. Cochrane 10.9: only fixed-effect methods in RevMan.",
    "added": true,
-   "verified": false,
+   "verified": true,
    "added_models": [],
    "new": false
   },
@@ -2718,7 +2723,7 @@
   },
   "HSROC": {
    "label": "Hierarchical summary ROC model (Rutter and Gatsonis)",
-   "fn": "implementation not chosen",
+   "fn": "dtametaTMB::fitRutterGatsonis()",
    "domain": "dta",
    "takes": [
     "tab"
@@ -2732,15 +2737,15 @@
     "meta-regression"
    ],
    "src": [
-    "DTA-HB",
+    "DTMB",
     "MADA"
    ],
    "metrics": [
     "SROC"
    ],
-   "note": "Used when studies apply different thresholds.",
+   "note": "Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() study-level covariates.",
    "added": false,
-   "verified": false,
+   "verified": true,
    "added_models": [],
    "new": false
   },
@@ -6877,11 +6882,11 @@
    "model": "Common effect",
    "method": "OEV",
    "metric": "HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
