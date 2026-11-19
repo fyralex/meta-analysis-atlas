@@ -7,12 +7,17 @@ const BINARY =
   `pathfinder?framework=${F1}&group=Two+groups+%28pairwise%29&datatype=Arm-level+summary+data&outcome=Binary` +
   "&rare=no&vary=unsure";
 
-const PAGES: { name: string; path: string; heading: RegExp }[] = [
+const PAGES: { name: string; path: string; heading: RegExp; shows?: string }[] = [
   { name: "home", path: "#/", heading: /^Find the right meta-analysis/ },
   { name: "Pathfinder", path: "#/pathfinder", heading: /^What kind of question/ },
   { name: "Pathfinder results", path: `#/${BINARY}`, heading: /^\d+ analyses fit your answers$/ },
   { name: "Cards", path: "#/cards", heading: /^Learn the building blocks$/ },
-  { name: "a card", path: "#/cards?card=method%3AIV", heading: /^Learn the building blocks$/ },
+  {
+    name: "a card",
+    path: "#/cards?card=method%3AIV",
+    heading: /^Learn the building blocks$/,
+    shows: "Inverse variance",
+  },
   { name: "Atlas, 3D", path: "#/atlas", heading: /^Atlas$/ },
   { name: "Atlas, text view", path: "#/atlas?view=2d", heading: /^Atlas$/ },
 ];
@@ -38,8 +43,12 @@ for (const p of PAGES) {
         await page.setViewportSize({ width, height: 900 });
         await page.goto(p.path);
         await expect(page.getByRole("heading", { level: 1 })).toHaveText(p.heading);
+        if (p.shows !== undefined) await expect(page.getByRole("heading", { level: 2, name: p.shows })).toBeVisible();
         await page.waitForLoadState("networkidle");
-        const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+        // clientWidth leaves out a vertical scrollbar, so a small sideways overflow isn't hidden behind one
+        const overflow = await page.evaluate(
+          () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        );
         expect(overflow, "the page scrolls sideways").toBeLessThanOrEqual(0);
         expect(errors).toEqual([]);
       });
@@ -50,6 +59,10 @@ for (const p of PAGES) {
 test("the Atlas draws the 3D map, not the text view", async ({ page }) => {
   const errors = watch(page);
   await page.goto("#/atlas");
+  await expect(page.locator(".atlas-3d canvas")).toBeVisible();
+  // the map keeps drawing: no later fall-back to the text view
+  await page.waitForLoadState("networkidle");
+  await page.waitForTimeout(1500);
   await expect(page.locator(".atlas-3d canvas")).toBeVisible();
   await expect(page.getByText(/can't draw the 3D map/)).toHaveCount(0);
   expect(errors).toEqual([]);

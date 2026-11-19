@@ -359,6 +359,9 @@ committed, and the checks confirm that it's current.
   - from v0.2, every `runnable` pathway has at least one validation test.
 - **Frontend tests:** the map's filtering logic (its counts must equal the
   lock file's), the question flow, and card rendering.
+- **Browser tests** (Playwright, `frontend/e2e/`, at releases): each app at
+  360, 768 and 1280 px in both themes, with no console error and no sideways
+  scroll, and the Atlas drawing its 3D map.
 - **From v0.2:** unit tests for the plan builder and request validation;
   validation tests (`@pytest.mark.integration`) against published examples
   (metafor's documented datasets, Borenstein et al. 2009, Viechtbauer 2005,
