@@ -339,7 +339,6 @@ def test_every_why_not_reason_cites_known_sources_and_rules(
     ("x", "y", "text", "rule"),
     [
         (("method", "PETO"), ("metric", "MD"), "Peto gives only: Peto odds ratio (log).", "R5"),
-        (("method", "MH"), ("model", "Random effects"), "Mantel-Haenszel fits a common-effect model only.", "R3"),
         (
             ("method", "MH"),
             ("datatype", "Precomputed estimate"),
@@ -368,6 +367,22 @@ def test_why_not_gives_the_reason_its_rule_states(
     why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]], x: bm.Choice, y: bm.Choice, text: str, rule: str
 ) -> None:
     assert [(r["text"], r["rule"]) for r in why[x][y]] == [(text, rule)]
+
+
+def test_mantel_haenszel_with_random_effects_cites_r3_and_r4(
+    why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
+) -> None:
+    """R3 says Mantel-Haenszel is common-effect only; R4 says why there is no random-effects version (#82)."""
+    r4 = next(r for r in bm.RULES if r[0] == "R4")
+    for x, y in [(("method", "MH"), ("model", "Random effects")), (("model", "Random effects"), ("method", "MH"))]:
+        assert [(r["text"], r["rule"]) for r in why[x][y]] == [
+            ("Mantel-Haenszel fits a common-effect model only.", "R3"),
+            (bm.ALSO_RULE[("MH", "models")][1], "R4"),
+        ]
+        assert why[x][y][1]["src"] == r4[3]
+    # and R4 is cited on that pair only, in both directions
+    with_r4 = {(x, y) for x, others in why.items() for y, rs in others.items() if any(r["rule"] == "R4" for r in rs)}
+    assert with_r4 == {(("method", "MH"), ("model", "Random effects")), (("model", "Random effects"), ("method", "MH"))}
 
 
 def test_r2_is_cited_only_for_precomputed_estimates() -> None:
@@ -417,7 +432,8 @@ def test_a_reason_no_rule_states_is_worded_as_the_maps(
     why: dict[bm.Choice, dict[bm.Choice, list[bm.Reason]]],
 ) -> None:
     """A reason may state a limit as a fact about a method only when its rule states it outright."""
-    outright = {rule for rule, states in bm.WHY_RULE.values() if states}
+    # ALSO_RULE's reasons restate their rule, which states them outright (R4, #82).
+    outright = {rule for rule, states in bm.WHY_RULE.values() if states} | {rule for rule, _ in bm.ALSO_RULE.values()}
     hedged = {rule for rule, states in bm.WHY_RULE.values() if not states}
     for others in why.values():
         for reasons in others.values():

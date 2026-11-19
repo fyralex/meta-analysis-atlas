@@ -1648,6 +1648,15 @@ WHY_RULE: dict[tuple[str, str], tuple[str, bool]] = {
     ("OEV", "models"): ("R25", True),
     ("NM_MH", "models"): ("R20", True),
 }
+# A second reason for a method's limit, where another rule explains what the first leaves open (#82): R3 says
+# Mantel-Haenszel is common-effect only; R4 says why there is no random-effects Mantel-Haenszel to offer.
+ALSO_RULE: dict[tuple[str, str], tuple[str, str]] = {
+    ("MH", "models"): (
+        "R4",
+        "Random-effects Mantel-Haenszel isn't a separate method: a random-effects estimate uses inverse-variance "
+        "weights.",
+    ),
+}
 # The rule behind a metric's "only with" limit, by metric. R32 states it as the map's choice, so the reason
 # keeps "In this map, ".
 ONLY_RULE: dict[str, str] = {"PETO": "R32"}
@@ -1741,6 +1750,14 @@ def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Rea
     return Reason(text=text, rule=rule, src=src)
 
 
+def _also_reasons(check: str, mid: str) -> list[Reason]:
+    """The second reason a rule gives for a method's limit (ALSO_RULE), citing that rule's own sources."""
+    if (mid, check) not in ALSO_RULE:
+        return []
+    rule, text = ALSO_RULE[(mid, check)]
+    return [Reason(text=text, rule=rule, src=next(r[3] for r in RULES if r[0] == rule))]
+
+
 def _choice_sources() -> dict[Choice, list[str]]:
     """The sources behind each choice: its branches' for a branch value or a metric, its own for a method."""
     sources: dict[Choice, list[str]] = {}
@@ -1778,8 +1795,9 @@ def why_not(paths: Sequence[Pathway]) -> dict[Choice, dict[Choice, list[Reason]]
                 if x[0] != y[0] and x in together and y not in together[x]:
                     reason = reason or _check_reason(fails[0], b, mid, code, model)
                     found = by_route.setdefault((x, y), [])
-                    if (fails[0], reason) not in found:
-                        found.append((fails[0], reason))
+                    for r in [reason, *_also_reasons(fails[0], mid)]:
+                        if (fails[0], r) not in found:
+                            found.append((fails[0], r))
     out: dict[Choice, dict[Choice, list[Reason]]] = {}
     for x in together:
         for y in together:
