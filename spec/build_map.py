@@ -164,6 +164,10 @@ SOURCES: dict[str, tuple[str, str]] = {
         "https://www.bmj.com/content/364/bmj.k4597",
     ),
     "DOSRES": ("dosresmeta, dosresmeta()", "https://rdrr.io/cran/dosresmeta/man/dosresmeta.html"),
+    "DTMB": (
+        "dtametaTMB, fitRutterGatsonis()",
+        "https://cran.r-project.org/web/packages/dtametaTMB/refman/dtametaTMB.html",
+    ),
     "MULTINMA": ("multinma, nma()", "https://dmphillippo.github.io/multinma/reference/nma.html"),
     "MULTINMA-ipd": ("multinma, set_ipd()", "https://dmphillippo.github.io/multinma/reference/set_ipd.html"),
 }
@@ -496,15 +500,16 @@ METHODS: dict[str, Method] = {
     ),
     "OEV": meth(
         "Observed minus expected and variance (log-rank / Peto)",
-        "computed as (O-E)/V with variance 1/V",
+        'metafor::rma.uni(yi = (O - E) / V, vi = 1 / V, method = "EE")',
         "pairwise",
         ["oev"],
         [COMMON],
         [STD],
-        ["CH-10"],
+        ["CH-6", "CH-10", "MF-uni"],
         added=True,
-        verified=False,
-        note="Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet.",
+        note="Cochrane 6.8.2: each study's log hazard ratio is (O - E)/V, with standard error 1/sqrt(V). Pooled with "
+        "inverse-variance weights in metafor's equal-effects model. Cochrane 10.9: only fixed-effect methods in "
+        "RevMan.",
     ),
     "IPD1": meth(
         "One-stage regression on participant data (pairwise)",
@@ -596,15 +601,16 @@ METHODS: dict[str, Method] = {
     ),
     "HSROC": meth(
         "Hierarchical summary ROC model (Rutter and Gatsonis)",
-        "implementation not chosen",
+        "dtametaTMB::fitRutterGatsonis()",
         "dta",
         ["tab"],
         [RANDOM],
         [STD, SUB, REG],
-        ["DTA-HB", "MADA"],
+        ["DTMB", "MADA"],
         metrics={"SROC"},
-        verified=False,
-        note="Used when studies apply different thresholds.",
+        note="Used when studies apply different thresholds. Fits random effects for each study's accuracy and "
+        "threshold from its 2x2 counts; fitRutterGatsonisSubgroup() and fitRutterGatsonisReg() take study-level "
+        "covariates.",
     ),
     "DTA_UNI": meth(
         "Univariate pooling",
@@ -1241,7 +1247,6 @@ OPEN = [
     "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
     "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
     "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
-    "Choose the R implementation for the HSROC model and for O - E and V data.",
     "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
@@ -3187,6 +3192,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "CH-10 s10.9",
         ),
         (
+            "what",
+            "Each study's log hazard ratio is (O - E)/V, with standard error 1/sqrt(V); Cochrane notes the estimate is "
+            "approximate.",
+            "CH-6 s6.8.2",
+        ),
+        (
             "use",
             "With a log-rank approach it gives a hazard ratio; Peto's method on binary data gives an odds ratio.",
             "CH-10 s10.9",
@@ -3484,6 +3495,12 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Harbord et al. (2007) showed it to be equivalent to the bivariate model of Reitsma et al., which mada's "
             "reitsma() fits.",
             "MADA",
+        ),
+        (
+            "what",
+            "dtametaTMB's fitRutterGatsonis() fits it from each study's 2x2 counts, with random effects for the "
+            "study's accuracy and threshold.",
+            "DTMB",
         ),
     ],
     "method:VAL": [

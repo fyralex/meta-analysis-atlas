@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 76; status runnable 0; status planned 412; status specified 63; status to_check 76.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 75; status runnable 0; status planned 412; status specified 64; status to_check 75.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -169,7 +169,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | Penalised logistic regression (rare events) | `meta::metabin(method="LRP")` | Common effect, Random effects | arm | standard | META-bin | accepted #20 | Handles single and double zero studies without a continuity correction. Reports a common-effect and a random-effects result; the random-effects one uses a multiplicative heterogeneity parameter (phi), not a between-study variance. |
 | Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
 | Multilevel / multivariate | `metafor::rma.mv() with vcalc()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MF-mv | OK | For studies that contribute several dependent estimates. Without a random term it fits a fixed-effects model (v11 says random only). REML or ML. No Hartung-Knapp, cumulative or leave-one-out function. |
-| Observed minus expected and variance (log-rank / Peto) | `computed as (O-E)/V with variance 1/V` | Common effect | oev | standard | CH-10 | accepted #17, CHECK | Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet. |
+| Observed minus expected and variance (log-rank / Peto) | `metafor::rma.uni(yi = (O - E) / V, vi = 1 / V, method = "EE")` | Common effect | oev | standard | CH-6, CH-10, MF-uni | accepted #17 | Cochrane 6.8.2: each study's log hazard ratio is (O - E)/V, with standard error 1/sqrt(V). Pooled with inverse-variance weights in metafor's equal-effects model. Cochrane 10.9: only fixed-effect methods in RevMan. |
 | One-stage regression on participant data (pairwise) | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
 | Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | accepted #19 | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
@@ -177,7 +177,7 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
 | Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check. |
 | One-stage regression on participant data (network) | `multinma::nma() with set_ipd()` | Common effect, Random effects | ipd | standard, meta-regression | MULTINMA, MULTINMA-ipd | OK | A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59). |
 | Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |
-| Hierarchical summary ROC model (Rutter and Gatsonis) | `implementation not chosen` | Random effects | tab | standard, subgroup, meta-regression | DTA-HB, MADA | CHECK | Used when studies apply different thresholds. |
+| Hierarchical summary ROC model (Rutter and Gatsonis) | `dtametaTMB::fitRutterGatsonis()` | Random effects | tab | standard, subgroup, meta-regression | DTMB, MADA | OK | Used when studies apply different thresholds. Fits random effects for each study's accuracy and threshold from its 2x2 counts; fitRutterGatsonisSubgroup() and fitRutterGatsonisReg() take study-level covariates. |
 | Univariate pooling | `mada::madauni()` | Common effect, Random effects | tab | standard | DTA-HB | CHECK | Ignores the correlation between sensitivity and specificity. |
 | Meta-analysis of prediction model performance | `metamisc::valmeta()` | Common effect, Random effects | est | standard | VALMETA, DEBRAY | OK | REML by default, Hartung-Knapp interval, prediction interval; Bayesian option. |
 | Dose-response meta-analysis | `dosresmeta::dosresmeta()` | Common effect, Random effects | dose | standard | DOSRES | OK | One-stage or two-stage. Covariance by Greenland-Longnecker or Hamling. Linear or non-linear trend. |
@@ -292,10 +292,9 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 1. Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.
 2. Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.
 3. Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.
-4. Choose the R implementation for the HSROC model and for O - E and V data.
-5. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
-6. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-7. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+4. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
+5. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
+6. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 
 ## Sources
 
@@ -337,5 +336,6 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (not readable online) | https://www.bmj.com/content/356/bmj.i6460 |
 | RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies (not readable online) | https://www.bmj.com/content/364/bmj.k4597 |
 | DOSRES | dosresmeta, dosresmeta() | https://rdrr.io/cran/dosresmeta/man/dosresmeta.html |
+| DTMB | dtametaTMB, fitRutterGatsonis() | https://cran.r-project.org/web/packages/dtametaTMB/refman/dtametaTMB.html |
 | MULTINMA | multinma, nma() | https://dmphillippo.github.io/multinma/reference/nma.html |
 | MULTINMA-ipd | multinma, set_ipd() | https://dmphillippo.github.io/multinma/reference/set_ipd.html |
