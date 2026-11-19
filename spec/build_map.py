@@ -4124,8 +4124,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "use",
             "They describe a random-effects model, on the log scale for ratios (REML, DerSimonian-Laird or Bayesian), "
-            "with "
-            "Hartung-Knapp confidence intervals and a prediction interval for the effect in a new population.",
+            "with Hartung-Knapp confidence intervals and a prediction interval for the effect in a new population.",
             "RILEY",
         ),
         (

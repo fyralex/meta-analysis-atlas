@@ -24,7 +24,7 @@ their guidance in its own words.
     unadjusted estimates, cut-points, trends and methods of measurement
     (Step 5);
   - Box 2: assuming a common prognostic effect isn't sensible, because the
-    true effect is likely to vary from study to study; use a random-effects
+    true effect is expected to differ between studies; use a random-effects
     model, on the log scale for ratios (REML, DerSimonian-Laird or Bayesian), with
     Hartung-Knapp intervals; Step 5 calls random effects essential;
   - Step 7: check for small-study effects.
