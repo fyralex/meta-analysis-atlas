@@ -380,6 +380,9 @@ def test_mantel_haenszel_with_random_effects_cites_r3_and_r4(
             (bm.ALSO_RULE[("MH", "models")][1], "R4"),
         ]
         assert why[x][y][1]["src"] == r4[3]
+    # and R4 is cited on that pair only, in both directions
+    with_r4 = {(x, y) for x, others in why.items() for y, rs in others.items() if any(r["rule"] == "R4" for r in rs)}
+    assert with_r4 == {(("method", "MH"), ("model", "Random effects")), (("model", "Random effects"), ("method", "MH"))}
 
 
 def test_r2_is_cited_only_for_precomputed_estimates() -> None:
