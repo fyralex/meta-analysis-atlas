@@ -281,6 +281,70 @@ METRICS: dict[str, Metric] = {
     "ABT": m("Cronbach's alpha, Bonett transformation", E % "ABT"),
 }
 
+# Metric families, in the order the Atlas shows them (#78). A grouping for reading the map, not a rule: it
+# changes no pathway. Ratios and differences compare two conditions (groups, time points or levels of a factor);
+# proportions, means and rates describe one group.
+METRIC_FAMILIES: dict[str, list[str]] = {
+    "Proportions": ["PR", "PLN", "PLO", "PAS", "PFT", "PRZ", "I_P"],
+    "Means": ["MN", "SMN", "MNLN", "I_M"],
+    "Rates": ["IR", "IRLN", "IRS", "IRFT", "I_R"],
+    "Ratios": [
+        "OR",
+        "RR",
+        "PETO",
+        "POR",
+        "ROM",
+        "IRR",
+        "HR",
+        "ROMC",
+        "MPRR",
+        "MPOR",
+        "MPORC",
+        "I_OR",
+        "I_IRR",
+        "I_HR",
+        "N_OR",
+        "N_RR",
+        "N_ROM",
+        "N_IRR",
+        "N_HR",
+        "PF_OR",
+        "PF_RR",
+        "PF_HR",
+        "EX_OR",
+        "EX_RR",
+        "EX_HR",
+    ],
+    "Differences": [
+        "RD",
+        "AS",
+        "MD",
+        "SMD_G",
+        "SMD_D",
+        "SMDH",
+        "SMD1",
+        "IRD",
+        "IRSD",
+        "MC",
+        "SMCC",
+        "SMCR",
+        "MPRD",
+        "I_MD",
+        "N_RD",
+        "N_ASD",
+        "N_MD",
+        "N_SMD",
+        "N_IRD",
+        "PF_MD",
+    ],
+    "Correlations": ["COR", "UCOR", "ZCOR", "RPB", "RBIS", "PHI", "RTET", "PCOR"],
+    "Diagnostic accuracy": ["SESP", "SROC", "DOR", "LRP", "LRN"],
+    "Model performance": ["CSTAT", "OE"],
+    "Dose-response trends": ["DR_RR", "DR_MD", "DR_SMD"],
+    "Reliability": ["ARAW", "AHW", "ABT"],
+}
+FAMILY_OF: dict[str, str] = {code: fam for fam, codes in METRIC_FAMILIES.items() for code in codes}
+
 # A network metric's call above is netmeta's. A contrast-based rma.mv (NM_MV) network takes the same measure, computed
 # from arm-level data with escalc() (#113); a multi-arm study also needs the covariances of its comparisons (vcalc(),
 # see the MV card). Left out: the hazard ratio, which has no escalc measure; the standardized mean difference, whose
@@ -2202,6 +2266,7 @@ def _metric_card(code: str) -> Card:
     facts = [
         _fact("R call, with netmeta" if mt["call"].startswith("netmeta(") else "R call", [mt["call"]], code=True),
         _fact("Outcome types", _uniq(b["outcome"] for b in BRANCHES if code in b["metrics"])),
+        _fact("Family", [FAMILY_OF[code]]),
     ]
     if mt["only"] is not None:
         facts.append(_fact("Only with", sorted(METHODS[c]["label"] for c in mt["only"])))
@@ -4408,7 +4473,8 @@ def main(argv: Sequence[str] | None = None) -> None:
         open_items=OPEN,
         unconfirmed=[{"method": me, "metric": mt, "why": why} for (me, mt), why in UNCONFIRMED.items()],
         unconfirmed_input=[{"method": me, "input": kind, "why": why} for (me, kind), why in UNCONFIRMED_INPUT.items()],
-        metrics={k: {**v, "new": metric_new(k)} for k, v in METRICS.items()},
+        metrics={k: {**v, "new": metric_new(k), "family": FAMILY_OF[k]} for k, v in METRICS.items()},
+        metric_families=list(METRIC_FAMILIES),
         methods={k: {**v, "new": method_new(k)} for k, v in METHODS.items()},
         pathways=paths,
     )

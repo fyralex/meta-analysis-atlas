@@ -1449,7 +1449,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "PLN": {
    "label": "Log proportion",
@@ -1458,7 +1459,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "PLO": {
    "label": "Logit proportion",
@@ -1467,7 +1469,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "PAS": {
    "label": "Arcsine square-root proportion",
@@ -1476,7 +1479,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "PFT": {
    "label": "Freeman-Tukey double arcsine proportion",
@@ -1485,7 +1489,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "PRZ": {
    "label": "Probit proportion",
@@ -1494,7 +1499,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "MN": {
    "label": "Raw mean",
@@ -1503,7 +1509,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Means"
   },
   "SMN": {
    "label": "Standardized mean",
@@ -1512,7 +1519,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Means"
   },
   "MNLN": {
    "label": "Log mean",
@@ -1521,7 +1529,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Means"
   },
   "IR": {
    "label": "Raw incidence rate",
@@ -1530,7 +1539,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Rates"
   },
   "IRLN": {
    "label": "Log incidence rate",
@@ -1539,7 +1549,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Rates"
   },
   "IRS": {
    "label": "Square-root incidence rate",
@@ -1548,7 +1559,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Rates"
   },
   "IRFT": {
    "label": "Freeman-Tukey incidence rate",
@@ -1557,7 +1569,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Rates"
   },
   "OR": {
    "label": "Odds ratio (log)",
@@ -1566,7 +1579,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "RR": {
    "label": "Risk ratio (log)",
@@ -1575,7 +1589,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "RD": {
    "label": "Risk difference",
@@ -1584,7 +1599,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "AS": {
    "label": "Arcsine square-root risk difference",
@@ -1593,7 +1609,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "PETO": {
    "label": "Peto odds ratio (log)",
@@ -1604,7 +1621,8 @@
    "only": [
     "PETO"
    ],
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "MD": {
    "label": "Mean difference",
@@ -1613,7 +1631,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMD_G": {
    "label": "Hedges' g (bias-corrected standardized mean difference)",
@@ -1622,7 +1641,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMD_D": {
    "label": "Cohen's d (uncorrected standardized mean difference)",
@@ -1631,7 +1651,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMDH": {
    "label": "Standardized mean difference, unequal variances",
@@ -1640,7 +1661,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMD1": {
    "label": "Standardized mean difference using one group's SD (Glass-type)",
@@ -1649,7 +1671,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "ROM": {
    "label": "Ratio of means (log)",
@@ -1658,7 +1681,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "IRR": {
    "label": "Incidence rate ratio (log)",
@@ -1667,7 +1691,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "IRD": {
    "label": "Incidence rate difference",
@@ -1676,7 +1701,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "IRSD": {
    "label": "Square-root incidence rate difference",
@@ -1685,7 +1711,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "HR": {
    "label": "Hazard ratio (log)",
@@ -1694,7 +1721,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "POR": {
    "label": "Proportional odds ratio (log)",
@@ -1703,7 +1731,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "MC": {
    "label": "Mean change",
@@ -1712,7 +1741,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMCC": {
    "label": "Standardized mean change (change-score SD)",
@@ -1721,7 +1751,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "SMCR": {
    "label": "Standardized mean change (raw-score SD)",
@@ -1730,7 +1761,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "ROMC": {
    "label": "Ratio of means for change (log)",
@@ -1739,7 +1771,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "MPRR": {
    "label": "Matched-pairs marginal risk ratio (log)",
@@ -1748,7 +1781,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "MPOR": {
    "label": "Matched-pairs marginal odds ratio (log)",
@@ -1757,7 +1791,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "MPRD": {
    "label": "Matched-pairs marginal risk difference",
@@ -1766,7 +1801,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "MPORC": {
    "label": "Matched-pairs conditional odds ratio (log)",
@@ -1775,7 +1811,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "I_OR": {
    "label": "Odds ratio from the treatment coefficient",
@@ -1784,7 +1821,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "I_MD": {
    "label": "Mean difference from the treatment coefficient",
@@ -1793,7 +1831,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "I_IRR": {
    "label": "Rate ratio from the treatment coefficient",
@@ -1802,7 +1841,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "I_HR": {
    "label": "Hazard ratio from the treatment coefficient",
@@ -1811,7 +1851,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "I_P": {
    "label": "Pooled proportion (logit scale)",
@@ -1820,7 +1861,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Proportions"
   },
   "I_M": {
    "label": "Pooled mean",
@@ -1829,7 +1871,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Means"
   },
   "I_R": {
    "label": "Pooled rate (log scale)",
@@ -1838,7 +1881,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Rates"
   },
   "N_OR": {
    "label": "Odds ratio",
@@ -1847,7 +1891,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "N_RR": {
    "label": "Risk ratio",
@@ -1856,7 +1901,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "N_RD": {
    "label": "Risk difference (network)",
@@ -1865,7 +1911,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "N_ASD": {
    "label": "Arcsine difference",
@@ -1874,7 +1921,8 @@
    "added": true,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "N_MD": {
    "label": "Mean difference (network)",
@@ -1883,7 +1931,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "N_SMD": {
    "label": "Standardized mean difference (Cohen's d)",
@@ -1892,7 +1941,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "N_ROM": {
    "label": "Ratio of means",
@@ -1901,7 +1951,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "N_IRR": {
    "label": "Incidence rate ratio",
@@ -1910,7 +1961,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "N_IRD": {
    "label": "Incidence rate difference (network)",
@@ -1919,7 +1971,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "N_HR": {
    "label": "Hazard ratio",
@@ -1928,7 +1981,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "SESP": {
    "label": "Summary sensitivity and specificity (estimated jointly)",
@@ -1937,7 +1991,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Diagnostic accuracy"
   },
   "SROC": {
    "label": "Summary ROC curve",
@@ -1946,7 +2001,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Diagnostic accuracy"
   },
   "DOR": {
    "label": "Diagnostic odds ratio",
@@ -1955,7 +2011,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Diagnostic accuracy"
   },
   "LRP": {
    "label": "Positive likelihood ratio",
@@ -1964,7 +2021,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Diagnostic accuracy"
   },
   "LRN": {
    "label": "Negative likelihood ratio",
@@ -1973,7 +2031,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Diagnostic accuracy"
   },
   "CSTAT": {
    "label": "c-statistic (logit scale)",
@@ -1982,7 +2041,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Model performance"
   },
   "OE": {
    "label": "Total observed:expected ratio (log scale)",
@@ -1991,7 +2051,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Model performance"
   },
   "PF_HR": {
    "label": "Adjusted hazard ratio (log), prognostic factor",
@@ -2000,7 +2061,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "PF_OR": {
    "label": "Adjusted odds ratio (log), prognostic factor",
@@ -2009,7 +2071,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "PF_RR": {
    "label": "Adjusted risk ratio (log), prognostic factor",
@@ -2018,7 +2081,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "PF_MD": {
    "label": "Adjusted mean difference",
@@ -2027,7 +2091,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Differences"
   },
   "COR": {
    "label": "Raw correlation",
@@ -2036,7 +2101,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "UCOR": {
    "label": "Bias-corrected correlation",
@@ -2045,7 +2111,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "ZCOR": {
    "label": "Fisher's z-transformed correlation",
@@ -2054,7 +2121,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "RPB": {
    "label": "Point-biserial correlation",
@@ -2063,7 +2131,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "RBIS": {
    "label": "Biserial correlation",
@@ -2072,7 +2141,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "PHI": {
    "label": "Phi coefficient",
@@ -2081,7 +2151,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "RTET": {
    "label": "Tetrachoric correlation",
@@ -2090,7 +2161,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "PCOR": {
    "label": "Partial correlation",
@@ -2099,7 +2171,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Correlations"
   },
   "EX_OR": {
    "label": "Adjusted odds ratio (log), exposure",
@@ -2108,7 +2181,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "EX_RR": {
    "label": "Adjusted risk ratio (log), exposure",
@@ -2117,7 +2191,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "EX_HR": {
    "label": "Adjusted hazard ratio (log), exposure",
@@ -2126,7 +2201,8 @@
    "added": false,
    "verified": false,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Ratios"
   },
   "DR_RR": {
    "label": "Trend in log relative risk per unit of dose",
@@ -2135,7 +2211,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Dose-response trends"
   },
   "DR_MD": {
    "label": "Trend in mean difference per unit of dose",
@@ -2144,7 +2221,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Dose-response trends"
   },
   "DR_SMD": {
    "label": "Trend in standardized mean difference per unit of dose",
@@ -2153,7 +2231,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Dose-response trends"
   },
   "ARAW": {
    "label": "Raw Cronbach's alpha",
@@ -2162,7 +2241,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Reliability"
   },
   "AHW": {
    "label": "Cronbach's alpha, Hakstian-Whalen transformation",
@@ -2171,7 +2251,8 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Reliability"
   },
   "ABT": {
    "label": "Cronbach's alpha, Bonett transformation",
@@ -2180,9 +2261,22 @@
    "added": false,
    "verified": true,
    "only": null,
-   "new": false
+   "new": false,
+   "family": "Reliability"
   }
  },
+ "metric_families": [
+  "Proportions",
+  "Means",
+  "Rates",
+  "Ratios",
+  "Differences",
+  "Correlations",
+  "Diagnostic accuracy",
+  "Model performance",
+  "Dose-response trends",
+  "Reliability"
+ ],
  "methods": {
   "IV": {
    "label": "Inverse variance",

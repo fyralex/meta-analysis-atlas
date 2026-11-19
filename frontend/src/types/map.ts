@@ -29,6 +29,8 @@ export interface Metric {
   new: boolean;
   verified: boolean;
   only: string[] | null;
+  /** Its family, one of `metric_families` (#78). */
+  family: string;
 }
 
 export interface Method {
@@ -86,6 +88,8 @@ export interface MapData {
   unconfirmed: { method: string; metric: string; why: string }[];
   /** A method and an input it reads (a branch kind) whose pairing is not confirmed. */
   unconfirmed_input: { method: string; input: string; why: string }[];
+  /** The metric families, in the order the Atlas shows them (#78). */
+  metric_families: string[];
   metrics: Record<string, Metric>;
   methods: Record<string, Method>;
   pathways: Pathway[];
