@@ -28,6 +28,7 @@ import {
   type Advice,
   type AdviceQuestion,
 } from "./flow";
+import { PathMap } from "./PathMap";
 import { ModelCards, Results } from "./Results";
 
 // Pathfinder (#7), laid out as design B of #92: a step bar that holds the answers, one question at a time with
@@ -471,6 +472,7 @@ export function PathfinderPage() {
           <p className="pathfinder-count">
             <strong>{shown.length}</strong> {shown.length === 1 ? "analysis fits" : "analyses fit"}
           </p>
+          <PathMap selection={model === undefined ? answers : { ...answers, model }} order={order} options={options} />
           <Link to={atlasHref(selection, options, order, model, params.get("view"))}>
             Open {shown.length === 1 ? "it" : `these ${String(shown.length)}`} in the Atlas, with your answers already
             chosen

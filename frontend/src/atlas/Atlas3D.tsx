@@ -17,6 +17,10 @@ interface Props {
   lines?: SceneLink[];
   /** Called when a node is clicked; leave it out for a read-only map. */
   onPick?: (node: SceneNode) => void;
+  /** A small map (Pathfinder's side panel): shorter, and only the chosen or hovered nodes are labelled. */
+  compact?: boolean;
+  /** The id of text that describes the map further, such as a caption. */
+  describedBy?: string;
 }
 
 /** How quickly a glide slows after a drag: the share of its speed kept every 1/60 s. */
@@ -241,7 +245,7 @@ function describe(layers: SceneLayer[]): string {
   return `The map in 3D. ${parts.join("; ")}. The arrow keys turn it, + and - zoom, 0 resets the view.`;
 }
 
-export default function Atlas3D({ layers, lines = [], onPick }: Props) {
+export default function Atlas3D({ layers, lines = [], onPick, compact = false, describedBy }: Props) {
   useThemeChange();
   const colors = palette();
   // Drag with one pointer to turn and tilt the stack; a press that moves is a drag, not a click.
@@ -350,10 +354,11 @@ export default function Atlas3D({ layers, lines = [], onPick }: Props) {
   return (
     <div
       ref={box}
-      className="atlas-3d"
+      className={compact ? "atlas-3d atlas-3d-small" : "atlas-3d"}
       role="application"
       aria-roledescription="3D map"
       aria-label={describe(layers)}
+      aria-describedby={describedBy}
       tabIndex={0}
       onKeyDown={(e) => {
         const action = keyAction(e);
@@ -429,7 +434,7 @@ export default function Atlas3D({ layers, lines = [], onPick }: Props) {
         <Turntable turn={turn} zoom={zoom} pan={pan} distance={distance}>
           <Lines lines={lines} color={colors.muted} />
           {layers.map((l) => {
-            const named = labelled(l);
+            const named = compact ? new Set<string>() : labelled(l);
             return (
               <group key={l.tier}>
                 <mesh position={[0, l.y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
