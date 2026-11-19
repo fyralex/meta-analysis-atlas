@@ -284,6 +284,8 @@ export default function Atlas3D({ layers, lines = [], onPick }: Props) {
     const el = box.current;
     if (!el) return;
     // Not passive, so the page doesn't scroll while the wheel zooms the map.
+    // Ctrl with the wheel stays with the map too: a trackpad pinch arrives that way on macOS. The keyboard's page
+    // zoom (Ctrl or Cmd with + and -) still reaches the browser (keyAction).
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
       cancelAnimationFrame(glide.current);

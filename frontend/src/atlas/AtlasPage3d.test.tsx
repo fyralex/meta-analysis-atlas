@@ -91,6 +91,15 @@ describe("the Atlas in 3D", { timeout: 15_000 }, () => {
     expect(panel).toHaveTextContent("Click a dot on the map to see what it is");
   });
 
+  it("says the next step is the first one not chosen when a later step is clicked first", async () => {
+    open("");
+    // the effect measure is the last step, so no step after it is left to suggest
+    fireEvent.click(await screen.findByRole("button", { name: /^metric: Peto odds ratio \(log\) \(/ }));
+    const panel = screen.getByRole("complementary", { name: "What you clicked" });
+    expect(within(panel).getByRole("region", { name: "Next: framework" })).toBeInTheDocument();
+    expect(within(panel).getByRole("status")).toHaveTextContent(/^Peto odds ratio \(log\) chosen\. 1 option at the next step\.$/);
+  });
+
   it("shows why a grey dot doesn't fit in the panel beside the map", async () => {
     open(`?framework=${encodeURIComponent(DTA)}`);
     fireEvent.click(await screen.findByRole("button", { name: "group: Two groups (pairwise) (0)" }));

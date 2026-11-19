@@ -42,7 +42,9 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
       {/* One short line for screen readers after each click, rather than re-reading the whole panel. */}
       <p className="sr-only" role="status">
         {picked && !whyNot
-          ? `${name} chosen. ${String(possible.length)} ${possible.length === 1 ? "option" : "options"} at the next step.`
+          ? `${name} chosen.${
+              next ? ` ${String(possible.length)} ${possible.length === 1 ? "option" : "options"} at the next step.` : ""
+            }`
           : ""}
       </p>
       {whyNot}
