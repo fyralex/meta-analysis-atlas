@@ -279,6 +279,22 @@ METRICS: dict[str, Metric] = {
     "ABT": m("Cronbach's alpha, Bonett transformation", E % "ABT"),
 }
 
+# A network metric's call above is netmeta's. A contrast-based rma.mv (NM_MV) network takes the same measure, computed
+# from arm-level data with escalc() (#113); a multi-arm study also needs the covariances of its comparisons (vcalc(),
+# see the MV card). Left out: the hazard ratio, which has no escalc measure; the standardized mean difference, whose
+# pairing with rma.mv is unconfirmed (UNCONFIRMED, decision 0003); and gemtc, whose measures are #40.
+NETWORK_ESCALC: dict[str, str] = {
+    "N_OR": E % "OR",
+    "N_RR": E % "RR",
+    "N_RD": E % "RD",
+    "N_ASD": E % "AS",
+    "N_MD": E % "MD",
+    "N_ROM": E % "ROM",
+    "N_IRR": E % "IRR",
+    "N_IRD": E % "IRD",
+}
+NETWORK_ESCALC_LABEL = "With rma.mv, contrast-based, from arm-level data"
+
 # --------------------------------------------------------------------------
 # Methods
 #   domain: which family of branches the method serves
@@ -2138,11 +2154,13 @@ def _method_card(code: str, paths: Sequence[Pathway]) -> Card:
 def _metric_card(code: str) -> Card:
     mt = METRICS[code]
     facts = [
-        _fact("R call", [mt["call"]], code=True),
+        _fact("R call, with netmeta" if mt["call"].startswith("netmeta(") else "R call", [mt["call"]], code=True),
         _fact("Outcome types", _uniq(b["outcome"] for b in BRANCHES if code in b["metrics"])),
     ]
     if mt["only"] is not None:
         facts.append(_fact("Only with", sorted(METHODS[c]["label"] for c in mt["only"])))
+    if code in NETWORK_ESCALC:
+        facts.insert(1, _fact(NETWORK_ESCALC_LABEL, [NETWORK_ESCALC[code]], code=True))
     return Card(
         id=card_id("metric", code),
         tier="metric",
@@ -2157,7 +2175,7 @@ def _metric_card(code: str) -> Card:
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         terms=[],
         plain=None,
-        src=mt["src"],
+        src=_join_src([mt["src"], "MF-escalc"]) if code in NETWORK_ESCALC else mt["src"],
     )
 
 
