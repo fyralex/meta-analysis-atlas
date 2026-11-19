@@ -14,6 +14,7 @@ import {
   toggle,
   type TierOrder,
 } from "./filter";
+import { byFamily } from "./families";
 import { AboutCard } from "./AboutCard";
 import { AtlasPanel } from "./AtlasPanel";
 import { LIST_LIMIT, TIER_NAMES } from "./names";
@@ -313,7 +314,7 @@ export function AtlasPage() {
           key={tier}
           id={`tier-${tier}`}
           name={TIER_NAMES[tier]}
-          nodes={compatibleFirst(tierNodes(map.pathways, selection, tier, options))}
+          groups={byFamily(tier, compatibleFirst(tierNodes(map.pathways, selection, tier, options)), (n) => n.value)}
           label={(value) => nodeLabel(map, tier, value)}
           {...(tier === "method" || tier === "metric" ? { flags: (value: string) => entryFlags(tier, value) } : {})}
           onChoose={(value) => {

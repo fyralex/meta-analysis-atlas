@@ -115,6 +115,12 @@ button { font: inherit; color: inherit; }
 
 .layer h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin: 24px 0 8px; }
 .nodes { display: flex; flex-wrap: wrap; gap: 8px; }
+/* The metric tier's families (#78): each a labelled row of its own. */
+.node-family { display: flex; flex-wrap: wrap; gap: 8px; flex-basis: 100%; align-items: flex-start; }
+.node-family-name {
+  flex-basis: 100%; font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+  color: var(--muted); margin-top: 6px;
+}
 .node {
   display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: baseline;
   min-width: 9rem; max-width: 100%; text-align: left; cursor: pointer;
@@ -341,6 +347,7 @@ table.pathways .cell-label { display: none; }
 .atlas-picked { display: flex; flex-direction: column; gap: 6px; }
 .atlas-picked-name { font-size: 1.2rem; font-weight: 700; }
 .atlas-next { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 4px; font-size: 14px; }
+.atlas-family { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--muted); margin: 12px 0 0; }
 .atlas-next li { display: flex; justify-content: space-between; gap: 12px; }
 .atlas-next .muted { font-variant-numeric: tabular-nums; }
 .atlas-chosen { margin: 0; display: grid; gap: 4px; font-size: 14px; }

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
+import { byFamily } from "./families";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
 import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, links, scene, type SceneLayer, type SceneNode } from "./scene";
 
@@ -32,7 +33,12 @@ describe("the 3D scene", () => {
     // No pathway is runnable in v0.1: "runnable only" leaves every node at 0 in both views, and the counts still agree.
     for (const options of [DEFAULT_OPTIONS, { hideNew: true }, { hideNew: false, runnableOnly: true }]) {
       for (const layer of scene(map.pathways, selection, "model-method-metric", options)) {
-        const flat = tierNodes(map.pathways, selection, layer.tier, options);
+        // the 2D view's nodes, in the same order: by family for the metric tier (#78)
+        const flat = byFamily(
+          layer.tier,
+          tierNodes(map.pathways, selection, layer.tier, options),
+          (n) => n.value,
+        ).flatMap((g) => g.items);
         expect(layer.nodes.map((n) => [n.value, n.count, n.selected])).toEqual(
           flat.map((n) => [n.value, n.count, n.selected]),
         );
@@ -124,7 +130,7 @@ describe("the 3D scene", () => {
       radius: 0.1,
     });
     const nodes = Array.from({ length: CROWDED + 1 }, (_, i) => node(`m${String(i)}`, 5));
-    const layer: SceneLayer = { tier: "metric", name: "Metric", y: 0, ringRadius: 3, nodes };
+    const layer: SceneLayer = { tier: "metric", name: "Metric", y: 0, ringRadius: 3, nodes, groups: [] };
     expect([...labelled(layer)]).toEqual(nodes.slice(0, LABELLED_IN_CROWD).map((n) => n.value));
   });
 });

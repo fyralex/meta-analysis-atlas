@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { cardFor, cardHref } from "../cards/cards";
 import { map } from "../map";
+import { byFamily } from "./families";
 import { nodeLabel, tierNodes, type FilterOptions, type Selection, type Tier } from "./filter";
 import { TIER_NAMES } from "./names";
 
@@ -75,13 +76,19 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
         <section aria-labelledby="atlas-next">
           <h2 id="atlas-next">Next: {TIER_NAMES[next].toLowerCase()}</h2>
           <p className="muted">Still possible with your choices. Click one on the map to choose it.</p>
-          <ul className="atlas-next">
-            {possible.map((n) => (
-              <li key={n.value}>
-                <span>{plainName(next, n.value)}</span> <span className="muted">{n.count}</span>
-              </li>
-            ))}
-          </ul>
+          {/* Metrics come under their families' headings (#78); other steps are one list. */}
+          {byFamily(next, possible, (n) => n.value).map((g) => (
+            <div key={g.family ?? "all"}>
+              {g.family !== undefined && <h3 className="atlas-family">{g.family}</h3>}
+              <ul className="atlas-next">
+                {g.items.map((n) => (
+                  <li key={n.value}>
+                    <span>{plainName(next, n.value)}</span> <span className="muted">{n.count}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </section>
       )}
 
