@@ -1,5 +1,4 @@
 import { lazy, Suspense, useMemo, useRef, useState } from "react";
-import { byFamily } from "./families";
 import { Link, useLocation, useSearchParams } from "react-router";
 import { map } from "../map";
 import { STATUS_TEXT } from "../status";
@@ -15,6 +14,7 @@ import {
   toggle,
   type TierOrder,
 } from "./filter";
+import { byFamily } from "./families";
 import { AboutCard } from "./AboutCard";
 import { AtlasPanel } from "./AtlasPanel";
 import { LIST_LIMIT, TIER_NAMES } from "./names";

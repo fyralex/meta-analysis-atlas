@@ -79,10 +79,12 @@ export function scene(
     for (const g of families) {
       const first = at;
       for (let k = 0; k < g.items.length; k += 1) slot.push(at++);
-      if (g.family !== undefined && gap > 0) {
+      if (g.family !== undefined) {
         const mid = (2 * Math.PI * (first + at - 1)) / 2 / places;
         const r = ringRadius + 0.9;
-        groups.push({ name: g.family, position: [r * Math.cos(mid), y + 0.35, r * Math.sin(mid)] });
+        // every other label a little higher, so the short families' long names don't run into each other
+        const lift = 0.35 + (groups.length % 2) * 0.35;
+        groups.push({ name: g.family, position: [r * Math.cos(mid), y + lift, r * Math.sin(mid)] });
       }
       at += gap;
     }

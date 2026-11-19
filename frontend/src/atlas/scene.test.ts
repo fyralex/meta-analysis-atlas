@@ -1,8 +1,8 @@
-import { byFamily } from "./families";
 import { describe, expect, it } from "vitest";
 import lockRaw from "../../../spec/pathways.lock.json";
 import { map } from "../map";
 import type { Pathway } from "../types/map";
+import { byFamily } from "./families";
 import { DEFAULT_OPTIONS, tierNodes, TIERS, tiersInOrder, type FilterOptions, type Selection } from "./filter";
 import { CROWDED, hasWebGL, LABELLED_IN_CROWD, labelled, links, scene, type SceneLayer, type SceneNode } from "./scene";
 
