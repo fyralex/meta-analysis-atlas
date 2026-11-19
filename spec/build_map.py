@@ -2405,7 +2405,7 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "Cochrane notes the Hartung-Knapp-Sidik-Jonkman interval can be too narrow when no heterogeneity is "
             "estimated, and too wide when there are few studies, especially two or three; with two or three it "
-            "suggests comparing it with the standard interval in a sensitivity analysis.",
+            "suggests comparing it with the usual (Wald-type) interval in a sensitivity analysis.",
             "CH-10 s10.10.4.4, s10.10.4.5",
         ),
         (
