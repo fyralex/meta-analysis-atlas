@@ -113,6 +113,13 @@ export function AtlasPage() {
         group structure, datatype and outcome choices, up to the first one you haven&apos;t made.
       </p>
 
+      {/* Outside "Display options", so a visitor shown the text view instead of the map sees why at once. */}
+      {!webgl && <p className="note">This browser can&apos;t draw the 3D map (no WebGL 2), so the Atlas shows the text view.</p>}
+      {webgl && failed3d && (
+        <p className="note" role="status">
+          The 3D map couldn&apos;t be drawn here, so the Atlas shows the text view.
+        </p>
+      )}
       <details className="atlas-options">
         <summary>
           Display options{" "}
@@ -199,12 +206,6 @@ export function AtlasPage() {
             />
             3D map
           </label>
-          {!webgl && <p className="muted">This browser can&apos;t draw the 3D view (no WebGL 2), so the Atlas shows 2D.</p>}
-          {webgl && failed3d && (
-            <p className="muted" role="status">
-              The 3D view couldn&apos;t be drawn here, so the Atlas shows 2D.
-            </p>
-          )}
         </fieldset>
       </div>
 

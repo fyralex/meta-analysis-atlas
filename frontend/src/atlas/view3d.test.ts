@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ZOOM_MAX, ZOOM_MIN, zoomed } from "./view3d";
+import { keyAction, ZOOM_MAX, ZOOM_MIN, zoomed } from "./view3d";
 
 const START = { zoom: 1, pan: { x: 0, y: 0 } };
 const HALF = Math.tan((45 / 2) * (Math.PI / 180));
@@ -33,5 +33,33 @@ describe("the 3D map's zoom", () => {
   it("stops at the nearest and farthest zoom", () => {
     expect(zoomed(START, 0.01, 0.2, 0.2, 20, 1).zoom).toBe(ZOOM_MIN);
     expect(zoomed(START, 100, 0.2, 0.2, 20, 1).zoom).toBe(ZOOM_MAX);
+  });
+});
+
+describe("the 3D map's keys", () => {
+  const press = (key: string, mods: Partial<{ ctrlKey: boolean; metaKey: boolean; altKey: boolean }> = {}) =>
+    keyAction({ key, ctrlKey: false, metaKey: false, altKey: false, ...mods });
+
+  it("turn, tilt, zoom and reset the map, as Google Earth's keys do", () => {
+    expect(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "+", "=", "-", "0"].map((k) => press(k))).toEqual([
+      "left",
+      "right",
+      "up",
+      "down",
+      "zoom-in",
+      "zoom-in",
+      "zoom-out",
+      "reset",
+    ]);
+    expect(press("a")).toBeNull();
+    expect(press("Tab")).toBeNull();
+  });
+
+  it("leave Ctrl, Cmd and Alt with any key to the browser, so the page zoom still works (WCAG 1.4.4)", () => {
+    for (const key of ["+", "=", "-", "0", "ArrowLeft"]) {
+      expect(press(key, { ctrlKey: true })).toBeNull();
+      expect(press(key, { metaKey: true })).toBeNull();
+      expect(press(key, { altKey: true })).toBeNull();
+    }
   });
 });

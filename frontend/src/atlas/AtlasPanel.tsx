@@ -25,7 +25,8 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
   const chosen = tiers.filter((t) => selection[t] !== undefined);
   // The next step: the one after the dot just clicked, or the first step not chosen yet.
   const after = picked ? tiers.indexOf(picked.tier) + 1 : 0;
-  const next = tiers.slice(after).find((t) => selection[t] === undefined);
+  const next =
+    tiers.slice(after).find((t) => selection[t] === undefined) ?? tiers.find((t) => selection[t] === undefined);
   const possible = next ? tierNodes(map.pathways, selection, next, options).filter((n) => n.count > 0) : [];
   const card = picked ? cardFor(picked.tier, picked.value) : undefined;
   const what = card?.teach.find((t) => t.kind === "what");
@@ -36,8 +37,14 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
     : undefined;
 
   return (
-    <aside className="atlas-panel" aria-labelledby="atlas-panel-title" aria-live="polite">
+    <aside className="atlas-panel" aria-labelledby="atlas-panel-title">
       <h2 id="atlas-panel-title">What you clicked</h2>
+      {/* One short line for screen readers after each click, rather than re-reading the whole panel. */}
+      <p className="sr-only" role="status">
+        {picked && !whyNot
+          ? `${name} chosen. ${String(possible.length)} ${possible.length === 1 ? "option" : "options"} at the next step.`
+          : ""}
+      </p>
       {whyNot}
       {!whyNot && !picked && (
         <p className="muted">Click a dot on the map to see what it is and the options at the next step.</p>

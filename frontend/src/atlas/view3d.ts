@@ -14,7 +14,8 @@ export interface View {
 }
 
 /**
- * The view after zooming by a factor, keeping the point under (fx, fy) still: the pointer's place, -1 to 1 across
+ * The view after zooming by a factor, keeping the point under (fx, fy) still (in the plane through the map's
+ * centre facing the camera, z = 0; points in front of or behind it shift a little, which reads as natural depth): the pointer's place, -1 to 1 across
  * the map, for a box of that aspect, with the camera at distance times the zoom.
  */
 export function zoomed(view: View, factor: number, fx: number, fy: number, distance: number, aspect: number): View {
@@ -27,4 +28,27 @@ export function zoomed(view: View, factor: number, fx: number, fy: number, dista
       y: view.pan.y + fy * half * (view.zoom - after),
     },
   };
+}
+
+/** What a key does on the focused map, like Google Earth's keys; null leaves it to the browser. */
+export type KeyAction = "left" | "right" | "up" | "down" | "zoom-in" | "zoom-out" | "reset";
+
+const KEYS: Record<string, KeyAction> = {
+  ArrowLeft: "left",
+  ArrowRight: "right",
+  ArrowUp: "up",
+  ArrowDown: "down",
+  "+": "zoom-in",
+  "=": "zoom-in",
+  "-": "zoom-out",
+  "0": "reset",
+};
+
+/**
+ * The map's action for a key, or null. With Ctrl, Cmd or Alt held the key belongs to the browser, so the page
+ * zoom (Ctrl or Cmd with +, - and 0) keeps working while the map has focus (WCAG 1.4.4).
+ */
+export function keyAction(e: { key: string; ctrlKey: boolean; metaKey: boolean; altKey: boolean }): KeyAction | null {
+  if (e.ctrlKey || e.metaKey || e.altKey) return null;
+  return KEYS[e.key] ?? null;
 }

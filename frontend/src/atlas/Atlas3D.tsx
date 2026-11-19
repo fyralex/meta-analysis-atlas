@@ -9,7 +9,7 @@ import { Canvas, useFrame, type ThreeEvent } from "@react-three/fiber";
 import { useEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import * as THREE from "three";
 import { labelled, type SceneLayer, type SceneLink, type SceneNode } from "./scene";
-import { zoomed } from "./view3d";
+import { keyAction, zoomed } from "./view3d";
 
 interface Props {
   layers: SceneLayer[];
@@ -354,39 +354,22 @@ export default function Atlas3D({ layers, lines = [], onPick }: Props) {
       aria-label={describe(layers)}
       tabIndex={0}
       onKeyDown={(e) => {
-        const keys: Record<string, () => void> = {
-          ArrowLeft: () => (turn.current = { ...turn.current, y: turn.current.y - TURN_STEP }),
-          ArrowRight: () => (turn.current = { ...turn.current, y: turn.current.y + TURN_STEP }),
-          ArrowUp: () =>
-            (turn.current = {
-              ...turn.current,
-              x: tilt(turn.current.x - TILT_STEP),
-            }),
-          ArrowDown: () =>
-            (turn.current = {
-              ...turn.current,
-              x: tilt(turn.current.x + TILT_STEP),
-            }),
-          "+": () => {
-            zoomBy(1 / ZOOM_STEP);
-          },
-          "=": () => {
-            zoomBy(1 / ZOOM_STEP);
-          },
-          "-": () => {
-            zoomBy(ZOOM_STEP);
-          },
-          "0": () => {
-            turn.current = START;
-            zoom.current = 1;
-            pan.current = { x: 0, y: 0 };
-          },
-        };
-        const act = keys[e.key];
-        if (!act) return;
+        const action = keyAction(e);
+        if (!action) return;
         e.preventDefault();
         stopGlide();
-        act();
+        const t = turn.current;
+        if (action === "left") turn.current = { ...t, y: t.y - TURN_STEP };
+        if (action === "right") turn.current = { ...t, y: t.y + TURN_STEP };
+        if (action === "up") turn.current = { ...t, x: tilt(t.x - TILT_STEP) };
+        if (action === "down") turn.current = { ...t, x: tilt(t.x + TILT_STEP) };
+        if (action === "zoom-in") zoomBy(1 / ZOOM_STEP);
+        if (action === "zoom-out") zoomBy(ZOOM_STEP);
+        if (action === "reset") {
+          turn.current = START;
+          zoom.current = 1;
+          pan.current = { x: 0, y: 0 };
+        }
       }}
       onPointerDown={(e) => {
         stopGlide();

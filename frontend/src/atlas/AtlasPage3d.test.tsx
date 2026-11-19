@@ -117,7 +117,9 @@ describe("the Atlas in 3D", { timeout: 15_000 }, () => {
     state.fail = true;
     vi.spyOn(console, "error").mockImplementation(() => undefined);
     open("?view=3d");
-    expect(await screen.findByText("The 3D view couldn't be drawn here, so the Atlas shows 2D.")).toBeInTheDocument();
+    const notice = await screen.findByText("The 3D map couldn't be drawn here, so the Atlas shows the text view.");
+    // in view, not folded inside "Display options"
+    expect(notice.closest("details")).toBeNull();
     expect(screen.getByRole("radio", { name: /^3D map/ })).toBeDisabled();
     expect(screen.getAllByRole("toolbar").length).toBe(7);
     vi.restoreAllMocks();
