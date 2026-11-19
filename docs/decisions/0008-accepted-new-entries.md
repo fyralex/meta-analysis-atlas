@@ -28,7 +28,7 @@ saying what was checked.
 ## Still new
 
 - Penalised logistic regression (#20), until it's known which models it fits
-  (#58).
+  (#58). Accepted since: see decision 0009.
 - The arcsine difference for networks (`N_ASD`), which no family issue
   covers yet.
 - The diagnostic accuracy, prognosis, association and reliability frameworks

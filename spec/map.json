@@ -1200,7 +1200,7 @@
   ],
   [
    "R13",
-   "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It needs no MCMC.",
+   "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the posterior numerically (a grid approximation and the DIRECT algorithm).",
    "answers v11's open question",
    "BM"
   ],
@@ -2331,7 +2331,7 @@
     "BM-bmr"
    ],
    "metrics": null,
-   "note": "Computes the posterior numerically, without MCMC sampling: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual.",
+   "note": "Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual.",
    "added": false,
    "verified": true,
    "added_models": [],

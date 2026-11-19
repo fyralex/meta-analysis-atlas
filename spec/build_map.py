@@ -391,8 +391,8 @@ METHODS: dict[str, Method] = {
         [RANDOM],
         [STD, SUB, REG],
         ["BM", "BM-bmr"],
-        note="Computes the posterior numerically, without MCMC sampling: a grid approximation for the "
-        "heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out "
+        note="Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT "
+        "algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out "
         "function found in the manual.",
     ),
     "MV": meth(
@@ -996,7 +996,8 @@ RULES: list[tuple[str, str, str, str]] = [
     ("R12", "Cumulative and leave-one-out need a model without moderators.", "missing in v11", "MF-cumul, MF-l1o"),
     (
         "R13",
-        "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It needs no MCMC.",
+        "bayesmeta has no cumulative or leave-one-out function in the part of the manual read. It computes the "
+        "posterior numerically (a grid approximation and the DIRECT algorithm).",
         "answers v11's open question",
         "BM",
     ),
@@ -2224,8 +2225,8 @@ RULE_PLAIN: dict[str, str] = {
     "rma.uni, rma.glmm, rma.mv or bayesmeta's bmr. rma.mh and rma.peto can't.",
     "R11": "Cumulative and leave-one-out analyses are available for rma.uni, rma.mh and rma.peto only.",
     "R12": "Cumulative and leave-one-out analyses need a model without study characteristics (moderators).",
-    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta needs no "
-    "MCMC sampling.",
+    "R13": "The part of the bayesmeta manual read so far has no cumulative or leave-one-out function. bayesmeta "
+    "computes its results numerically, with a grid approximation and the DIRECT algorithm.",
     "R14": "Hartung-Knapp confidence intervals are for random-effects models fitted with rma.uni only.",
     "R15": "REML is the default estimator of the between-study variance in metafor and RevMan. Cochrane also cites "
     "Paule-Mandel, and says no estimator is best in every case.",

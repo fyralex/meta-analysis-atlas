@@ -90,6 +90,7 @@ describe("Pathfinder", PAGE, () => {
     expect(badges.reduce((n, b) => n + Number.parseInt(b.textContent, 10), 0)).toBe(8);
     // only the Bayesian network method's analyses are still to check, so only its group has a badge
     expect(badges).toHaveLength(1);
+    expect(groups.find((g) => badges[0] !== undefined && g.contains(badges[0]))).toHaveTextContent("Bayesian hierarchical");
   });
 
   it("says sources open outside the Atlas", () => {
