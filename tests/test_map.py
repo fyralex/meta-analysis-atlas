@@ -288,6 +288,26 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
     assert mv_common and not any(p["new"] for p in mv_common)  # #14 and #11
 
 
+def test_network_metrics_name_each_engines_call(all_cards: list[bm.Card]) -> None:
+    """gemtc and multinma name a likelihood and link: each confirmed network metric they take shows it (#123)."""
+    by_kind = {(b["fw"], b["group"], b["datatype"], b["outcome"]): b["kind"] for b in bm.BRANCHES}
+    for label, key, method, datatype, calls in bm.NETWORK_ENGINE_CALLS:
+        confirmed = {
+            p["metric"]
+            for p in bm.pathways()
+            if p["method"] == method
+            and p["datatype"] == datatype
+            and (method, p["metric"]) not in bm.UNCONFIRMED
+            and (method, by_kind[(p["framework"], p["group"], p["datatype"], p["outcome"])]) not in bm.UNCONFIRMED_INPUT
+        }
+        assert set(calls) == confirmed, method
+        assert key in bm.SOURCES
+        for code, call in calls.items():
+            card = _card(all_cards, bm.card_id("metric", code))
+            assert {"label": label, "items": [call], "code": True} in card["facts"], (method, code)
+            assert key in card["src"], (method, code)
+
+
 def test_network_metrics_name_their_escalc_measure_for_rma_mv(all_cards: list[bm.Card]) -> None:
     """Each confirmed network metric rma.mv takes from arm-level data names its escalc() measure on its card (#113)."""
     arm_mv = {

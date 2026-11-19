@@ -363,6 +363,26 @@ NETWORK_ESCALC: dict[str, str] = {
 }
 NETWORK_ESCALC_LABEL = "With rma.mv, contrast-based, from arm-level data"
 
+# The same network measures from gemtc (NM_BAYES) and multinma (NM_IPD), which name a likelihood and link instead of
+# an sm argument (#123). Only confirmed pairings: gemtc's SMD and contrast-level data, and multinma's hazard ratio,
+# are to check (UNCONFIRMED, UNCONFIRMED_INPUT).
+GEMTC_CALLS: dict[str, str] = {
+    "N_OR": 'mtc.model(network, likelihood="binom", link="logit")',
+    "N_RR": 'mtc.model(network, likelihood="binom", link="log")',
+    "N_MD": 'mtc.model(network, likelihood="normal", link="identity")',
+    "N_IRR": 'mtc.model(network, likelihood="poisson", link="log")',
+}
+MULTINMA_CALLS: dict[str, str] = {
+    "N_OR": 'nma(network, likelihood="bernoulli", link="logit")',
+    "N_MD": 'nma(network, likelihood="normal", link="identity")',
+}
+# Each engine's calls on the network metric cards: (fact label, source key, method, datatype, calls by metric).
+NETWORK_ENGINE_CALLS: list[tuple[str, str, str, str, dict[str, str]]] = [
+    (NETWORK_ESCALC_LABEL, "MF-escalc", "NM_MV", "Arm-level summary data", NETWORK_ESCALC),
+    ("With gemtc, from arm-level data", "GEMTC", "NM_BAYES", "Arm-level summary data", GEMTC_CALLS),
+    ("With multinma, from participant data", "MULTINMA", "NM_IPD", "Individual participant data", MULTINMA_CALLS),
+]
+
 # --------------------------------------------------------------------------
 # Methods
 #   domain: which family of branches the method serves
@@ -2279,8 +2299,9 @@ def _metric_card(code: str) -> Card:
     ]
     if mt["only"] is not None:
         facts.append(_fact("Only with", sorted(METHODS[c]["label"] for c in mt["only"])))
-    if code in NETWORK_ESCALC:
-        facts.insert(1, _fact(NETWORK_ESCALC_LABEL, [NETWORK_ESCALC[code]], code=True))
+    engines = [(label, key, calls[code]) for label, key, _, _, calls in NETWORK_ENGINE_CALLS if code in calls]
+    for i, (label, _, call) in enumerate(engines):
+        facts.insert(1 + i, _fact(label, [call], code=True))
     return Card(
         id=card_id("metric", code),
         tier="metric",
@@ -2295,7 +2316,7 @@ def _metric_card(code: str) -> Card:
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         terms=[],
         plain=None,
-        src=_join_src([mt["src"], "MF-escalc"]) if code in NETWORK_ESCALC else mt["src"],
+        src=_join_src([mt["src"], *(key for _, key, _ in engines)]),
     )
 
 
