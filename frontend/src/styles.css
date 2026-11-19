@@ -233,7 +233,7 @@ table.pathways .cell-label { display: none; }
 .stepbar-item .link-button { align-self: flex-start; font-size: 0.85rem; text-align: left; }
 .pathfinder-body { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; }
 .pathfinder-main { flex: 999 1 34rem; min-width: 0; }
-.pathfinder-side { flex: 1 1 16rem; display: flex; flex-direction: column; gap: 0.8rem; padding: 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
+.pathfinder-side { flex: 1 1 16rem; min-width: 0; display: flex; flex-direction: column; gap: 0.8rem; padding: 1.25rem; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
 .pathfinder-side h2 { font-size: 1.05rem; margin: 0; }
 .pathfinder-count { margin: 0; padding: 0.8rem 1rem; border-radius: 8px; background: var(--pressed); }
 .pathfinder-count strong { font-size: 1.8rem; margin-right: 0.3rem; }
@@ -350,3 +350,8 @@ table.pathways .cell-label { display: none; }
 .atlas-options { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; margin-block: 12px; }
 .atlas-options summary { cursor: pointer; }
 .atlas-3d:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+/* Pathfinder's small read-only map, design E2 of #92. */
+.path-map { margin: 0; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.path-map figcaption { font-size: 13px; line-height: 1.5; }
+.atlas-3d.atlas-3d-small { height: 280px; min-height: 0; border-radius: 10px; }
