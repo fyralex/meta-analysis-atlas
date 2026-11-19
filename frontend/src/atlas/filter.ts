@@ -36,7 +36,7 @@ export function without(selection: Selection, tier: Tier): Selection {
 
 /** Whether the settings let a pathway be shown at all, whatever is chosen. */
 export function included(p: Pathway, options: FilterOptions): boolean {
-  if (options.hideNew && p.added) return false;
+  if (options.hideNew && p.new) return false;
   if (options.runnableOnly && p.status !== "runnable") return false;
   return true;
 }
@@ -92,7 +92,7 @@ export function tierNodes(
     if (!matches(p, selection, options, tier)) continue;
     node.count += 1;
     node.byStatus[p.status] += 1;
-    if (p.added) node.newCount += 1;
+    if (p.new) node.newCount += 1;
   }
   return [...nodes.values()];
 }

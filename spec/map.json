@@ -164,7 +164,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -184,7 +185,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -205,7 +207,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -229,7 +232,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -250,7 +254,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -272,7 +277,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -290,7 +296,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -308,7 +315,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -326,7 +334,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -348,7 +357,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -371,7 +381,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -391,7 +402,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -414,7 +426,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -438,7 +451,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -459,7 +473,8 @@
    "src": [
     "MF-uni",
     "CH-6"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -479,7 +494,8 @@
     "CH-10",
     "CH-6",
     "MF-uni"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -498,7 +514,8 @@
    "src": [
     "CH-6",
     "CH-10"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -516,7 +533,8 @@
    "note": "",
    "src": [
     "CH-10"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -534,7 +552,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -552,7 +571,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -570,7 +590,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -588,7 +609,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -609,7 +631,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -630,7 +653,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -652,7 +676,8 @@
    "src": [
     "META-pw",
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -673,7 +698,8 @@
    "src": [
     "META-pw",
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -693,7 +719,8 @@
    "src": [
     "META-pw",
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -714,7 +741,8 @@
    "note": "",
    "src": [
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -734,7 +762,8 @@
    "note": "",
    "src": [
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -753,7 +782,8 @@
    "note": "",
    "src": [
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -771,7 +801,8 @@
    "note": "",
    "src": [
     "NM"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -789,7 +820,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -807,7 +839,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "1. Interventional (effect of an intervention)",
@@ -825,7 +858,8 @@
    "note": "",
    "src": [
     "CH-26"
-   ]
+   ],
+   "new": false
   },
   {
    "fw": "2. Diagnostic test accuracy",
@@ -847,7 +881,8 @@
    "note": "",
    "src": [
     "MADA"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "2. Diagnostic test accuracy",
@@ -866,7 +901,8 @@
    "note": "Done by adding the test as a covariate in the bivariate or HSROC model.",
    "src": [
     "DTA-HB"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "3. Prognosis",
@@ -887,7 +923,8 @@
    "note": "Pool each measure, adjustment set and cut-point separately. Details to confirm in Riley et al. 2019.",
    "src": [
     "RILEY"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "3. Prognosis",
@@ -905,7 +942,8 @@
    "note": "",
    "src": [
     "VALMETA"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "3. Prognosis",
@@ -923,7 +961,8 @@
    "note": "",
    "src": [
     "VALMETA"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "3. Prognosis",
@@ -939,7 +978,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -960,7 +1000,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -979,7 +1020,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -998,7 +1040,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -1018,7 +1061,8 @@
    "note": "Guidance for non-randomized studies (Cochrane Ch. 24) not read yet.",
    "src": [
     "CH-10"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -1036,7 +1080,8 @@
    "note": "",
    "src": [
     "DOSRES"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "4. Association",
@@ -1055,7 +1100,8 @@
    "note": "",
    "src": [
     "DOSRES"
-   ]
+   ],
+   "new": true
   },
   {
    "fw": "5. Measurement reliability",
@@ -1075,7 +1121,8 @@
    "note": "",
    "src": [
     "MF-escalc"
-   ]
+   ],
+   "new": true
   }
  ],
  "rules": [
@@ -1381,7 +1428,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PLN": {
    "label": "Log proportion",
@@ -1389,7 +1437,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PLO": {
    "label": "Logit proportion",
@@ -1397,7 +1446,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PAS": {
    "label": "Arcsine square-root proportion",
@@ -1405,7 +1455,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PFT": {
    "label": "Freeman-Tukey double arcsine proportion",
@@ -1413,7 +1464,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PRZ": {
    "label": "Probit proportion",
@@ -1421,7 +1473,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MN": {
    "label": "Raw mean",
@@ -1429,7 +1482,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMN": {
    "label": "Standardized mean",
@@ -1437,7 +1491,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MNLN": {
    "label": "Log mean",
@@ -1445,7 +1500,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IR": {
    "label": "Raw incidence rate",
@@ -1453,7 +1509,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRLN": {
    "label": "Log incidence rate",
@@ -1461,7 +1518,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRS": {
    "label": "Square-root incidence rate",
@@ -1469,7 +1527,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRFT": {
    "label": "Freeman-Tukey incidence rate",
@@ -1477,7 +1536,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "OR": {
    "label": "Odds ratio (log)",
@@ -1485,7 +1545,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "RR": {
    "label": "Risk ratio (log)",
@@ -1493,7 +1554,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "RD": {
    "label": "Risk difference",
@@ -1501,7 +1563,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "AS": {
    "label": "Arcsine square-root risk difference",
@@ -1509,7 +1572,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PETO": {
    "label": "Peto odds ratio (log)",
@@ -1519,7 +1583,8 @@
    "verified": true,
    "only": [
     "PETO"
-   ]
+   ],
+   "new": false
   },
   "MD": {
    "label": "Mean difference",
@@ -1527,7 +1592,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMD_G": {
    "label": "Hedges' g (bias-corrected standardized mean difference)",
@@ -1535,7 +1601,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMD_D": {
    "label": "Cohen's d (uncorrected standardized mean difference)",
@@ -1543,7 +1610,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMDH": {
    "label": "Standardized mean difference, unequal variances",
@@ -1551,7 +1619,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMD1": {
    "label": "Standardized mean difference using one group's SD (Glass-type)",
@@ -1559,7 +1628,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "ROM": {
    "label": "Ratio of means (log)",
@@ -1567,7 +1637,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRR": {
    "label": "Incidence rate ratio (log)",
@@ -1575,7 +1646,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRD": {
    "label": "Incidence rate difference",
@@ -1583,7 +1655,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "IRSD": {
    "label": "Square-root incidence rate difference",
@@ -1591,7 +1664,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "HR": {
    "label": "Hazard ratio (log)",
@@ -1599,7 +1673,8 @@
    "src": "CH-10",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "POR": {
    "label": "Proportional odds ratio (log)",
@@ -1607,7 +1682,8 @@
    "src": "CH-10",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MC": {
    "label": "Mean change",
@@ -1615,7 +1691,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMCC": {
    "label": "Standardized mean change (change-score SD)",
@@ -1623,7 +1700,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SMCR": {
    "label": "Standardized mean change (raw-score SD)",
@@ -1631,7 +1709,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "ROMC": {
    "label": "Ratio of means for change (log)",
@@ -1639,7 +1718,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MPRR": {
    "label": "Matched-pairs marginal risk ratio (log)",
@@ -1647,7 +1727,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MPOR": {
    "label": "Matched-pairs marginal odds ratio (log)",
@@ -1655,7 +1736,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MPRD": {
    "label": "Matched-pairs marginal risk difference",
@@ -1663,7 +1745,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "MPORC": {
    "label": "Matched-pairs conditional odds ratio (log)",
@@ -1671,7 +1754,8 @@
    "src": "MF-escalc",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_OR": {
    "label": "Odds ratio from the treatment coefficient",
@@ -1679,7 +1763,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_MD": {
    "label": "Mean difference from the treatment coefficient",
@@ -1687,7 +1772,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_IRR": {
    "label": "Rate ratio from the treatment coefficient",
@@ -1695,7 +1781,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_HR": {
    "label": "Hazard ratio from the treatment coefficient",
@@ -1703,7 +1790,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_P": {
    "label": "Pooled proportion (logit scale)",
@@ -1711,7 +1799,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_M": {
    "label": "Pooled mean",
@@ -1719,7 +1808,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "I_R": {
    "label": "Pooled rate (log scale)",
@@ -1727,7 +1817,8 @@
    "src": "CH-26",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_OR": {
    "label": "Odds ratio",
@@ -1735,7 +1826,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_RR": {
    "label": "Risk ratio",
@@ -1743,7 +1835,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_RD": {
    "label": "Risk difference (network)",
@@ -1751,7 +1844,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_ASD": {
    "label": "Arcsine difference",
@@ -1759,7 +1853,8 @@
    "src": "NM",
    "added": true,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": true
   },
   "N_MD": {
    "label": "Mean difference (network)",
@@ -1767,7 +1862,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_SMD": {
    "label": "Standardized mean difference (Cohen's d)",
@@ -1775,7 +1871,8 @@
    "src": "META-pw",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_ROM": {
    "label": "Ratio of means",
@@ -1783,7 +1880,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_IRR": {
    "label": "Incidence rate ratio",
@@ -1791,7 +1889,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_IRD": {
    "label": "Incidence rate difference (network)",
@@ -1799,7 +1898,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "N_HR": {
    "label": "Hazard ratio",
@@ -1807,7 +1907,8 @@
    "src": "NM",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SESP": {
    "label": "Summary sensitivity and specificity (estimated jointly)",
@@ -1815,7 +1916,8 @@
    "src": "MADA",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "SROC": {
    "label": "Summary ROC curve",
@@ -1823,7 +1925,8 @@
    "src": "DTA-HB",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "DOR": {
    "label": "Diagnostic odds ratio",
@@ -1831,7 +1934,8 @@
    "src": "DTA-HB",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "LRP": {
    "label": "Positive likelihood ratio",
@@ -1839,7 +1943,8 @@
    "src": "DTA-HB",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "LRN": {
    "label": "Negative likelihood ratio",
@@ -1847,7 +1952,8 @@
    "src": "DTA-HB",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "CSTAT": {
    "label": "c-statistic (logit scale)",
@@ -1855,7 +1961,8 @@
    "src": "VALMETA",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "OE": {
    "label": "Total observed:expected ratio (log scale)",
@@ -1863,7 +1970,8 @@
    "src": "VALMETA",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PF_HR": {
    "label": "Adjusted hazard ratio (log), prognostic factor",
@@ -1871,7 +1979,8 @@
    "src": "RILEY",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PF_OR": {
    "label": "Adjusted odds ratio (log), prognostic factor",
@@ -1879,7 +1988,8 @@
    "src": "RILEY",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PF_RR": {
    "label": "Adjusted risk ratio (log), prognostic factor",
@@ -1887,7 +1997,8 @@
    "src": "RILEY",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PF_MD": {
    "label": "Adjusted mean difference",
@@ -1895,7 +2006,8 @@
    "src": "RILEY",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "COR": {
    "label": "Raw correlation",
@@ -1903,7 +2015,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "UCOR": {
    "label": "Bias-corrected correlation",
@@ -1911,7 +2024,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "ZCOR": {
    "label": "Fisher's z-transformed correlation",
@@ -1919,7 +2033,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "RPB": {
    "label": "Point-biserial correlation",
@@ -1927,7 +2042,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "RBIS": {
    "label": "Biserial correlation",
@@ -1935,7 +2051,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PHI": {
    "label": "Phi coefficient",
@@ -1943,7 +2060,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "RTET": {
    "label": "Tetrachoric correlation",
@@ -1951,7 +2069,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "PCOR": {
    "label": "Partial correlation",
@@ -1959,7 +2078,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "EX_OR": {
    "label": "Adjusted odds ratio (log), exposure",
@@ -1967,7 +2087,8 @@
    "src": "CH-10",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "EX_RR": {
    "label": "Adjusted risk ratio (log), exposure",
@@ -1975,7 +2096,8 @@
    "src": "CH-10",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "EX_HR": {
    "label": "Adjusted hazard ratio (log), exposure",
@@ -1983,7 +2105,8 @@
    "src": "CH-10",
    "added": false,
    "verified": false,
-   "only": null
+   "only": null,
+   "new": false
   },
   "DR_RR": {
    "label": "Trend in log relative risk per unit of dose",
@@ -1991,7 +2114,8 @@
    "src": "DOSRES",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "DR_MD": {
    "label": "Trend in mean difference per unit of dose",
@@ -1999,7 +2123,8 @@
    "src": "DOSRES",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "DR_SMD": {
    "label": "Trend in standardized mean difference per unit of dose",
@@ -2007,7 +2132,8 @@
    "src": "DOSRES",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "ARAW": {
    "label": "Raw Cronbach's alpha",
@@ -2015,7 +2141,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "AHW": {
    "label": "Cronbach's alpha, Hakstian-Whalen transformation",
@@ -2023,7 +2150,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   },
   "ABT": {
    "label": "Cronbach's alpha, Bonett transformation",
@@ -2031,7 +2159,8 @@
    "src": "MF-escalc",
    "added": false,
    "verified": true,
-   "only": null
+   "only": null,
+   "new": false
   }
  },
  "methods": {
@@ -2062,7 +2191,8 @@
    "note": "Random effects: 12 estimators of the between-study variance (REML is the default); Hartung-Knapp interval available (test=\"knha\"). Cumulative and leave-one-out need a model without moderators.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "MH": {
    "label": "Mantel-Haenszel",
@@ -2093,7 +2223,8 @@
    "note": "No moderators. Generally preferred to inverse variance for common-effect binary analyses (Cochrane 10.4.1).",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "PETO": {
    "label": "Peto",
@@ -2120,7 +2251,8 @@
    "note": "For rare events, balanced arms and small effects. Not a default (Cochrane 10.4.2).",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "GLMM": {
    "label": "Generalized linear mixed model",
@@ -2150,7 +2282,8 @@
    "note": "Common effect is method=\"EE\"; random effects uses maximum likelihood only. RR and RD are experimental. No cumulative or leave-one-out function.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "LRP": {
    "label": "Penalised logistic regression (rare events)",
@@ -2175,7 +2308,8 @@
    "note": "Handles single and double zero studies without a continuity correction. Which models it fits is not confirmed.",
    "added": true,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": true
   },
   "BAYES": {
    "label": "Bayesian normal-normal hierarchical model",
@@ -2201,7 +2335,8 @@
    "note": "No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "MV": {
    "label": "Multilevel / multivariate",
@@ -2229,7 +2364,8 @@
    "verified": true,
    "added_models": [
     "Common effect"
-   ]
+   ],
+   "new": false
   },
   "OEV": {
    "label": "Observed minus expected and variance (log-rank / Peto)",
@@ -2251,7 +2387,8 @@
    "note": "Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet.",
    "added": true,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "IPD1": {
    "label": "One-stage regression on participant data (pairwise)",
@@ -2275,7 +2412,8 @@
    "note": "Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm.",
    "added": false,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "NM_GT": {
    "label": "Frequentist, graph-theoretical",
@@ -2301,7 +2439,8 @@
    "note": "Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression.",
    "added": true,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "NM_MV": {
    "label": "Frequentist, multivariate",
@@ -2330,7 +2469,8 @@
    "verified": true,
    "added_models": [
     "Common effect"
-   ]
+   ],
+   "new": false
   },
   "NM_MH": {
    "label": "Mantel-Haenszel for networks (sparse binary data)",
@@ -2356,7 +2496,8 @@
    "note": "Methods MH and NCH are common-effect only.",
    "added": true,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "NM_BAYES": {
    "label": "Bayesian hierarchical (MCMC)",
@@ -2384,7 +2525,8 @@
    "verified": false,
    "added_models": [
     "Common effect"
-   ]
+   ],
+   "new": false
   },
   "NM_IPD": {
    "label": "One-stage regression on participant data (network)",
@@ -2406,7 +2548,8 @@
    "note": "",
    "added": false,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "BIV": {
    "label": "Bivariate model (Reitsma)",
@@ -2432,7 +2575,8 @@
    "note": "Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "HSROC": {
    "label": "Hierarchical summary ROC model (Rutter and Gatsonis)",
@@ -2459,7 +2603,8 @@
    "note": "Used when studies apply different thresholds.",
    "added": false,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "DTA_UNI": {
    "label": "Univariate pooling",
@@ -2486,7 +2631,8 @@
    "note": "Ignores the correlation between sensitivity and specificity.",
    "added": false,
    "verified": false,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "VAL": {
    "label": "Meta-analysis of prediction model performance",
@@ -2510,7 +2656,8 @@
    "note": "REML by default, Hartung-Knapp interval, prediction interval; Bayesian option.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   },
   "DR": {
    "label": "Dose-response meta-analysis",
@@ -2533,7 +2680,8 @@
    "note": "One-stage or two-stage. Covariance by Greenland-Longnecker or Hamling. Linear or non-linear trend.",
    "added": false,
    "verified": true,
-   "added_models": []
+   "added_models": [],
+   "new": false
   }
  },
  "pathways": [
@@ -2547,6 +2695,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2560,6 +2709,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2573,6 +2723,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2586,6 +2737,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2599,6 +2751,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2612,6 +2765,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2625,6 +2779,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2638,6 +2793,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2651,6 +2807,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2664,6 +2821,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2677,6 +2835,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2690,6 +2849,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2703,6 +2863,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2716,6 +2877,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2729,6 +2891,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2742,6 +2905,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2755,6 +2919,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2768,6 +2933,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2781,6 +2947,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2794,6 +2961,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2807,6 +2975,7 @@
    "metric": "PR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2820,6 +2989,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2833,6 +3003,7 @@
    "metric": "PLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2846,6 +3017,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2859,6 +3031,7 @@
    "metric": "PLO",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2872,6 +3045,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2885,6 +3059,7 @@
    "metric": "PAS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2898,6 +3073,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2911,6 +3087,7 @@
    "metric": "PFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2924,6 +3101,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2937,6 +3115,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2950,6 +3129,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -2963,6 +3143,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2976,6 +3157,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -2989,6 +3171,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3002,6 +3185,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3015,6 +3199,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3028,6 +3213,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3041,6 +3227,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3054,6 +3241,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3067,6 +3255,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3080,6 +3269,7 @@
    "metric": "MN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3093,6 +3283,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3106,6 +3297,7 @@
    "metric": "SMN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3119,6 +3311,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3132,6 +3325,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3145,6 +3339,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3158,6 +3353,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3171,6 +3367,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3184,6 +3381,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3197,6 +3395,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3210,6 +3409,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3223,6 +3423,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3236,6 +3437,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3249,6 +3451,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3262,6 +3465,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3275,6 +3479,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3288,6 +3493,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3301,6 +3507,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3314,6 +3521,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3327,6 +3535,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3340,6 +3549,7 @@
    "metric": "IR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3353,6 +3563,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3366,6 +3577,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3379,6 +3591,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3392,6 +3605,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3405,6 +3619,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3418,6 +3633,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3431,6 +3647,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3444,6 +3661,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3457,6 +3675,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3470,6 +3689,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3483,6 +3703,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3496,6 +3717,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3509,6 +3731,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3522,6 +3745,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3535,6 +3759,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3548,6 +3773,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3561,6 +3787,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3574,6 +3801,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3587,6 +3815,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3600,6 +3829,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3613,6 +3843,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3626,6 +3857,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3639,6 +3871,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3652,6 +3885,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3665,6 +3899,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3678,6 +3913,7 @@
    "metric": "PR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3691,6 +3927,7 @@
    "metric": "PR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3704,6 +3941,7 @@
    "metric": "PLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3717,6 +3955,7 @@
    "metric": "PLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3730,6 +3969,7 @@
    "metric": "PLO",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3743,6 +3983,7 @@
    "metric": "PLO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3756,6 +3997,7 @@
    "metric": "PAS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3769,6 +4011,7 @@
    "metric": "PAS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3782,6 +4025,7 @@
    "metric": "PFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3795,6 +4039,7 @@
    "metric": "PFT",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3808,6 +4053,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3821,6 +4067,7 @@
    "metric": "PRZ",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3834,6 +4081,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3847,6 +4095,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3860,6 +4109,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3873,6 +4123,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3886,6 +4137,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3899,6 +4151,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -3912,6 +4165,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3925,6 +4179,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3938,6 +4193,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3951,6 +4207,7 @@
    "metric": "MN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3964,6 +4221,7 @@
    "metric": "MN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3977,6 +4235,7 @@
    "metric": "SMN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -3990,6 +4249,7 @@
    "metric": "SMN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4003,6 +4263,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4016,6 +4277,7 @@
    "metric": "MNLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4029,6 +4291,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4042,6 +4305,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4055,6 +4319,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4068,6 +4333,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4081,6 +4347,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4094,6 +4361,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4107,6 +4375,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4120,6 +4389,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4133,6 +4403,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4146,6 +4417,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4159,6 +4431,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4172,6 +4445,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4185,6 +4459,7 @@
    "metric": "IR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4198,6 +4473,7 @@
    "metric": "IR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4211,6 +4487,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4224,6 +4501,7 @@
    "metric": "IRLN",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4237,6 +4515,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4250,6 +4529,7 @@
    "metric": "IRS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4263,6 +4543,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4276,6 +4557,7 @@
    "metric": "IRFT",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4289,6 +4571,7 @@
    "metric": "I_P",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -4302,6 +4585,7 @@
    "metric": "I_M",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -4315,6 +4599,7 @@
    "metric": "I_R",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -4328,6 +4613,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4341,6 +4627,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4354,6 +4641,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4367,6 +4655,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4380,6 +4669,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4393,6 +4683,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4406,6 +4697,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4419,6 +4711,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4432,6 +4725,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4445,6 +4739,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4458,6 +4753,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4471,6 +4767,7 @@
    "metric": "PETO",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4484,6 +4781,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4497,6 +4795,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4510,6 +4809,7 @@
    "metric": "OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -4523,6 +4823,7 @@
    "metric": "OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -4536,6 +4837,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4549,6 +4851,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4562,6 +4865,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4575,6 +4879,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4588,6 +4893,7 @@
    "metric": "OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4601,6 +4907,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4614,6 +4921,7 @@
    "metric": "RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4627,6 +4935,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4640,6 +4949,7 @@
    "metric": "RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4653,6 +4963,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4666,6 +4977,7 @@
    "metric": "AS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4679,6 +4991,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4692,6 +5005,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4705,6 +5019,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4718,6 +5033,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4731,6 +5047,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4744,6 +5061,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4757,6 +5075,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4770,6 +5089,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4783,6 +5103,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4796,6 +5117,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4809,6 +5131,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4822,6 +5145,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4835,6 +5159,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -4848,6 +5173,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4861,6 +5187,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4874,6 +5201,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4887,6 +5215,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4900,6 +5229,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4913,6 +5243,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4926,6 +5257,7 @@
    "metric": "MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4939,6 +5271,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4952,6 +5285,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4965,6 +5299,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4978,6 +5313,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -4991,6 +5327,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5004,6 +5341,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5017,6 +5355,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5030,6 +5369,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5043,6 +5383,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5056,6 +5397,7 @@
    "metric": "ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5069,6 +5411,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5082,6 +5425,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5095,6 +5439,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5108,6 +5453,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5121,6 +5467,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5134,6 +5481,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5147,6 +5495,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5160,6 +5509,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5173,6 +5523,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5186,6 +5537,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5199,6 +5551,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5212,6 +5565,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5225,6 +5579,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5238,6 +5593,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5251,6 +5607,7 @@
    "metric": "IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5264,6 +5621,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5277,6 +5635,7 @@
    "metric": "IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5290,6 +5649,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5303,6 +5663,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5316,6 +5677,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5329,6 +5691,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5342,6 +5705,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5355,6 +5719,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5368,6 +5733,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5381,6 +5747,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5394,6 +5761,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5407,6 +5775,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5420,6 +5789,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5433,6 +5803,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5446,6 +5817,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5459,6 +5831,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5472,6 +5845,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5485,6 +5859,7 @@
    "metric": "OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5498,6 +5873,7 @@
    "metric": "OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5511,6 +5887,7 @@
    "metric": "RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5524,6 +5901,7 @@
    "metric": "RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5537,6 +5915,7 @@
    "metric": "RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5550,6 +5929,7 @@
    "metric": "RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5563,6 +5943,7 @@
    "metric": "AS",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5576,6 +5957,7 @@
    "metric": "AS",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5589,6 +5971,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5602,6 +5985,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5615,6 +5999,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5628,6 +6013,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5641,6 +6027,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5654,6 +6041,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5667,6 +6055,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5680,6 +6069,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5693,6 +6083,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5706,6 +6097,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5719,6 +6111,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5732,6 +6125,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5745,6 +6139,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5758,6 +6153,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5771,6 +6167,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5784,6 +6181,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5797,6 +6195,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5810,6 +6209,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5823,6 +6223,7 @@
    "metric": "MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5836,6 +6237,7 @@
    "metric": "MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5849,6 +6251,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5862,6 +6265,7 @@
    "metric": "SMD_G",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5875,6 +6279,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5888,6 +6293,7 @@
    "metric": "SMD_D",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5901,6 +6307,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5914,6 +6321,7 @@
    "metric": "SMDH",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5927,6 +6335,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5940,6 +6349,7 @@
    "metric": "SMD1",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5953,6 +6363,7 @@
    "metric": "ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5966,6 +6377,7 @@
    "metric": "ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -5979,6 +6391,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -5992,6 +6405,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6005,6 +6419,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6018,6 +6433,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6031,6 +6447,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6044,6 +6461,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6057,6 +6475,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6070,6 +6489,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6083,6 +6503,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6096,6 +6517,7 @@
    "metric": "IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6109,6 +6531,7 @@
    "metric": "IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6122,6 +6545,7 @@
    "metric": "IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6135,6 +6559,7 @@
    "metric": "IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6148,6 +6573,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6161,6 +6587,7 @@
    "metric": "IRSD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6174,6 +6601,7 @@
    "metric": "HR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6187,6 +6615,7 @@
    "metric": "HR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6200,6 +6629,7 @@
    "metric": "HR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6213,6 +6643,7 @@
    "metric": "HR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6226,6 +6657,7 @@
    "metric": "HR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6239,6 +6671,7 @@
    "metric": "POR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6252,6 +6685,7 @@
    "metric": "POR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6265,6 +6699,7 @@
    "metric": "POR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6278,6 +6713,7 @@
    "metric": "POR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6291,6 +6727,7 @@
    "metric": "POR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6304,6 +6741,7 @@
    "metric": "HR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -6317,6 +6755,7 @@
    "metric": "I_OR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -6330,6 +6769,7 @@
    "metric": "I_MD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -6343,6 +6783,7 @@
    "metric": "I_IRR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -6356,6 +6797,7 @@
    "metric": "I_HR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -6369,6 +6811,7 @@
    "metric": "MC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6382,6 +6825,7 @@
    "metric": "MC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6395,6 +6839,7 @@
    "metric": "SMCC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6408,6 +6853,7 @@
    "metric": "SMCC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6421,6 +6867,7 @@
    "metric": "SMCR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6434,6 +6881,7 @@
    "metric": "SMCR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6447,6 +6895,7 @@
    "metric": "ROMC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6460,6 +6909,7 @@
    "metric": "ROMC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6473,6 +6923,7 @@
    "metric": "MC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6486,6 +6937,7 @@
    "metric": "SMCC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6499,6 +6951,7 @@
    "metric": "SMCR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6512,6 +6965,7 @@
    "metric": "ROMC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6525,6 +6979,7 @@
    "metric": "MC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6538,6 +6993,7 @@
    "metric": "MC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6551,6 +7007,7 @@
    "metric": "SMCC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6564,6 +7021,7 @@
    "metric": "SMCC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6577,6 +7035,7 @@
    "metric": "SMCR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6590,6 +7049,7 @@
    "metric": "SMCR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6603,6 +7063,7 @@
    "metric": "ROMC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6616,6 +7077,7 @@
    "metric": "ROMC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6629,6 +7091,7 @@
    "metric": "MPRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6642,6 +7105,7 @@
    "metric": "MPRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6655,6 +7119,7 @@
    "metric": "MPOR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6668,6 +7133,7 @@
    "metric": "MPOR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6681,6 +7147,7 @@
    "metric": "MPRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6694,6 +7161,7 @@
    "metric": "MPRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6707,6 +7175,7 @@
    "metric": "MPORC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6720,6 +7189,7 @@
    "metric": "MPORC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.2",
    "status": "planned"
   },
@@ -6733,6 +7203,7 @@
    "metric": "MPRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6746,6 +7217,7 @@
    "metric": "MPOR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6759,6 +7231,7 @@
    "metric": "MPRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6772,6 +7245,7 @@
    "metric": "MPORC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6785,6 +7259,7 @@
    "metric": "MPRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6798,6 +7273,7 @@
    "metric": "MPRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6811,6 +7287,7 @@
    "metric": "MPOR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6824,6 +7301,7 @@
    "metric": "MPOR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6837,6 +7315,7 @@
    "metric": "MPRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6850,6 +7329,7 @@
    "metric": "MPRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6863,6 +7343,7 @@
    "metric": "MPORC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6876,6 +7357,7 @@
    "metric": "MPORC",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6889,6 +7371,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6902,6 +7385,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6915,6 +7399,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6928,6 +7413,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6941,6 +7427,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6954,6 +7441,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6967,6 +7455,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6980,6 +7469,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -6993,6 +7483,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7006,6 +7497,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7019,6 +7511,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7032,6 +7525,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7045,6 +7539,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7058,6 +7553,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7071,6 +7567,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7084,6 +7581,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7097,6 +7595,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7110,6 +7609,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7123,6 +7623,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7136,6 +7637,7 @@
    "metric": "N_OR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7149,6 +7651,7 @@
    "metric": "N_OR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7162,6 +7665,7 @@
    "metric": "N_RR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7175,6 +7679,7 @@
    "metric": "N_RR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7188,6 +7693,7 @@
    "metric": "N_RD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7201,6 +7707,7 @@
    "metric": "N_RD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7214,6 +7721,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7227,6 +7735,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7240,6 +7749,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7253,6 +7763,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7266,6 +7777,7 @@
    "metric": "N_SMD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7279,6 +7791,7 @@
    "metric": "N_SMD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7292,6 +7805,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7305,6 +7819,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7318,6 +7833,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7331,6 +7847,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7344,6 +7861,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7357,6 +7875,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7370,6 +7889,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7383,6 +7903,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7396,6 +7917,7 @@
    "metric": "N_MD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7409,6 +7931,7 @@
    "metric": "N_MD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7422,6 +7945,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7435,6 +7959,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7448,6 +7973,7 @@
    "metric": "N_ROM",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7461,6 +7987,7 @@
    "metric": "N_ROM",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7474,6 +8001,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7487,6 +8015,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7500,6 +8029,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7513,6 +8043,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7526,6 +8057,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7539,6 +8071,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7552,6 +8085,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7565,6 +8099,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7578,6 +8113,7 @@
    "metric": "N_IRR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7591,6 +8127,7 @@
    "metric": "N_IRR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7604,6 +8141,7 @@
    "metric": "N_IRD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7617,6 +8155,7 @@
    "metric": "N_IRD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7630,6 +8169,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7643,6 +8183,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7656,6 +8197,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7669,6 +8211,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7682,6 +8225,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7695,6 +8239,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7708,6 +8253,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7721,6 +8267,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7734,6 +8281,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7747,6 +8295,7 @@
    "metric": "N_OR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7760,6 +8309,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7773,6 +8323,7 @@
    "metric": "N_RR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7786,6 +8337,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7799,6 +8351,7 @@
    "metric": "N_RD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7812,6 +8365,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7825,6 +8379,7 @@
    "metric": "N_ASD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7838,6 +8393,7 @@
    "metric": "N_OR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7851,6 +8407,7 @@
    "metric": "N_OR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7864,6 +8421,7 @@
    "metric": "N_RR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7877,6 +8435,7 @@
    "metric": "N_RR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7890,6 +8449,7 @@
    "metric": "N_RD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7903,6 +8463,7 @@
    "metric": "N_RD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7916,6 +8477,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7929,6 +8491,7 @@
    "metric": "N_ASD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -7942,6 +8505,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7955,6 +8519,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7968,6 +8533,7 @@
    "metric": "N_SMD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7981,6 +8547,7 @@
    "metric": "N_SMD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -7994,6 +8561,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8007,6 +8575,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8020,6 +8589,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8033,6 +8603,7 @@
    "metric": "N_MD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8046,6 +8617,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8059,6 +8631,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8072,6 +8645,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8085,6 +8659,7 @@
    "metric": "N_ROM",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8098,6 +8673,7 @@
    "metric": "N_MD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8111,6 +8687,7 @@
    "metric": "N_MD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8124,6 +8701,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8137,6 +8715,7 @@
    "metric": "N_SMD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8150,6 +8729,7 @@
    "metric": "N_ROM",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8163,6 +8743,7 @@
    "metric": "N_ROM",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8176,6 +8757,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8189,6 +8771,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8202,6 +8785,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8215,6 +8799,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8228,6 +8813,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8241,6 +8827,7 @@
    "metric": "N_IRR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8254,6 +8841,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8267,6 +8855,7 @@
    "metric": "N_IRD",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8280,6 +8869,7 @@
    "metric": "N_IRR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8293,6 +8883,7 @@
    "metric": "N_IRR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8306,6 +8897,7 @@
    "metric": "N_IRD",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8319,6 +8911,7 @@
    "metric": "N_IRD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8332,6 +8925,7 @@
    "metric": "N_HR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8345,6 +8939,7 @@
    "metric": "N_HR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8358,6 +8953,7 @@
    "metric": "N_HR",
    "verified": true,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8371,6 +8967,7 @@
    "metric": "N_HR",
    "verified": true,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "planned"
   },
@@ -8384,6 +8981,7 @@
    "metric": "N_HR",
    "verified": false,
    "added": true,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8397,6 +8995,7 @@
    "metric": "N_HR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "v0.3",
    "status": "to_check"
   },
@@ -8410,6 +9009,7 @@
    "metric": "N_OR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -8423,6 +9023,7 @@
    "metric": "N_MD",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -8436,6 +9037,7 @@
    "metric": "N_HR",
    "verified": false,
    "added": false,
+   "new": false,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -8449,6 +9051,7 @@
    "metric": "SESP",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "planned"
   },
@@ -8462,6 +9065,7 @@
    "metric": "SROC",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8475,6 +9079,7 @@
    "metric": "DOR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8488,6 +9093,7 @@
    "metric": "DOR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8501,6 +9107,7 @@
    "metric": "LRP",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8514,6 +9121,7 @@
    "metric": "LRP",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8527,6 +9135,7 @@
    "metric": "LRN",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8540,6 +9149,7 @@
    "metric": "LRN",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8553,6 +9163,7 @@
    "metric": "SESP",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8566,6 +9177,7 @@
    "metric": "SROC",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8579,6 +9191,7 @@
    "metric": "PF_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8592,6 +9205,7 @@
    "metric": "PF_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8605,6 +9219,7 @@
    "metric": "PF_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8618,6 +9233,7 @@
    "metric": "PF_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8631,6 +9247,7 @@
    "metric": "PF_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8644,6 +9261,7 @@
    "metric": "PF_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8657,6 +9275,7 @@
    "metric": "PF_MD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8670,6 +9289,7 @@
    "metric": "PF_MD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8683,6 +9303,7 @@
    "metric": "PF_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8696,6 +9317,7 @@
    "metric": "PF_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8709,6 +9331,7 @@
    "metric": "PF_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8722,6 +9345,7 @@
    "metric": "PF_MD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8735,6 +9359,7 @@
    "metric": "PF_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8748,6 +9373,7 @@
    "metric": "PF_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8761,6 +9387,7 @@
    "metric": "PF_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8774,6 +9401,7 @@
    "metric": "PF_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8787,6 +9415,7 @@
    "metric": "PF_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8800,6 +9429,7 @@
    "metric": "PF_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8813,6 +9443,7 @@
    "metric": "PF_MD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8826,6 +9457,7 @@
    "metric": "PF_MD",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "to_check"
   },
@@ -8839,6 +9471,7 @@
    "metric": "CSTAT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "planned"
   },
@@ -8852,6 +9485,7 @@
    "metric": "CSTAT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "planned"
   },
@@ -8865,6 +9499,7 @@
    "metric": "OE",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "planned"
   },
@@ -8878,6 +9513,7 @@
    "metric": "OE",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "v0.4",
    "status": "planned"
   },
@@ -8891,6 +9527,7 @@
    "metric": "COR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8904,6 +9541,7 @@
    "metric": "COR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8917,6 +9555,7 @@
    "metric": "UCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8930,6 +9569,7 @@
    "metric": "UCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8943,6 +9583,7 @@
    "metric": "ZCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8956,6 +9597,7 @@
    "metric": "ZCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8969,6 +9611,7 @@
    "metric": "PCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8982,6 +9625,7 @@
    "metric": "PCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -8995,6 +9639,7 @@
    "metric": "COR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9008,6 +9653,7 @@
    "metric": "UCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9021,6 +9667,7 @@
    "metric": "ZCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9034,6 +9681,7 @@
    "metric": "PCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9047,6 +9695,7 @@
    "metric": "COR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9060,6 +9709,7 @@
    "metric": "COR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9073,6 +9723,7 @@
    "metric": "UCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9086,6 +9737,7 @@
    "metric": "UCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9099,6 +9751,7 @@
    "metric": "ZCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9112,6 +9765,7 @@
    "metric": "ZCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9125,6 +9779,7 @@
    "metric": "PCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9138,6 +9793,7 @@
    "metric": "PCOR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9151,6 +9807,7 @@
    "metric": "RPB",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9164,6 +9821,7 @@
    "metric": "RPB",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9177,6 +9835,7 @@
    "metric": "RBIS",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9190,6 +9849,7 @@
    "metric": "RBIS",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9203,6 +9863,7 @@
    "metric": "RPB",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9216,6 +9877,7 @@
    "metric": "RBIS",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9229,6 +9891,7 @@
    "metric": "RPB",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9242,6 +9905,7 @@
    "metric": "RPB",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9255,6 +9919,7 @@
    "metric": "RBIS",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9268,6 +9933,7 @@
    "metric": "RBIS",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9281,6 +9947,7 @@
    "metric": "PHI",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9294,6 +9961,7 @@
    "metric": "PHI",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9307,6 +9975,7 @@
    "metric": "RTET",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9320,6 +9989,7 @@
    "metric": "RTET",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9333,6 +10003,7 @@
    "metric": "PHI",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9346,6 +10017,7 @@
    "metric": "RTET",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9359,6 +10031,7 @@
    "metric": "PHI",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9372,6 +10045,7 @@
    "metric": "PHI",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9385,6 +10059,7 @@
    "metric": "RTET",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9398,6 +10073,7 @@
    "metric": "RTET",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9411,6 +10087,7 @@
    "metric": "EX_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9424,6 +10101,7 @@
    "metric": "EX_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9437,6 +10115,7 @@
    "metric": "EX_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9450,6 +10129,7 @@
    "metric": "EX_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9463,6 +10143,7 @@
    "metric": "EX_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9476,6 +10157,7 @@
    "metric": "EX_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9489,6 +10171,7 @@
    "metric": "EX_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9502,6 +10185,7 @@
    "metric": "EX_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9515,6 +10199,7 @@
    "metric": "EX_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9528,6 +10213,7 @@
    "metric": "EX_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9541,6 +10227,7 @@
    "metric": "EX_OR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9554,6 +10241,7 @@
    "metric": "EX_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9567,6 +10255,7 @@
    "metric": "EX_RR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9580,6 +10269,7 @@
    "metric": "EX_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9593,6 +10283,7 @@
    "metric": "EX_HR",
    "verified": false,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "to_check"
   },
@@ -9606,6 +10297,7 @@
    "metric": "DR_RR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9619,6 +10311,7 @@
    "metric": "DR_RR",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9632,6 +10325,7 @@
    "metric": "DR_MD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9645,6 +10339,7 @@
    "metric": "DR_MD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9658,6 +10353,7 @@
    "metric": "DR_SMD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9671,6 +10367,7 @@
    "metric": "DR_SMD",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9684,6 +10381,7 @@
    "metric": "ARAW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9697,6 +10395,7 @@
    "metric": "ARAW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9710,6 +10409,7 @@
    "metric": "AHW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9723,6 +10423,7 @@
    "metric": "AHW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9736,6 +10437,7 @@
    "metric": "ABT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9749,6 +10451,7 @@
    "metric": "ABT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9762,6 +10465,7 @@
    "metric": "ARAW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9775,6 +10479,7 @@
    "metric": "AHW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9788,6 +10493,7 @@
    "metric": "ABT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9801,6 +10507,7 @@
    "metric": "ARAW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9814,6 +10521,7 @@
    "metric": "ARAW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9827,6 +10535,7 @@
    "metric": "AHW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9840,6 +10549,7 @@
    "metric": "AHW",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9853,6 +10563,7 @@
    "metric": "ABT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   },
@@ -9866,6 +10577,7 @@
    "metric": "ABT",
    "verified": true,
    "added": true,
+   "new": true,
    "milestone": "Later",
    "status": "specified"
   }

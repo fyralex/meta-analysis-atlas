@@ -9,7 +9,7 @@ interface Props {
   nodes: NodeSummary[];
   label: (value: string) => string;
   /** The entry's own flags, for tiers whose values are entries in the map (methods, metrics). */
-  flags?: (value: string) => { added: boolean; verified: boolean } | undefined;
+  flags?: (value: string) => { new: boolean; verified: boolean } | undefined;
   onChoose: (value: string) => void;
   /** Ask why a node with no compatible pathway can't be chosen. */
   onWhyNot: (value: string) => void;
@@ -20,8 +20,8 @@ interface Props {
 }
 
 /** What a screen reader hears: the visible label first, then the count by status. */
-function spoken(text: string, node: NodeSummary, entry?: { added: boolean; verified: boolean }): string {
-  const marks = [entry?.added ? "new" : "", entry && !entry.verified ? "to check" : ""].filter(Boolean);
+function spoken(text: string, node: NodeSummary, entry?: { new: boolean; verified: boolean }): string {
+  const marks = [entry?.new ? "new" : "", entry && !entry.verified ? "to check" : ""].filter(Boolean);
   const name = marks.length > 0 ? `${text} (${marks.join(", ")})` : text;
   if (node.count === 0) return `${name}, 0 pathways: not compatible with your other choices; press to see why`;
   const parts = STATUSES.filter((s) => node.byStatus[s] > 0).map(
@@ -60,7 +60,7 @@ export function TierLayer({ id, name, nodes, label, flags, onChoose, onWhyNot, a
         {nodes.map((node, i) => {
           const none = node.count === 0;
           const entry = flags?.(node.value);
-          const isNew = entry?.added === true;
+          const isNew = entry?.new === true;
           const toCheck = entry !== undefined && !entry.verified;
           return (
             <button

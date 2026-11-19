@@ -2,9 +2,9 @@
 
 Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec/tree.md` and `spec/map.html`.
 
-Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11. CHECK = not yet confirmed from a primary source.
+Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; new, not in v11 350; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
+Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 124; still to check 99; status runnable 0; status planned 404; status specified 61; status to_check 99.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -26,14 +26,14 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Continuous | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Count / person-time | estimate with SE, variance or CI | OK | MF-uni, CH-6 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Time-to-event | log hazard ratio with SE or CI | OK | CH-10, CH-6, MF-uni |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Ordinal | log proportional odds ratio with SE | NEW | CH-6, CH-10 |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Observed minus expected and variance | Time-to-event | O - E and V per study | NEW | CH-10 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Ordinal | log proportional odds ratio with SE | accepted #17 | CH-6, CH-10 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Observed minus expected and variance | Time-to-event | O - E and V per study | accepted #17 | CH-10 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Count / person-time | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Continuous | two means, two SDs, n and the within-person correlation | NEW | MF-escalc |
-| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Binary | paired 2x2 table | NEW | MF-escalc |
+| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Continuous | two means, two SDs, n and the within-person correlation | accepted #16 | MF-escalc |
+| 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Binary | paired 2x2 table | accepted #16 | MF-escalc |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Binary | events and total per arm | OK | META-pw, NM |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Continuous | mean, SD, n per arm | OK | META-pw, NM |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Count / person-time | events and person-time per arm | OK | META-pw, NM |
@@ -80,14 +80,14 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | PLO | Logit proportion | `escalc(measure="PLO")` | MF-escalc | OK |
 | PAS | Arcsine square-root proportion | `escalc(measure="PAS")` | MF-escalc | OK |
 | PFT | Freeman-Tukey double arcsine proportion | `escalc(measure="PFT")` | MF-escalc | OK |
-| PRZ | Probit proportion | `escalc(measure="PRZ")` | MF-escalc | NEW |
+| PRZ | Probit proportion | `escalc(measure="PRZ")` | MF-escalc | accepted #18 |
 | MN | Raw mean | `escalc(measure="MN")` | MF-escalc | OK |
 | SMN | Standardized mean | `escalc(measure="SMN")` | MF-escalc | OK |
-| MNLN | Log mean | `escalc(measure="MNLN")` | MF-escalc | NEW |
+| MNLN | Log mean | `escalc(measure="MNLN")` | MF-escalc | accepted #18 |
 | IR | Raw incidence rate | `escalc(measure="IR")` | MF-escalc | OK |
 | IRLN | Log incidence rate | `escalc(measure="IRLN")` | MF-escalc | OK |
-| IRS | Square-root incidence rate | `escalc(measure="IRS")` | MF-escalc | NEW |
-| IRFT | Freeman-Tukey incidence rate | `escalc(measure="IRFT")` | MF-escalc | NEW |
+| IRS | Square-root incidence rate | `escalc(measure="IRS")` | MF-escalc | accepted #18 |
+| IRFT | Freeman-Tukey incidence rate | `escalc(measure="IRFT")` | MF-escalc | accepted #18 |
 | OR | Odds ratio (log) | `escalc(measure="OR")` | MF-escalc | OK |
 | RR | Risk ratio (log) | `escalc(measure="RR")` | MF-escalc | OK |
 | RD | Risk difference | `escalc(measure="RD")` | MF-escalc | OK |
@@ -96,22 +96,22 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | MD | Mean difference | `escalc(measure="MD")` | MF-escalc | OK |
 | SMD_G | Hedges' g (bias-corrected standardized mean difference) | `escalc(measure="SMD")` | MF-escalc | OK |
 | SMD_D | Cohen's d (uncorrected standardized mean difference) | `escalc(measure="SMD", correct=FALSE)` | MF-escalc | OK |
-| SMDH | Standardized mean difference, unequal variances | `escalc(measure="SMDH")` | MF-escalc | NEW |
-| SMD1 | Standardized mean difference using one group's SD (Glass-type) | `escalc(measure="SMD1")` | MF-escalc | NEW |
+| SMDH | Standardized mean difference, unequal variances | `escalc(measure="SMDH")` | MF-escalc | accepted #18 |
+| SMD1 | Standardized mean difference using one group's SD (Glass-type) | `escalc(measure="SMD1")` | MF-escalc | accepted #18 |
 | ROM | Ratio of means (log) | `escalc(measure="ROM")` | MF-escalc | OK |
 | IRR | Incidence rate ratio (log) | `escalc(measure="IRR")` | MF-escalc | OK |
 | IRD | Incidence rate difference | `escalc(measure="IRD")` | MF-escalc | OK |
-| IRSD | Square-root incidence rate difference | `escalc(measure="IRSD")` | MF-escalc | NEW |
+| IRSD | Square-root incidence rate difference | `escalc(measure="IRSD")` | MF-escalc | accepted #18 |
 | HR | Hazard ratio (log) | `no escalc measure; enter log HR and its SE` | CH-10 | OK |
-| POR | Proportional odds ratio (log) | `no escalc measure; enter the log OR and its SE` | CH-10 | NEW |
-| MC | Mean change | `escalc(measure="MC")` | MF-escalc | NEW |
-| SMCC | Standardized mean change (change-score SD) | `escalc(measure="SMCC")` | MF-escalc | NEW |
-| SMCR | Standardized mean change (raw-score SD) | `escalc(measure="SMCR")` | MF-escalc | NEW |
-| ROMC | Ratio of means for change (log) | `escalc(measure="ROMC")` | MF-escalc | NEW |
-| MPRR | Matched-pairs marginal risk ratio (log) | `escalc(measure="MPRR")` | MF-escalc | NEW |
-| MPOR | Matched-pairs marginal odds ratio (log) | `escalc(measure="MPOR")` | MF-escalc | NEW |
-| MPRD | Matched-pairs marginal risk difference | `escalc(measure="MPRD")` | MF-escalc | NEW |
-| MPORC | Matched-pairs conditional odds ratio (log) | `escalc(measure="MPORC")` | MF-escalc | NEW |
+| POR | Proportional odds ratio (log) | `no escalc measure; enter the log OR and its SE` | CH-10 | accepted #17 |
+| MC | Mean change | `escalc(measure="MC")` | MF-escalc | accepted #16 |
+| SMCC | Standardized mean change (change-score SD) | `escalc(measure="SMCC")` | MF-escalc | accepted #16 |
+| SMCR | Standardized mean change (raw-score SD) | `escalc(measure="SMCR")` | MF-escalc | accepted #16 |
+| ROMC | Ratio of means for change (log) | `escalc(measure="ROMC")` | MF-escalc | accepted #16 |
+| MPRR | Matched-pairs marginal risk ratio (log) | `escalc(measure="MPRR")` | MF-escalc | accepted #16 |
+| MPOR | Matched-pairs marginal odds ratio (log) | `escalc(measure="MPOR")` | MF-escalc | accepted #16 |
+| MPRD | Matched-pairs marginal risk difference | `escalc(measure="MPRD")` | MF-escalc | accepted #16 |
+| MPORC | Matched-pairs conditional odds ratio (log) | `escalc(measure="MPORC")` | MF-escalc | accepted #16 |
 | I_OR | Odds ratio from the treatment coefficient | `logistic mixed model` | CH-26 | CHECK |
 | I_MD | Mean difference from the treatment coefficient | `linear mixed model` | CH-26 | CHECK |
 | I_IRR | Rate ratio from the treatment coefficient | `Poisson mixed model` | CH-26 | CHECK |
@@ -169,11 +169,11 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | Penalised logistic regression (rare events) | `meta::metabin(method="LRP")` | Common effect, Random effects | arm | standard | META-bin | NEW, CHECK | Handles single and double zero studies without a continuity correction. Which models it fits is not confirmed. |
 | Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | No MCMC. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
 | Multilevel / multivariate | `metafor::rma.mv() with vcalc()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MF-mv | OK | For studies that contribute several dependent estimates. Without a random term it fits a fixed-effects model (v11 says random only). REML or ML. No Hartung-Knapp, cumulative or leave-one-out function. |
-| Observed minus expected and variance (log-rank / Peto) | `computed as (O-E)/V with variance 1/V` | Common effect | oev | standard | CH-10 | NEW, CHECK | Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet. |
+| Observed minus expected and variance (log-rank / Peto) | `computed as (O-E)/V with variance 1/V` | Common effect | oev | standard | CH-10 | accepted #17, CHECK | Cochrane 10.9: only fixed-effect methods in RevMan. R implementation not chosen yet. |
 | One-stage regression on participant data (pairwise) | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
-| Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | NEW | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
+| Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | accepted #19 | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
-| Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | NEW | Methods MH and NCH are common-effect only. |
+| Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
 | Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11 | CHECK | Supports meta-regression. Common-effect option not confirmed from the manual. |
 | One-stage regression on participant data (network) | `mixed-effects regression, frequentist or Bayesian` | Random effects | ipd | standard | CH-26 | CHECK |  |
 | Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |

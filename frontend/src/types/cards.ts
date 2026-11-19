@@ -43,6 +43,8 @@ export interface Card {
   value: string;
   title: string;
   added: boolean;
+  /** Added and not yet accepted by the methodologist: shows the "new" badge. */
+  new: boolean;
   verified: boolean;
   facts: Fact[];
   notes: CardNote[];
