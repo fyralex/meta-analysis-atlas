@@ -3,9 +3,9 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 564; interventional 454; interventional, in v11's scope 214; of those, confirmed 185; not in v11 350; of those, new (not yet accepted) 110; still to check 97; status runnable 0; status planned 404; status specified 63; status to_check 97.
+Counts: pathways in total 548; interventional 438; interventional, in v11's scope 208; of those, confirmed 189; not in v11 340; of those, new (not yet accepted) 110; still to check 73; status runnable 0; status planned 412; status specified 63; status to_check 73.
 
-- framework: 1. Interventional (effect of an intervention)  (454)
+- framework: 1. Interventional (effect of an intervention)  (438)
   - group: One group (single arm)  (137)
     - datatype: Arm-level summary data  (69)
       - outcome: Binary  (32)
@@ -516,10 +516,10 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Matched-pairs marginal odds ratio (log)
             - metric: Matched-pairs marginal risk difference
             - metric: Matched-pairs conditional odds ratio (log)
-  - group: Multiple groups (network)  (120)
-    - datatype: Arm-level summary data  (57)
-      - outcome: Binary  (27)
-        - model: Common effect  (15)
+  - group: Multiple groups (network)  (104)
+    - datatype: Arm-level summary data  (49)
+      - outcome: Binary  (23)
+        - model: Common effect  (13)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
@@ -534,12 +534,10 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Odds ratio
             - metric: Risk ratio
             - metric: Risk difference (network)
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference (network)
-            - metric: Arcsine difference
-        - model: Random effects  (12)
+        - model: Random effects  (10)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
@@ -550,13 +548,11 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Risk ratio
             - metric: Risk difference (network)
             - metric: Arcsine difference
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference (network)
-            - metric: Arcsine difference
-      - outcome: Continuous  (18)
-        - model: Common effect  (9)
+      - outcome: Continuous  (16)
+        - model: Common effect  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
@@ -565,11 +561,10 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
-            - metric: Ratio of means
-        - model: Random effects  (9)
+        - model: Random effects  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
@@ -578,34 +573,31 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
-            - metric: Ratio of means
-      - outcome: Count / person-time  (12)
-        - model: Common effect  (6)
+      - outcome: Count / person-time  (10)
+        - model: Common effect  (5)
           - method: Frequentist, graph-theoretical  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference (network)
-        - model: Random effects  (6)
+        - model: Random effects  (5)
           - method: Frequentist, graph-theoretical  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference (network)
-    - datatype: Contrast-level estimates  (60)
-      - outcome: Binary  (24)
-        - model: Common effect  (12)
+    - datatype: Contrast-level estimates  (52)
+      - outcome: Binary  (20)
+        - model: Common effect  (10)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
@@ -616,12 +608,10 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Risk ratio
             - metric: Risk difference (network)
             - metric: Arcsine difference
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference (network)
-            - metric: Arcsine difference
-        - model: Random effects  (12)
+        - model: Random effects  (10)
           - method: Frequentist, graph-theoretical  (4)
             - metric: Odds ratio
             - metric: Risk ratio
@@ -632,13 +622,11 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Risk ratio
             - metric: Risk difference (network)
             - metric: Arcsine difference
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (4)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Odds ratio
             - metric: Risk ratio
-            - metric: Risk difference (network)
-            - metric: Arcsine difference
-      - outcome: Continuous  (18)
-        - model: Common effect  (9)
+      - outcome: Continuous  (16)
+        - model: Common effect  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
@@ -647,11 +635,10 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
-            - metric: Ratio of means
-        - model: Random effects  (9)
+        - model: Random effects  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
@@ -660,45 +647,42 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
             - metric: Ratio of means
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (3)
+          - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
             - metric: Standardized mean difference (Cohen's d)
-            - metric: Ratio of means
-      - outcome: Count / person-time  (12)
-        - model: Common effect  (6)
+      - outcome: Count / person-time  (10)
+        - model: Common effect  (5)
           - method: Frequentist, graph-theoretical  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference (network)
-        - model: Random effects  (6)
+        - model: Random effects  (5)
           - method: Frequentist, graph-theoretical  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
           - method: Frequentist, multivariate  (2)
             - metric: Incidence rate ratio
             - metric: Incidence rate difference (network)
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (2)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Incidence rate ratio
-            - metric: Incidence rate difference (network)
       - outcome: Time-to-event  (6)
         - model: Common effect  (3)
           - method: Frequentist, graph-theoretical  (1)
             - metric: Hazard ratio
           - method: Frequentist, multivariate  (1)
             - metric: Hazard ratio
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Hazard ratio
         - model: Random effects  (3)
           - method: Frequentist, graph-theoretical  (1)
             - metric: Hazard ratio
           - method: Frequentist, multivariate  (1)
             - metric: Hazard ratio
-          - method: Bayesian hierarchical (MCMC) [CHECK]  (1)
+          - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Hazard ratio
     - datatype: Individual participant data  (3)
       - outcome: Binary [CHECK]  (1)

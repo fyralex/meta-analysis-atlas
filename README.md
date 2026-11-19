@@ -9,7 +9,7 @@ Framework → Group structure → Datatype → Outcome type → Model → Method
 
 The map covers five frameworks (interventional, including network
 meta-analysis; diagnostic test accuracy; prognosis; association; measurement
-reliability) and 564 pathways. Every entry cites its source: the Cochrane
+reliability) and 548 pathways. Every entry cites its source: the Cochrane
 Handbook, the documentation of the R package that runs it, or a methods paper
 or textbook. Entries that haven't been confirmed against a primary source
 are marked as such.
@@ -21,9 +21,9 @@ analyses yet.** Each pathway has a status:
 
 | Status | Pathways | Meaning |
 |---|---|---|
-| Planned | 404 | Confirmed from its sources; its engine is on the roadmap |
+| Planned | 412 | Confirmed from its sources; its engine is on the roadmap |
 | Specified | 63 | Confirmed from its sources; not planned yet |
-| To check | 97 | Not yet confirmed from a primary source |
+| To check | 73 | Not yet confirmed from a primary source |
 | Runnable | 0 | Passes a validation test against a published worked example or the R package itself; none yet |
 
 A pathway becomes runnable only when it passes a validation test, against a

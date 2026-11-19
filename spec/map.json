@@ -97,6 +97,14 @@
    "netmeta, netmetabin()",
    "https://rdrr.io/cran/netmeta/man/netmetabin.html"
   ],
+  "GEMTC": [
+   "gemtc, mtc.model()",
+   "https://rdrr.io/cran/gemtc/man/mtc.model.html"
+  ],
+  "GEMTC-net": [
+   "gemtc, mtc.network()",
+   "https://rdrr.io/cran/gemtc/man/mtc.network.html"
+  ],
   "NM-man": [
    "netmeta manual",
    "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"
@@ -1317,6 +1325,12 @@
    "In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure=\"PETO\") also computes it study by study; this map doesn't offer pooling it with another method.",
    "agrees",
    "CH-10 s10.4.2, MF-escalc"
+  ],
+  [
+   "R33",
+   "gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference.",
+   "v11 wrong: offers every network measure for gemtc",
+   "GEMTC"
   ]
  ],
  "cross_cutting": [
@@ -1402,7 +1416,7 @@
   "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
   "Choose the R implementation for the HSROC model and for O - E and V data.",
   "Confirm R packages for one-stage IPD, pairwise and network.",
-  "Confirm the common-effect option and inputs of the Bayesian network engine (gemtc).",
+  "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).",
   "Read the rest of the bayesmeta manual.",
   "Record the Handbook version and the date of each chapter.",
@@ -1417,7 +1431,7 @@
   {
    "method": "NM_BAYES",
    "metric": "N_SMD",
-   "why": "R31's source covers netmeta; gemtc's measures are still to confirm (issue #40)"
+   "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
   }
  ],
  "metrics": {
@@ -2516,12 +2530,21 @@
    ],
    "src": [
     "DMA",
-    "CH-11"
+    "CH-11",
+    "GEMTC",
+    "GEMTC-net"
    ],
-   "metrics": null,
-   "note": "Supports meta-regression. Common-effect option not confirmed from the manual.",
+   "metrics": [
+    "N_HR",
+    "N_IRR",
+    "N_MD",
+    "N_OR",
+    "N_RR",
+    "N_SMD"
+   ],
+   "note": "Supports meta-regression. linearModel=\"fixed\" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check.",
    "added": false,
-   "verified": false,
+   "verified": true,
    "added_models": [
     "Common effect"
    ],
@@ -7634,11 +7657,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7648,11 +7671,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7662,11 +7685,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7676,67 +7699,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_RR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Binary",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_RD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Binary",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_RD",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Binary",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_ASD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Binary",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_ASD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7914,11 +7881,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7928,11 +7895,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -7966,34 +7933,6 @@
    "framework": "1. Interventional (effect of an intervention)",
    "group": "Multiple groups (network)",
    "datatype": "Arm-level summary data",
-   "outcome": "Continuous",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_ROM",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Continuous",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_ROM",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
    "outcome": "Count / person-time",
    "model": "Common effect",
    "method": "NM_GT",
@@ -8110,11 +8049,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_IRR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8124,39 +8063,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_IRR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Count / person-time",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_IRD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Arm-level summary data",
-   "outcome": "Count / person-time",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_IRD",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8442,62 +8353,6 @@
    "framework": "1. Interventional (effect of an intervention)",
    "group": "Multiple groups (network)",
    "datatype": "Contrast-level estimates",
-   "outcome": "Binary",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_RD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Binary",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_RD",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Binary",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_ASD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Binary",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_ASD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
    "outcome": "Continuous",
    "model": "Common effect",
    "method": "NM_GT",
@@ -8722,34 +8577,6 @@
    "framework": "1. Interventional (effect of an intervention)",
    "group": "Multiple groups (network)",
    "datatype": "Contrast-level estimates",
-   "outcome": "Continuous",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_ROM",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Continuous",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_ROM",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
    "outcome": "Count / person-time",
    "model": "Common effect",
    "method": "NM_GT",
@@ -8880,34 +8707,6 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_IRR",
-   "verified": false,
-   "added": false,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Count / person-time",
-   "model": "Common effect",
-   "method": "NM_BAYES",
-   "metric": "N_IRD",
-   "verified": false,
-   "added": true,
-   "new": false,
-   "milestone": "v0.3",
-   "status": "to_check"
-  },
-  {
-   "framework": "1. Interventional (effect of an intervention)",
-   "group": "Multiple groups (network)",
-   "datatype": "Contrast-level estimates",
-   "outcome": "Count / person-time",
-   "model": "Random effects",
-   "method": "NM_BAYES",
-   "metric": "N_IRD",
    "verified": false,
    "added": false,
    "new": false,
