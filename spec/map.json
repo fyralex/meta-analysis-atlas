@@ -1434,6 +1434,13 @@
    "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
   }
  ],
+ "unconfirmed_input": [
+  {
+   "method": "NM_BAYES",
+   "input": "est",
+   "why": "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale diff is on or how it is matched to a likelihood (issue #40)"
+  }
+ ],
  "metrics": {
   "PR": {
    "label": "Raw proportion",

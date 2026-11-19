@@ -2309,7 +2309,7 @@ RULE_PLAIN: dict[str, str] = {
     "Hedges' g, so that a study with three or more groups gives comparisons that agree.",
     "R32": "In this map, the Peto odds ratio comes only with Peto's method, the method Cochrane presents it with.",
     "R33": "gemtc's network models give odds ratios, risk ratios, mean differences, standardized mean differences "
-    "and rate ratios, not differences of risks or rates.",
+    "and rate ratios; not risk or rate differences, arcsine differences or ratios of means.",
 }
 
 
@@ -4389,6 +4389,7 @@ def main(argv: Sequence[str] | None = None) -> None:
         notes=notes(),
         open_items=OPEN,
         unconfirmed=[{"method": me, "metric": mt, "why": why} for (me, mt), why in UNCONFIRMED.items()],
+        unconfirmed_input=[{"method": me, "input": kind, "why": why} for (me, kind), why in UNCONFIRMED_INPUT.items()],
         metrics={k: {**v, "new": metric_new(k)} for k, v in METRICS.items()},
         methods={k: {**v, "new": method_new(k)} for k, v in METHODS.items()},
         pathways=paths,

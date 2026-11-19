@@ -84,6 +84,8 @@ export interface MapData {
   open_items: string[];
   /** Method and metric pairs whose pathways stay to check, each with why. */
   unconfirmed: { method: string; metric: string; why: string }[];
+  /** A method and an input it reads (a branch kind) whose pairing is not confirmed. */
+  unconfirmed_input: { method: string; input: string; why: string }[];
   metrics: Record<string, Metric>;
   methods: Record<string, Method>;
   pathways: Pathway[];

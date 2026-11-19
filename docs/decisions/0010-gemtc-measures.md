@@ -28,7 +28,8 @@ Decided by the owner, 2026-11-19 (issue #40). Recorded in rule R33, the
   - binomial/cloglog: also a hazard ratio.
 
   None gives a difference of risks or rates, an arcsine difference or a
-  ratio of means.
+  ratio of means. The map has no arm-level network branch for time-to-event
+  data, so binomial/cloglog adds no pathway.
 - **Common effect:** the same page says `linearModel = "fixed"` fits a
   fixed-effect model. That was the open question behind marking the method
   unconfirmed.

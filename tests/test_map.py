@@ -208,6 +208,20 @@ def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
     assert {p["status"] for p in paired} == {"to_check"}
 
 
+def test_unconfirmed_inputs_name_real_methods_and_inputs() -> None:
+    assert bm.UNCONFIRMED_INPUT
+    kind_of = {(b["fw"], b["group"], b["datatype"], b["outcome"]): b["kind"] for b in bm.BRANCHES}
+    for method, kind in bm.UNCONFIRMED_INPUT:
+        assert method in bm.METHODS and kind in bm.METHODS[method]["takes"]
+    paired = [
+        p
+        for p in bm.pathways()
+        if (p["method"], kind_of[(p["framework"], p["group"], p["datatype"], p["outcome"])]) in bm.UNCONFIRMED_INPUT
+    ]
+    assert paired, "an input pair generates no pathway"
+    assert {p["status"] for p in paired} == {"to_check"}
+
+
 def test_v11_removed_reasons_cite_existing_rules() -> None:
     rule_ids = {r[0] for r in bm.RULES}
     cited = {c["reason"].split(":")[0] for c in bm.V11_REMOVED if re.match(r"^R\d+:", c["reason"])}
