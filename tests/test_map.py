@@ -889,7 +889,7 @@ def test_the_network_group_card_carries_the_transitivity_caution() -> None:
 
 
 def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
-    """Branches whose only source is unread (DTA-HB) stay without text."""
+    """Branches whose only source is unread (DTA-HB) stay without teaching text; "Any outcome" has none yet."""
     for cid in (
         "group:two-or-more-index-tests-compared",
         "datatype:2x2-table-per-study-and-test",

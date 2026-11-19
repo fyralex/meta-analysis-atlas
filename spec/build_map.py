@@ -851,9 +851,9 @@ br(
     "adjusted estimate with SE or CI",
     ["PF_HR", "PF_OR", "PF_RR", "PF_MD"],
     added=True,
-    note="Riley et al. 2019: focus on adjusted estimates (Step 1); pool each type of estimate, adjusted and "
-    "unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects only (Box 2, "
-    "rule R34).",
+    note="Riley et al. 2019: focus on adjusted estimates (Step 1); consider pooling each type of estimate, "
+    "adjusted and unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects "
+    "only (Box 2, rule R34).",
     src=["RILEY"],
 )
 br(
@@ -1260,8 +1260,8 @@ RULES: list[tuple[str, str, str, str]] = [
     ),
     (
         "R34",
-        "For prognostic factor studies, Riley et al. consider a common (fixed) prognostic effect not sensible, since "
-        "the true effect is likely to vary from study to study, and a random-effects approach essential. The map "
+        "Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the "
+        "true effect is expected to differ between them, and call a random-effects approach essential. The map "
         "offers random effects only for them.",
         "not in v11",
         "RILEY",
@@ -1968,9 +1968,12 @@ def _check_reason(check: str, b: Branch, mid: str, code: str, model: str) -> Rea
         rule, stated = "", False
     if check == "branch_models":
         allowed, rule = BRANCH_MODELS[branch_key(b)]
-        text = "For %s, the map offers %s only." % (b["group"], " or ".join(MODEL_WORDS[m] for m in allowed))
+        text = 'In this map, studies under "%s" are pooled with %s only.' % (
+            b["group"],
+            " or ".join(MODEL_WORDS[m] for m in allowed),
+        )
         src = next(r[3] for r in RULES if r[0] == rule)
-        return Reason(text="In this map, " + text, rule=rule, src=src)
+        return Reason(text=text, rule=rule, src=src)
     if check == "domain":
         others = [k for k, m in METHODS.items() if m["domain"] == b["domain"]]
         text = "%s is offered for %s; for %s, the map offers: %s." % (
@@ -4113,14 +4116,15 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         (
             "use",
             "Riley et al. recommend focusing on estimates adjusted for other established prognostic factors, and "
-            "pooling separately each type of estimate, adjusted and unadjusted estimates, each cut-point or trend, and "
-            "each method of measurement. Ideally the adjusted estimates in one meta-analysis share at least a "
-            "predefined core set of adjustment factors.",
+            "suggest considering separate meta-analyses for each type of estimate, adjusted and unadjusted estimates, "
+            "each cut-point or trend, and each method of measurement. Ideally every adjusted estimate is adjusted for "
+            "the same factors; failing that, for at least a predefined core set.",
             "RILEY",
         ),
         (
             "use",
-            "They describe a random-effects model on the log scale (REML, DerSimonian-Laird or Bayesian), with "
+            "They describe a random-effects model, on the log scale for ratios (REML, DerSimonian-Laird or Bayesian), "
+            "with "
             "Hartung-Knapp confidence intervals and a prediction interval for the effect in a new population.",
             "RILEY",
         ),
@@ -4317,7 +4321,8 @@ PLAIN: dict[str, tuple[str, str, str]] = {
     "group:prognostic-factor-does-the-factor-predict-the-outcome": (
         "Does one factor predict the outcome?",
         "For example, whether C reactive protein predicts death or heart attack in people with stable coronary "
-        "disease, with each study reporting a risk ratio adjusted for age, sex and other known factors.",
+        "disease, with each study reporting a ratio (risk, odds or hazard) adjusted for age, sex and other known "
+        "factors.",
         "RILEY",
     ),
     "group:prediction-model-performance-external-validation": (

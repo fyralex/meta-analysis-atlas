@@ -20,11 +20,12 @@ their guidance in its own words.
   - focus on adjusted estimates (Step 1);
   - the estimates to extract are risk ratios or odds ratios, hazard ratios
     and mean differences, with their standard errors (Step 3);
-  - pool separately each type of estimate, adjusted and unadjusted
-    estimates, cut-points, trends and methods of measurement (Step 5);
+  - consider separate meta-analyses for each type of estimate, adjusted and
+    unadjusted estimates, cut-points, trends and methods of measurement
+    (Step 5);
   - Box 2: assuming a common prognostic effect isn't sensible, because the
     true effect is likely to vary from study to study; use a random-effects
-    model on the log scale (REML, DerSimonian-Laird or Bayesian), with
+    model, on the log scale for ratios (REML, DerSimonian-Laird or Bayesian), with
     Hartung-Knapp intervals; Step 5 calls random effects essential;
   - Step 7: check for small-study effects.
 - **Debray et al. 2017**, *BMJ* 356:i6460 (accepted manuscript, cited by

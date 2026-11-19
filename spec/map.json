@@ -944,7 +944,7 @@
    "domain": "pairwise",
    "added": true,
    "verified": true,
-   "note": "Riley et al. 2019: focus on adjusted estimates (Step 1); pool each type of estimate, adjusted and unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects only (Box 2, rule R34).",
+   "note": "Riley et al. 2019: focus on adjusted estimates (Step 1); consider pooling each type of estimate, adjusted and unadjusted estimates, cut-point and method of measurement separately (Step 5); random effects only (Box 2, rule R34).",
    "src": [
     "RILEY"
    ],
@@ -1351,7 +1351,7 @@
   ],
   [
    "R34",
-   "For prognostic factor studies, Riley et al. consider a common (fixed) prognostic effect not sensible, since the true effect is likely to vary from study to study, and a random-effects approach essential. The map offers random effects only for them.",
+   "Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the true effect is expected to differ between them, and call a random-effects approach essential. The map offers random effects only for them.",
    "not in v11",
    "RILEY"
   ]

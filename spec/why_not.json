@@ -606,7 +606,7 @@
 {"text": "Binary goes only with the framework: 1. Interventional (effect of an intervention).", "rule": "", "src": "MF-escalc, MF-uni, CH-6, CH-26, META-pw, NM"},
 {"text": "Continuous goes only with the framework: 1. Interventional (effect of an intervention); 4. Association.", "rule": "", "src": "MF-escalc, MF-uni, CH-6, CH-26, META-pw, NM, DOSRES"},
 {"text": "Count / person-time goes only with the framework: 1. Interventional (effect of an intervention).", "rule": "", "src": "MF-escalc, MF-uni, CH-6, CH-26, META-pw, NM"},
-{"text": "In this map, For Prognostic factor (does the factor predict the outcome?), the map offers a random-effects model only.", "rule": "R34", "src": "RILEY"},
+{"text": "In this map, studies under \"Prognostic factor (does the factor predict the outcome?)\" are pooled with a random-effects model only.", "rule": "R34", "src": "RILEY"},
 {"text": "Any outcome goes only with the group structure: Exposure and outcome (observational studies); Prognostic factor (does the factor predict the outcome?).", "rule": "", "src": "RILEY, CH-24, CH-10"},
 {"text": "Any outcome goes only with the datatype: Precomputed estimate.", "rule": "", "src": "RILEY, CH-24, CH-10"},
 {"text": "Any outcome goes only with the method: Bayesian normal-normal hierarchical model; Inverse variance; Multilevel / multivariate.", "rule": "", "src": "RILEY, CH-24, CH-10"},
