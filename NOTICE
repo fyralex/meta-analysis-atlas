@@ -19,14 +19,18 @@ citation("<package>") in R.
               metafor package. Journal of Statistical Software, 36(3), 1-48.
   meta        https://cran.r-project.org/package=meta
   netmeta     https://cran.r-project.org/package=netmeta
+  gemtc       https://cran.r-project.org/package=gemtc
+  multinma    https://cran.r-project.org/package=multinma
   bayesmeta   https://cran.r-project.org/package=bayesmeta
-  mada        https://cran.r-project.org/package=mada
+  lme4        https://cran.r-project.org/package=lme4
+  dtametaTMB  https://cran.r-project.org/package=dtametaTMB
   metamisc    https://cran.r-project.org/package=metamisc
   dosresmeta  https://cran.r-project.org/package=dosresmeta
 
 The methodological content of the map cites the Cochrane Handbook for
-Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-and-manuals/handbook)
-and the documentation of the packages above. Every source used is listed, with
+Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-and-manuals/handbook),
+the Cochrane Handbook for Systematic Reviews of Diagnostic Test Accuracy,
+methods papers, and the documentation of the packages above. Every source used is listed, with
 its link, in spec/backbone.md.
 
 The web app bundles these JavaScript packages, each under the MIT license,

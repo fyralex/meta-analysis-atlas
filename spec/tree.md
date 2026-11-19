@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 543; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 335; of those, new (not yet accepted) 3; still to check 40; status runnable 0; status planned 424; status specified 79; status to_check 40.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 332; of those, new (not yet accepted) 3; still to check 31; status runnable 0; status planned 430; status specified 79; status to_check 31.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -706,32 +706,26 @@ Counts: pathways in total 543; interventional 441; interventional, in v11's scop
         - model: Random effects  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Hazard ratio
-- framework: 2. Diagnostic test accuracy  (10)
-  - group: One index test against a reference standard  (8)
-    - datatype: 2x2 table per study  (8)
-      - outcome: Binary classification  (8)
+- framework: 2. Diagnostic test accuracy  (7)
+  - group: One index test against a reference standard  (5)
+    - datatype: 2x2 table per study  (5)
+      - outcome: Binary classification  (5)
         - model: Random effects  (5)
-          - method: Bivariate model (Reitsma)  (1)
+          - method: Bivariate model (Reitsma)  (4)
             - metric: Summary sensitivity and specificity (estimated jointly)
+            - metric: Diagnostic odds ratio
+            - metric: Positive likelihood ratio
+            - metric: Negative likelihood ratio
           - method: Hierarchical summary ROC model (Rutter and Gatsonis)  (1)
-            - metric: Summary ROC curve [CHECK]
-          - method: Univariate pooling [CHECK]  (3)
-            - metric: Diagnostic odds ratio [CHECK]
-            - metric: Positive likelihood ratio [CHECK]
-            - metric: Negative likelihood ratio [CHECK]
-        - model: Common effect  (3)
-          - method: Univariate pooling [CHECK]  (3)
-            - metric: Diagnostic odds ratio [CHECK]
-            - metric: Positive likelihood ratio [CHECK]
-            - metric: Negative likelihood ratio [CHECK]
+            - metric: Summary ROC curve
   - group: Two or more index tests compared  (2)
     - datatype: 2x2 table per study and test  (2)
-      - outcome: Binary classification [CHECK]  (2)
+      - outcome: Binary classification  (2)
         - model: Random effects  (2)
           - method: Bivariate model (Reitsma)  (1)
             - metric: Summary sensitivity and specificity (estimated jointly)
           - method: Hierarchical summary ROC model (Rutter and Gatsonis)  (1)
-            - metric: Summary ROC curve [CHECK]
+            - metric: Summary ROC curve
 - framework: 3. Prognosis  (16)
   - group: Prognostic factor (does the factor predict the outcome?)  (12)
     - datatype: Precomputed estimate  (12)

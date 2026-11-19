@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 543; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 335; of those, new (not yet accepted) 3; still to check 40; status runnable 0; status planned 424; status specified 79; status to_check 40.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 332; of those, new (not yet accepted) 3; still to check 31; status runnable 0; status planned 430; status specified 79; status to_check 31.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -44,8 +44,8 @@ Counts: pathways in total 543; interventional 441; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
-| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | accepted #21 | MADA |
-| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | accepted #21, CHECK | DTA-HB |
+| 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | accepted #21 | DTA-HB, DTA-10, MADA |
+| 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | accepted #21 | DTA-HB, DTA-10 |
 | 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #22 | RILEY |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Discrimination | c-statistic with SE or CI | accepted #22 | VALMETA |
 | 3. Prognosis | Prediction model performance (external validation) | Precomputed estimate | Calibration | observed and expected events, or O:E with SE | accepted #22 | VALMETA |
@@ -63,7 +63,7 @@ Counts: pathways in total 543; interventional 441; interventional, in v11's scop
 | Tier | Node | Note | Source |
 |---|---|---|---|
 | framework | 1. Interventional (effect of an intervention) | Cochrane Handbook for Systematic Reviews of Interventions. One-group analyses pool a proportion, a mean or an incidence rate from single groups. | CH-10, MF-escalc |
-| framework | 2. Diagnostic test accuracy | Not in v11. The Cochrane diagnostic accuracy handbook could not be read online, so most entries are unverified. | DTA-HB, MADA |
+| framework | 2. Diagnostic test accuracy | Not in v11. Confirmed from the Cochrane diagnostic accuracy handbook, Ch. 9 and 10. | DTA-HB, DTA-10 |
 | framework | 3. Prognosis | Not in v11. Prediction model entries are confirmed from the metamisc documentation; prognostic factor entries are unverified. | VALMETA, RILEY |
 | framework | 4. Association | Not in v11 (correlation was excluded there). | MF-escalc, DOSRES |
 | framework | 5. Measurement reliability | Not in v11. Supported by metafor. | MF-escalc |
@@ -129,11 +129,11 @@ Counts: pathways in total 543; interventional 441; interventional, in v11's scop
 | N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
 | N_IRD | Incidence rate difference (network) | `netmeta(sm="IRD")` | NM | OK |
 | N_HR | Hazard ratio | `netmeta(sm="HR")` | NM | OK |
-| SESP | Summary sensitivity and specificity (estimated jointly) | `mada::reitsma()` | MADA | OK |
-| SROC | Summary ROC curve | `HSROC model` | DTA-HB | CHECK |
-| DOR | Diagnostic odds ratio | `mada::madauni()` | DTA-HB | CHECK |
-| LRP | Positive likelihood ratio | `mada::madauni()` | DTA-HB | CHECK |
-| LRN | Negative likelihood ratio | `mada::madauni()` | DTA-HB | CHECK |
+| SESP | Summary sensitivity and specificity (estimated jointly) | `glmer(cbind(true, n - true) ~ 0 + sens + spec + (0 + sens + spec / study), family = binomial)` | DTA-10 | OK |
+| SROC | Summary ROC curve | `dtametaTMB::fitRutterGatsonis()` | DTA-HB | OK |
+| DOR | Diagnostic odds ratio | `exp(logit(sens) + logit(spec)) from the bivariate model` | DTA-10 | OK |
+| LRP | Positive likelihood ratio | `sens / (1 - spec) from the bivariate model` | DTA-10 | OK |
+| LRN | Negative likelihood ratio | `(1 - sens) / spec from the bivariate model` | DTA-10 | OK |
 | CSTAT | c-statistic (logit scale) | `valmeta(measure="cstat")` | VALMETA | OK |
 | OE | Total observed:expected ratio (log scale) | `valmeta(measure="OE")` | VALMETA | OK |
 | PF_HR | Adjusted hazard ratio (log), prognostic factor | `enter log HR and its SE` | RILEY | OK |
@@ -176,9 +176,8 @@ Counts: pathways in total 543; interventional 441; interventional, in v11's scop
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
 | Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check. |
 | One-stage regression on participant data (network) | `multinma::nma() with set_ipd()` | Common effect, Random effects | ipd | standard, meta-regression | MULTINMA, MULTINMA-ipd | OK | A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59). |
-| Bivariate model (Reitsma) | `mada::reitsma()` | Random effects | tab | standard, subgroup, meta-regression | MADA | OK | Estimation: reml (default), ml, mm, vc, or fixed. Equivalent to the HSROC model when there are no covariates. |
-| Hierarchical summary ROC model (Rutter and Gatsonis) | `dtametaTMB::fitRutterGatsonis()` | Random effects | tab | standard, subgroup, meta-regression | DTMB, MADA | OK | Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() study-level covariates. |
-| Univariate pooling | `mada::madauni()` | Common effect, Random effects | tab | standard | DTA-HB | CHECK | Ignores the correlation between sensitivity and specificity. |
+| Bivariate model (Reitsma) | `lme4::glmer() (binomial GLMM)` | Random effects | tab | standard, subgroup, meta-regression | DTA-10, DTA-HB | OK | A binomial GLMM, as Cochrane fits it (Ch. 10.2.3); covariates give meta-regression and test comparisons (10.4.3). The diagnostic odds ratio and likelihood ratios are computed from it at the summary point (rule R35). Equivalent to the HSROC model when there are no covariates. |
+| Hierarchical summary ROC model (Rutter and Gatsonis) | `dtametaTMB::fitRutterGatsonis()` | Random effects | tab | standard, subgroup, meta-regression | DTMB, DTA-HB, MADA | OK | Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() study-level covariates. |
 | Meta-analysis of prediction model performance | `metamisc::valmeta()` | Common effect, Random effects | est | standard | VALMETA, DEBRAY | OK | REML by default, Hartung-Knapp interval, prediction interval; Bayesian option. |
 | Dose-response meta-analysis | `dosresmeta::dosresmeta()` | Common effect, Random effects | dose | standard | DOSRES | OK | One-stage or two-stage. Covariance by Greenland-Longnecker or Hamling. Linear or non-linear trend. |
 
@@ -222,6 +221,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R32 | In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure="PETO") also computes it study by study; this map doesn't offer pooling it with another method. | agrees | CH-10 s10.4.2, MF-escalc |
 | R33 | gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference. | v11 wrong: offers every network measure for gemtc | GEMTC |
 | R34 | Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the true effect is expected to differ between them, and call a random-effects approach essential. The map offers random effects only for them. | not in v11 | RILEY |
+| R35 | Diagnostic accuracy: the diagnostic odds ratio and the likelihood ratios are computed from the bivariate model at the summary point, not pooled on their own. Cochrane's handbook notes that pooling likelihood ratios separately ignores the correlation between them and can give impossible values. | not in v11 | DTA-HB s9.3.1, s9.4, DTA-10 |
 
 ## Compared with taxonomy v11
 
@@ -290,11 +290,9 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 
 ## Still to check
 
-1. Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.
-2. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
-3. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-4. Confirm how the HSROC and bivariate models compare two or more index tests (from #126's audit).
-5. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+1. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
+2. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
+3. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 
 ## Sources
 
@@ -332,7 +330,8 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | META-cont | meta, metacont() | https://rdrr.io/cran/meta/man/metacont.html |
 | DMA | Harrer et al., Doing Meta-Analysis in R, network chapter | https://doing-meta.guide/netwma.html |
 | MADA | mada, reitsma() | https://rdrr.io/cran/mada/man/reitsma.html |
-| DTA-HB | Cochrane Handbook for Diagnostic Test Accuracy v2.0, Ch. 9 and 10 (PDF needs a Cochrane account; not read) | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
+| DTA-HB | Cochrane Handbook for Diagnostic Test Accuracy, Ch. 9 (updated July 2023), understanding meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
+| DTA-10 | Cochrane Handbook for Diagnostic Test Accuracy, Ch. 10 (updated August 2026), undertaking meta-analysis | https://www.cochrane.org/authors/handbooks-and-manuals/handbook-systematic-reviews-diagnostic-test-accuracy |
 | VALMETA | metamisc, valmeta() | https://rdrr.io/cran/metamisc/man/valmeta.html |
 | DEBRAY | Debray et al. 2017, BMJ 356:i6460, prediction model performance (accepted manuscript) | https://www.bmj.com/content/356/bmj.i6460 |
 | RILEY | Riley et al. 2019, BMJ 364:k4597, prognostic factor studies | https://www.bmj.com/content/364/bmj.k4597 |

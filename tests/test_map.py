@@ -351,6 +351,18 @@ def test_prognostic_factors_are_pooled_with_random_effects_only() -> None:
     assert perf == {bm.COMMON, bm.RANDOM}
 
 
+def test_diagnostic_odds_ratio_and_likelihood_ratios_come_from_the_bivariate_model() -> None:
+    """Cochrane DTA Handbook 9.3.1 and 9.4: no separate pooling; computed at the bivariate summary point (R35, #21)."""
+    assert "DTA_UNI" not in bm.METHODS
+    paths = bm.pathways()
+    for code in ("DOR", "LRP", "LRN"):
+        mine = [p for p in paths if p["metric"] == code]
+        assert mine and {p["method"] for p in mine} == {"BIV"} and all(p["verified"] for p in mine), code
+    assert bm.METHODS["BIV"]["fn"].startswith("lme4::glmer")
+    dta = [p for p in paths if p["framework"] == bm.F2]
+    assert dta and all(p["status"] == "planned" for p in dta)
+
+
 # --- status and milestone --------------------------------------------------------
 
 
@@ -669,13 +681,13 @@ def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
     """New when every branch under the node is new; to check when none of them is confirmed."""
     f1 = _card(all_cards, "framework:interventional-effect-of-an-intervention")  # some branches new, some to check
     assert (f1["added"], f1["verified"]) == (False, True)
-    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # not in v11, accepted; one branch confirmed
+    dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # not in v11, accepted; both branches confirmed
     assert (dta["added"], dta["new"], dta["verified"]) == (True, False, True)  # accepted (#21)
     ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
     assert ipd["verified"] is False
     assert {
         "label": "Branches under it",
-        "items": ["2 in all: 1 confirmed, 1 still to check; 0 new, not yet accepted"],
+        "items": ["2 in all: 2 confirmed, 0 still to check; 0 new, not yet accepted"],
         "code": False,
     } in dta["facts"]
 
@@ -807,7 +819,9 @@ def test_batch_nine_covers_the_other_frameworks_methods_with_a_readable_source()
 
 
 # Sources not read online yet: no teaching text or example may rest on them alone.
-UNREAD = {"DTA-HB"}  # Riley 2019 and Debray 2017 were read from PDFs the owner supplied (#22)
+# Every source has been read: Riley 2019, Debray 2017 and the Cochrane DTA handbook's Ch. 9 and 10 from copies the
+# owner supplied (#21, #22).
+UNREAD: set[str] = set()
 
 
 def test_the_unread_sources_are_the_ones_the_map_labels_unread() -> None:
@@ -834,7 +848,6 @@ def test_batch_ten_covers_the_correlation_and_alpha_measures_from_escalc_only() 
 
 def test_batch_eleven_covers_the_measures_whose_package_pages_were_read() -> None:
     expected = {
-        "SESP": "MADA",
         "CSTAT": "VALMETA",
         "OE": "VALMETA",
         "DR_RR": "DOSRES",
@@ -889,13 +902,9 @@ def test_the_network_group_card_carries_the_transitivity_caution() -> None:
 
 
 def test_batch_fifteen_teaches_only_branches_with_a_read_source() -> None:
-    """Branches whose only source is unread (DTA-HB) stay without teaching text; "Any outcome" has none yet."""
-    for cid in (
-        "group:two-or-more-index-tests-compared",
-        "datatype:2x2-table-per-study-and-test",
-        "outcome:any-outcome",
-    ):
-        assert cid not in bm.TEACH, cid
+    """Every source is now read; comparing tests is taught from the DTA handbook (#21); "Any outcome" has no text."""
+    assert "outcome:any-outcome" not in bm.TEACH
+    assert all("DTA-HB" in src for _, _, src in bm.TEACH["group:two-or-more-index-tests-compared"])
     # the exposure-outcome group now has a read source, Cochrane Ch. 24, applied by analogy (#23)
     exposure = bm.TEACH["group:exposure-and-outcome-observational-studies"]
     assert exposure[0] == bm.ADJUSTED_MEASURE
