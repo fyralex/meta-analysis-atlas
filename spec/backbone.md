@@ -56,7 +56,7 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
 | 4. Association | Exposure and outcome (observational studies) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | NEW, CHECK | CH-10 |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Binary or time-to-event | dose, log relative risk and SE, cases and n per level; study type | NEW | DOSRES |
 | 4. Association | Dose-response | Estimates at several dose levels per study | Continuous | dose, mean, SD and n per level | NEW | DOSRES |
-| 5. Measurement reliability | One group | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
+| 5. Measurement reliability | One group (one instrument) | Arm-level summary data | Internal consistency | alpha, number of items, n (ai, mi, ni) | NEW | MF-escalc |
 
 ## Notes on frameworks, groups and datatypes
 

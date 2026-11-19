@@ -900,7 +900,9 @@ def test_a_method_card_names_the_group_structures_it_has_pathways_in(all_cards: 
     peto = _card(all_cards, "method:PETO")
     assert next(f["items"] for f in peto["facts"] if f["label"] == "Used for") == ["Two groups (pairwise)"]
     iv = next(f["items"] for f in _card(all_cards, "method:IV")["facts"] if f["label"] == "Used for")
-    assert "Interventional: One group (single arm)" in iv and "Measurement reliability: One group" in iv
+    assert (
+        "Interventional: One group (single arm)" in iv and "Measurement reliability: One group (one instrument)" in iv
+    )
 
 
 def test_a_method_card_without_pathways_falls_back_to_its_domain() -> None:
