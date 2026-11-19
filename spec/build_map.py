@@ -2386,6 +2386,29 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "MF-uni",
         ),
         (
+            "use",
+            "With random effects, the between-study variance can be estimated in several ways: rma.uni() offers 12 "
+            "estimators (its method argument), REML by default. Cochrane cites simulation studies that favour "
+            "Paule-Mandel and one that recommends REML, says no single approach is universally preferable, and "
+            "notes REML is RevMan's default.",
+            "CH-10 s10.10.4.4, MF-uni",
+        ),
+        (
+            "use",
+            "The confidence interval for the random-effects mean can use the Hartung-Knapp-Sidik-Jonkman adjustment "
+            '(test="knha" in rma.uni()), which adjusts the standard error, usually upwards, and uses a t '
+            "distribution. RevMan prompts for it when the between-study variance is estimated above zero and there "
+            "are more than two studies.",
+            "CH-10 s10.10.4.4, MF-uni",
+        ),
+        (
+            "caution",
+            "Cochrane notes the Hartung-Knapp-Sidik-Jonkman interval can be too narrow when no heterogeneity is "
+            "estimated, and too wide when there are few studies, especially two or three; with two or three it "
+            "suggests comparing it with the usual (Wald-type) interval in a sensitivity analysis.",
+            "CH-10 s10.10.4.4, s10.10.4.5",
+        ),
+        (
             "caution",
             "Cochrane advises avoiding it, including DerSimonian and Laird, when events are rare: it relies on "
             "large-sample variances, and zero cells need a correction (often 0.5 added to each cell) that tends to "
