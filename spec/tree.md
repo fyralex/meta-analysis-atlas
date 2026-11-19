@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 75; status runnable 0; status planned 412; status specified 64; status to_check 75.
+Counts: pathways in total 551; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 343; of those, new (not yet accepted) 113; still to check 60; status runnable 0; status planned 412; status specified 79; status to_check 60.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -848,29 +848,29 @@ Counts: pathways in total 551; interventional 441; interventional, in v11's scop
             - metric: Tetrachoric correlation
   - group: Exposure and outcome (observational studies)  (15)
     - datatype: Precomputed estimate  (15)
-      - outcome: Any outcome [NEW] [CHECK]  (15)
+      - outcome: Any outcome [NEW]  (15)
         - model: Common effect  (6)
           - method: Inverse variance  (3)
-            - metric: Adjusted odds ratio (log), exposure [CHECK]
-            - metric: Adjusted risk ratio (log), exposure [CHECK]
-            - metric: Adjusted hazard ratio (log), exposure [CHECK]
+            - metric: Adjusted odds ratio (log), exposure
+            - metric: Adjusted risk ratio (log), exposure
+            - metric: Adjusted hazard ratio (log), exposure
           - method: Multilevel / multivariate  (3)
-            - metric: Adjusted odds ratio (log), exposure [CHECK]
-            - metric: Adjusted risk ratio (log), exposure [CHECK]
-            - metric: Adjusted hazard ratio (log), exposure [CHECK]
+            - metric: Adjusted odds ratio (log), exposure
+            - metric: Adjusted risk ratio (log), exposure
+            - metric: Adjusted hazard ratio (log), exposure
         - model: Random effects  (9)
           - method: Inverse variance  (3)
-            - metric: Adjusted odds ratio (log), exposure [CHECK]
-            - metric: Adjusted risk ratio (log), exposure [CHECK]
-            - metric: Adjusted hazard ratio (log), exposure [CHECK]
+            - metric: Adjusted odds ratio (log), exposure
+            - metric: Adjusted risk ratio (log), exposure
+            - metric: Adjusted hazard ratio (log), exposure
           - method: Bayesian normal-normal hierarchical model  (3)
-            - metric: Adjusted odds ratio (log), exposure [CHECK]
-            - metric: Adjusted risk ratio (log), exposure [CHECK]
-            - metric: Adjusted hazard ratio (log), exposure [CHECK]
+            - metric: Adjusted odds ratio (log), exposure
+            - metric: Adjusted risk ratio (log), exposure
+            - metric: Adjusted hazard ratio (log), exposure
           - method: Multilevel / multivariate  (3)
-            - metric: Adjusted odds ratio (log), exposure [CHECK]
-            - metric: Adjusted risk ratio (log), exposure [CHECK]
-            - metric: Adjusted hazard ratio (log), exposure [CHECK]
+            - metric: Adjusted odds ratio (log), exposure
+            - metric: Adjusted risk ratio (log), exposure
+            - metric: Adjusted hazard ratio (log), exposure
   - group: Dose-response  (6)
     - datatype: Estimates at several dose levels per study  (6)
       - outcome: Binary or time-to-event [NEW]  (2)

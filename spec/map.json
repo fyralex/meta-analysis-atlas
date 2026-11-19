@@ -77,6 +77,10 @@
    "Cochrane Handbook Ch. 23 (updated November 2026), variants on randomized trials",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-23"
   ],
+  "CH-24": [
+   "Cochrane Handbook Ch. 24 (updated October 2019), non-randomized studies",
+   "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-24"
+  ],
   "CH-26": [
    "Cochrane Handbook Ch. 26 (updated October 2019), individual participant data",
    "https://www.cochrane.org/authors/handbooks-and-manuals/handbook/current/chapter-26"
@@ -1077,9 +1081,10 @@
    ],
    "domain": "pairwise",
    "added": true,
-   "verified": false,
-   "note": "Guidance for non-randomized studies (Cochrane Ch. 24) not read yet.",
+   "verified": true,
+   "note": "Cochrane Ch. 24 is written for non-randomized studies of interventions; the map applies it to exposures by analogy (#23). It prefers adjusted estimates (24.4.1) and names the generic inverse-variance method as suitable for pooling them (24.6.2.1).",
    "src": [
+    "CH-24",
     "CH-10"
    ],
    "new": true
@@ -1425,7 +1430,6 @@
  "open_items": [
   "Read the Cochrane diagnostic accuracy handbook, Ch. 9 and 10 (needs a Cochrane account) and confirm the diagnostic branch.",
   "Read Riley et al. 2019 and Debray et al. 2017 in full and confirm the prognosis branch.",
-  "Read Cochrane Ch. 24 (non-randomized studies) for the exposure-outcome branch.",
   "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
@@ -2190,9 +2194,9 @@
   "EX_OR": {
    "label": "Adjusted odds ratio (log), exposure",
    "call": "enter log OR and its SE",
-   "src": "CH-10",
+   "src": "CH-24",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2200,9 +2204,9 @@
   "EX_RR": {
    "label": "Adjusted risk ratio (log), exposure",
    "call": "enter log RR and its SE",
-   "src": "CH-10",
+   "src": "CH-24",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2210,9 +2214,9 @@
   "EX_HR": {
    "label": "Adjusted hazard ratio (log), exposure",
    "call": "enter log HR and its SE",
-   "src": "CH-10",
+   "src": "CH-24",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -10046,11 +10050,11 @@
    "model": "Common effect",
    "method": "IV",
    "metric": "EX_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10060,11 +10064,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "EX_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10074,11 +10078,11 @@
    "model": "Common effect",
    "method": "IV",
    "metric": "EX_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10088,11 +10092,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "EX_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10102,11 +10106,11 @@
    "model": "Common effect",
    "method": "IV",
    "metric": "EX_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10116,11 +10120,11 @@
    "model": "Random effects",
    "method": "IV",
    "metric": "EX_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10130,11 +10134,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "EX_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10144,11 +10148,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "EX_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10158,11 +10162,11 @@
    "model": "Random effects",
    "method": "BAYES",
    "metric": "EX_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10172,11 +10176,11 @@
    "model": "Common effect",
    "method": "MV",
    "metric": "EX_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10186,11 +10190,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "EX_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10200,11 +10204,11 @@
    "model": "Common effect",
    "method": "MV",
    "metric": "EX_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10214,11 +10218,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "EX_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10228,11 +10232,11 @@
    "model": "Common effect",
    "method": "MV",
    "metric": "EX_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
@@ -10242,11 +10246,11 @@
    "model": "Random effects",
    "method": "MV",
    "metric": "EX_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "4. Association",
