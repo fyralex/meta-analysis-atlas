@@ -279,6 +279,21 @@ METRICS: dict[str, Metric] = {
     "ABT": m("Cronbach's alpha, Bonett transformation", E % "ABT"),
 }
 
+# A network metric's call above is netmeta's. rma.mv (NM_MV) networks compute the same measure from arm-level data
+# with escalc(), one comparison at a time (#113); the hazard ratio has no escalc measure, and gemtc's are #40.
+# Cohen's d, not Hedges' g, for the standardized mean difference: decision 0003 (R31).
+NETWORK_ESCALC: dict[str, str] = {
+    "N_OR": E % "OR",
+    "N_RR": E % "RR",
+    "N_RD": E % "RD",
+    "N_ASD": E % "AS",
+    "N_MD": E % "MD",
+    "N_SMD": 'escalc(measure="SMD", correct=FALSE)',
+    "N_ROM": E % "ROM",
+    "N_IRR": E % "IRR",
+    "N_IRD": E % "IRD",
+}
+
 # --------------------------------------------------------------------------
 # Methods
 #   domain: which family of branches the method serves
@@ -2138,11 +2153,13 @@ def _method_card(code: str, paths: Sequence[Pathway]) -> Card:
 def _metric_card(code: str) -> Card:
     mt = METRICS[code]
     facts = [
-        _fact("R call", [mt["call"]], code=True),
+        _fact("R call, with netmeta" if code in NETWORK_ESCALC else "R call", [mt["call"]], code=True),
         _fact("Outcome types", _uniq(b["outcome"] for b in BRANCHES if code in b["metrics"])),
     ]
     if mt["only"] is not None:
         facts.append(_fact("Only with", sorted(METHODS[c]["label"] for c in mt["only"])))
+    if code in NETWORK_ESCALC:
+        facts.insert(1, _fact("With rma.mv, from arm-level data", [NETWORK_ESCALC[code]], code=True))
     return Card(
         id=card_id("metric", code),
         tier="metric",
@@ -2157,7 +2174,7 @@ def _metric_card(code: str) -> Card:
         rules=[ONLY_RULE[code]] if code in ONLY_RULE else [],
         terms=[],
         plain=None,
-        src=mt["src"],
+        src=_join_src([mt["src"], "MF-escalc"]) if code in NETWORK_ESCALC else mt["src"],
     )
 
 

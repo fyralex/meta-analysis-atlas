@@ -271,6 +271,19 @@ def test_a_pathway_is_new_when_one_of_its_added_parts_is_not_accepted() -> None:
     assert mv_common and not any(p["new"] for p in mv_common)  # #14 and #11
 
 
+def test_network_metrics_name_their_escalc_measure_for_rma_mv(all_cards: list[bm.Card]) -> None:
+    """Each network metric rma.mv takes from arm-level data names its escalc() measure on its card (#113)."""
+    arm_mv = {
+        p["metric"] for p in bm.pathways() if p["method"] == "NM_MV" and p["datatype"] == "Arm-level summary data"
+    }
+    assert set(bm.NETWORK_ESCALC) == arm_mv
+    assert bm.NETWORK_ESCALC["N_SMD"] == 'escalc(measure="SMD", correct=FALSE)'  # Cohen's d: decision 0003
+    for code, call in bm.NETWORK_ESCALC.items():
+        card = _card(all_cards, bm.card_id("metric", code))
+        assert {"label": "With rma.mv, from arm-level data", "items": [call], "code": True} in card["facts"]
+        assert "MF-escalc" in card["src"]
+
+
 # --- status and milestone --------------------------------------------------------
 
 
@@ -566,7 +579,8 @@ def test_peto_odds_ratio_card_lists_r32(all_cards: list[bm.Card]) -> None:
 def test_metric_card_carries_its_exact_call(all_cards: list[bm.Card]) -> None:
     for code, mt in bm.METRICS.items():
         card = next(c for c in all_cards if c["id"] == "metric:" + code)
-        assert card["facts"][0] == {"label": "R call", "items": [mt["call"]], "code": True}
+        label = "R call, with netmeta" if code in bm.NETWORK_ESCALC else "R call"
+        assert card["facts"][0] == {"label": label, "items": [mt["call"]], "code": True}
 
 
 def test_model_cards_cite_the_handbook_and_every_listed_method(all_cards: list[bm.Card]) -> None:
