@@ -3111,6 +3111,13 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "MF-mv",
         ),
         (
+            "use",
+            "When each study gives one estimate, its random-effects model is the usual one: in the rma.mv() reference "
+            "example, a random effect for each trial gives the same between-study variance and pooled estimate as "
+            "rma.uni().",
+            "MF-mv",
+        ),
+        (
             "caution",
             "Given only the sampling variances, rma.mv() assumes the sampling errors are uncorrelated. robust() gives "
             "cluster-robust tests and confidence intervals.",
