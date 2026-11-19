@@ -54,7 +54,8 @@ what its card says, its effect measures, its status and its sources.
 says what it is, then when to use it and its cautions, each line with its
 source, then the R call, the rules behind its limits (each in plain words) and
 the terms it uses, which open on the card. A choice's card has no teaching
-text where no source that covers it has been read yet.
+text where no source that covers it has been read yet. A glossary of 14 terms is
+linked from the cards that use them.
 
 ![The card for Peto's method](docs/screenshots/cards.png)
 
