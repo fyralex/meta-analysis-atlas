@@ -608,9 +608,9 @@ METHODS: dict[str, Method] = {
         [STD, SUB, REG],
         ["DTMB", "MADA"],
         metrics={"SROC"},
-        note="Used when studies apply different thresholds. Fits random effects for each study's accuracy and "
-        "threshold from its 2x2 counts; fitRutterGatsonisSubgroup() and fitRutterGatsonisReg() take study-level "
-        "covariates.",
+        note="Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can "
+        "vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() "
+        "study-level covariates.",
     ),
     "DTA_UNI": meth(
         "Univariate pooling",
