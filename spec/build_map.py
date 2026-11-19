@@ -764,9 +764,9 @@ br(
 br(
     F3,
     "Overall prognosis (average risk or rate)",
-    "Same as One group",
+    "Same as One group (single arm)",
     "none",
-    "See 1. Interventional, One group",
+    "See 1. Interventional, One group (single arm)",
     "",
     [],
     domain="none",

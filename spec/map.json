@@ -967,9 +967,9 @@
   {
    "fw": "3. Prognosis",
    "group": "Overall prognosis (average risk or rate)",
-   "datatype": "Same as One group",
+   "datatype": "Same as One group (single arm)",
    "kind": "none",
-   "outcome": "See 1. Interventional, One group",
+   "outcome": "See 1. Interventional, One group (single arm)",
    "inputs": "",
    "metrics": [],
    "domain": "none",

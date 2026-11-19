@@ -922,4 +922,4 @@ Counts: pathways in total 564; interventional 454; interventional, in v11's scop
             - metric: Raw Cronbach's alpha
             - metric: Cronbach's alpha, Hakstian-Whalen transformation
             - metric: Cronbach's alpha, Bonett transformation
-- framework: 3. Prognosis / Overall prognosis (average risk or rate): See 1. Interventional, One group
+- framework: 3. Prognosis / Overall prognosis (average risk or rate): See 1. Interventional, One group (single arm)
