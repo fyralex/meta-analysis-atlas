@@ -16,6 +16,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .data_spec import TWO_GROUP_BINARY, DataSpec, check_data
 from .errors import ApiError, FieldError
+from .funnel import Funnel, funnel
 from .interpretation import Interpretation, Labels, sentence
 
 AnalysisType = Literal["standard", "cumulative", "leave-one-out"]
@@ -124,6 +125,7 @@ class RunResponse(BaseModel):
         None, description="Cumulative or leave-one-out analysis: one row per study, on the model's scale."
     )
     r_code: str = Field(description="The R code that gives this result. Shown only; the service never runs it.")
+    funnel: Funnel | None = Field(None, description="What the funnel plot needs, with its caption (#161).")
     interpretation: Interpretation | None = Field(
         None, description="One fixed sentence saying what the pooled result means, with its sources (#160)."
     )
@@ -232,6 +234,22 @@ def prepare(request: RunRequest, allowed_analyses: list[str]) -> Prepared:
     return Prepared(plan=plan, columns=columns, options=request.options)
 
 
+def common_effect_plan(plan: dict[str, Any]) -> dict[str, Any] | None:
+    """For a random-effects rma.uni plan, the same data fitted with a common effect: the funnel's centre (decision 0020).
+
+    None when the plan is already common-effect (EE, rma.mh, rma.peto): its own estimate is the centre.
+    """
+    model = plan["model"]
+    if model["fn"] != "rma.uni" or model["args"].get("method") == "EE":
+        return None
+    args = {**model["args"], "method": "EE", "test": "z"}
+    return {
+        **{k: v for k, v in plan.items() if k not in ("post", "outputs")},
+        "model": {**model, "args": args},
+        "outputs": ["estimate"],
+    }
+
+
 # ---- the R code shown ----------------------------------------------------------------------------------------------
 
 
@@ -273,6 +291,13 @@ def render_r_code(plan: dict[str, Any], columns: dict[str, list[Any]], metric: s
     lines.append("print(fit)")
     if metric in RATIOS:
         lines += ["", "# back on the ratio scale", "pred <- predict(fit, transf = exp)", "print(pred)"]
+    ce = common_effect_plan(plan)
+    lines += ["", "# funnel plot: the 95% region is centred on the common-effect estimate (decision 0020)"]
+    if ce is not None:
+        lines.append(f"ce <- {ce['model']['fn']}({_r_args(ce['model']['args'])}, data = dat)")
+        lines.append("funnel(ce, level = 95)")
+    else:
+        lines.append("funnel(fit, level = 95)")
     post = plan.get("post")
     if post:
         lines += ["", f"steps <- {post['fn']}(fit)", "print(steps)"]
@@ -291,7 +316,10 @@ def _exp(value: float | None) -> float | None:
         return None
 
 
-def build_response(request: RunRequest, prepared: Prepared, results: dict[str, Any]) -> RunResponse:
+def build_response(
+    request: RunRequest, prepared: Prepared, results: dict[str, Any], common_effect: float | None = None
+) -> RunResponse:
+    """`common_effect` is the estimate from `common_effect_plan`, for a random-effects plan; else the analysis's own."""
     summary: dict[str, float | None] = {key: results["summary"].get(key) for key in SUMMARY_KEYS}
     ratio_scale = None
     if request.pathway.metric in RATIOS:
@@ -311,6 +339,15 @@ def build_response(request: RunRequest, prepared: Prepared, results: dict[str, A
             upper=upper,
             labels=request.labels,
         )
+    centre = common_effect if common_effect is not None else summary["estimate"]
+    plot = None
+    if centre is not None:
+        plot = funnel(
+            centre=centre,
+            ratio=request.pathway.metric in RATIOS,
+            odds=request.pathway.metric in ("OR", "PETO"),
+            studies=[(s.study, s.yi, s.vi, s.used) for s in studies],
+        )
     return RunResponse(
         pathway=request.pathway,
         analysis_type=request.analysis_type,
@@ -322,4 +359,5 @@ def build_response(request: RunRequest, prepared: Prepared, results: dict[str, A
         steps=results.get("steps"),
         r_code=render_r_code(prepared.plan, prepared.columns, request.pathway.metric),
         interpretation=interpretation,
+        funnel=plot,
     )

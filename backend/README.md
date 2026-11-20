@@ -60,6 +60,11 @@ Mantel-Haenszel with OR, RR and RD, and Peto.
   `treatment`, `control`; plain text, one line, 60/40/40 characters at most) fill in the words;
   without them it says "the treatment groups" and "the control groups". No LLM writes it, and it
   never says "statistically significant" (Handbook 15.3.2).
+- **Funnel plot** (`funnel`, #161): each study the model used as a point (`yi`, and `sei`, its standard
+  error), the centre of the 95% region and a caption with its sources (Cochrane Handbook 13.3.4.2 to
+  13.3.4.5). The centre is the common-effect estimate (decision 0020): for a random-effects result
+  the R service makes a second fit with `method = "EE"`, which the R code shows with `funnel(ce)`.
+  The region is centre ± 1.96 × SE, always 95%. No test for asymmetry is run.
 - **R code:** rendered from the plan that ran, so it can't differ from it. It is shown only: the
   backend never runs it, and the R service accepts plans, not code (decision 0018).
 - **Errors:** a pathway the map doesn't have is `422 unknown_pathway`; one that isn't runnable is
