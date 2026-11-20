@@ -580,10 +580,11 @@
    ],
    "domain": "pairwise",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -599,10 +600,11 @@
    ],
    "domain": "pairwise",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -618,10 +620,11 @@
    ],
    "domain": "pairwise",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -637,10 +640,11 @@
    ],
    "domain": "pairwise",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -848,10 +852,11 @@
    ],
    "domain": "network",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -867,10 +872,11 @@
    ],
    "domain": "network",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -886,10 +892,11 @@
    ],
    "domain": "network",
    "added": false,
-   "verified": false,
+   "verified": true,
    "note": "",
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA-ipd"
    ],
    "new": false
   },
@@ -1451,7 +1458,7 @@
   }
  ],
  "open_items": [
-  "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
+  "Confirm a source for pooling participant data from single groups (the one-group IPD branch).",
   "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
   "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
  ],
@@ -1465,6 +1472,11 @@
    "method": "NM_BAYES",
    "metric": "N_SMD",
    "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
+  },
+  {
+   "method": "IPD1",
+   "metric": "I_HR",
+   "why": "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#25)"
   },
   {
    "method": "NM_IPD",
@@ -1854,30 +1866,30 @@
   },
   "I_OR": {
    "label": "Odds ratio from the treatment coefficient",
-   "call": "logistic mixed model",
-   "src": "CH-26",
+   "call": "nma(network, likelihood=\"bernoulli\", link=\"logit\")",
+   "src": "MULTINMA",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
   },
   "I_MD": {
    "label": "Mean difference from the treatment coefficient",
-   "call": "linear mixed model",
-   "src": "CH-26",
+   "call": "nma(network, likelihood=\"normal\", link=\"identity\")",
+   "src": "MULTINMA",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Differences"
   },
   "I_IRR": {
    "label": "Rate ratio from the treatment coefficient",
-   "call": "Poisson mixed model",
-   "src": "CH-26",
+   "call": "nma(network, likelihood=\"poisson\", link=\"log\")",
+   "src": "MULTINMA",
    "added": false,
-   "verified": false,
+   "verified": true,
    "only": null,
    "new": false,
    "family": "Ratios"
@@ -2546,7 +2558,7 @@
   },
   "IPD1": {
    "label": "One-stage regression on participant data (pairwise)",
-   "fn": "mixed-effects or multilevel regression",
+   "fn": "multinma::nma() with set_ipd()",
    "domain": "pairwise",
    "takes": [
     "ipd"
@@ -2560,12 +2572,14 @@
     "meta-regression"
    ],
    "src": [
-    "CH-26"
+    "CH-26",
+    "MULTINMA",
+    "MULTINMA-ipd"
    ],
    "metrics": null,
-   "note": "Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm.",
+   "note": "Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma, as a network of two treatments; its likelihoods give the odds ratio, mean difference and rate ratio, and its hazard ratio is to check (#25).",
    "added": false,
-   "verified": false,
+   "verified": true,
    "added_models": [],
    "new": false
   },
@@ -6898,11 +6912,11 @@
    "model": "Random effects",
    "method": "IPD1",
    "metric": "I_OR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6912,11 +6926,11 @@
    "model": "Random effects",
    "method": "IPD1",
    "metric": "I_MD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -6926,11 +6940,11 @@
    "model": "Random effects",
    "method": "IPD1",
    "metric": "I_IRR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8928,11 +8942,11 @@
    "model": "Common effect",
    "method": "NM_IPD",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8942,11 +8956,11 @@
    "model": "Random effects",
    "method": "NM_IPD",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8956,11 +8970,11 @@
    "model": "Common effect",
    "method": "NM_IPD",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": true,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8970,11 +8984,11 @@
    "model": "Random effects",
    "method": "NM_IPD",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "Later",
-   "status": "to_check"
+   "status": "specified"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",

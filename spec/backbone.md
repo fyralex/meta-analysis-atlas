@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 332; of those, new (not yet accepted) 3; still to check 31; status runnable 0; status planned 430; status specified 79; status to_check 31.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 194; not in v11 332; of those, new (not yet accepted) 3; still to check 24; status runnable 0; status planned 430; status specified 86; status to_check 24.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -28,10 +28,10 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Time-to-event | log hazard ratio with SE or CI | OK | CH-10, CH-6, MF-uni |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Precomputed estimate | Ordinal | log proportional odds ratio with SE | accepted #17 | CH-6, CH-10 |
 | 1. Interventional (effect of an intervention) | Two groups (pairwise) | Observed minus expected and variance | Time-to-event | O - E and V per study | accepted #17 | CH-10 |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Count / person-time | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Binary | one row per participant | OK | CH-26, MULTINMA-ipd |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Continuous | one row per participant | OK | CH-26, MULTINMA-ipd |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Count / person-time | one row per participant | OK | CH-26, MULTINMA-ipd |
+| 1. Interventional (effect of an intervention) | Two groups (pairwise) | Individual participant data | Time-to-event | one row per participant | OK | CH-26, MULTINMA-ipd |
 | 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Continuous | two means, two SDs, n and the within-person correlation | accepted #16 | MF-escalc |
 | 1. Interventional (effect of an intervention) | Change or matched pairs (same people measured twice) | Arm-level summary data | Binary | paired 2x2 table | accepted #16 | MF-escalc |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Arm-level summary data | Binary | events and total per arm | OK | META-pw, NM |
@@ -41,9 +41,9 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Continuous | effect and SE for each pair of treatments | OK | NM |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Count / person-time | effect and SE for each pair of treatments | OK | NM |
 | 1. Interventional (effect of an intervention) | Multiple groups (network) | Contrast-level estimates | Time-to-event | log hazard ratio and SE for each pair | OK | NM |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | CHECK | CH-26 |
-| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | CHECK | CH-26 |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Binary | one row per participant | OK | CH-26, MULTINMA-ipd |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Continuous | one row per participant | OK | CH-26, MULTINMA-ipd |
+| 1. Interventional (effect of an intervention) | Multiple groups (network) | Individual participant data | Time-to-event | one row per participant | OK | CH-26, MULTINMA-ipd |
 | 2. Diagnostic test accuracy | One index test against a reference standard | 2x2 table per study | Binary classification | TP, FP, FN, TN | accepted #21 | DTA-HB, DTA-10, MADA |
 | 2. Diagnostic test accuracy | Two or more index tests compared | 2x2 table per study and test | Binary classification | TP, FP, FN, TN per test | accepted #21 | DTA-HB, DTA-10 |
 | 3. Prognosis | Prognostic factor (does the factor predict the outcome?) | Precomputed estimate | Any outcome | adjusted estimate with SE or CI | accepted #22 | RILEY |
@@ -112,9 +112,9 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | MPOR | Matched-pairs marginal odds ratio (log) | `escalc(measure="MPOR")` | MF-escalc | accepted #16 |
 | MPRD | Matched-pairs marginal risk difference | `escalc(measure="MPRD")` | MF-escalc | accepted #16 |
 | MPORC | Matched-pairs conditional odds ratio (log) | `escalc(measure="MPORC")` | MF-escalc | accepted #16 |
-| I_OR | Odds ratio from the treatment coefficient | `logistic mixed model` | CH-26 | CHECK |
-| I_MD | Mean difference from the treatment coefficient | `linear mixed model` | CH-26 | CHECK |
-| I_IRR | Rate ratio from the treatment coefficient | `Poisson mixed model` | CH-26 | CHECK |
+| I_OR | Odds ratio from the treatment coefficient | `nma(network, likelihood="bernoulli", link="logit")` | MULTINMA | OK |
+| I_MD | Mean difference from the treatment coefficient | `nma(network, likelihood="normal", link="identity")` | MULTINMA | OK |
+| I_IRR | Rate ratio from the treatment coefficient | `nma(network, likelihood="poisson", link="log")` | MULTINMA | OK |
 | I_HR | Hazard ratio from the treatment coefficient | `Cox model stratified by study or with frailty` | CH-26 | CHECK |
 | I_P | Pooled proportion (logit scale) | `logistic mixed model, intercept only` | CH-26 | CHECK |
 | I_M | Pooled mean | `linear mixed model, intercept only` | CH-26 | CHECK |
@@ -170,7 +170,7 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | Bayesian normal-normal hierarchical model | `bayesmeta::bayesmeta()` | Random effects | arm, est | standard, subgroup, meta-regression | BM, BM-bmr | OK | Computes the posterior numerically: a grid approximation for the heterogeneity and the DIRECT algorithm for the effect. Meta-regression and subgroups through bmr(). No cumulative or leave-one-out function found in the manual. |
 | Multilevel / multivariate | `metafor::rma.mv() with vcalc()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MF-mv | OK | For studies that contribute several dependent estimates. Without a random term it fits a fixed-effects model (v11 says random only). REML or ML. No Hartung-Knapp, cumulative or leave-one-out function. |
 | Observed minus expected and variance (log-rank / Peto) | `metafor::rma.uni(yi = (O - E) / V, vi = 1 / V, method = "EE")` | Common effect | oev | standard | CH-6, CH-10, MF-uni | accepted #17 | Cochrane 6.8.2: each study's log hazard ratio is (O - E)/V, with standard error 1/sqrt(V). Pooled with inverse-variance weights in metafor's equal-effects model. Cochrane 10.9: only fixed-effect methods in RevMan. |
-| One-stage regression on participant data (pairwise) | `mixed-effects or multilevel regression` | Random effects | ipd | standard, subgroup, meta-regression | CH-26 | CHECK | Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm. |
+| One-stage regression on participant data (pairwise) | `multinma::nma() with set_ipd()` | Random effects | ipd | standard, subgroup, meta-regression | CH-26, MULTINMA, MULTINMA-ipd | OK | Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma, as a network of two treatments; its likelihoods give the odds ratio, mean difference and rate ratio, and its hazard ratio is to check (#25). |
 | Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | accepted #19 | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
@@ -270,6 +270,7 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 |---|---|---|
 | Frequentist, multivariate | Standardized mean difference (Cohen's d) | R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation |
 | Bayesian hierarchical (MCMC) | Standardized mean difference (Cohen's d) | gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31) |
+| One-stage regression on participant data (pairwise) | Hazard ratio from the treatment coefficient | multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#25) |
 | One-stage regression on participant data (network) | Hazard ratio | multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#59) |
 
 Methods whose reading of an input is not confirmed (input codes as under Methods); its pathways are to check.
@@ -290,7 +291,7 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 
 ## Still to check
 
-1. Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).
+1. Confirm a source for pooling participant data from single groups (the one-group IPD branch).
 2. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
 3. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
 

@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 189; not in v11 332; of those, new (not yet accepted) 3; still to check 31; status runnable 0; status planned 430; status specified 79; status to_check 31.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 194; not in v11 332; of those, new (not yet accepted) 3; still to check 24; status runnable 0; status planned 430; status specified 86; status to_check 24.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -198,15 +198,15 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
     - datatype: Individual participant data  (3)
       - outcome: Binary [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
             - metric: Pooled proportion (logit scale) [CHECK]
       - outcome: Continuous [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
             - metric: Pooled mean [CHECK]
       - outcome: Count / person-time [CHECK]  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
             - metric: Pooled rate (log scale) [CHECK]
   - group: Two groups (pairwise)  (157)
     - datatype: Arm-level summary data  (77)
@@ -442,21 +442,21 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
           - method: Observed minus expected and variance (log-rank / Peto)  (1)
             - metric: Hazard ratio (log)
     - datatype: Individual participant data  (4)
-      - outcome: Binary [CHECK]  (1)
+      - outcome: Binary  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
-            - metric: Odds ratio from the treatment coefficient [CHECK]
-      - outcome: Continuous [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
+            - metric: Odds ratio from the treatment coefficient
+      - outcome: Continuous  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
-            - metric: Mean difference from the treatment coefficient [CHECK]
-      - outcome: Count / person-time [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
+            - metric: Mean difference from the treatment coefficient
+      - outcome: Count / person-time  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
-            - metric: Rate ratio from the treatment coefficient [CHECK]
-      - outcome: Time-to-event [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
+            - metric: Rate ratio from the treatment coefficient
+      - outcome: Time-to-event  (1)
         - model: Random effects  (1)
-          - method: One-stage regression on participant data (pairwise) [CHECK]  (1)
+          - method: One-stage regression on participant data (pairwise)  (1)
             - metric: Hazard ratio from the treatment coefficient [CHECK]
   - group: Change or matched pairs (same people measured twice)  (40)
     - datatype: Arm-level summary data  (40)
@@ -685,21 +685,21 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
           - method: Bayesian hierarchical (MCMC)  (1)
             - metric: Hazard ratio
     - datatype: Individual participant data  (6)
-      - outcome: Binary [CHECK]  (2)
+      - outcome: Binary  (2)
         - model: Common effect  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Odds ratio
         - model: Random effects  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Odds ratio
-      - outcome: Continuous [CHECK]  (2)
+      - outcome: Continuous  (2)
         - model: Common effect  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Mean difference (network)
         - model: Random effects  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Mean difference (network)
-      - outcome: Time-to-event [CHECK]  (2)
+      - outcome: Time-to-event  (2)
         - model: Common effect  (1)
           - method: One-stage regression on participant data (network)  (1)
             - metric: Hazard ratio
