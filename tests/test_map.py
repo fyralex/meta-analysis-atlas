@@ -185,16 +185,18 @@ def test_network_count_data_offers_rate_ratio_and_difference() -> None:
     assert not [p for p in by_key.values() if p["method"] == "NM_BAYES" and p["metric"] == "N_IRD"]
 
 
-def test_the_network_smd_is_cohens_d() -> None:
-    """meta's pairwise() computes Cohen's d for netmeta, as Hedges' g isn't consistent in multi-arm studies (#31)."""
-    assert "Cohen's d" in bm.METRICS["N_SMD"]["label"]
+def test_the_network_smd_is_consistent_within_studies() -> None:
+    """netmeta's pairwise() gives Cohen's d (#31); gemtc a Hedges' g corrected once per study (#25). R31 covers both."""
+    assert bm.METRICS["N_SMD"]["label"] == "Standardized mean difference (network)"
+    r31 = next(r for r in bm.RULES if r[0] == "R31")
+    assert "Cohen's d" in r31[1] and "Hedges' g" in r31[1] and "GEMTC-smd" in r31[3]
     assert bm.METRICS["N_SMD"]["src"] == "META-pw"
     assert "R31" in {r[0] for r in bm.RULES}
     by_method: dict[str, set[str]] = {}
     for p in bm.pathways():
         if p["metric"] == "N_SMD":
             by_method.setdefault(p["method"], set()).add(p["status"])
-    assert by_method == {"NM_GT": {"planned"}, "NM_MV": {"to_check"}, "NM_BAYES": {"to_check"}}
+    assert by_method == {"NM_GT": {"planned"}, "NM_MV": {"to_check"}, "NM_BAYES": {"planned"}}
 
 
 def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
@@ -209,7 +211,7 @@ def test_unconfirmed_pairs_name_real_methods_and_metrics() -> None:
 
 
 def test_unconfirmed_inputs_name_real_methods_and_inputs() -> None:
-    assert bm.UNCONFIRMED_INPUT
+    """Empty since gemtc's contrast-level input was confirmed from its source (#25); any entry must be real."""
     kind_of = {(b["fw"], b["group"], b["datatype"], b["outcome"]): b["kind"] for b in bm.BRANCHES}
     for method, kind in bm.UNCONFIRMED_INPUT:
         assert method in bm.METHODS and kind in bm.METHODS[method]["takes"]
@@ -218,8 +220,8 @@ def test_unconfirmed_inputs_name_real_methods_and_inputs() -> None:
         for p in bm.pathways()
         if (p["method"], kind_of[(p["framework"], p["group"], p["datatype"], p["outcome"])]) in bm.UNCONFIRMED_INPUT
     ]
-    assert paired, "an input pair generates no pathway"
-    assert {p["status"] for p in paired} == {"to_check"}
+    assert bool(paired) == bool(bm.UNCONFIRMED_INPUT), "an input pair generates no pathway"
+    assert all(p["status"] == "to_check" for p in paired)
 
 
 def test_v11_removed_reasons_cite_existing_rules() -> None:

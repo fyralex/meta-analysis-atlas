@@ -4,7 +4,7 @@ Edit the data in `spec/build_map.py` and run it again. The full tree is in `spec
 
 Status: OK = confirmed from the source and in taxonomy v11. NEW = confirmed or proposed, not in v11, and not yet accepted. accepted #n = not in v11, accepted by the methodologist in issue n. CHECK = not yet confirmed from a primary source.
 
-Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 194; not in v11 332; of those, new (not yet accepted) 3; still to check 24; status runnable 0; status planned 430; status specified 86; status to_check 24.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 201; not in v11 332; of those, new (not yet accepted) 3; still to check 10; status runnable 0; status planned 444; status specified 86; status to_check 10.
 
 ## Branches: framework, group structure, datatype, outcome
 
@@ -124,7 +124,7 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | N_RD | Risk difference (network) | `netmeta(sm="RD")` | NM | OK |
 | N_ASD | Arcsine difference | `netmeta(sm="ASD")` | NM | accepted #111 |
 | N_MD | Mean difference (network) | `netmeta(sm="MD")` | NM | OK |
-| N_SMD | Standardized mean difference (Cohen's d) | `netmeta(sm="SMD")` | META-pw | OK |
+| N_SMD | Standardized mean difference (network) | `netmeta(sm="SMD")` | META-pw | OK |
 | N_ROM | Ratio of means | `netmeta(sm="ROM")` | NM | OK |
 | N_IRR | Incidence rate ratio | `netmeta(sm="IRR")` | NM | OK |
 | N_IRD | Incidence rate difference (network) | `netmeta(sm="IRD")` | NM | OK |
@@ -174,7 +174,7 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
 | Frequentist, graph-theoretical | `netmeta::netmeta()` | Common effect, Random effects | arm, est | standard | NM, CH-11, DMA | accepted #19 | Arm-level data go through pairwise(). Between-study variance: DL, REML or ML. Does not support meta-regression. |
 | Frequentist, multivariate | `metafor::rma.mv()` | Common effect, Random effects | arm, est | standard, subgroup, meta-regression | MD-senn, MF-mv | OK | Arm-based or contrast-based. The documented example fits both a fixed-effects and a random-effects network model. |
 | Mantel-Haenszel for networks (sparse binary data) | `netmeta::netmetabin()` | Common effect | arm | standard | NM-bin | accepted #19 | Methods MH and NCH are common-effect only. |
-| Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check. |
+| Bayesian hierarchical (MCMC) | `gemtc with JAGS` | Common effect, Random effects | arm, est | standard, meta-regression | DMA, CH-11, GEMTC, GEMTC-net | OK | Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level data (diff, std.err) are read on the chosen link's scale; its SMD is Hedges' g, consistent within multi-arm studies (#25). |
 | One-stage regression on participant data (network) | `multinma::nma() with set_ipd()` | Common effect, Random effects | ipd | standard, meta-regression | MULTINMA, MULTINMA-ipd | OK | A Bayesian model fitted in Stan, with fixed or random treatment effects and regression on covariates. Its likelihoods include Bernoulli (logit) for binary outcomes, normal (identity) for continuous ones and survival models for time-to-event data; which survival likelihoods give a hazard ratio is to check (#59). |
 | Bivariate model (Reitsma) | `lme4::glmer() (binomial GLMM)` | Random effects | tab | standard, subgroup, meta-regression | DTA-10, DTA-HB | OK | A binomial GLMM, as Cochrane fits it (Ch. 10.2.3); covariates give meta-regression and test comparisons (10.4.3). The diagnostic odds ratio and likelihood ratios are computed from it at the summary point (rule R35). Equivalent to the HSROC model when there are no covariates. |
 | Hierarchical summary ROC model (Rutter and Gatsonis) | `dtametaTMB::fitRutterGatsonis()` | Random effects | tab | standard, subgroup, meta-regression | DTMB, DTA-HB, MADA | OK | Fits random effects for each study's accuracy and threshold from its 2x2 counts, so the threshold can vary between studies. fitRutterGatsonisSubgroup() takes one study-level subgroup and fitRutterGatsonisReg() study-level covariates. |
@@ -217,7 +217,7 @@ Reads: arm = arm-level summary data, est = precomputed estimates, ipd = particip
 | R28 | Tests for funnel plot asymmetry need at least 10 studies; Egger's original test is not recommended for odds ratios or SMDs. | not in v11 | CH-13 s13.3.4.4 |
 | R29 | Trim and fill and selection models work on rma.uni models only (trim and fill: no moderators). | not in v11 | MF-trimfill, MF-selmodel |
 | R30 | Meta-regression is generally not advised with fewer than ten studies. | missing in v11 | CH-10 s10.11.4 |
-| R31 | A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw |
+| R31 | A network's standardized mean difference must stay consistent within multi-arm studies. From arm-level data, pairwise() computes Cohen's d for netmeta, since a separate small-sample correction for each comparison would make them disagree; gemtc instead gives Hedges' g with one pooled SD and one correction per study, which stays consistent. Contrast-level estimates should be computed the same way within each study. The map offers one network SMD. | v11 wrong: offers d and g separately for rma.mv and gemtc networks | META-pw, GEMTC-smd |
 | R32 | In this map, the Peto odds ratio is offered only with Peto's method. Cochrane presents it as the estimate Peto's method computes: an approximate log odds ratio from observed minus expected events and their variance. escalc(measure="PETO") also computes it study by study; this map doesn't offer pooling it with another method. | agrees | CH-10 s10.4.2, MF-escalc |
 | R33 | gemtc's network models take the odds ratio, the risk ratio, the mean difference, the standardized mean difference and, from events and exposure, a rate ratio (which gemtc labels a hazard ratio). It has no likelihood for the risk difference, arcsine difference, ratio of means or rate difference. | v11 wrong: offers every network measure for gemtc | GEMTC |
 | R34 | Riley et al. advise against assuming one common prognostic effect across prognostic factor studies, as the true effect is expected to differ between them, and call a random-effects approach essential. The map offers random effects only for them. | not in v11 | RILEY |
@@ -268,8 +268,7 @@ Each method and metric here is confirmed on its own; their pairing is not yet, s
 
 | Method | Metric | Why |
 |---|---|---|
-| Frequentist, multivariate | Standardized mean difference (Cohen's d) | R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation |
-| Bayesian hierarchical (MCMC) | Standardized mean difference (Cohen's d) | gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31) |
+| Frequentist, multivariate | Standardized mean difference (network) | R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation |
 | One-stage regression on participant data (pairwise) | Hazard ratio from the treatment coefficient | multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#25) |
 | One-stage regression on participant data (network) | Hazard ratio | multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#59) |
 
@@ -277,7 +276,6 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 
 | Method | Input | Why |
 |---|---|---|
-| Bayesian hierarchical (MCMC) | est | gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale diff is on or how it is matched to a likelihood (issue #40) |
 
 ## Sections that apply across the tree
 
@@ -292,8 +290,7 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 ## Still to check
 
 1. Confirm a source for pooling participant data from single groups (the one-group IPD branch).
-2. Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).
-3. Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31).
+2. Confirm from metafor's documentation how rma.mv networks take a standardized mean difference (R31).
 
 ## Sources
 
@@ -325,6 +322,8 @@ Methods whose reading of an input is not confirmed (input codes as under Methods
 | NM-bin | netmeta, netmetabin() | https://rdrr.io/cran/netmeta/man/netmetabin.html |
 | GEMTC | gemtc, mtc.model() | https://rdrr.io/cran/gemtc/man/mtc.model.html |
 | GEMTC-net | gemtc, mtc.network() | https://rdrr.io/cran/gemtc/man/mtc.network.html |
+| GEMTC-re | gemtc source: the likelihood for contrast-level data (inst/gemtc.releffect.likelihood.r2.txt) | https://github.com/cran/gemtc/blob/master/inst/gemtc.releffect.likelihood.r2.txt |
+| GEMTC-smd | gemtc source: the SMD likelihood (R/ll.normal.smd.R) | https://github.com/cran/gemtc/blob/master/R/ll.normal.smd.R |
 | NM-man | netmeta manual | https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html |
 | META-bin | meta, metabin() | https://rdrr.io/cran/meta/man/metabin.html |
 | META-pw | meta, pairwise(), Details | https://rdrr.io/cran/meta/man/pairwise.html |

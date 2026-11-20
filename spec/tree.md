@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 194; not in v11 332; of those, new (not yet accepted) 3; still to check 24; status runnable 0; status planned 430; status specified 86; status to_check 24.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 201; not in v11 332; of those, new (not yet accepted) 3; still to check 10; status runnable 0; status planned 444; status specified 86; status to_check 10.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)
@@ -555,27 +555,27 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
         - model: Common effect  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
         - model: Random effects  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
       - outcome: Count / person-time  (10)
         - model: Common effect  (5)
           - method: Frequentist, graph-theoretical  (2)
@@ -629,27 +629,27 @@ Counts: pathways in total 540; interventional 441; interventional, in v11's scop
         - model: Common effect  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
         - model: Random effects  (8)
           - method: Frequentist, graph-theoretical  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Frequentist, multivariate  (3)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
             - metric: Ratio of means
           - method: Bayesian hierarchical (MCMC)  (2)
             - metric: Mean difference (network)
-            - metric: Standardized mean difference (Cohen's d)
+            - metric: Standardized mean difference (network)
       - outcome: Count / person-time  (10)
         - model: Common effect  (5)
           - method: Frequentist, graph-theoretical  (2)

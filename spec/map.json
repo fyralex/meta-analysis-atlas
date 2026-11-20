@@ -109,6 +109,14 @@
    "gemtc, mtc.network()",
    "https://rdrr.io/cran/gemtc/man/mtc.network.html"
   ],
+  "GEMTC-re": [
+   "gemtc source: the likelihood for contrast-level data (inst/gemtc.releffect.likelihood.r2.txt)",
+   "https://github.com/cran/gemtc/blob/master/inst/gemtc.releffect.likelihood.r2.txt"
+  ],
+  "GEMTC-smd": [
+   "gemtc source: the SMD likelihood (R/ll.normal.smd.R)",
+   "https://github.com/cran/gemtc/blob/master/R/ll.normal.smd.R"
+  ],
   "NM-man": [
    "netmeta manual",
    "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"
@@ -1355,9 +1363,9 @@
   ],
   [
    "R31",
-   "A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD.",
+   "A network's standardized mean difference must stay consistent within multi-arm studies. From arm-level data, pairwise() computes Cohen's d for netmeta, since a separate small-sample correction for each comparison would make them disagree; gemtc instead gives Hedges' g with one pooled SD and one correction per study, which stays consistent. Contrast-level estimates should be computed the same way within each study. The map offers one network SMD.",
    "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
-   "META-pw"
+   "META-pw, GEMTC-smd"
   ],
   [
    "R32",
@@ -1463,19 +1471,13 @@
  ],
  "open_items": [
   "Confirm a source for pooling participant data from single groups (the one-group IPD branch).",
-  "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
-  "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference (Cohen's d, R31)."
+  "Confirm from metafor's documentation how rma.mv networks take a standardized mean difference (R31)."
  ],
  "unconfirmed": [
   {
    "method": "NM_MV",
    "metric": "N_SMD",
    "why": "R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation"
-  },
-  {
-   "method": "NM_BAYES",
-   "metric": "N_SMD",
-   "why": "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)"
   },
   {
    "method": "IPD1",
@@ -1488,13 +1490,7 @@
    "why": "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page doesn't say which give a hazard ratio (#59)"
   }
  ],
- "unconfirmed_input": [
-  {
-   "method": "NM_BAYES",
-   "input": "est",
-   "why": "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale diff is on or how it is matched to a likelihood (issue #40)"
-  }
- ],
+ "unconfirmed_input": [],
  "metrics": {
   "PR": {
    "label": "Raw proportion",
@@ -1989,7 +1985,7 @@
    "family": "Differences"
   },
   "N_SMD": {
-   "label": "Standardized mean difference (Cohen's d)",
+   "label": "Standardized mean difference (network)",
    "call": "netmeta(sm=\"SMD\")",
    "src": "META-pw",
    "added": false,
@@ -2701,7 +2697,7 @@
     "N_RR",
     "N_SMD"
    ],
-   "note": "Supports meta-regression. linearModel=\"fixed\" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check.",
+   "note": "Supports meta-regression. linearModel=\"fixed\" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level data (diff, std.err) are read on the chosen link's scale; its SMD is Hedges' g, consistent within multi-arm studies (#25).",
    "added": false,
    "verified": true,
    "added_models": [
@@ -8050,11 +8046,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_SMD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8064,11 +8060,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_SMD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8442,11 +8438,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8456,11 +8452,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_OR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8470,11 +8466,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_RR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8484,11 +8480,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_RR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8666,11 +8662,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8680,11 +8676,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_MD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8694,11 +8690,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_SMD",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8708,11 +8704,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_SMD",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8834,11 +8830,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_IRR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8848,11 +8844,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_IRR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8918,11 +8914,11 @@
    "model": "Common effect",
    "method": "NM_BAYES",
    "metric": "N_HR",
-   "verified": false,
+   "verified": true,
    "added": true,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
@@ -8932,11 +8928,11 @@
    "model": "Random effects",
    "method": "NM_BAYES",
    "metric": "N_HR",
-   "verified": false,
+   "verified": true,
    "added": false,
    "new": false,
    "milestone": "v0.3",
-   "status": "to_check"
+   "status": "planned"
   },
   {
    "framework": "1. Interventional (effect of an intervention)",
