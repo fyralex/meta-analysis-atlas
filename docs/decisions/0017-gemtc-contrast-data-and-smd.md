@@ -11,18 +11,25 @@ both points, so the map cites its source code (the CRAN mirror).
     for binom/logit, log RR for binom/log, MD for normal/identity, SMD for
     normal/smd, log rate ratio for poisson/log, and log HR for
     binom/cloglog.
+  - The link sets the scale gemtc reports (the `mtc.model()` table). For the
+    log HR the map uses binom/cloglog; poisson/log is labelled a hazard ratio
+    too and would fit the same model.
   - The network metric cards show each call.
-- **gemtc's standardized mean difference is Hedges' g,** and it is
-  confirmed.
+- **From arm-level data, gemtc's standardized mean difference is Hedges' g,**
+  and it is confirmed. Contrast-level SMDs are taken as given (the `smd`
+  link computes nothing for them), so each study's must be computed
+  consistently, as R31 says.
   - Rule R31 is amended: a network SMD must stay consistent within
-    multi-arm studies. netmeta does that with Cohen's d, and gemtc with a
-    Hedges' g corrected once per study.
+    multi-arm studies. netmeta does that with Cohen's d, and gemtc, from
+    arm-level data, with a Hedges' g corrected once per study.
   - The metric is relabelled "Standardized mean difference (network)".
   - Its card says the two engines' scales differ slightly.
 
 ## What the source says
 
-- **Contrast-level data** (`inst/gemtc.releffect.likelihood.r2.txt`):
+- **Contrast-level data** (`inst/gemtc.releffect.likelihood.r2.txt`, and
+  the `.rm` template for multi-arm studies, which also needs the reference
+  arm's `std.err`):
   - each study's `diff` is modelled as normal, with standard error
     `std.err`, around the model's linear predictor for that comparison;
   - so it is read on the link's scale;

@@ -117,6 +117,10 @@
    "gemtc source: the SMD likelihood (R/ll.normal.smd.R)",
    "https://github.com/cran/gemtc/blob/master/R/ll.normal.smd.R"
   ],
+  "GEMTC-re-m": [
+   "gemtc source: the likelihood for multi-arm contrast-level data (inst/gemtc.releffect.likelihood.rm.txt)",
+   "https://github.com/cran/gemtc/blob/master/inst/gemtc.releffect.likelihood.rm.txt"
+  ],
   "NM-man": [
    "netmeta manual",
    "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"
@@ -1363,7 +1367,7 @@
   ],
   [
    "R31",
-   "A network's standardized mean difference must stay consistent within multi-arm studies. From arm-level data, pairwise() computes Cohen's d for netmeta, since a separate small-sample correction for each comparison would make them disagree; gemtc instead gives Hedges' g with one pooled SD and one correction per study, which stays consistent. Contrast-level estimates should be computed the same way within each study. The map offers one network SMD.",
+   "A network's standardized mean difference must stay consistent within multi-arm studies. From arm-level data, pairwise() computes Cohen's d for netmeta, since a separate small-sample correction for each comparison would make them disagree; gemtc, from arm-level data, gives Hedges' g with one pooled SD and one correction per study, which stays consistent. Contrast-level estimates are taken as given, so each study's SMDs should share one standard deviation and one small-sample correction (or none). The map offers one network SMD.",
    "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
    "META-pw, GEMTC-smd"
   ],
@@ -2687,7 +2691,10 @@
     "DMA",
     "CH-11",
     "GEMTC",
-    "GEMTC-net"
+    "GEMTC-net",
+    "GEMTC-re",
+    "GEMTC-re-m",
+    "GEMTC-smd"
    ],
    "metrics": [
     "N_HR",
@@ -2697,7 +2704,7 @@
     "N_RR",
     "N_SMD"
    ],
-   "note": "Supports meta-regression. linearModel=\"fixed\" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level data (diff, std.err) are read on the chosen link's scale; its SMD is Hedges' g, consistent within multi-arm studies (#25).",
+   "note": "Supports meta-regression. linearModel=\"fixed\" fits a fixed-effect model. Its likelihoods give the odds ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level data (diff, std.err) are read on the chosen link's scale. From arm-level data its SMD is Hedges' g, consistent within multi-arm studies; contrast-level SMDs are taken as given (#25).",
    "added": false,
    "verified": true,
    "added_models": [
