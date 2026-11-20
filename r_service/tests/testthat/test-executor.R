@@ -246,4 +246,12 @@ test_that("Q's degrees of freedom are those metafor prints, without double-zero 
   )
   s <- suppressWarnings(execute_plan(plan, zeros()))$results$summary
   expect_equal(s$q_df, 2)
+  # every study double-zero: rma.mh still fits, with k.yi = 0, and metafor prints Q(df = 0)
+  none <- list(study = c("A", "B"), ai = c(0, 0), n1i = c(10, 10), ci = c(0, 0), n2i = c(10, 10))
+  mh <- list(model = list(fn = "rma.mh", args = c(list(measure = "OR"), COUNT_ARGS)))
+  s <- suppressWarnings(execute_plan(mh, none))$results$summary
+  d0 <- as.data.frame(none)
+  fit <- suppressWarnings(metafor::rma.mh(measure = "OR", ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d0))
+  expect_equal(s$q_df, printed_df(fit))
+  expect_equal(s$q_df, 0)
 })

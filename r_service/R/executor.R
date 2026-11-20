@@ -63,8 +63,9 @@ OUTPUTS <- list(
   q = function(fit) fit$QE,
   q_pval = function(fit) fit$QEp,
   # Q's degrees of freedom: studies with an estimate, less the model's coefficients. rma.mh and rma.peto count a
-  # double-zero study in k but not in k.yi, which Q uses; rma.uni has no k.yi, and its k leaves such studies out
-  q_df = function(fit) (if (is.null(fit$k.yi)) fit$k else fit$k.yi) - fit$p,
+  # double-zero study in k but not in k.yi, which Q uses; rma.uni has no k.yi, and its k leaves such studies out.
+  # Never below 0, as metafor prints it when no study has an estimate (#180 audit, round 2)
+  q_df = function(fit) max((if (is.null(fit$k.yi)) fit$k else fit$k.yi) - fit$p, 0),
   k = function(fit) fit$k,
   # the prediction interval (rma.uni only; NA, sent as null, for rma.mh and rma.peto)
   pi_lower = function(fit) prediction(fit)$pi.lb,
