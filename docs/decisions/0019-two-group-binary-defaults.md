@@ -25,7 +25,7 @@ run with these defaults.
 ## Sources
 
 - **Cochrane Handbook 10.10.4.4** covers the choice of random-effects method.
-  It notes that RevMan has defaulted to REML since 2024 and presents the
+  It notes that REML is available in RevMan as of 2024 and is its default, and presents the
   Hartung-Knapp-Sidik-Jonkman interval as an alternative. The estimator
   discussion also runs through 10.10.4.3.
 - **Handbook 10.4.1, 10.4.2 and 10.4.4.1 to 10.4.4.3** are the sections on the
@@ -36,9 +36,10 @@ run with these defaults.
   `drop00` (`escalc`, `rma.mh`, `rma.peto`), and the `method` and `test`
   options of `rma.uni`.
 
-These are defaults, not rules. The sections above are cited as the owner
-gave them; the Handbook text itself has not been re-read for this record
-(`verified` stays as the map has it).
+These are defaults, not rules. The auditor of #153 read the cited Handbook
+sections and confirmed they support the text above, including 10.4.4.2 on
+dropping studies with no events in either arm from ratio analyses and keeping
+them for risk differences. `verified` in the map is unchanged.
 
 ## Consequences
 
