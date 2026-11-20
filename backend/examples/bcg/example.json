@@ -1,0 +1,84 @@
+{
+  "id": "bcg",
+  "title": "BCG vaccine trials",
+  "summary": "13 trials of the BCG vaccine against tuberculosis · two groups · yes-or-no outcome",
+  "description": "Each trial counts the people who got tuberculosis in a vaccinated group and in an unvaccinated group. The trials differ a lot in their results, which makes this a standard example for random-effects meta-analysis and heterogeneity.",
+  "table": "two_group_binary",
+  "labels": {"outcome": "tuberculosis", "treatment": "vaccinated", "control": "unvaccinated"},
+  "source": {
+    "citation": "Colditz GA, et al. Efficacy of BCG vaccine in the prevention of tuberculosis. JAMA 1994;271(9):698.",
+    "url": "https://doi.org/10.1001/jama.1994.03510330076038"
+  },
+  "data_from": {
+    "citation": "metadat, dat.bcg: the counts tpos, tneg, cpos and cneg, written here as events and totals (n1i = tpos + tneg, n2i = cpos + cneg), with author and year as the study label.",
+    "url": "https://wviechtb.github.io/metadat/reference/dat.bcg.html"
+  },
+  "published": [
+    {
+      "pathway": {"model": "Random effects", "method": "IV", "metric": "RR"},
+      "where": "metafor, rma.uni() reference page, first example (log risk ratios, REML)",
+      "url": "https://wviechtb.github.io/metafor/reference/rma.uni.html",
+      "values": [
+        {"quantity": "summary.estimate", "value": -0.7145, "places": 4},
+        {"quantity": "summary.se", "value": 0.1798, "places": 4},
+        {"quantity": "summary.zval", "value": -3.9744, "places": 4},
+        {"quantity": "summary.ci_lower", "value": -1.0669, "places": 4},
+        {"quantity": "summary.ci_upper", "value": -0.3622, "places": 4},
+        {"quantity": "summary.tau2", "value": 0.3132, "places": 4},
+        {"quantity": "summary.i2", "value": 92.22, "places": 2},
+        {"quantity": "summary.q", "value": 152.2330, "places": 4}
+      ]
+    },
+    {
+      "pathway": {"model": "Common effect", "method": "MH", "metric": "OR"},
+      "where": "metafor, rma.mh() reference page, first example (log odds ratios)",
+      "url": "https://wviechtb.github.io/metafor/reference/rma.mh.html",
+      "values": [
+        {"quantity": "summary.estimate", "value": -0.4734, "places": 4},
+        {"quantity": "summary.se", "value": 0.0410, "places": 4},
+        {"quantity": "summary.zval", "value": -11.5444, "places": 4},
+        {"quantity": "summary.ci_lower", "value": -0.5538, "places": 4},
+        {"quantity": "summary.ci_upper", "value": -0.3930, "places": 4},
+        {"quantity": "summary.q", "value": 163.9426, "places": 4},
+        {"quantity": "summary.i2", "value": 92.68, "places": 2},
+        {"quantity": "ratio_scale.estimate", "value": 0.6229, "places": 4},
+        {"quantity": "ratio_scale.ci_lower", "value": 0.5748, "places": 4},
+        {"quantity": "ratio_scale.ci_upper", "value": 0.6750, "places": 4}
+      ]
+    },
+    {
+      "pathway": {"model": "Common effect", "method": "MH", "metric": "RR"},
+      "where": "metafor, rma.mh() reference page, second example (log risk ratios)",
+      "url": "https://wviechtb.github.io/metafor/reference/rma.mh.html",
+      "values": [
+        {"quantity": "summary.estimate", "value": -0.4537, "places": 4},
+        {"quantity": "summary.se", "value": 0.0393, "places": 4},
+        {"quantity": "summary.zval", "value": -11.5338, "places": 4},
+        {"quantity": "summary.ci_lower", "value": -0.5308, "places": 4},
+        {"quantity": "summary.ci_upper", "value": -0.3766, "places": 4},
+        {"quantity": "summary.q", "value": 152.5676, "places": 4},
+        {"quantity": "summary.i2", "value": 92.13, "places": 2},
+        {"quantity": "ratio_scale.estimate", "value": 0.6353, "places": 4},
+        {"quantity": "ratio_scale.ci_lower", "value": 0.5881, "places": 4},
+        {"quantity": "ratio_scale.ci_upper", "value": 0.6862, "places": 4}
+      ]
+    },
+    {
+      "pathway": {"model": "Common effect", "method": "PETO", "metric": "PETO"},
+      "where": "metafor, rma.peto() reference page, first example (log odds ratios, Peto's method)",
+      "url": "https://wviechtb.github.io/metafor/reference/rma.peto.html",
+      "values": [
+        {"quantity": "summary.estimate", "value": -0.4744, "places": 4},
+        {"quantity": "summary.se", "value": 0.0407, "places": 4},
+        {"quantity": "summary.zval", "value": -11.6689, "places": 4},
+        {"quantity": "summary.ci_lower", "value": -0.5541, "places": 4},
+        {"quantity": "summary.ci_upper", "value": -0.3948, "places": 4},
+        {"quantity": "summary.q", "value": 167.7302, "places": 4},
+        {"quantity": "summary.i2", "value": 92.85, "places": 2},
+        {"quantity": "ratio_scale.estimate", "value": 0.6222, "places": 4},
+        {"quantity": "ratio_scale.ci_lower", "value": 0.5746, "places": 4},
+        {"quantity": "ratio_scale.ci_upper", "value": 0.6738, "places": 4}
+      ]
+    }
+  ]
+}

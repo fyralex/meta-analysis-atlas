@@ -13,6 +13,7 @@ from . import csv_import, errors, plans
 from .config import Settings
 from .data_spec import DataSpec, template_csv
 from .errors import ApiError, ErrorBody, FieldError
+from .examples import Example, ExampleList, Examples
 from .map_data import TIERS, MapData, Pathway, Status
 from .r_service import RService
 
@@ -65,6 +66,11 @@ def get_map(request: Request) -> MapData:
     return data
 
 
+def get_examples(request: Request) -> Examples:
+    examples: Examples = request.app.state.examples
+    return examples
+
+
 def get_r_service(request: Request) -> RService:
     service: RService = request.app.state.r_service
     return service
@@ -96,6 +102,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.state.map = MapData(settings.spec_dir)
     app.state.r_service = RService(settings.r_service_url)
+    app.state.examples = Examples(settings.examples_dir, app.state.map)
     errors.install(app)
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["GET", "POST"])
@@ -208,6 +215,33 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         raw = await file.read(csv_import.MAX_BYTES + 1)
         studies, ignored = csv_import.read(csv_import.decode(raw), spec)
         return ImportResult(pathway=pathway, count=len(studies), studies=studies, ignored_columns=ignored)
+
+    example_errors: dict[int | str, dict[str, Any]] = {404: {"model": ErrorBody, "description": "No such example"}}
+
+    @app.get("/api/v1/examples", tags=["examples"])
+    def examples(found: Annotated[Examples, Depends(get_examples)]) -> ExampleList:
+        """The published example datasets Casebook lists: each with its source and the runnable pathways it fits."""
+        return found.listing()
+
+    @app.get("/api/v1/examples/{example_id}", tags=["examples"], responses=example_errors)
+    def example(example_id: str, found: Annotated[Examples, Depends(get_examples)]) -> Example:
+        """One example: its studies (ready for `/run`), where they come from, and its published values."""
+        return found.get(example_id)
+
+    @app.get(
+        "/api/v1/examples/{example_id}/studies.csv",
+        tags=["examples"],
+        responses={**example_errors, 200: {"content": {"text/csv": {}}, "description": "The example's studies"}},
+        response_class=Response,
+    )
+    def example_csv(example_id: str, found: Annotated[Examples, Depends(get_examples)]) -> Response:
+        """The example's studies as a CSV file, in its table's column spec."""
+        found.get(example_id)
+        return Response(
+            content=(found.folder / example_id / "studies.csv").read_bytes(),
+            media_type="text/csv; charset=utf-8",
+            headers={"Content-Disposition": f'attachment; filename="atlas-example-{example_id}.csv"'},
+        )
 
     return app
 

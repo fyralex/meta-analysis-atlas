@@ -12,6 +12,9 @@ and holds no rules of its own: `spec/build_map.py` decides what is valid.
 | GET | `/api/v1/meta-analysis/spec` | What a runnable pathway's study table must hold: each column in plain words, with an example, and the checks made |
 | GET | `/api/v1/meta-analysis/template` | A CSV template for a runnable pathway: the header and one example row |
 | POST | `/api/v1/meta-analysis/import` | Checks an uploaded CSV against a runnable pathway's column spec; returns its studies, ready for `/run`, or every problem with its row, study and column |
+| GET | `/api/v1/examples` | The published example datasets: each with its source, number of studies, the runnable pathways it fits, and which have published values |
+| GET | `/api/v1/examples/{id}` | One example: its studies (ready for `/run`), where they come from, labels for the interpretation sentence, and its published values with where each is printed |
+| GET | `/api/v1/examples/{id}/studies.csv` | The example's studies as a CSV file |
 
 Errors are JSON: `{"code": ..., "message": ..., "fields": [{"path": ..., "message": ...}], "details": {...}}`.
 A filter value the map doesn't have is `422 unknown_value`; a malformed request is
@@ -92,11 +95,33 @@ and checked against the same column spec as `/run`, so a file that passes here p
   (`code: too_large`); a host without that proxy needs its own limit (#168).
 - **Nothing is kept** (decision 0006).
 
+## Examples
+
+Each published example is a folder in `backend/examples/<id>/` (#162):
+
+- `studies.csv`, in its table's column spec (`table` in `example.json`), read through the same
+  check as an upload;
+- `example.json`: `title`, `summary`, `description`, `source` and `data_from` (citation and
+  URL), optional `labels`, and `published`: for each pathway, where the values are printed and
+  each value as printed (`quantity` such as `summary.estimate` or `ratio_scale.ci_lower`, `value`,
+  `places`).
+
+The pathways an example runs with aren't listed by hand: they're the map's runnable pathways
+whose table is the example's. The validation tests read the same files: the data, and each
+published value checked to half a unit in its last printed place. So Casebook, Proof and the
+tests can't disagree. Loading refuses an example whose id isn't its folder's name, whose data
+fail the upload check or carry extra columns, or whose published values are for a pathway it
+doesn't run with.
+
+The first example is the BCG vaccine trials, written from `metadat::dat.bcg` by R (a
+validation test checks the file still equals it).
+
 ## Settings
 
 | Variable | Default | |
 |---|---|---|
 | `ATLAS_SPEC_DIR` | the repository's `spec/` | where `map.json` and `cards.json` are |
+| `ATLAS_EXAMPLES_DIR` | `backend/examples` | the published example datasets |
 | `R_SERVICE_URL` | `http://localhost:8000` | the R service (`r_service/`) |
 | `ATLAS_CORS_ORIGINS` | none | comma-separated origins allowed to call the API from a browser |
 

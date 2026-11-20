@@ -7,6 +7,8 @@ COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/app ./app
+# the published example datasets (#162), read beside the app
+COPY backend/examples ./examples
 # only the generated files the backend reads
 COPY spec/map.json spec/cards.json ./spec/
 

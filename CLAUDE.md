@@ -350,7 +350,7 @@ r_service: Plumber, R 4.5
 | GET | `/api/v1/map` | The tiers, nodes with statuses and cards, rules and cross-cutting sections |
 | GET | `/api/v1/pathways` | All generated pathways with their status. Filterable by any tier |
 | POST | `/api/v1/explain` | Given a partial pathway: whether it's valid, why, and what's compatible next, with references |
-| GET | `/api/v1/examples` | Worked examples: dataset, source, published values, tolerance |
+| GET | `/api/v1/examples` | Worked examples: dataset, source, published values, tolerance; one folder each in `backend/examples/`, which the validation tests read too |
 | GET | `/api/v1/meta-analysis/spec` | The columns a runnable pathway's study table needs, in plain words, and the checks made; one spec in `backend/app/data_spec.py` feeds this, the template, the upload check and `/run` |
 | GET | `/api/v1/meta-analysis/template` | A CSV template for a runnable pathway |
 | POST | `/api/v1/meta-analysis/import` | Check an uploaded CSV against the pathway's column spec; returns the parsed studies or field-level errors naming each row, study and column |
