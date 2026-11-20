@@ -2,7 +2,9 @@
 
 The checks are the column spec's (`data_spec`), the same ones `/run` makes, so a file that passes here also passes
 there. Problems keep `/run`'s field paths (`data.3.ai`, the fourth study) and their messages name the file's row and
-the study, so a person can find them in their spreadsheet. Nothing is stored (decision 0006).
+the study, so a person can find them in their spreadsheet. When the problems are in the studies, the error's
+`details.rows` holds every study's cells as written, with its row number, so the page can show the table with the
+problem cells marked (#165). Nothing is stored (decision 0006).
 """
 
 import csv
@@ -90,8 +92,10 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
     position = {name: header.index(name) for name in wanted}
     kinds = {c.name: c.kind for c in spec.columns}
     studies: list[dict[str, Any]] = []
+    # each row's cells as written, for the page to show beside the problems (#165)
+    as_read: list[dict[str, Any]] = []
     shape: list[FieldError] = []
-    for i, (_, cells) in enumerate(body):
+    for i, (line, cells) in enumerate(body):
         if len(cells) > len(header):
             shape.append(FieldError(path=f"data.{i}", message="It has more cells than the header has columns."))
         study: dict[str, Any] = {}
@@ -99,6 +103,8 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
             cell = cells[at] if at < len(cells) else ""
             study[name] = cell.strip() if kinds[name] == "label" else _separated(cell, i, name, shape)
         studies.append(study)
+        written = {name: (cells[at] if at < len(cells) else "").strip() for name, at in position.items()}
+        as_read.append({"row": line, "cells": written})
     try:
         check_data(studies, spec)
         problems = []
@@ -110,7 +116,8 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
     if problems:
         labels = [s.get("study") for s in studies]
         named = [_name_row(p, labels, lines_of) for p in problems]
-        raise ApiError(422, "invalid_data", "The file has problems to fix before the analysis can run.", named)
+        message = "The file has problems to fix before the analysis can run."
+        raise ApiError(422, "invalid_data", message, named, details={"rows": as_read})
     ignored = [name for name in header if name and name not in wanted]
     return studies, ignored
 

@@ -96,6 +96,24 @@ def test_each_rule_broken_is_reported_with_its_row_study_and_column(row: str, pa
     assert len(found) == (2 if path.endswith("n2i") else 1), found
 
 
+def test_problems_in_the_studies_come_with_the_rows_as_written() -> None:
+    # 45.5 is refused, a separated count is refused and kept as written; the row numbers skip the blank line
+    text = f'{HEADER}\nAronson 1948,4,123,11,139\n\nFerguson,6,306,45.5,303\nRosenthal,3,"2,231",11,220\n'
+    response = upload(text)
+    assert response.status_code == 422, response.text
+    assert response.json()["details"]["rows"] == [
+        {"row": 2, "cells": {"study": "Aronson 1948", "ai": "4", "n1i": "123", "ci": "11", "n2i": "139"}},
+        {"row": 4, "cells": {"study": "Ferguson", "ai": "6", "n1i": "306", "ci": "45.5", "n2i": "303"}},
+        {"row": 5, "cells": {"study": "Rosenthal", "ai": "3", "n1i": "2,231", "ci": "11", "n2i": "220"}},
+    ]
+
+
+def test_missing_columns_come_with_no_rows() -> None:
+    response = upload("study,ai,n1i\nAronson 1948,4,123\n")
+    assert response.status_code == 422
+    assert response.json()["details"] == {}
+
+
 def test_at_least_two_studies() -> None:
     assert problems(f"{HEADER}\nA,1,10,2,10\n") == [("data", "At least 2 studies are needed; got 1.")]
 

@@ -18,8 +18,9 @@ are marked as such.
 
 Version 0.1 is the map and three apps for exploring it. **The apps don't run
 analyses yet.** The backend can run the 12 pathways marked runnable below
-(`POST /api/v1/meta-analysis/run`, see [`backend/README.md`](backend/README.md));
-the Workbench for uploading data comes later in v0.2. Each pathway has a status:
+(`POST /api/v1/meta-analysis/run`, see [`backend/README.md`](backend/README.md)).
+The Workbench, being built in v0.2, takes a CSV or a published example and
+checks it; showing the results comes next (#178). Each pathway has a status:
 
 | Status | Pathways | Meaning |
 |---|---|---|
@@ -72,6 +73,16 @@ used where 3D can't be drawn.
 
 ![The Atlas: the 3D map with two choices made, and the panel beside it](docs/screenshots/atlas-3d.png)
 
+**Workbench** (v0.2, in progress) runs a runnable pathway on your studies.
+Pathfinder's results and the Atlas link each runnable analysis to it. It shows
+what the CSV file needs (from the backend's column spec) with a template to
+download, the settings with their sources, and loads either your file or a
+published example. The backend checks the studies, and each problem names its
+row, study and column, with the cell marked in the table as read. Running the
+analysis and its results come next (#178); Casebook and Proof, under the
+Workbench, follow (#166, #167). The Workbench needs the backend and the R
+service: without them it says so and links here.
+
 ## How the map is built
 
 The map is the specification. All of its data is in one file,
@@ -110,6 +121,19 @@ npm --prefix frontend run dev    # then open http://localhost:5173
 ```
 
 The apps read the map from `spec/` when they are built.
+
+The Workbench also needs the backend and its R service. The simplest way is
+Docker Compose, which serves the apps, the backend and the R service together
+at http://localhost:8080:
+
+```bash
+docker compose up --build
+```
+
+To use the dev server instead, start the R service and the backend (see
+[`backend/README.md`](backend/README.md)) and point the apps at the backend
+with `VITE_API_BASE=http://localhost:8080`, with `ATLAS_CORS_ORIGINS` allowing
+http://localhost:5173.
 
 ## Add or change a pathway
 

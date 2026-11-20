@@ -3,8 +3,9 @@ import { Link } from "react-router";
 import { cardFor, cardHref } from "../cards/cards";
 import { map } from "../map";
 import { byFamily } from "./families";
-import { nodeLabel, tierNodes, type FilterOptions, type Selection, type Tier } from "./filter";
+import { nodeLabel, tierNodes, TIERS, type FilterOptions, type Selection, type Tier } from "./filter";
 import { TIER_NAMES } from "./names";
+import { findPathway, workbenchHref } from "../workbench/pathway";
 
 // The panel beside the 3D map (#92, design E): read-only, it follows the clicks on the map. It says what the dot
 // just clicked is, lists the options still possible at the next step with their counts, and the choices made.
@@ -36,6 +37,10 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
   const through = picked
     ? tierNodes(map.pathways, selection, picked.tier, options).find((n) => n.value === picked.value)
     : undefined;
+
+  // all seven chosen and the map says it can be run: offer the Workbench (#165)
+  const full = TIERS.every((t) => selection[t] !== undefined) ? findPathway(selection as Record<Tier, string>) : undefined;
+  const runnable = full?.status === "runnable" ? full : undefined;
 
   return (
     <aside className="atlas-panel" aria-labelledby="atlas-panel-title">
@@ -90,6 +95,12 @@ export function AtlasPanel({ tiers, selection, options, picked, whyNot }: Props)
             </div>
           ))}
         </section>
+      )}
+
+      {runnable && (
+        <p>
+          <Link to={workbenchHref(runnable)}>Run this analysis in the Workbench</Link>
+        </p>
       )}
 
       {chosen.length > 0 && (

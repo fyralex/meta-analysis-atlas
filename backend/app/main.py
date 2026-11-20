@@ -197,7 +197,9 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         """Check an uploaded CSV against a **runnable** pathway's column spec, and return its studies ready for `/run`.
 
         Problems are `422 invalid_data`: missing columns under `file.columns.<name>`, a study's problems under
-        `/run`'s paths (`data.3.ai`), each message naming the file's row and the study. Nothing is kept.
+        `/run`'s paths (`data.3.ai`), each message naming the file's row and the study. With problems in the studies,
+        `details.rows` lists each study as read: `{"row": 2, "cells": {"study": "...", "ai": "4", ...}}`, the cells as
+        written, the row as a spreadsheet numbers it. Nothing is kept.
         """
         # the tiers come as separate form fields: a form model would count the file as an extra field
         pathway = plans.PathwayRef(
