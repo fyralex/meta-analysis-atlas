@@ -1,7 +1,7 @@
 """POST /api/v1/meta-analysis/run and the plan builder (#148), without R: the R service is a recording stand-in.
 
-Nothing is runnable in the map yet (part C of #148 changes that), so these tests copy the spec to a temporary
-directory and mark the 12 pathways runnable there. The numbers are tested in test_validation.py, against R.
+Most tests use a temporary copy of the spec with the 12 supported pathways marked runnable, so they don't depend on
+the real map's statuses; the last test checks the real map against the builder (#149). The numbers are tested in test_validation.py, against R.
 """
 
 import json
