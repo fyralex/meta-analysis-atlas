@@ -6,7 +6,7 @@
   "table": "two_group_binary",
   "labels": {"outcome": "tuberculosis", "treatment": "vaccinated", "control": "unvaccinated"},
   "source": {
-    "citation": "Colditz GA, et al. Efficacy of BCG vaccine in the prevention of tuberculosis. JAMA 1994;271(9):698.",
+    "citation": "Colditz GA, Brewer TF, Berkey CS, Wilson ME, Burdick E, Fineberg HV, Mosteller F. Efficacy of BCG vaccine in the prevention of tuberculosis: meta-analysis of the published literature. JAMA 1994;271(9):698-702. PMID 8309034.",
     "url": "https://doi.org/10.1001/jama.1994.03510330076038"
   },
   "data_from": {

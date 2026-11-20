@@ -17,7 +17,7 @@ from typing import Any
 from pydantic import BaseModel, ConfigDict, Field
 
 from . import csv_import, plans
-from .data_spec import SPECS
+from .data_spec import SPECS, DataSpec
 from .errors import ApiError
 from .interpretation import Labels
 from .map_data import TIERS, MapData
@@ -155,7 +155,7 @@ class Examples:
         return self.by_id[example_id]
 
 
-def _table_of(pathway: plans.PathwayRef) -> Any:
+def _table_of(pathway: plans.PathwayRef) -> DataSpec | None:
     """The study table a pathway reads, or None for a pathway the plan builder has no plan for."""
     try:
         return plans.data_spec(pathway)
