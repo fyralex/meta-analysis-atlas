@@ -31,8 +31,9 @@ A plan is data, never code: R never evaluates text it receives.
   `{"column": "tpos"}`.
 - **Columns:** after `effect`, the data gain `yi` and `vi`.
 - **Outputs** (`outputs`, all by default): `estimate`, `se`, `ci_lower`,
-  `ci_upper`, `zval`, `pval`, `tau2`, `i2`, `h2`, `q`, `q_pval`, `k`, and the
-  prediction interval `pi_lower` and `pi_upper` (from `predict()`, for
+  `ci_upper`, `zval`, `pval`, `tau2`, `i2`, `h2`, `q`, `q_pval`, `q_df` (Q's
+  degrees of freedom, which leave out studies with no estimate: `rma.mh` and
+  `rma.peto` count those in `k`), `k`, and the prediction interval `pi_lower` and `pi_upper` (from `predict()`, for
   `rma.uni` only). A value a model doesn't have is `null`, for example
   the prediction interval for `rma.mh`.
 - **Studies:** every result has `studies`, one row per study in the data,
