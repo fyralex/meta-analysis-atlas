@@ -16,6 +16,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .data_spec import TWO_GROUP_BINARY, DataSpec, check_data
 from .errors import ApiError, FieldError
+from .interpretation import Interpretation, Labels, sentence
 
 AnalysisType = Literal["standard", "cumulative", "leave-one-out"]
 # The twelve estimators of rma.uni's `method` except GENQ and GENQM, which need study weights chosen by the user
@@ -98,6 +99,7 @@ class RunRequest(BaseModel):
     analysis_type: AnalysisType = "standard"
     options: Options = Field(default_factory=lambda: Options(estimator=None, interval=None, level=DEFAULT_LEVEL))
     data: list[dict[str, Any]] = Field(description="One object per study: study, ai, n1i, ci, n2i.")
+    labels: Labels | None = Field(None, description="Optional words for the interpretation sentence.")
 
 
 class StudyRow(BaseModel):
@@ -122,6 +124,9 @@ class RunResponse(BaseModel):
         None, description="Cumulative or leave-one-out analysis: one row per study, on the model's scale."
     )
     r_code: str = Field(description="The R code that gives this result. Shown only; the service never runs it.")
+    interpretation: Interpretation | None = Field(
+        None, description="One fixed sentence saying what the pooled result means, with its sources (#160)."
+    )
 
 
 @dataclass(frozen=True)
@@ -292,6 +297,20 @@ def build_response(request: RunRequest, prepared: Prepared, results: dict[str, A
     if request.pathway.metric in RATIOS:
         ratio_scale = {key: _exp(summary[key]) for key in BACK_TRANSFORMED}
     studies = [StudyRow.model_validate(row) for row in results["studies"]]
+    read_on = ratio_scale if ratio_scale is not None else summary
+    point, lower, upper = (read_on.get(key) for key in ("estimate", "ci_lower", "ci_upper"))
+    interpretation = None
+    if point is not None and lower is not None and upper is not None:
+        interpretation = sentence(
+            metric=request.pathway.metric,
+            model=request.pathway.model,
+            k=sum(s.used for s in studies),
+            level=prepared.options.level,
+            estimate=point,
+            lower=lower,
+            upper=upper,
+            labels=request.labels,
+        )
     return RunResponse(
         pathway=request.pathway,
         analysis_type=request.analysis_type,
@@ -302,4 +321,5 @@ def build_response(request: RunRequest, prepared: Prepared, results: dict[str, A
         left_out=[s.study for s in studies if not s.used],
         steps=results.get("steps"),
         r_code=render_r_code(prepared.plan, prepared.columns, request.pathway.metric),
+        interpretation=interpretation,
     )
