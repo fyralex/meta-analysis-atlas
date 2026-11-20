@@ -75,8 +75,9 @@ describe("Pathfinder", PAGE, () => {
     const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
     expect(mh).toHaveTextContent("3 analyses · common effect only");
     expect(within(mh).getByRole("link", { name: /^Read the full card on Mantel-Haenszel/ })).toBeInTheDocument();
-    expect(within(mh).getByText(/^Planned/)).toBeInTheDocument();
-    expect(screen.getByText(/None of them can be run yet\./)).toBeInTheDocument();
+    // the two-group binary pathways are runnable (#149), so the status line no longer says none can be run
+    expect(within(mh).getByText(/^Runnable/)).toBeInTheDocument();
+    expect(screen.queryByText(/None of them can be run yet\./)).toBeNull();
   });
 
   it("counts the analyses still to check on each method", () => {

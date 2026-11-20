@@ -3,7 +3,7 @@
 Tier order after outcome: model > method > metric.
 Marks: [NEW] not in taxonomy v11 and not yet accepted; [CHECK] not yet confirmed from a primary source.
 
-Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 201; not in v11 332; of those, new (not yet accepted) 3; still to check 10; status runnable 0; status planned 444; status specified 86; status to_check 10.
+Counts: pathways in total 540; interventional 441; interventional, in v11's scope 208; of those, confirmed 201; not in v11 332; of those, new (not yet accepted) 3; still to check 10; status runnable 12; status planned 432; status specified 86; status to_check 10.
 
 - framework: 1. Interventional (effect of an intervention)  (441)
   - group: One group (single arm)  (137)

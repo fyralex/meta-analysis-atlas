@@ -30,7 +30,7 @@ const SELECTIONS: Selection[] = [
 
 describe("the 3D scene", () => {
   it.each(SELECTIONS)("gives every node the same count as the 2D view and the lock file, for %j", (selection) => {
-    // No pathway is runnable in v0.1: "runnable only" leaves every node at 0 in both views, and the counts still agree.
+    // "runnable only" keeps just the runnable pathways (12 since #149); either way both views give the same counts.
     for (const options of [DEFAULT_OPTIONS, { hideNew: true }, { hideNew: false, runnableOnly: true }]) {
       for (const layer of scene(map.pathways, selection, "model-method-metric", options)) {
         // the 2D view's nodes, in the same order: by family for the metric tier (#78)
