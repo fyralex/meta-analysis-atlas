@@ -1500,7 +1500,8 @@ def milestone_of(framework: str, method: str) -> str:
 # are the interventional, two-group, arm-level, binary pathways that POST /run runs (#148, decision 0019). Each has:
 # - the comparison of /run with the R code it shows, run through Rscript on the BCG trials (1e-10);
 # - where metafor's reference pages print values, the comparison with them;
-# - the comparison with metafor called by hand, on the BCG trials and with a double-zero study (#156, added below). A test map in tests/test_map.py checks that these tests exist.
+# - the comparison with metafor called by hand, on the BCG trials and with a double-zero study (#156, added below).
+# A test in tests/test_map.py checks that these tests exist.
 VALIDATION = "backend/tests/test_validation.py::"
 DIRECT = VALIDATION + "test_every_pathway_equals_metafor_called_directly"
 RUNNABLE: dict[tuple[str, str, str], list[str]] = {
@@ -1530,8 +1531,10 @@ RUNNABLE: dict[tuple[str, str, str], list[str]] = {
     ],
 }
 BY_HAND = VALIDATION + "test_every_pathway_equals_metafor_called_by_hand"
-for (_model, _method, _metric), _tests in RUNNABLE.items():
-    _tests += [f"{BY_HAND}[{_model}-{_method}-{_metric}-{_set}]" for _set in ("bcg", "double zero")]
+RUNNABLE = {
+    key: [*tests, *(f"{BY_HAND}[{'-'.join(key)}-{data}]" for data in ("bcg", "double zero"))]
+    for key, tests in RUNNABLE.items()
+}
 RUNNABLE_PREFIX = (F1, G2, ARM, "Binary")
 
 
