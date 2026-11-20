@@ -111,6 +111,10 @@ TWO_GROUP_BINARY = _spec(
 )
 
 
+# Each table by the name an example file uses for it (#162)
+SPECS: dict[str, DataSpec] = {"two_group_binary": TWO_GROUP_BINARY}
+
+
 def check_data(rows: list[dict[str, Any]], spec: DataSpec) -> dict[str, list[Any]]:
     """The study table as columns, or a 422 `invalid_data` with a path for every problem found.
 

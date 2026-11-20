@@ -137,4 +137,7 @@ def test_the_openapi_schema_lists_the_endpoints() -> None:
         "/api/v1/meta-analysis/spec",
         "/api/v1/meta-analysis/template",
         "/api/v1/meta-analysis/import",
+        "/api/v1/examples",
+        "/api/v1/examples/{example_id}",
+        "/api/v1/examples/{example_id}/studies.csv",
     }

@@ -8,7 +8,8 @@ reference pages use):
    through Rscript on the same data. They are the same computation, so the tolerance is 1e-10 relative (absolute
    1e-12 near zero): anything larger is a bug, not rounding.
 2. **Against published values.** metafor's reference pages print the results of these calls, rounded to 4 decimals
-   (2 for I^2); each is compared to half a unit in its last printed place.
+   (2 for I^2); each is compared to half a unit in its last printed place. The values, and where each is printed,
+   are read from the example's file, backend/examples/bcg/example.json (#162), as are the data.
    - rma.uni, first example (REML, log risk ratios): https://wviechtb.github.io/metafor/reference/rma.uni.html
    - rma.mh, odds ratios and risk ratios: https://wviechtb.github.io/metafor/reference/rma.mh.html
    - rma.peto: https://wviechtb.github.io/metafor/reference/rma.peto.html
@@ -29,8 +30,10 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app import plans
-from app.config import Settings
+from app.config import DEFAULT_EXAMPLES_DIR, DEFAULT_SPEC_DIR, Settings
+from app.examples import Examples, Published
 from app.main import create_app
+from app.map_data import MapData
 
 from .support import SUPPORTED_PATHWAYS, pathway, ref
 
@@ -62,17 +65,21 @@ def rscript(code: str, tmp_path: Path) -> Any:
 
 
 @pytest.fixture(scope="module")
-def bcg(tmp_path_factory: pytest.TempPathFactory) -> list[dict[str, Any]]:
-    """The 13 BCG trials as study rows, read from metadat itself, not typed here."""
+def bcg() -> list[dict[str, Any]]:
+    """The 13 BCG trials as study rows, from the example file Casebook serves (#162)."""
+    return [dict(row) for row in BCG.studies]
+
+
+def test_the_bcg_example_is_metadats_dat_bcg(tmp_path: Path) -> None:
+    """The example file holds exactly metadat's counts, as events and totals, labelled by author and year."""
     code = (
         "d <- metadat::dat.bcg\n"
-        "rows <- data.frame(study = as.character(d$trial), ai = d$tpos, n1i = d$tpos + d$tneg,"
+        "rows <- data.frame(study = paste(d$author, d$year), ai = d$tpos, n1i = d$tpos + d$tneg,"
         " ci = d$cpos, n2i = d$cpos + d$cneg)\n"
         "cat(jsonlite::toJSON(rows, dataframe = 'rows', auto_unbox = TRUE))\n"
     )
-    rows: list[dict[str, Any]] = rscript(code, tmp_path_factory.mktemp("bcg"))
-    assert len(rows) == 13
-    return rows
+    assert BCG.studies == rscript(code, tmp_path)
+    assert len(BCG.studies) == 13
 
 
 # What the shown R code is asked to report, named as the response names it. A value metafor doesn't have is null.
@@ -178,86 +185,54 @@ def half_unit(places: int) -> float:
     return 0.5 * 10.0**-places
 
 
+# The published values are read from the example's own file (#162), the same one Casebook and Proof show.
+BCG = Examples(DEFAULT_EXAMPLES_DIR, MapData(DEFAULT_SPEC_DIR)).get("bcg")
+
+
+def published(model: str, method: str, metric: str) -> Published:
+    found = [
+        e for e in BCG.published if (e.pathway.model, e.pathway.method, e.pathway.metric) == (model, method, metric)
+    ]
+    assert len(found) == 1, (model, method, metric)
+    return found[0]
+
+
+def assert_published(out: dict[str, Any], entry: Published) -> None:
+    """Each printed value, within half a unit in its last printed place."""
+    assert entry.values
+    for item in entry.values:
+        part, key = item.quantity.split(".")
+        assert out[part][key] == pytest.approx(item.value, abs=half_unit(item.places)), (entry.where, item.quantity)
+
+
 def test_random_effects_risk_ratio_reproduces_the_rma_uni_reference_page(
     client: TestClient, bcg: list[dict[str, Any]]
 ) -> None:
-    # rma.uni, first example: log risk ratios, REML. estimate -0.7145, se 0.1798, zval -3.9744,
-    # ci -1.0669 to -0.3622, tau^2 0.3132, I^2 92.22%, Q(df = 12) = 152.2330.
-    s = run(client, pathway(plans.RANDOM, "IV", "RR"), bcg)["summary"]
-    want = {
-        "estimate": -0.7145,
-        "se": 0.1798,
-        "zval": -3.9744,
-        "ci_lower": -1.0669,
-        "ci_upper": -0.3622,
-        "tau2": 0.3132,
-        "q": 152.2330,
-    }
-    for key, value in want.items():
-        assert s[key] == pytest.approx(value, abs=half_unit(4)), key
-    assert s["i2"] == pytest.approx(92.22, abs=half_unit(2))
+    entry = published(plans.RANDOM, "IV", "RR")
+    assert_published(run(client, pathway(plans.RANDOM, "IV", "RR"), bcg), entry)
 
 
+# the parameters keep their ids ([OR-published0], [RR-published1]): RUNNABLE in spec/build_map.py names them
 @pytest.mark.parametrize(
     ("metric", "published"),
-    [
-        # rma.mh: log odds ratios. Q(df = 12) = 163.9426, I^2 92.68%; OR scale 0.6229 (0.5748, 0.6750)
-        (
-            "OR",
-            {
-                "estimate": -0.4734,
-                "se": 0.0410,
-                "zval": -11.5444,
-                "ci_lower": -0.5538,
-                "ci_upper": -0.3930,
-                "q": 163.9426,
-            },
-        ),
-        # rma.mh: log risk ratios. Q(df = 12) = 152.5676, I^2 92.13%; RR scale 0.6353 (0.5881, 0.6862)
-        (
-            "RR",
-            {
-                "estimate": -0.4537,
-                "se": 0.0393,
-                "zval": -11.5338,
-                "ci_lower": -0.5308,
-                "ci_upper": -0.3766,
-                "q": 152.5676,
-            },
-        ),
-    ],
+    [("OR", published(plans.COMMON, "MH", "OR")), ("RR", published(plans.COMMON, "MH", "RR"))],
 )
 def test_mantel_haenszel_reproduces_the_rma_mh_reference_page(
-    client: TestClient, bcg: list[dict[str, Any]], metric: str, published: dict[str, float]
+    client: TestClient, bcg: list[dict[str, Any]], metric: str, published: Published
 ) -> None:
     out = run(client, pathway(plans.COMMON, "MH", metric), bcg)
-    for key, value in published.items():
-        assert out["summary"][key] == pytest.approx(value, abs=half_unit(4)), key
-    scale = {"OR": (0.6229, 0.5748, 0.6750), "RR": (0.6353, 0.5881, 0.6862)}[metric]
-    got = out["ratio_scale"]
-    for value, key in zip(scale, ("estimate", "ci_lower", "ci_upper"), strict=True):
-        assert got[key] == pytest.approx(value, abs=half_unit(4)), key
-    assert out["summary"]["i2"] == pytest.approx({"OR": 92.68, "RR": 92.13}[metric], abs=half_unit(2))
+    assert_published(out, published)
     assert out["summary"]["tau2"] == 0  # metafor reports no between-study variance as 0
 
 
 def test_peto_reproduces_the_rma_peto_reference_page(client: TestClient, bcg: list[dict[str, Any]]) -> None:
-    # rma.peto: log odds ratios. estimate -0.4744, se 0.0407, zval -11.6689, ci -0.5541 to -0.3948,
-    # Q(df = 12) = 167.7302, I^2 92.85%; OR scale 0.6222 (0.5746, 0.6738).
-    out = run(client, pathway(plans.COMMON, "PETO", "PETO"), bcg)
-    want = {
-        "estimate": -0.4744,
-        "se": 0.0407,
-        "zval": -11.6689,
-        "ci_lower": -0.5541,
-        "ci_upper": -0.3948,
-        "q": 167.7302,
-    }
-    for key, value in want.items():
-        assert out["summary"][key] == pytest.approx(value, abs=half_unit(4)), key
-    assert out["summary"]["i2"] == pytest.approx(92.85, abs=half_unit(2))
-    for value, key in zip((0.6222, 0.5746, 0.6738), ("estimate", "ci_lower", "ci_upper"), strict=True):
-        assert out["ratio_scale"][key] == pytest.approx(value, abs=half_unit(4)), key
+    assert_published(run(client, pathway(plans.COMMON, "PETO", "PETO"), bcg), published(plans.COMMON, "PETO", "PETO"))
+
+
+def test_every_published_value_in_the_example_is_checked() -> None:
+    checked = {("Random effects", "IV", "RR"), ("Common effect", "MH", "OR"), ("Common effect", "MH", "RR")}
+    checked |= {("Common effect", "PETO", "PETO")}
+    assert {(e.pathway.model, e.pathway.method, e.pathway.metric) for e in BCG.published} == checked
 
 
 # ---- studies with no events in either arm (decision 0019) ------------------------------------------------------------
