@@ -1,0 +1,5 @@
+# The backend's packages (#144), pinned. Development tools are in ../requirements-dev.txt.
+fastapi==0.162.0
+pydantic==2.14.3
+uvicorn==0.54.0
+httpx==0.28.1

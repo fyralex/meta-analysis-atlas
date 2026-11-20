@@ -16,12 +16,18 @@ select = ["E", "F", "W", "I", "B"]
 # Line length is left to the formatter; long strings in the map data stay on one line.
 ignore = ["E501"]
 
+[tool.ruff.lint.isort]
+# the backend's package (backend/app)
+known-first-party = ["app"]
+
 [tool.mypy]
 strict = true
 python_version = "3.11"
-files = ["spec", "tests", "scripts"]
+files = ["spec", "tests", "scripts", "backend"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
-pythonpath = ["spec", "scripts"]
+testpaths = ["tests", "backend/tests"]
+pythonpath = ["spec", "scripts", "backend"]
 addopts = "-q"
+# Starlette 1.10's test client asks for httpx2; the backend pins httpx 0.28 (backend/requirements.txt), which still works.
+filterwarnings = ["ignore:Using `httpx` with `starlette.testclient` is deprecated"]

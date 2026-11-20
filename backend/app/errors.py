@@ -1,0 +1,51 @@
+"""Errors are JSON with a stable code, a message and, where they apply, field paths (CLAUDE.md, "API")."""
+
+from typing import Any
+
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from starlette.exceptions import HTTPException as StarletteHTTPException
+
+
+class FieldError(BaseModel):
+    path: str
+    message: str
+
+
+class ErrorBody(BaseModel):
+    code: str
+    message: str
+    fields: list[FieldError] = []
+
+
+class ApiError(Exception):
+    def __init__(self, status: int, code: str, message: str, fields: list[FieldError] | None = None) -> None:
+        super().__init__(message)
+        self.status = status
+        self.body = ErrorBody(code=code, message=message, fields=fields or [])
+
+
+def _response(status: int, body: ErrorBody) -> JSONResponse:
+    return JSONResponse(status_code=status, content=body.model_dump())
+
+
+def _path(loc: tuple[Any, ...] | list[Any]) -> str:
+    return ".".join(str(part) for part in loc)
+
+
+def install(app: FastAPI) -> None:
+    @app.exception_handler(ApiError)
+    async def api_error(_: Request, exc: ApiError) -> JSONResponse:
+        return _response(exc.status, exc.body)
+
+    @app.exception_handler(RequestValidationError)
+    async def invalid_request(_: Request, exc: RequestValidationError) -> JSONResponse:
+        fields = [FieldError(path=_path(e["loc"]), message=str(e["msg"])) for e in exc.errors()]
+        return _response(422, ErrorBody(code="invalid_request", message="The request is not valid.", fields=fields))
+
+    @app.exception_handler(StarletteHTTPException)
+    async def http_error(_: Request, exc: StarletteHTTPException) -> JSONResponse:
+        code = {404: "not_found", 405: "method_not_allowed"}.get(exc.status_code, "http_error")
+        return _response(exc.status_code, ErrorBody(code=code, message=str(exc.detail)))
