@@ -11,6 +11,7 @@ and holds no rules of its own: `spec/build_map.py` decides what is valid.
 | POST | `/api/v1/meta-analysis/run` | Runs a **runnable** pathway on a study table: the summary, the studies, the studies left out and the R code |
 | GET | `/api/v1/meta-analysis/spec` | What a runnable pathway's study table must hold: each column in plain words, with an example, and the checks made |
 | GET | `/api/v1/meta-analysis/template` | A CSV template for a runnable pathway: the header and one example row |
+| POST | `/api/v1/meta-analysis/import` | Checks an uploaded CSV against a runnable pathway's column spec; returns its studies, ready for `/run`, or every problem with its row, study and column |
 
 Errors are JSON: `{"code": ..., "message": ..., "fields": [{"path": ..., "message": ...}], "details": {...}}`.
 A filter value the map doesn't have is `422 unknown_value`; a malformed request is
@@ -57,6 +58,21 @@ Mantel-Haenszel with OR, RR and RD, and Peto.
   `409 pathway_not_runnable`, with `details` giving its `status` and `milestone`. An option that
   doesn't apply is `422 invalid_option`. A fit that fails inside metafor is `422 analysis_failed`.
   An R service that doesn't answer is `502 r_service_unavailable`.
+
+## Uploading a CSV
+
+`POST /api/v1/meta-analysis/import` takes a multipart form: the pathway's seven tiers as
+separate fields, and `file`. The file is read with Python's `csv` module (R never sees it)
+and checked against the same column spec as `/run`, so a file that passes here passes there.
+
+- **The file:** UTF-8, with or without a byte-order mark; separated by commas, semicolons or
+  tabs (the header decides); columns in any order; other columns are ignored and listed in
+  `ignored_columns`; blank lines are skipped. At most 2 MB.
+- **Problems** are `422 invalid_data`: a missing or repeated column under `file.columns.<name>`;
+  a study's problems under `/run`'s paths (`data.3.ai`), each message naming the file's row, the
+  study and the column ("Row 5 (Aronson 1948), column ai: Must be between 0 and n1i (123).").
+  Thousands separators (`1,234`) and a file that isn't UTF-8 text get their own messages.
+- **Nothing is kept** (decision 0006).
 
 ## Settings
 

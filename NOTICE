@@ -43,6 +43,7 @@ typing_extensions (PSF-2.0); all are compatible with the GPL:
   Pydantic    https://docs.pydantic.dev (MIT)
   Uvicorn     https://www.uvicorn.org (BSD-3-Clause)
   HTTPX       https://www.python-httpx.org (BSD-3-Clause)
+  python-multipart  https://github.com/Kludex/python-multipart (Apache-2.0)
 
 The methodological content of the map cites the Cochrane Handbook for
 Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-and-manuals/handbook),
