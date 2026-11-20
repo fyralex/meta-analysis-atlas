@@ -1,0 +1,28 @@
+# The apps, the API and the R service, from v0.2 (CLAUDE.md, "Architecture").
+#   docker compose up --build      then open http://localhost:8080
+# Only the frontend is published; it passes /api and /health to the backend, which calls the R service.
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      R_SERVICE_URL: http://r_service:8000
+    depends_on:
+      r_service:
+        condition: service_healthy
+
+  r_service:
+    build: ./r_service
+    environment:
+      R_SERVICE_PORT: "8000"

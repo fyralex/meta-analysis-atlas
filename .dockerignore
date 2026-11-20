@@ -1,0 +1,13 @@
+# Keeps the build context small for the images built from the repository root (#144).
+**/node_modules
+**/.venv
+**/__pycache__
+**/.mypy_cache
+**/.pytest_cache
+**/.ruff_cache
+frontend/dist
+frontend/playwright-report
+frontend/test-results
+.git
+.env
+.env.*
