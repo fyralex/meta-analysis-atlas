@@ -8,6 +8,7 @@ import { Sources } from "../SourceList";
 import { STATUS_TEXT } from "../status";
 import { STATUSES, type Pathway } from "../types/map";
 import type { TeachKind } from "../types/cards";
+import { workbenchHref } from "../workbench/pathway";
 import { MODEL_FOR, modelsIn, rareLines, type Advice } from "./flow";
 
 // Pathfinder's results, laid out as design C of #92: the answer first (how many analyses fit), then the advice
@@ -195,6 +196,14 @@ function MethodGroup({ method, rows }: { method: string; rows: readonly Pathway[
                 <li key={m}>
                   {mc ? <Link to={cardHref(mc.id)}>{label}</Link> : label}{" "}
                   <span className="muted">· {modelWords(modelsIn(rows.filter((p) => p.metric === m)))}</span>
+                  {rows
+                    .filter((p) => p.metric === m && p.status === "runnable")
+                    .map((p) => (
+                      <span key={p.model}>
+                        {" "}
+                        · <Link to={workbenchHref(p)}>Run it with {p.model.toLowerCase()} in the Workbench</Link>
+                      </span>
+                    ))}
                 </li>
               );
             })}

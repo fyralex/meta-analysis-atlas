@@ -6,6 +6,7 @@ import { PathfinderPage } from "./pathfinder/PathfinderPage";
 import { HomePage } from "./pages/HomePage";
 import { NotBuiltPage } from "./pages/NotBuiltPage";
 import { ThemeSwitch } from "./ThemeSwitch";
+import { NotYet, RunPage, WorkbenchLayout } from "./workbench/WorkbenchPage";
 
 export function App() {
   // The home page offers the three apps as its own doors, so the header doesn't repeat them there (#92).
@@ -40,6 +41,17 @@ export function App() {
           <Route path="/atlas" element={<AtlasPage />} />
           <Route path="/cards" element={<CardsPage />} />
           <Route path="/pathfinder" element={<PathfinderPage />} />
+          <Route path="/workbench" element={<WorkbenchLayout />}>
+            <Route index element={<RunPage />} />
+            <Route
+              path="casebook"
+              element={<NotYet what="Published example datasets, each loadable into the Workbench in one click." issue={166} />}
+            />
+            <Route
+              path="proof"
+              element={<NotYet what="Every runnable analysis with its validation test, the published value and ours." issue={167} />}
+            />
+          </Route>
           <Route path="*" element={<NotBuiltPage name="Page not found" what="There is no page at this address." />} />
         </Routes>
       </main>

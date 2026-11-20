@@ -1,4 +1,4 @@
-// The three apps, in the order the header lists them.
+// The apps, in the order the header lists them. Casebook and Proof sit inside the Workbench (decision on #150).
 export const APPS = [
   {
     path: "/pathfinder",
@@ -11,5 +11,9 @@ export const APPS = [
   {
     path: "/atlas",
     name: "Atlas",
+  },
+  {
+    path: "/workbench",
+    name: "Workbench",
   },
 ] as const;

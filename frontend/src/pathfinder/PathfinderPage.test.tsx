@@ -108,6 +108,19 @@ describe("Pathfinder", PAGE, () => {
     expect(within(mh).getAllByText(/^Sources \(open outside the Atlas\):/).length).toBeGreaterThan(0);
   });
 
+  it("links each runnable analysis to the Workbench, and only runnable ones", () => {
+    renderAt(`${BINARY}&rare=no&vary=unsure`);
+    const links = screen.getAllByRole("link", { name: /^Run it with .* in the Workbench$/ });
+    expect(links).toHaveLength(map.pathways.filter((p) => p.status === "runnable").length);
+    const methods = screen.getByRole("region", { name: "By method" });
+    const mh = within(methods).getByText("Mantel-Haenszel").closest("details") as HTMLElement;
+    const rr = within(mh).getAllByRole("link", { name: /in the Workbench$/ });
+    expect(rr.map((a) => a.getAttribute("href"))).toContain(
+      "/workbench?framework=1.+Interventional+%28effect+of+an+intervention%29&group=Two+groups+%28pairwise%29" +
+        "&datatype=Arm-level+summary+data&outcome=Binary&model=Common+effect&method=MH&metric=RR",
+    );
+  });
+
   it("gives the reason for the models shown, and keeps the debate between the two models", () => {
     renderAt(`${BINARY}&rare=no&vary=unsure`);
     const model = () => screen.getByRole("region", { name: "Model" });

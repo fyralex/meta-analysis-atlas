@@ -47,7 +47,7 @@ describe("the app shell", PAGE, () => {
     cleanup();
     renderAt("/atlas");
     const nav = screen.getByRole("navigation", { name: "Apps" });
-    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Pathfinder", "Cards", "Atlas"]);
+    expect(within(nav).getAllByRole("link").map((a) => a.textContent)).toEqual(["Pathfinder", "Cards", "Atlas", "Workbench"]);
   });
 
   it("routes /atlas to the Atlas", () => {

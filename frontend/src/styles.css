@@ -363,3 +363,45 @@ table.pathways .cell-label { display: none; }
 .path-map figcaption { font-size: 13px; line-height: 1.5; }
 /* pan-y: on a phone, a vertical swipe that starts on the small map still scrolls the page. */
 .atlas-3d.atlas-3d-small { height: 280px; min-height: 0; border-radius: 10px; touch-action: pan-y; }
+
+/* Workbench (#165): its links row, its panels, the file's needs, the settings and the data check. */
+.workbench h1 { margin-bottom: 8px; }
+.subnav { display: flex; flex-wrap: wrap; gap: 4px 20px; border-bottom: 1px solid var(--line); margin: 0 0 16px; }
+.subnav a { text-decoration: none; padding: 8px 0; }
+.subnav a.active { border-bottom: 3px solid var(--accent); font-weight: 600; color: var(--text); }
+.panel { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 20px 24px; }
+.page .panel h2 { margin: 0 0 8px; }
+.panel h2:focus { outline: none; }
+.panel h2:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.panel h3 { font-size: 1rem; margin: 24px 0 8px; }
+.wb-title { font-size: 1.3rem; font-weight: 600; margin: 4px 0; }
+.wb-status { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; border: 1px solid currentColor; border-radius: 999px; padding: 2px 10px; font-weight: 600; }
+.pill-runnable { color: var(--st-runnable); }
+.runnable-list { margin: 8px 0 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.wb-sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 16px; }
+.wb-source { border: 1px solid var(--line); border-radius: 6px; padding: 16px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.button {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 8px 18px; border-radius: 6px;
+  border: 1px solid var(--accent); background: var(--surface); color: var(--accent); cursor: pointer;
+}
+.button-primary { background: var(--accent); color: var(--bg); }
+.button:disabled, .button.is-disabled { border-color: var(--line); background: var(--bg); color: var(--muted); cursor: not-allowed; }
+.file-picker:focus-within { outline: 3px solid var(--focus); outline-offset: 2px; }
+.wb-table { border-collapse: collapse; width: 100%; font-size: 15px; font-variant-numeric: tabular-nums; }
+.wb-table th, .wb-table td { padding: 6px 10px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.wb-table .num { text-align: right; }
+.th-label { display: block; font-weight: 400; font-size: 13px; color: var(--muted); }
+.wb-rules { margin: 12px 0 0; padding-left: 1.2em; font-size: 15px; color: var(--muted); }
+.wb-settings { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 16px; margin-top: 16px; }
+.wb-settings label { display: flex; flex-direction: column; gap: 4px; font-size: 15px; }
+.wb-settings select, .wb-settings input { min-height: 44px; font: inherit; color: inherit; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0 8px; max-width: 100%; }
+.problems { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 10px; }
+.problems li { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--check-text); border-radius: 6px; padding: 12px 14px; }
+.problems svg { flex: none; margin-top: 2px; color: var(--check-text); }
+.wb-actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+/* a problem is marked by an outline, bold text and the word "Fix", not by colour alone */
+.row-problem { background: color-mix(in srgb, var(--check-text) 8%, transparent); }
+.cell-problem { outline: 2px solid var(--check-text); outline-offset: -2px; font-weight: 700; }
+.check-fix { color: var(--check-text); font-weight: 700; }
+.check-ok { color: var(--st-runnable); font-weight: 600; }
