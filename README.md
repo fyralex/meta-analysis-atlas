@@ -16,15 +16,17 @@ are marked as such.
 
 ## Status
 
-Version 0.1 is the map and three apps for exploring it. **Nothing runs
-analyses yet.** Each pathway has a status:
+Version 0.1 is the map and three apps for exploring it. **The apps don't run
+analyses yet.** The backend can run the 12 pathways marked runnable below
+(`POST /api/v1/meta-analysis/run`, see [`backend/README.md`](backend/README.md));
+the Workbench for uploading data comes later in v0.2. Each pathway has a status:
 
 | Status | Pathways | Meaning |
 |---|---|---|
-| Planned | 444 | Confirmed from its sources; its engine is on the roadmap |
+| Planned | 432 | Confirmed from its sources; its engine is on the roadmap |
 | Specified | 86 | Confirmed from its sources; not planned yet |
 | To check | 10 | Not yet confirmed from a primary source |
-| Runnable | 0 | Passes a validation test against a published worked example or the R package itself; none yet |
+| Runnable | 12 | Passes a validation test against a published worked example or the R package itself: the interventional, two-group, binary pathways with inverse variance, Mantel-Haenszel and Peto |
 
 A pathway becomes runnable only when it passes a validation test, against a
 published worked example or the R package run on the same data

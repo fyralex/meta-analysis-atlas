@@ -1457,7 +1457,7 @@ for _model in (COMMON, RANDOM):
 # --------------------------------------------------------------------------
 # Status (docs/decisions/0001-pathway-status.md)
 #
-#   runnable   has a passing validation test (none in v0.1)
+#   runnable   has a passing validation test (the 12 in RUNNABLE, from v0.2)
 #   planned    confirmed, and its engine is on the roadmap (v0.2 to v0.4)
 #   specified  confirmed, its engine not planned yet ("Later")
 #   to_check   not yet confirmed from a primary source (verified = False)
@@ -1496,9 +1496,47 @@ def milestone_of(framework: str, method: str) -> str:
     return FRAMEWORK_MILESTONE[framework]
 
 
-def status_of(verified: bool, milestone: str) -> str:
+# The pathways that have a passing validation test (CLAUDE.md, rule 6), each with the node ids of its tests. They
+# are the interventional, two-group, arm-level, binary pathways that POST /run runs (#148, decision 0019). The first
+# test compares /run with metafor run directly on the BCG trials (1e-10); the others compare it with the values
+# printed on metafor's reference pages. A test map in tests/test_map.py checks that these tests exist.
+VALIDATION = "backend/tests/test_validation.py::"
+DIRECT = VALIDATION + "test_every_pathway_equals_metafor_called_directly"
+RUNNABLE: dict[tuple[str, str, str], list[str]] = {
+    (COMMON, "IV", "OR"): [f"{DIRECT}[Common effect-IV-OR]"],
+    (RANDOM, "IV", "OR"): [f"{DIRECT}[Random effects-IV-OR]"],
+    (COMMON, "IV", "RR"): [f"{DIRECT}[Common effect-IV-RR]"],
+    (RANDOM, "IV", "RR"): [
+        f"{DIRECT}[Random effects-IV-RR]",
+        VALIDATION + "test_random_effects_risk_ratio_reproduces_the_rma_uni_reference_page",
+    ],
+    (COMMON, "IV", "RD"): [f"{DIRECT}[Common effect-IV-RD]"],
+    (RANDOM, "IV", "RD"): [f"{DIRECT}[Random effects-IV-RD]"],
+    (COMMON, "IV", "AS"): [f"{DIRECT}[Common effect-IV-AS]"],
+    (RANDOM, "IV", "AS"): [f"{DIRECT}[Random effects-IV-AS]"],
+    (COMMON, "MH", "OR"): [
+        f"{DIRECT}[Common effect-MH-OR]",
+        VALIDATION + "test_mantel_haenszel_reproduces_the_rma_mh_reference_page[OR-published0]",
+    ],
+    (COMMON, "MH", "RR"): [
+        f"{DIRECT}[Common effect-MH-RR]",
+        VALIDATION + "test_mantel_haenszel_reproduces_the_rma_mh_reference_page[RR-published1]",
+    ],
+    (COMMON, "MH", "RD"): [f"{DIRECT}[Common effect-MH-RD]"],
+    (COMMON, "PETO", "PETO"): [
+        f"{DIRECT}[Common effect-PETO-PETO]",
+        VALIDATION + "test_peto_reproduces_the_rma_peto_reference_page",
+    ],
+}
+RUNNABLE_PREFIX = (F1, G2, ARM, "Binary")
+
+
+def status_of(verified: bool, milestone: str, key: tuple[str, ...] = ()) -> str:
+    """`key` is the pathway's seven tiers. A pathway in RUNNABLE is runnable once it is also confirmed."""
     if not verified:
         return "to_check"
+    if key[:4] == RUNNABLE_PREFIX and key[4:] in RUNNABLE:
+        return "runnable"
     return "planned" if milestone in ROADMAP else "specified"
 
 
@@ -1561,7 +1599,11 @@ def pathways() -> list[Pathway]:
                             added=b["added"] or me["added"] or mt["added"] or model in me["added_models"],
                             new=branch_new(b) or method_new(mid) or metric_new(code) or model_new(mid, model),
                             milestone=milestone,
-                            status=status_of(verified, milestone),
+                            status=status_of(
+                                verified,
+                                milestone,
+                                (b["fw"], b["group"], b["datatype"], b["outcome"], model, mid, code),
+                            ),
                         )
                     )
     return out

@@ -61,9 +61,9 @@ describe("spec/map.json as the frontend reads it", () => {
     }
   });
 
-  it("counts every pathway under exactly one status, and none as runnable", () => {
+  it("counts every pathway under exactly one status, and 12 as runnable", () => {
     const counts = countByStatus(map);
     expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(map.pathways.length);
-    expect(counts.runnable).toBe(0);
+    expect(counts.runnable).toBe(12);
   });
 });

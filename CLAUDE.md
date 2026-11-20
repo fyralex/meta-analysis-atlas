@@ -234,7 +234,7 @@ shows up as a diff in the PR, and the PR explains each difference.
 
 | Status | Meaning |
 |---|---|
-| `runnable` | Has a passing validation test. Nothing is runnable in v0.1 |
+| `runnable` | Has a passing validation test. From v0.2: the 12 interventional, two-group, arm-level, binary pathways with inverse variance, Mantel-Haenszel and Peto (`RUNNABLE` in `spec/build_map.py`) |
 | `planned` | Confirmed, and its engine is on the roadmap |
 | `specified` | Confirmed, not yet planned |
 | `to_check` | Not yet confirmed from a primary source (`verified = False`) |

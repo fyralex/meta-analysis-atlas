@@ -4,10 +4,14 @@ from __future__ import annotations
 
 import json
 import re
+import subprocess
+import sys
+from pathlib import Path
 
 import build_map as bm
 import pytest
 
+ROOT = Path(__file__).resolve().parents[1]
 KEY_RE = re.compile(r"^[A-Za-z][A-Za-z0-9-]*$")
 SECTION_RE = re.compile(r"^s\d")
 
@@ -374,9 +378,46 @@ def test_every_pathway_has_a_known_status_and_milestone() -> None:
         assert p["milestone"] in (*bm.ROADMAP, bm.LATER), p
 
 
-def test_nothing_is_runnable_in_v0_1() -> None:
-    """A pathway is runnable only with a passing validation test, and v0.1 has none (CLAUDE.md, rule 6)."""
-    assert [p for p in bm.pathways() if p["status"] == "runnable"] == []
+def _runnable_keys() -> set[tuple[str, ...]]:
+    return {(*bm.RUNNABLE_PREFIX, *k) for k in bm.RUNNABLE}
+
+
+def test_exactly_the_pathways_in_the_runnable_table_are_runnable() -> None:
+    """A pathway is runnable only with a passing validation test (CLAUDE.md, rule 6): the table names the tests."""
+    runnable = {bm.pathway_key(p) for p in bm.pathways() if p["status"] == "runnable"}
+    assert runnable == _runnable_keys()
+    assert len(runnable) == 12
+
+
+def test_every_runnable_pathway_is_confirmed_and_names_a_validation_test() -> None:
+    for p in bm.pathways():
+        if p["status"] == "runnable":
+            assert p["verified"], p
+            assert p["milestone"] == "v0.2", p
+            assert bm.RUNNABLE[(p["model"], p["method"], p["metric"])], p
+
+
+def test_every_validation_test_named_in_the_runnable_table_exists() -> None:
+    """The node ids are checked against what pytest collects from the validation module."""
+    done = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "--collect-only",
+            "-m",
+            "integration",
+            "backend/tests/test_validation.py",
+        ],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert done.returncode == 0, done.stdout + done.stderr
+    collected = {line for line in done.stdout.splitlines() if "::" in line}
+    named = [t for tests in bm.RUNNABLE.values() for t in tests]
+    assert named and set(named) <= collected, sorted(set(named) - collected)
 
 
 def test_to_check_means_not_yet_confirmed() -> None:
@@ -386,7 +427,7 @@ def test_to_check_means_not_yet_confirmed() -> None:
 
 def test_confirmed_pathways_are_planned_when_their_engine_is_on_the_roadmap() -> None:
     for p in bm.pathways():
-        if p["verified"]:
+        if p["verified"] and p["status"] != "runnable":
             expected = "planned" if p["milestone"] in bm.ROADMAP else "specified"
             assert p["status"] == expected, p
 

@@ -171,13 +171,13 @@ def test_a_pathway_the_map_does_not_have_is_a_422(runnable_spec: Path) -> None:
 
 
 def test_a_pathway_that_is_not_runnable_is_a_409_with_its_status_and_milestone() -> None:
-    # the real spec: nothing is runnable until part C
-    path = pathway(plans.COMMON, "IV", "OR")
-    response = client(DEFAULT_SPEC_DIR).post("/api/v1/meta-analysis/run", json=body(path))
+    # the real spec: the first planned pathway that isn't one of the 12 (the one-group IV pathways come first)
+    other = next(p for p in LOCK if p["status"] == "planned")
+    response = client(DEFAULT_SPEC_DIR).post("/api/v1/meta-analysis/run", json=body(ref(other)))
     assert response.status_code == 409
     out = response.json()
     assert out["code"] == "pathway_not_runnable"
-    assert out["details"] == {"status": "planned", "milestone": "v0.2"}
+    assert out["details"] == {"status": "planned", "milestone": other["milestone"]}
 
 
 def test_a_runnable_pathway_without_a_plan_is_a_501(tmp_path: Path) -> None:
@@ -292,3 +292,11 @@ def test_an_r_service_that_does_not_answer_is_a_502(runnable_spec: Path) -> None
     response = TestClient(app).post("/api/v1/meta-analysis/run", json=body(pathway(plans.RANDOM, "IV", "OR")))
     assert response.status_code == 502
     assert response.json()["code"] == "r_service_unavailable"
+
+
+def test_the_maps_runnable_pathways_are_the_ones_the_builder_has_plans_for() -> None:
+    """The real map, not the temporary copy: what it calls runnable, /run can run (part C of #148)."""
+    runnable = [ref(p) for p in LOCK if p["status"] == "runnable"]
+    assert runnable == [ref(p) for p in SUPPORTED_PATHWAYS]
+    response = client(DEFAULT_SPEC_DIR).post("/api/v1/meta-analysis/run", json=body(runnable[0]))
+    assert response.status_code == 200, response.text
