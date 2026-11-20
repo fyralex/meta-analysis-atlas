@@ -31,8 +31,15 @@ A plan is data, never code: R never evaluates text it receives.
   `{"column": "tpos"}`.
 - **Columns:** after `effect`, the data gain `yi` and `vi`.
 - **Outputs** (`outputs`, all by default): `estimate`, `se`, `ci_lower`,
-  `ci_upper`, `zval`, `pval`, `tau2`, `i2`, `h2`, `q`, `q_pval` and `k`. A
-  `post` step adds `steps`, one row per study.
+  `ci_upper`, `zval`, `pval`, `tau2`, `i2`, `h2`, `q`, `q_pval`, `k`, and the
+  prediction interval `pi_lower` and `pi_upper` (from `predict()`, for
+  `rma.uni` only). A value a model doesn't have is `null`, for example
+  the prediction interval for `rma.mh`.
+- **Studies:** every result has `studies`, one row per study in the data,
+  with `study`, `yi`, `vi`, `weight` (percent, as metafor's `weights()` gives
+  it) and `used`. A study the model left out, such as a double-zero study
+  under Mantel-Haenszel, has `weight` null or 0 and `used` false.
+- **Steps:** a `post` step adds `steps`, one row per study.
 - **Refusals:** a function or column outside the plan's rules gets a 400
   with the reason. An error inside metafor gets a 422.
 

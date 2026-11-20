@@ -14,6 +14,9 @@
 #   post    optional  list(fn = "cumul" | "leave1out", args = list(...))
 #                     run on the fitted model
 #   outputs optional  names of the summary values to return (OUTPUTS); all by default
+#
+# The result: summary (the values asked for), studies (one row per study, study_rows) and, with a post
+# step, steps (one row per step).
 
 # Each allowed function, with the only argument names a plan may give it. Arguments that take
 # formulas, functions, data frames or R code (data, subset, mods, scale, transf, targs, control,
@@ -59,8 +62,36 @@ OUTPUTS <- list(
   h2 = function(fit) fit$H2,
   q = function(fit) fit$QE,
   q_pval = function(fit) fit$QEp,
-  k = function(fit) fit$k
+  k = function(fit) fit$k,
+  # the prediction interval (rma.uni only; NA, sent as null, for rma.mh and rma.peto)
+  pi_lower = function(fit) prediction(fit)$pi.lb,
+  pi_upper = function(fit) prediction(fit)$pi.ub
 )
+
+prediction <- function(fit) {
+  if (!inherits(fit, "rma.uni")) {
+    return(list(pi.lb = NA_real_, pi.ub = NA_real_))
+  }
+  p <- stats::predict(fit)
+  list(pi.lb = unname(p$pi.lb[[1]]), pi.ub = unname(p$pi.ub[[1]]))
+}
+
+# One row per study in the data: its estimate and sampling variance, its weight in percent as metafor
+# gives it, and whether the model used it. metafor names the weights by study label and leaves out the
+# studies it didn't use, so a study left out has no weight (NA, sent as null).
+study_rows <- function(fit) {
+  study <- as.character(fit$slab)
+  w <- stats::weights(fit)
+  weight <- unname(w[study])
+  data.frame(
+    study = study,
+    yi = as.numeric(fit$yi.f),
+    vi = as.numeric(fit$vi.f),
+    weight = weight,
+    used = !is.na(weight) & weight > 0,
+    stringsAsFactors = FALSE
+  )
+}
 
 plan_error <- function(message) {
   structure(class = c("plan_error", "error", "condition"), list(message = message, call = NULL))
@@ -136,7 +167,11 @@ summary_values <- function(fit, outputs) {
   if (length(unknown) > 0) {
     stop(plan_error(sprintf("Unknown output: %s.", paste(unknown, collapse = ", "))))
   }
-  stats::setNames(lapply(names, function(n) OUTPUTS[[n]](fit)), names)
+  # a value a model doesn't have is NA, sent as null
+  stats::setNames(lapply(names, function(n) {
+    v <- OUTPUTS[[n]](fit)
+    if (is.null(v)) NA_real_ else v
+  }), names)
 }
 
 # A cumulative or leave-one-out result as rows. study names the study added (cumul) or left out
@@ -179,7 +214,7 @@ execute_plan <- function(plan, data) {
       }
       entry <- step_entry("model", plan[["model"]])
       fit <- do.call(entry$fn, step_arguments(plan[["model"]][["args"]], frame, entry, plan[["model"]][["fn"]]))
-      results <- list(summary = summary_values(fit, plan[["outputs"]]))
+      results <- list(summary = summary_values(fit, plan[["outputs"]]), studies = study_rows(fit))
       if (!is.null(plan[["post"]])) {
         entry <- step_entry("post", plan[["post"]])
         args <- step_arguments(plan[["post"]][["args"]], frame, entry, plan[["post"]][["fn"]])
