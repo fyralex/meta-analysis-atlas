@@ -21,6 +21,10 @@ run with these defaults.
   own default (`drop00 = TRUE`). Checked against metafor 5.0.1, `rma.mh` and
   `rma.peto` then drop such studies for OR, RR and the Peto odds ratio, and
   `rma.mh` keeps them for RD. The result lists every study left out.
+- **Risk difference:** metafor's default adds 0.5 to a table with a zero
+  cell for RD too (`to = "only0"`), so 0 of 10 against 2 of 10 gives −0.182,
+  not the observed −0.200. The owner chose on 2026-11-20 to keep the default
+  (#148). AS gets no correction.
 
 ## Sources
 

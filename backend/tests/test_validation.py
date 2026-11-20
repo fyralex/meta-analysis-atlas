@@ -12,7 +12,11 @@ reference pages use):
    - rma.uni, first example (REML, log risk ratios): https://wviechtb.github.io/metafor/reference/rma.uni.html
    - rma.mh, odds ratios and risk ratios: https://wviechtb.github.io/metafor/reference/rma.mh.html
    - rma.peto: https://wviechtb.github.io/metafor/reference/rma.peto.html
-   The reference pages give no published output for the other pathways, so the others are checked by 1 only.
+   The reference pages give no published output for the other pathways, so the others are checked by 1 and 3 only.
+3. **Against metafor called by hand (#156).** 1 compares /run with code rendered from the same plan, so a bug in the
+   plan builder would show in both. Here each pathway is compared with a metafor call written out in this file, on
+   dat.bcg's own columns (ai = tpos, bi = tneg, ci = cpos, di = cneg; /run gets the totals n1i and n2i instead), with
+   decision 0019's choices written explicitly. It uses neither the plan builder nor the R code renderer. 1e-10.
 """
 
 import json
@@ -277,6 +281,74 @@ def test_a_study_with_no_events_in_either_arm_is_dropped_only_where_the_decision
     # metafor's own k for rma.mh and rma.peto still counts the dropped study, so the studies used are counted here
     assert sum(s["used"] for s in out["studies"]) == (13 if dropped else 14)
     assert_matches_r(out, tmp_path)
+
+
+# ---- metafor called by hand, without the plan builder (#156) ----------------------------------------------------------
+
+# Each pathway as a metafor user would write it, on a data frame `d` with dat.bcg's columns. Decision 0019 written out:
+# REML and the Wald interval for random effects (rma's defaults, stated anyway), drop00 = TRUE for IV OR and RR only,
+# and the functions' own zero-cell defaults otherwise (rma.mh and rma.peto default to drop00 = TRUE).
+COUNTS = "ai = tpos, bi = tneg, ci = cpos, di = cneg, data = d"
+BY_HAND: dict[str, str] = {
+    "Common effect-IV-OR": f'rma(measure = "OR", {COUNTS}, method = "EE", drop00 = TRUE)',
+    "Random effects-IV-OR": f'rma(measure = "OR", {COUNTS}, method = "REML", test = "z", drop00 = TRUE)',
+    "Common effect-IV-RR": f'rma(measure = "RR", {COUNTS}, method = "EE", drop00 = TRUE)',
+    "Random effects-IV-RR": f'rma(measure = "RR", {COUNTS}, method = "REML", test = "z", drop00 = TRUE)',
+    "Common effect-IV-RD": f'rma(measure = "RD", {COUNTS}, method = "EE")',
+    "Random effects-IV-RD": f'rma(measure = "RD", {COUNTS}, method = "REML", test = "z")',
+    "Common effect-IV-AS": f'rma(measure = "AS", {COUNTS}, method = "EE")',
+    "Random effects-IV-AS": f'rma(measure = "AS", {COUNTS}, method = "REML", test = "z")',
+    "Common effect-MH-OR": f'rma.mh(measure = "OR", {COUNTS})',
+    "Common effect-MH-RR": f'rma.mh(measure = "RR", {COUNTS})',
+    "Common effect-MH-RD": f'rma.mh(measure = "RD", {COUNTS})',
+    "Common effect-PETO-PETO": f"rma.peto({COUNTS})",
+}
+DATASETS = ("bcg", "double zero")
+HAND_KEYS = ("estimate", "se", "ci_lower", "ci_upper", "zval", "tau2", "i2", "q", "k")
+
+
+@pytest.fixture(scope="module")
+def by_hand(tmp_path_factory: pytest.TempPathFactory) -> dict[str, dict[str, dict[str, float | None]]]:
+    """Every call in BY_HAND on both data sets, in one Rscript run: {data set: {pathway id: summary}}."""
+    calls = ",\n".join(f"  {json.dumps(name)} = function(d) {call}" for name, call in BY_HAND.items())
+    code = f"""
+suppressPackageStartupMessages(library(metafor))
+bcg <- metadat::dat.bcg[, c("tpos", "tneg", "cpos", "cneg")]
+# the study with_a_double_zero() adds: 0 of 40 and 0 of 42
+sets <- list("bcg" = bcg, "double zero" = rbind(bcg, data.frame(tpos = 0, tneg = 40, cpos = 0, cneg = 42)))
+fits <- list(
+{calls}
+)
+n <- function(x) if (is.null(x)) NA else unname(x[[1]])
+out <- lapply(sets, function(d) lapply(fits, function(f) {{
+  fit <- f(d)
+  list(estimate = n(fit$b), se = n(fit$se), ci_lower = n(fit$ci.lb), ci_upper = n(fit$ci.ub), zval = n(fit$zval),
+       tau2 = n(fit$tau2), i2 = n(fit$I2), q = n(fit$QE), k = n(fit$k))
+}}))
+cat(jsonlite::toJSON(out, digits = NA, auto_unbox = TRUE, na = "null"))
+"""
+    result: dict[str, dict[str, dict[str, float | None]]] = rscript(code, tmp_path_factory.mktemp("by_hand"))
+    return result
+
+
+def test_the_hand_written_calls_cover_exactly_the_supported_pathways() -> None:
+    assert set(BY_HAND) == {pid(p) for p in SUPPORTED_PATHWAYS}
+
+
+@pytest.mark.parametrize("dataset", DATASETS)
+@pytest.mark.parametrize("p", SUPPORTED_PATHWAYS, ids=pid)
+def test_every_pathway_equals_metafor_called_by_hand(
+    client: TestClient,
+    bcg: list[dict[str, Any]],
+    by_hand: dict[str, dict[str, dict[str, float | None]]],
+    p: dict[str, Any],
+    dataset: str,
+) -> None:
+    rows = bcg if dataset == "bcg" else with_a_double_zero(bcg)
+    summary = run(client, ref(p), rows)["summary"]
+    want = by_hand[dataset][pid(p)]
+    for key in HAND_KEYS:
+        close(summary[key], want[key], key)
 
 
 # ---- failures --------------------------------------------------------------------------------------------------------
