@@ -5,8 +5,8 @@ don't edit it by hand. `scripts/check.sh` fails if it is out of date, and
 if a dependency of the app has a licence that isn't compatible with
 GPL-3.0-or-later.
 
-288 packages (each name and version once): 22 the app depends on, 266 used only to build and test it.
-By licence: MIT 222, Apache-2.0 22, MPL-2.0 12, ISC 11, BSD-2-Clause 8, BSD-3-Clause 4, BlueOak-1.0.0 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
+298 packages (each name and version once): 30 the app depends on, 268 used only to build and test it.
+By licence: MIT 224, Apache-2.0 22, ISC 19, MPL-2.0 12, BSD-2-Clause 8, BSD-3-Clause 4, BlueOak-1.0.0 4, MIT-0 2, 0BSD 1, CC-BY-4.0 1, CC0-1.0 1.
 
 ## Dependencies of the app
 
@@ -25,7 +25,15 @@ Split by npm's dev flag: what the app's build can bundle, with their own depende
 | `buffer` | 6.0.3 | MIT |
 | `cookie-es` | 3.1.1 | MIT |
 | `csstype` | 3.2.3 | MIT |
+| `d3-array` | 3.2.5 | ISC |
+| `d3-color` | 3.1.1 | ISC |
+| `d3-format` | 3.1.3 | ISC |
+| `d3-interpolate` | 3.0.2 | ISC |
+| `d3-scale` | 4.0.2 | ISC |
+| `d3-time` | 3.1.1 | ISC |
+| `d3-time-format` | 4.1.1 | ISC |
 | `ieee754` | 1.2.1 | BSD-3-Clause |
+| `internmap` | 2.0.3 | ISC |
 | `its-fine` | 2.1.1 | MIT |
 | `react` | 19.3.1 | MIT |
 | `react-dom` | 19.3.1 | MIT |
@@ -122,6 +130,8 @@ Split by npm's dev flag: what the app's build can bundle, with their own depende
 | `@tybys/wasm-util` | 0.10.5 | MIT |
 | `@types/aria-query` | 5.0.4 | MIT |
 | `@types/chai` | 5.2.3 | MIT |
+| `@types/d3-scale` | 4.0.9 | MIT |
+| `@types/d3-time` | 3.0.4 | MIT |
 | `@types/deep-eql` | 4.0.2 | MIT |
 | `@types/esrecurse` | 4.3.1 | MIT |
 | `@types/estree` | 1.0.10 | MIT |

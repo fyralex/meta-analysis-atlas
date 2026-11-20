@@ -1,0 +1,243 @@
+{
+ "pathway": {
+  "framework": "1. Interventional (effect of an intervention)",
+  "group": "Two groups (pairwise)",
+  "datatype": "Arm-level summary data",
+  "outcome": "Binary",
+  "model": "Random effects",
+  "method": "IV",
+  "metric": "RR"
+ },
+ "analysis_type": "standard",
+ "options": {
+  "estimator": "REML",
+  "interval": "z",
+  "level": 95.0
+ },
+ "summary": {
+  "estimate": -0.7145323483651015,
+  "se": 0.17978153178036146,
+  "ci_lower": -1.066897675740053,
+  "ci_upper": -0.3621670209901499,
+  "zval": -3.974447994124577,
+  "pval": 7.054267348520553e-05,
+  "tau2": 0.3132433259808949,
+  "i2": 92.22138607496555,
+  "h2": 12.85576080311214,
+  "q": 152.2330080823733,
+  "q_pval": 1.9967645908459738e-26,
+  "q_df": 12.0,
+  "k": 13.0,
+  "pi_lower": -1.8666923466070688,
+  "pi_upper": 0.437627649876866
+ },
+ "ratio_scale": {
+  "estimate": 0.489420936788213,
+  "ci_lower": 0.3440742934002156,
+  "ci_upper": 0.6961660837824798,
+  "pi_lower": 0.15463429349882568,
+  "pi_upper": 1.5490280192502777
+ },
+ "studies": [
+  {
+   "study": "Aronson 1948",
+   "yi": -0.8893113339202054,
+   "vi": 0.32558476500396133,
+   "weight": 5.059483079315513,
+   "used": true
+  },
+  {
+   "study": "Ferguson & Simes 1949",
+   "yi": -1.5853886572014306,
+   "vi": 0.19458112139814385,
+   "weight": 6.364679632126595,
+   "used": true
+  },
+  {
+   "study": "Rosenthal et al 1960",
+   "yi": -1.3480731482996933,
+   "vi": 0.4153679653679654,
+   "weight": 4.436027763096739,
+   "used": true
+  },
+  {
+   "study": "Hart & Sutherland 1977",
+   "yi": -1.4415511900213054,
+   "vi": 0.020010031902247573,
+   "weight": 9.698746735697359,
+   "used": true
+  },
+  {
+   "study": "Frimodt-Moller et al 1973",
+   "yi": -0.21754732221129558,
+   "vi": 0.05121017216963086,
+   "weight": 8.86845628682752,
+   "used": true
+  },
+  {
+   "study": "Stein & Aronson 1953",
+   "yi": -0.786115585818864,
+   "vi": 0.0069056184559087574,
+   "weight": 10.095738165294264,
+   "used": true
+  },
+  {
+   "study": "Vandiviere et al 1973",
+   "yi": -1.6208982235983918,
+   "vi": 0.22301724757231517,
+   "weight": 6.027181702942413,
+   "used": true
+  },
+  {
+   "study": "TPT Madras 1980",
+   "yi": 0.011952333523840508,
+   "vi": 0.0039615792978177295,
+   "weight": 10.18943863459295,
+   "used": true
+  },
+  {
+   "study": "Coetzee & Berjak 1968",
+   "yi": -0.4694176487381494,
+   "vi": 0.056434210463248966,
+   "weight": 8.74313313169806,
+   "used": true
+  },
+  {
+   "study": "Rosenthal et al 1961",
+   "yi": -1.3713448034727844,
+   "vi": 0.07302479361302891,
+   "weight": 8.367607247336895,
+   "used": true
+  },
+  {
+   "study": "Comstock et al 1974",
+   "yi": -0.3393588283383906,
+   "vi": 0.01241221397155972,
+   "weight": 9.925026662838903,
+   "used": true
+  },
+  {
+   "study": "Comstock & Webster 1969",
+   "yi": 0.44591340057137874,
+   "vi": 0.5325058452001528,
+   "weight": 3.821629422841509,
+   "used": true
+  },
+  {
+   "study": "Comstock et al 1976",
+   "yi": -0.017313948216879815,
+   "vi": 0.0714046596839863,
+   "weight": 8.402851535391283,
+   "used": true
+  }
+ ],
+ "left_out": [],
+ "steps": null,
+ "r_code": "library(metafor)\n\ndat <- data.frame(\n  study = c(\"Aronson 1948\", \"Ferguson & Simes 1949\", \"Rosenthal et al 1960\", \"Hart & Sutherland 1977\", \"Frimodt-Moller et al 1973\", \"Stein & Aronson 1953\", \"Vandiviere et al 1973\", \"TPT Madras 1980\", \"Coetzee & Berjak 1968\", \"Rosenthal et al 1961\", \"Comstock et al 1974\", \"Comstock & Webster 1969\", \"Comstock et al 1976\"),\n  ai = c(4, 6, 3, 62, 33, 180, 8, 505, 29, 17, 186, 5, 27),\n  n1i = c(123, 306, 231, 13598, 5069, 1541, 2545, 88391, 7499, 1716, 50634, 2498, 16913),\n  ci = c(11, 29, 11, 248, 47, 372, 10, 499, 45, 65, 141, 3, 29),\n  n2i = c(139, 303, 220, 12867, 5808, 1451, 629, 88391, 7277, 1665, 27338, 2341, 17854),\n  stringsAsFactors = FALSE\n)\n\ndat <- escalc(measure = \"RR\", ai = ai, n1i = n1i, ci = ci, n2i = n2i, slab = study, drop00 = TRUE, data = dat)\nfit <- rma.uni(yi = yi, vi = vi, slab = study, method = \"REML\", test = \"z\", level = 95.0, data = dat)\nprint(fit)\n\n# back on the ratio scale\npred <- predict(fit, transf = exp)\nprint(pred)\n\n# funnel plot: the 95% region is centred on the common-effect estimate (decision 0020)\nce <- rma.uni(yi = yi, vi = vi, slab = study, method = \"EE\", test = \"z\", level = 95.0, data = dat)\nfunnel(ce, level = 95)\n",
+ "funnel": {
+  "centre": -0.4302851636540909,
+  "centre_model": "Common effect",
+  "level": 95.0,
+  "z": 1.959963984540054,
+  "log_scale": true,
+  "points": [
+   {
+    "study": "Aronson 1948",
+    "yi": -0.8893113339202054,
+    "sei": 0.5706003548929507
+   },
+   {
+    "study": "Ferguson & Simes 1949",
+    "yi": -1.5853886572014306,
+    "sei": 0.44111350171825825
+   },
+   {
+    "study": "Rosenthal et al 1960",
+    "yi": -1.3480731482996933,
+    "sei": 0.644490469571091
+   },
+   {
+    "study": "Hart & Sutherland 1977",
+    "yi": -1.4415511900213054,
+    "sei": 0.14145681992130169
+   },
+   {
+    "study": "Frimodt-Moller et al 1973",
+    "yi": -0.21754732221129558,
+    "sei": 0.2262966463950159
+   },
+   {
+    "study": "Stein & Aronson 1953",
+    "yi": -0.786115585818864,
+    "sei": 0.08310005087789513
+   },
+   {
+    "study": "Vandiviere et al 1973",
+    "yi": -1.6208982235983918,
+    "sei": 0.4722470196542432
+   },
+   {
+    "study": "TPT Madras 1980",
+    "yi": 0.011952333523840508,
+    "sei": 0.06294107798423641
+   },
+   {
+    "study": "Coetzee & Berjak 1968",
+    "yi": -0.4694176487381494,
+    "sei": 0.2375588568402554
+   },
+   {
+    "study": "Rosenthal et al 1961",
+    "yi": -1.3713448034727844,
+    "sei": 0.27023100046632126
+   },
+   {
+    "study": "Comstock et al 1974",
+    "yi": -0.3393588283383906,
+    "sei": 0.11141011610962319
+   },
+   {
+    "study": "Comstock & Webster 1969",
+    "yi": 0.44591340057137874,
+    "sei": 0.7297299810204818
+   },
+   {
+    "study": "Comstock et al 1976",
+    "yi": -0.017313948216879815,
+    "sei": 0.26721650339001574
+   }
+  ],
+  "caption": "Each point is a study: its estimate across, its standard error down, so larger studies are at the top. The triangle is where 95% of studies would fall around the common-effect estimate if there were no bias and no heterogeneity. Asymmetry does not by itself show non-reporting bias (such as publication bias): differences between studies, bias in smaller studies and chance can all cause it. No test for asymmetry is run here.",
+  "sources": [
+   {
+    "key": "CH-13",
+    "section": "13.3.4.2"
+   },
+   {
+    "key": "CH-13",
+    "section": "13.3.4.3"
+   },
+   {
+    "key": "CH-13",
+    "section": "13.3.4.5"
+   }
+  ]
+ },
+ "interpretation": {
+  "text": "On average across the 13 studies, the risk of tuberculosis in the vaccinated groups was 0.49 times the risk in the unvaccinated groups (95% CI 0.34 to 0.70). This is the average of effects that may differ between studies, not one shared effect.",
+  "sources": [
+   {
+    "key": "CH-6",
+    "section": "6.4.1.2"
+   },
+   {
+    "key": "CH-10",
+    "section": "10.3.2"
+   },
+   {
+    "key": "CH-10",
+    "section": "10.10.4.1"
+   }
+  ]
+ }
+}

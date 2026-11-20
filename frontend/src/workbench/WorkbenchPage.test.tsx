@@ -3,10 +3,17 @@ import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "../App";
 import { map } from "../map";
+import orKnha from "./fixtures/run-or-knha-double-zero.json";
+import orMh from "./fixtures/run-bcg-or-mh.json";
+import orMhZero from "./fixtures/run-or-mh-double-zero.json";
+import rrRandom from "./fixtures/run-bcg-rr-random.json";
 import { workbenchHref } from "./pathway";
 
-// Steps 1 and 2 of the Workbench (#165), with the API answered here: the spec and example list are the backend's
-// real answers for the risk ratio pathways (GET /api/v1/meta-analysis/spec and /api/v1/examples).
+// The Workbench's three steps (#165, #178), with the API answered here: the spec and example list are the backend's
+// real answers for the risk ratio pathways (GET /api/v1/meta-analysis/spec and /api/v1/examples), and the fixtures
+// are its real answers to /run (R 4.5, metafor 5.0.1): the 13 BCG trials as a risk ratio with random effects, and as
+// a Mantel-Haenszel odds ratio; and four of them plus a study with no events, as an odds ratio with the
+// Hartung-Knapp-Sidik-Jonkman interval at 90%, sent with the outcome "<b>x</b>".
 
 const PAGE = { timeout: 15_000 };
 
@@ -43,7 +50,11 @@ const EXAMPLES = {
       summary: "13 trials of the BCG vaccine against tuberculosis",
       source: { citation: "Colditz 1994", url: "https://doi.org/10.1001/jama.1994.03510330076038" },
       count: 2,
-      runs_with: [RR_RANDOM],
+      runs_with: [
+        RR_RANDOM,
+        { ...RR_RANDOM, metric: "OR" },
+        { ...RR_RANDOM, model: "Common effect", method: "MH", metric: "OR" },
+      ],
       published_for: [],
     },
   ],
@@ -69,13 +80,14 @@ function serve(route: Route) {
   return fetcher;
 }
 
-const healthy = (upload?: { status: number; body: unknown }): Route => (url) => {
+const healthy = (upload?: { status: number; body: unknown }, run?: { status: number; body: unknown }): Route => (url) => {
   if (url === "/health") return { status: 200, body: { status: "ok", r_service: true, advisor: false } };
   if (url.startsWith("/api/v1/meta-analysis/spec?")) return { status: 200, body: SPEC };
   if (url === "/api/v1/examples") return { status: 200, body: EXAMPLES };
   if (url === "/api/v1/examples/bcg")
     return { status: 200, body: { ...EXAMPLES.examples[0], studies: STUDIES, description: "", data_from: EXAMPLES.examples[0]?.source, labels: null, published: [] } };
   if (url === "/api/v1/meta-analysis/import" && upload) return upload;
+  if (url === "/api/v1/meta-analysis/run" && run) return run;
   return { status: 404, body: { code: "not_found", message: "Not found." } };
 };
 
@@ -237,5 +249,240 @@ describe("the Workbench", PAGE, () => {
     chooseFile("short.csv");
     expect(await screen.findByText("The column ci is missing.")).toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "The studies as read" })).toBeNull();
+  });
+});
+
+const LABELS = { outcome: "tuberculosis", treatment: "vaccinated", control: "unvaccinated" };
+
+/** The example's answer with its words for the sentence. */
+const withLabels: Route = (url, init) =>
+  url === "/api/v1/examples/bcg"
+    ? { status: 200, body: { ...EXAMPLES.examples[0], studies: STUDIES, description: "", data_from: EXAMPLES.examples[0]?.source, labels: LABELS, published: [] } }
+    : healthy(undefined, { status: 200, body: rrRandom })(url, init);
+
+async function loadAndRun() {
+  fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+  await screen.findByRole("heading", { name: "2 studies ready to run" });
+  const run = screen.getByRole("button", { name: "Run the analysis" });
+  expect(run).toBeEnabled();
+  fireEvent.click(run);
+  return screen.findByRole("heading", { name: "Pooled risk ratio" });
+}
+
+function sentBody(fetcher: ReturnType<typeof serve>): Record<string, unknown> {
+  const call = fetcher.mock.calls.find(([url]) => url === "/api/v1/meta-analysis/run");
+  if (!call) throw new Error("no /run call");
+  return JSON.parse(call[1]?.body as string) as Record<string, unknown>;
+}
+
+describe("the Workbench, step 3", PAGE, () => {
+  it("runs the studies with the chosen settings and the example's words", async () => {
+    const fetcher = serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    const heading = await loadAndRun();
+    await waitFor(() => {
+      expect(heading).toHaveFocus();
+    });
+    const body = sentBody(fetcher);
+    expect(body["pathway"]).toEqual(RR_RANDOM);
+    expect(body["options"]).toEqual({ estimator: "REML", interval: "z", level: 95 });
+    expect(body["data"]).toEqual(STUDIES);
+    expect(body["labels"]).toEqual(LABELS);
+    expect(body["analysis_type"]).toBe("standard");
+    const steps = screen.getByRole("list", { name: "Steps" });
+    expect(within(steps).getByText("REML · Wald · 95%").closest("li")).toHaveAttribute("aria-current", "step");
+  });
+
+  it("gives the answer first, then the sentence, the prediction interval, I² and τ²", async () => {
+    serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    await loadAndRun();
+    const answer = screen.getByRole("region", { name: "Pooled risk ratio" });
+    expect(within(answer).getByText(/^0\.49/)).toHaveTextContent("0.49 95% CI 0.34 to 0.70");
+    expect(within(answer).getByText(/^On average across the 13 studies/)).toHaveTextContent(
+      "the risk of tuberculosis in the vaccinated groups was 0.49 times the risk in the unvaccinated groups",
+    );
+    expect(within(answer).getByText(/^On the log scale/)).toHaveTextContent(
+      "On the log scale: −0.715 (SE 0.180), z = −3.97, p < 0.001 · 13 studies used, none left out.",
+    );
+    expect(within(answer).getByText(/Cochrane Handbook Ch. 6/)).toBeInTheDocument();
+    const het = screen.getByRole("region", { name: "How much the studies differ" });
+    expect(within(het).getByText("0.15 to 1.55")).toBeInTheDocument();
+    expect(within(het).getByText(/It includes 1, no difference/)).toBeInTheDocument();
+    expect(within(het).getByText("92%")).toBeInTheDocument();
+    expect(within(het).getByText("0.313")).toBeInTheDocument();
+    expect(within(het).getByText(/estimated by REML\. Q = 152\.2 on 12 df\./)).toBeInTheDocument();
+    expect(within(het).getByRole("link", { name: "Prediction intervals in Cards" })).toHaveAttribute(
+      "href",
+      "/cards?card=term%3Aprediction-interval",
+    );
+    expect(within(het).getByText(/s10\.10\.2, s10\.10\.4, s10\.10\.4\.3/)).toBeInTheDocument();
+  });
+
+  it("draws the forest plot, with every value also in a table", async () => {
+    serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    await loadAndRun();
+    const forest = screen.getByRole("img", { name: /^Forest plot of 13 studies; the pooled risk ratio is 0\.49, 95% CI 0\.34 to 0\.70/ });
+    expect(forest.querySelectorAll("rect.plot-box")).toHaveLength(13);
+    expect(forest.querySelector("polygon.plot-diamond")).not.toBeNull();
+    expect(forest.querySelector("line.plot-pi")).not.toBeNull();
+    expect(within(forest).getByText("4/123 · 11/139")).toBeInTheDocument();
+    expect(within(forest).getByText("← tuberculosis less common in vaccinated")).toBeInTheDocument();
+    const table = screen.getByText("The forest plot's values as a table").closest("details") as HTMLElement;
+    const aronson = within(table).getByText("Aronson 1948").closest("tr") as HTMLElement;
+    // metafor: exp(-0.889 ± 1.96 × √0.326) and weights(fit)
+    expect(aronson).toHaveTextContent("0.41");
+    expect(aronson).toHaveTextContent("0.13 to 1.26");
+    expect(aronson).toHaveTextContent("5.1%");
+  });
+
+  it("draws the funnel plot with its caption and sources", async () => {
+    serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    await loadAndRun();
+    const funnel = screen.getByRole("img", { name: /^Funnel plot of 13 studies around the common-effect estimate/ });
+    expect(funnel.querySelectorAll("circle.plot-point")).toHaveLength(13);
+    expect(funnel.querySelector("polygon.plot-region")).not.toBeNull();
+    const section = screen.getByRole("region", { name: "Funnel plot" });
+    expect(within(section).getByText(/^Each point is a study/)).toBeInTheDocument();
+    expect(within(section).getByText(/Cochrane Handbook Ch\. 13/).closest("p")).toHaveTextContent("13.3.4.2");
+  });
+
+  it("shows the R code and copies it", async () => {
+    const writeText = vi.fn(() => Promise.resolve());
+    Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
+    serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    await loadAndRun();
+    const code = screen.getByRole("region", { name: "The R code" });
+    expect(within(code).getByText(/rma\.uni\(yi = yi, vi = vi/)).toBeInTheDocument();
+    fireEvent.click(within(code).getByRole("button", { name: "Copy the R code" }));
+    expect(await within(code).findByText("Copied.")).toBeInTheDocument();
+    expect(writeText).toHaveBeenCalledWith(rrRandom.r_code);
+  });
+
+  it("shows a typed label in the sentence as text, never as markup (#172)", async () => {
+    const fetcher = serve(healthy(undefined, { status: 200, body: orKnha }));
+    renderAt(workbenchHref({ ...RR_RANDOM, metric: "OR" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.change(screen.getByRole("textbox", { name: "The event" }), { target: { value: "<b>x</b>" } });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    await screen.findByRole("heading", { name: "Pooled odds ratio" });
+    expect(sentBody(fetcher)["labels"]).toEqual({ outcome: "<b>x</b>" });
+    expect(screen.getByText(/the odds of <b>x<\/b> in the treatment groups/)).toBeInTheDocument();
+    expect(document.querySelector(".wb-answer b")).toBeNull();
+  });
+
+  it("lists the studies left out, says why, and labels a Hartung-Knapp statistic t", async () => {
+    const zero = [...STUDIES, { study: "Zero trial", ai: 0, n1i: 50, ci: 0, n2i: 50 }];
+    serve((url, init) =>
+      url === "/api/v1/examples/bcg"
+        ? { status: 200, body: { ...EXAMPLES.examples[0], studies: zero, description: "", data_from: EXAMPLES.examples[0]?.source, labels: null, published: [] } }
+        : healthy(undefined, { status: 200, body: orKnha })(url, init),
+    );
+    renderAt(workbenchHref({ ...RR_RANDOM, metric: "OR" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "3 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    const answer = await screen.findByRole("region", { name: "Pooled odds ratio" });
+    expect(within(answer).getByText(/^0\.24/)).toHaveTextContent("90% CI 0.20 to 0.28");
+    expect(within(answer).getByText(/^On the log scale/)).toHaveTextContent("t = −19.59, p < 0.001 · 4 studies used, 1 left out");
+    const left = screen.getByRole("region", { name: "Studies left out" });
+    expect(within(left).getByText("Zero trial").closest("li")).toHaveTextContent("no events in either group");
+    expect(within(left).getByText(/Cochrane Handbook Ch\. 10/).closest("p")).toHaveTextContent("10.4.4.2");
+  });
+
+  it("shows Cochran's Q, not τ² or a prediction interval, for a common-effect model", async () => {
+    serve(healthy(undefined, { status: 200, body: orMh }));
+    renderAt(workbenchHref({ ...RR_RANDOM, model: "Common effect", method: "MH", metric: "OR" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    await screen.findByRole("heading", { name: "Pooled odds ratio" });
+    const het = screen.getByRole("region", { name: "How much the studies differ" });
+    expect(within(het).getByText("Cochran's Q")).toBeInTheDocument();
+    expect(within(het).getByText("163.9 on 12 df")).toBeInTheDocument();
+    expect(within(het).queryByText(/Prediction interval/)).toBeNull();
+    expect(within(het).queryByText(/τ²/)).toBeNull();
+    expect(within(het).getByText(/metafor/)).toBeInTheDocument();
+    expect(screen.getByRole("img", { name: /^Forest plot/ }).querySelector("line.plot-pi")).toBeNull();
+  });
+
+  it("gives Q the degrees of freedom metafor uses, without a double-zero study (#180 audit)", async () => {
+    // rma.mh counts the double-zero study in k (5) but not in Q, whose df is 3, as metafor prints
+    expect(orMhZero.summary.k).toBe(5);
+    serve(healthy(undefined, { status: 200, body: orMhZero }));
+    renderAt(workbenchHref({ ...RR_RANDOM, model: "Common effect", method: "MH", metric: "OR" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    await screen.findByRole("heading", { name: "Pooled odds ratio" });
+    const het = screen.getByRole("region", { name: "How much the studies differ" });
+    expect(within(het).getByText("1.0 on 3 df")).toBeInTheDocument();
+  });
+
+  it("ignores an answer that arrives after its inputs changed (#180 audit)", async () => {
+    let answer: (r: Response) => void = () => undefined;
+    const route = healthy();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string, init?: RequestInit) => {
+        if (url === "/api/v1/meta-analysis/run") return new Promise<Response>((resolve) => { answer = resolve; });
+        const a = route(url, init);
+        if (a === "offline") return Promise.reject(new TypeError("Failed to fetch"));
+        return Promise.resolve(new Response(JSON.stringify(a.body), { status: a.status }));
+      }),
+    );
+    renderAt(workbenchHref(RR_RANDOM));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    expect(await screen.findByRole("button", { name: "Running…" })).toBeDisabled();
+    fireEvent.change(screen.getByRole("combobox", { name: /Between-study variance/ }), { target: { value: "DL" } });
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeEnabled();
+    answer(new Response(JSON.stringify(rrRandom), { status: 200 }));
+    // let the stale answer settle; it must not show under the new settings
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(screen.queryByRole("heading", { name: "Pooled risk ratio" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeEnabled();
+  });
+
+  it("clears the result when a setting changes", async () => {
+    serve(withLabels);
+    renderAt(workbenchHref(RR_RANDOM));
+    await loadAndRun();
+    fireEvent.change(screen.getByRole("combobox", { name: /Between-study variance/ }), { target: { value: "DL" } });
+    expect(screen.queryByRole("heading", { name: "Pooled risk ratio" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeEnabled();
+  });
+
+  it("says why the analysis didn't run", async () => {
+    serve(
+      healthy(undefined, {
+        status: 422,
+        body: { code: "fit_failed", message: "metafor could not fit the model.", fields: [{ path: "data", message: "Too few studies." }] },
+      }),
+    );
+    renderAt(workbenchHref(RR_RANDOM));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    const alert = await screen.findByRole("alert");
+    expect(alert).toHaveTextContent("The analysis didn't run: metafor could not fit the model.");
+    expect(alert).toHaveTextContent("Too few studies.");
+    expect(screen.queryByRole("heading", { name: "Pooled risk ratio" })).toBeNull();
+  });
+
+  it("keeps Run disabled while the R service can't be reached", async () => {
+    serve((url, init) =>
+      url === "/health" ? { status: 200, body: { status: "ok", r_service: false, advisor: false } } : healthy()(url, init),
+    );
+    renderAt(workbenchHref(RR_RANDOM));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeDisabled();
+    expect(screen.getByText("Running needs the R service, which isn't reachable just now.")).toBeInTheDocument();
   });
 });

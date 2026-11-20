@@ -16,11 +16,12 @@ are marked as such.
 
 ## Status
 
-Version 0.1 is the map and three apps for exploring it. **The apps don't run
-analyses yet.** The backend can run the 12 pathways marked runnable below
+Version 0.1 is the map and three apps for exploring it. The Workbench, being
+built in v0.2, runs the 12 pathways marked runnable below on a CSV or a
+published example, with the backend and its R service
 (`POST /api/v1/meta-analysis/run`, see [`backend/README.md`](backend/README.md)).
-The Workbench, being built in v0.2, takes a CSV or a published example and
-checks it; showing the results comes next (#178). Each pathway has a status:
+**The published site doesn't run analyses yet:** it has no server, so the
+Workbench runs only on your own computer (see below). Each pathway has a status:
 
 | Status | Pathways | Meaning |
 |---|---|---|
@@ -78,10 +79,14 @@ Pathfinder's results and the Atlas link each runnable analysis to it. It shows
 what the CSV file needs (from the backend's column spec) with a template to
 download, the settings with their sources, and loads either your file or a
 published example. The backend checks the studies, and each problem names its
-row, study and column, with the cell marked in the table as read. Running the
-analysis and its results come next (#178); Casebook and Proof, under the
-Workbench, follow (#166, #167). The Workbench needs the backend and the R
-service: without them it says so and links here.
+row, study and column, with the cell marked in the table as read. Once the
+studies pass, Run gives the pooled estimate with its confidence interval and a
+fixed sentence saying what it means (with the event and group names you type,
+if any), the prediction interval, I², τ² or Cochran's Q, a forest plot and a
+funnel plot drawn in the browser with D3, any studies left out and why, and
+the R code that gives the same numbers, with a copy button. Casebook and
+Proof, under the Workbench, follow (#166, #167). The Workbench needs the
+backend and the R service: without them it says so and links here.
 
 ## How the map is built
 

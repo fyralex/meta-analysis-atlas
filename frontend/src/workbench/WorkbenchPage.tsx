@@ -1,12 +1,12 @@
-// The Workbench (#165), steps 1 and 2 of the approved mock-up (#150): the analysis chosen in Pathfinder or the
-// Atlas, the studies (an uploaded CSV or a published example) and their check. Step 3, the results, is #178.
-// The backend decides what a file needs and whether it passes; the page shows what it says.
+// The Workbench (#165, #178), the three steps of the approved mock-up (#150): the analysis chosen in Pathfinder or
+// the Atlas, the studies (an uploaded CSV or a published example) and their check, and the results of /run.
+// The backend decides what a file needs, whether it passes and what the analysis gives; the page shows what it says.
 import { useEffect, useRef, useState, type ChangeEvent, type ReactNode, type RefObject } from "react";
 import { Link, NavLink, Outlet, useSearchParams } from "react-router";
 import { api, ApiError } from "../api/client";
 import { Sources } from "../SourceList";
 import { STATUS_TEXT } from "../status";
-import type { DataSpec, ExampleSummary, PathwayRef } from "../types/api";
+import type { DataSpec, ExampleSummary, FieldError, Labels, PathwayRef } from "../types/api";
 import type { Pathway } from "../types/map";
 import {
   atlasHref,
@@ -20,7 +20,9 @@ import {
   TIERS,
   workbenchHref,
 } from "./pathway";
-import { DEFAULTS, ESTIMATORS, INTERVALS, settingsLine, validLevel, type Settings } from "./settings";
+import { labelsToSend } from "./numbers";
+import { Results, type RunResult } from "./Results";
+import { DEFAULTS, ESTIMATORS, INTERVALS, settingsLine, toOptions, validLevel, type Settings } from "./settings";
 import { fromError, fromExample, fromImport, marks, type StudyTable } from "./studyTable";
 
 const REPO = "https://github.com/fyralex/meta-analysis-atlas";
@@ -146,10 +148,37 @@ function Analysis(props: { pathway: PathwayRef }) {
   const [spec, setSpec] = useState<DataSpec | null>(null);
   const [example, setExample] = useState<ExampleSummary | null>(null);
   const [failed, setFailed] = useState<string | null>(null);
-  const [table, setTable] = useState<StudyTable | null>(null);
+  const [table, setTableOnly] = useState<StudyTable | null>(null);
   const [busy, setBusy] = useState(false);
-  const [settings, setSettings] = useState<Settings>(DEFAULTS);
+  const [settings, setSettingsOnly] = useState<Settings>(DEFAULTS);
+  const [labels, setLabelsOnly] = useState<Labels>({});
+  const [result, setResult] = useState<RunResult | null>(null);
+  const [running, setRunning] = useState(false);
+  const [runProblem, setRunProblem] = useState<{ message: string; fields: FieldError[] } | null>(null);
   const step2 = useRef<HTMLHeadingElement>(null);
+  const step3 = useRef<HTMLHeadingElement>(null);
+  // each run's number: an answer is shown only if no newer run, or change to its inputs, came after it (#180 audit)
+  const latestRun = useRef(0);
+
+  // a result belongs to the studies, settings and words it ran with: changing any of them clears it
+  function clearResult() {
+    latestRun.current += 1;
+    setResult(null);
+    setRunProblem(null);
+    setRunning(false);
+  }
+  function setTable(next: StudyTable | null) {
+    setTableOnly(next);
+    clearResult();
+  }
+  function setSettings(next: Settings) {
+    setSettingsOnly(next);
+    clearResult();
+  }
+  function setLabels(next: Labels) {
+    setLabelsOnly(next);
+    clearResult();
+  }
 
   useEffect(() => {
     let live = true;
@@ -185,6 +214,11 @@ function Analysis(props: { pathway: PathwayRef }) {
     if (table) step2.current?.focus();
   }, [table]);
 
+  // and a result moves them to step 3
+  useEffect(() => {
+    if (result) step3.current?.focus();
+  }, [result]);
+
   const columns = spec?.columns.map((c) => c.name) ?? [];
 
   async function upload(event: ChangeEvent<HTMLInputElement>) {
@@ -208,7 +242,10 @@ function Analysis(props: { pathway: PathwayRef }) {
     setBusy(true);
     setFailed(null);
     try {
-      setTable(fromExample(await api.example(id), columns));
+      const found = await api.example(id);
+      setTable(fromExample(found, columns));
+      // the example's own words for the sentence, which the reader can change
+      setLabelsOnly({ ...(found.labels ?? {}) });
     } catch (error) {
       setFailed(error instanceof ApiError ? error.message : "The example could not be loaded.");
     } finally {
@@ -216,8 +253,35 @@ function Analysis(props: { pathway: PathwayRef }) {
     }
   }
 
+  async function run() {
+    if (!table?.studies) return;
+    const studiesSent = table.studies;
+    const labelsSent = labelsToSend(labels);
+    latestRun.current += 1;
+    const thisRun = latestRun.current;
+    const current = () => thisRun === latestRun.current;
+    setRunning(true);
+    setRunProblem(null);
+    try {
+      const response = await api.run({
+        pathway,
+        analysis_type: "standard",
+        options: toOptions(settings, random),
+        data: studiesSent,
+        labels: labelsSent,
+      });
+      if (current()) setResult({ response, studies: studiesSent, labels: labelsSent });
+    } catch (error) {
+      if (!(error instanceof ApiError)) throw error;
+      if (current()) setRunProblem({ message: error.message, fields: error.fields });
+    } finally {
+      if (current()) setRunning(false);
+    }
+  }
+
   if (server.state === "down") return <NeedsServer />;
   const ready = table !== null && table.problems.length === 0;
+  const rUp = server.state === "up" && server.r;
 
   return (
     <>
@@ -226,15 +290,18 @@ function Analysis(props: { pathway: PathwayRef }) {
           <span className="stepbar-name">1 · Your analysis</span>
           <strong className="stepbar-answer">{pathwayShort(pathway)}</strong>
         </li>
-        <li className={`stepbar-item ${table ? "current" : "todo"}`} aria-current={table ? "step" : undefined}>
+        <li
+          className={`stepbar-item ${result ? "done" : table ? "current" : "todo"}`}
+          aria-current={table && !result ? "step" : undefined}
+        >
           <span className="stepbar-name">2 · Your data</span>
           <span className="stepbar-answer">
             {table ? `${table.source} · ${studies(table.rows.length)}` : "Not added yet"}
           </span>
         </li>
-        <li className="stepbar-item todo">
+        <li className={`stepbar-item ${result ? "current" : "todo"}`} aria-current={result ? "step" : undefined}>
           <span className="stepbar-name">3 · Results</span>
-          <span className="stepbar-answer">After the check</span>
+          <span className="stepbar-answer">{result ? settingsShort(result) : "After the check"}</span>
         </li>
       </ol>
 
@@ -358,7 +425,15 @@ function Analysis(props: { pathway: PathwayRef }) {
           busy={busy}
           onUpload={upload}
           runnable={ready && validLevel(settings.level)}
-        />
+          rUp={rUp}
+          running={running}
+          problem={runProblem}
+          onRun={() => void run()}
+          labels={labels}
+          onLabels={setLabels}
+        >
+          {result && <Results result={result} heading={step3} />}
+        </Check>
       )}
     </>
   );
@@ -367,6 +442,14 @@ function Analysis(props: { pathway: PathwayRef }) {
 /** A rule as the spec writes it, with `name` shown as code. Built from text nodes only, never as HTML. */
 function withCode(text: string): ReactNode[] {
   return text.split("`").map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
+}
+
+/** The settings a result ran with, for the step bar: "REML · Wald · 95%". */
+function settingsShort({ response }: RunResult): string {
+  const o = response.options;
+  const level = `${String(o.level ?? 95)}%`;
+  if (response.pathway.model !== RANDOM) return level;
+  return `${o.estimator ?? "REML"} · ${o.interval === "knha" ? "Hartung-Knapp-Sidik-Jonkman" : "Wald"} · ${level}`;
 }
 
 const studies = (n: number) => `${String(n)} ${n === 1 ? "study" : "studies"}`;
@@ -490,6 +573,13 @@ function Check({
   busy,
   onUpload,
   runnable,
+  rUp,
+  running,
+  problem,
+  onRun,
+  labels,
+  onLabels,
+  children,
 }: {
   table: StudyTable;
   spec: DataSpec | null;
@@ -497,6 +587,13 @@ function Check({
   busy: boolean;
   onUpload: (event: ChangeEvent<HTMLInputElement>) => Promise<void>;
   runnable: boolean;
+  rUp: boolean;
+  running: boolean;
+  problem: { message: string; fields: FieldError[] } | null;
+  onRun: () => void;
+  labels: Labels;
+  onLabels: (labels: Labels) => void;
+  children?: ReactNode;
 }) {
   const n = table.problems.length;
   const marked = marks(table.problems);
@@ -532,20 +629,45 @@ function Check({
             <p>Fix them in your file and upload it again. Your analysis and settings are kept.</p>
           </>
         )}
+        {n === 0 && <LabelsFold labels={labels} onChange={onLabels} />}
         <div className="wb-actions">
           {n > 0 && <FilePicker label="Upload the corrected file" primary disabled={busy} onChange={onUpload} />}
-          <button type="button" className="button" disabled aria-describedby="wb-run-note">
-            Run the analysis
+          <button
+            type="button"
+            className={`button${n === 0 ? " button-primary" : ""}`}
+            disabled={n > 0 || !runnable || !rUp || running || busy}
+            aria-describedby="wb-run-note"
+            onClick={onRun}
+          >
+            {running ? "Running…" : "Run the analysis"}
           </button>
-          <span id="wb-run-note" className="muted">
+          <span id="wb-run-note" className="muted" role="status">
             {n > 0
               ? "Fix the problems first."
-              : runnable
-                ? "Running and the results come next (issue #178)."
-                : "Check the settings first."}
+              : !runnable
+                ? "Check the settings first."
+                : !rUp
+                  ? "Running needs the R service, which isn't reachable just now."
+                  : running
+                    ? "Running in R with metafor…"
+                    : "It runs in R with metafor on the server; nothing is kept."}
           </span>
         </div>
+        {problem && (
+          <div className="note" role="alert">
+            <p>The analysis didn&apos;t run: {problem.message}</p>
+            {problem.fields.length > 0 && (
+              <ul>
+                {problem.fields.map((f) => (
+                  <li key={`${f.path}:${f.message}`}>{f.message}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        )}
       </section>
+
+      {children}
 
       {table.rows.length > 0 && (
         <section aria-labelledby="wb-rows" className="panel">
@@ -589,5 +711,38 @@ function Check({
         </section>
       )}
     </>
+  );
+}
+
+const LABEL_FIELDS: readonly { key: keyof Labels; label: string; hint: string; max: number }[] = [
+  { key: "outcome", label: "The event", hint: "e.g. tuberculosis", max: 60 },
+  { key: "treatment", label: "Group 1 (the ai and n1i columns)", hint: "e.g. vaccinated", max: 40 },
+  { key: "control", label: "Group 2 (the ci and n2i columns)", hint: "e.g. unvaccinated", max: 40 },
+];
+
+/** Optional words for the sentence that says what the result means; the backend places them in it as plain text. */
+function LabelsFold({ labels, onChange }: { labels: Labels; onChange: (labels: Labels) => void }) {
+  return (
+    <details className="about">
+      <summary>Name the event and the groups (optional)</summary>
+      <p className="muted">
+        The words are used only in the sentence that says what the result means. Left blank, the sentence names no
+        event and calls the groups &ldquo;treatment&rdquo; and &ldquo;control&rdquo;.
+      </p>
+      <div className="wb-settings">
+        {LABEL_FIELDS.map((f) => (
+          <label key={f.key}>
+            {f.label}
+            <input
+              type="text"
+              maxLength={f.max}
+              placeholder={f.hint}
+              value={labels[f.key] ?? ""}
+              onChange={(e) => { onChange({ ...labels, [f.key]: e.currentTarget.value }); }}
+            />
+          </label>
+        ))}
+      </div>
+    </details>
   );
 }

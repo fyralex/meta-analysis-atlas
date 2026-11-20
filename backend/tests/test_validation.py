@@ -86,9 +86,15 @@ def test_the_bcg_example_is_metadats_dat_bcg(tmp_path: Path) -> None:
 # What the shown R code is asked to report, named as the response names it. A value metafor doesn't have is null.
 EXTRACT = """
 n <- function(x) if (is.null(x)) NA else unname(x[[1]])
+# Q's degrees of freedom as metafor prints them, "Q(df = 12)"
+qdf <- function(fit) {
+  line <- grep("Q(df = ", capture.output(print(fit)), value = TRUE, fixed = TRUE)[[1]]
+  as.numeric(strsplit(strsplit(line, "df = ", fixed = TRUE)[[1]][[2]], ")", fixed = TRUE)[[1]][[1]])
+}
 out <- list(
   estimate = n(fit$b), se = n(fit$se), ci_lower = n(fit$ci.lb), ci_upper = n(fit$ci.ub), zval = n(fit$zval),
   pval = n(fit$pval), tau2 = n(fit$tau2), i2 = n(fit$I2), h2 = n(fit$H2), q = n(fit$QE), q_pval = n(fit$QEp),
+  q_df = n(qdf(fit)),
   k = n(fit$k)
 )
 if (exists("pred")) {

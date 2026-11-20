@@ -51,13 +51,15 @@ the Cochrane Handbook for Systematic Reviews of Diagnostic Test Accuracy,
 methods papers, and the documentation of the packages above. Every source used is listed, with
 its link, in spec/backbone.md.
 
-The web app bundles these JavaScript packages, each under the MIT license,
-with the dependencies they bring (MIT or BSD-3-Clause):
+The web app bundles these JavaScript packages, each under the MIT license
+except d3-scale (ISC license), with the dependencies they bring (MIT, ISC or
+BSD-3-Clause):
 
   React, React DOM   https://react.dev
   React Router       https://reactrouter.com
   three.js           https://threejs.org
   react-three-fiber  https://github.com/pmndrs/react-three-fiber
+  d3-scale           https://github.com/d3/d3-scale
 
 Every npm package the app uses or is built with, with its version and
 licence, is listed in docs/npm-licences.md, which is generated from

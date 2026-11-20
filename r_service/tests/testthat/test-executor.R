@@ -218,3 +218,40 @@ test_that("Mantel-Haenszel and Peto give a double-zero study zero weight", {
     expect_equal(rows$yi, as.numeric(fit$yi.f), tolerance = 1e-10)
   }
 })
+
+# Q's degrees of freedom as metafor prints them ("Q(df = 12)"), which counts only the studies with an estimate
+printed_df <- function(fit) {
+  line <- grep("Q\\(df = ", utils::capture.output(print(fit)), value = TRUE)[[1]]
+  as.numeric(sub(".*Q\\(df = ([0-9]+)\\).*", "\\1", line))
+}
+
+test_that("Q's degrees of freedom are those metafor prints, without double-zero studies (#180 audit)", {
+  expect_equal(execute_plan(rr_plan(), bcg())$results$summary$q_df, 12) # rma.uni reference page: Q(df = 12)
+  d <- as.data.frame(zeros()) # study A is double-zero
+  for (fn in c("rma.mh", "rma.peto")) {
+    args <- if (fn == "rma.mh") c(list(measure = "OR"), COUNT_ARGS) else COUNT_ARGS
+    s <- suppressWarnings(execute_plan(list(model = list(fn = fn, args = args)), zeros()))$results$summary
+    fit <- suppressWarnings(if (fn == "rma.mh") {
+      metafor::rma.mh(measure = "OR", ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d)
+    } else {
+      metafor::rma.peto(ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d)
+    })
+    expect_equal(s$k, 4)
+    expect_equal(s$q_df, printed_df(fit))
+    expect_equal(s$q_df, 2)
+  }
+  plan <- list(
+    effect = list(fn = "escalc", args = c(list(measure = "OR", drop00 = TRUE), COUNT_ARGS)),
+    model = list(fn = "rma.uni", args = list(yi = list(column = "yi"), vi = list(column = "vi")))
+  )
+  s <- suppressWarnings(execute_plan(plan, zeros()))$results$summary
+  expect_equal(s$q_df, 2)
+  # every study double-zero: rma.mh still fits, with k.yi = 0, and metafor prints Q(df = 0)
+  none <- list(study = c("A", "B"), ai = c(0, 0), n1i = c(10, 10), ci = c(0, 0), n2i = c(10, 10))
+  mh <- list(model = list(fn = "rma.mh", args = c(list(measure = "OR"), COUNT_ARGS)))
+  s <- suppressWarnings(execute_plan(mh, none))$results$summary
+  d0 <- as.data.frame(none)
+  fit <- suppressWarnings(metafor::rma.mh(measure = "OR", ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d0))
+  expect_equal(s$q_df, printed_df(fit))
+  expect_equal(s$q_df, 0)
+})

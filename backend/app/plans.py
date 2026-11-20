@@ -60,6 +60,7 @@ SUMMARY_KEYS = (
     "h2",
     "q",
     "q_pval",
+    "q_df",
     "k",
     "pi_lower",
     "pi_upper",

@@ -405,3 +405,30 @@ table.pathways .cell-label { display: none; }
 .cell-problem { outline: 2px solid var(--check-text); outline-offset: -2px; font-weight: 700; }
 .check-fix { color: var(--check-text); font-weight: 700; }
 .check-ok { color: var(--st-runnable); font-weight: 600; }
+
+/* Workbench, step 3: the results (#178) */
+.wb-kicker { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+.wb-answer-value { margin: 6px 0 0; font-size: 40px; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.wb-answer-ci { font-size: 22px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.wb-sentence, .wb-caption { max-width: 65ch; }
+.wb-detail { font-size: 15px; font-variant-numeric: tabular-nums; }
+.wb-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 16px; }
+.wb-tile { border: 1px solid var(--line); border-radius: 6px; padding: 14px; }
+.wb-tile-label { font-size: 14px; color: var(--muted); }
+.wb-tile-value { font-size: 26px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.wb-tile-text { font-size: 15px; }
+.wb-code { margin: 0; background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 14px; font-size: 13px; line-height: 1.5; overflow: auto; max-height: 320px; }
+.plot { display: block; font-size: 13px; font-variant-numeric: tabular-nums; }
+.plot text { fill: var(--text); }
+.plot .plot-muted, .plot-head text { fill: var(--muted); }
+.plot-rule { stroke: var(--line); }
+.plot-null { stroke: var(--muted); }
+.plot-whisker line, .plot-whisker path { stroke: var(--text); stroke-width: 1.5; fill: none; }
+.plot-box { fill: var(--accent); }
+.plot-pooled text { font-weight: 700; }
+.plot-diamond { fill: var(--text); }
+.plot-pi { stroke: var(--muted); stroke-width: 3; }
+.plot-axis line { stroke: var(--muted); }
+.plot-region { fill: color-mix(in srgb, var(--muted) 12%, transparent); stroke: var(--muted); stroke-dasharray: 4 3; }
+.plot-centre { stroke: var(--muted); stroke-dasharray: 5 4; }
+.plot-point { fill: var(--st-planned); }
