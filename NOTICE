@@ -35,7 +35,9 @@ r_service/renv.lock:
   metadat     https://cran.r-project.org/package=metadat (the datasets its tests use)
 
 The backend (backend/) uses these Python packages, pinned in
-backend/requirements.txt, with the dependencies they bring (MIT or BSD):
+backend/requirements.txt with the packages they depend on. Those are under
+MIT, BSD-3-Clause or Apache-2.0, except certifi (MPL-2.0) and
+typing_extensions (PSF-2.0); all are compatible with the GPL:
 
   FastAPI     https://fastapi.tiangolo.com (MIT)
   Pydantic    https://docs.pydantic.dev (MIT)

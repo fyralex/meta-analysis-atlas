@@ -78,10 +78,28 @@ def test_an_unknown_status_is_an_invalid_request() -> None:
     assert body["fields"][0]["path"] == "query.status"
 
 
-def test_an_unknown_path_is_a_json_error() -> None:
+def test_a_misspelt_filter_is_an_invalid_request() -> None:
+    response = client().get("/api/v1/pathways", params={"frameworks": "x"})
+    assert response.status_code == 422
+    body = response.json()
+    assert body["code"] == "invalid_request"
+    assert body["fields"][0]["path"] == "query.frameworks"
+
+
+def test_an_unknown_path_or_method_is_a_json_error() -> None:
     response = client().get("/api/v1/nothing")
     assert response.status_code == 404
     assert response.json()["code"] == "not_found"
+    response = client().post("/api/v1/pathways")
+    assert response.status_code == 405
+    assert response.json()["code"] == "method_not_allowed"
+
+
+def test_an_unexpected_failure_is_a_json_error_without_details(tmp_path: Path) -> None:
+    app = create_app(Settings(spec_dir=tmp_path))  # no map.json there
+    response = TestClient(app, raise_server_exceptions=False).get("/api/v1/pathways")
+    assert response.status_code == 500
+    assert response.json() == {"code": "internal_error", "message": "Something went wrong on the server.", "fields": []}
 
 
 def test_the_map_has_everything_but_the_pathway_list() -> None:

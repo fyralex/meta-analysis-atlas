@@ -7,7 +7,7 @@ from typing import Annotated, Any
 
 from fastapi import Depends, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from . import errors
 from .config import Settings
@@ -28,6 +28,9 @@ class PathwayList(BaseModel):
 
 
 class PathwayFilters(BaseModel):
+    # a misspelt filter is an error, not silently ignored (#145 audit)
+    model_config = ConfigDict(extra="forbid")
+
     framework: str | None = None
     group: str | None = None
     datatype: str | None = None

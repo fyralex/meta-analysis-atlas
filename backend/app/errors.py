@@ -1,5 +1,6 @@
 """Errors are JSON with a stable code, a message and, where they apply, field paths (CLAUDE.md, "API")."""
 
+import logging
 from typing import Any
 
 from fastapi import FastAPI, Request
@@ -7,6 +8,8 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+logger = logging.getLogger(__name__)
 
 
 class FieldError(BaseModel):
@@ -49,3 +52,9 @@ def install(app: FastAPI) -> None:
     async def http_error(_: Request, exc: StarletteHTTPException) -> JSONResponse:
         code = {404: "not_found", 405: "method_not_allowed"}.get(exc.status_code, "http_error")
         return _response(exc.status_code, ErrorBody(code=code, message=str(exc.detail)))
+
+    @app.exception_handler(Exception)
+    async def internal_error(_: Request, exc: Exception) -> JSONResponse:
+        # the details stay in the server's log, not in the response
+        logger.exception("unhandled error", exc_info=exc)
+        return _response(500, ErrorBody(code="internal_error", message="Something went wrong on the server."))
