@@ -103,8 +103,9 @@ def test_at_least_two_studies() -> None:
 def test_thousands_separators_are_refused_with_a_clear_message() -> None:
     # semicolon-separated, as some spreadsheets save, so the comma stays inside the cell
     found = problems("study;ai;n1i;ci;n2i\nA;1,234;12,000;2;10\nB;1;10;2;10\n")
-    assert ("data.0.ai", "Row 2 (A), column ai: Write the number without thousands separators.") in found
-    assert ("data.0.n1i", "Row 2 (A), column n1i: Write the number without thousands separators.") in found
+    sep = "Must be a whole number, written without thousands separators."
+    assert ("data.0.ai", f"Row 2 (A), column ai: {sep}") in found
+    assert ("data.0.n1i", f"Row 2 (A), column n1i: {sep}") in found
     assert not [p for p in found if p[1].endswith("Required.")]
 
 
@@ -121,7 +122,7 @@ def test_semicolons_and_tabs_are_read_like_commas(separator: str) -> None:
     assert out["studies"][1]["n2i"] == 303
 
 
-def test_rows_are_named_by_their_line_in_the_file_even_after_blank_lines() -> None:
+def test_rows_are_numbered_as_a_spreadsheet_shows_them_even_after_blank_rows() -> None:
     found = problems(f"{HEADER}\n\nA,1,10,2,10\n\nB,11,10,2,10\n")
     assert found == [("data.1.ai", "Row 5 (B), column ai: Must be between 0 and n1i (10).")]
 
@@ -198,3 +199,33 @@ def test_a_missing_tier_or_file_is_an_invalid_request() -> None:
     response = client.post(URL, data=pathway(plans.COMMON, "IV", "OR"))
     assert response.status_code == 422
     assert response.json()["code"] == "invalid_request"
+
+
+def test_bare_carriage_returns_are_read_as_line_ends() -> None:
+    # Excel for Mac's "CSV (Macintosh)" ends lines with a bare CR (#171 audit)
+    out = upload(GOOD.replace("\n", "\r")).json()
+    assert [s["study"] for s in out["studies"]] == ["Aronson 1948", "Ferguson & Simes 1949"]
+    assert upload(GOOD.replace("\n", "\r\n")).json()["count"] == 2
+
+
+def test_an_unclosed_quote_in_a_long_file_is_a_clear_422_not_a_crash() -> None:
+    rows = "".join(f"S{i},1,10,2,10\n" for i in range(20_000))
+    found = problems(f'{HEADER}\n"Unclosed,1,10,2,10\n{rows}')
+    assert len(found) == 1
+    assert found[0][0] == "file"
+    assert "quote mark" in found[0][1]
+
+
+def test_a_decimal_count_is_not_blamed_on_thousands_separators_alone() -> None:
+    found = problems(f"{HEADER}\nA,2.500,10,2,10\nB,1,10,2,10\n")
+    assert found == [
+        ("data.0.ai", "Row 2 (A), column ai: Must be a whole number, written without thousands separators.")
+    ]
+
+
+def test_long_or_multi_line_labels_are_shortened_in_messages() -> None:
+    label = "A study whose name\nruns over two lines and goes on for a very long time indeed"
+    found = problems(f'{HEADER}\n"{label}",11,10,2,10\nB,1,10,2,10\n')
+    assert found == [
+        ("data.0.ai", "Row 2 (A study whose name runs over two lines…), column ai: Must be between 0 and n1i (10).")
+    ]

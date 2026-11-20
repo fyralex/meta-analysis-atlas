@@ -59,9 +59,14 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
     first = next((line for line in lines if line.strip()), None)
     if first is None:
         raise _invalid("The file is empty.")
-    reader = csv.reader(io.StringIO(text), delimiter=_delimiter(first))
-    # each kept row with its line in the file, so messages point at the right line even after blank lines
-    rows = [(reader.line_num, r) for r in reader if any(cell.strip() for cell in r)]
+    # newline="" lets the csv module see every line ending, including a bare CR (Excel for Mac's "CSV (Macintosh)")
+    reader = csv.reader(io.StringIO(text, newline=""), delimiter=_delimiter(first))
+    try:
+        # each kept row with its row number as a spreadsheet shows it: blank rows count, and a quoted cell that runs
+        # over several lines is still one row
+        rows = [(n, r) for n, r in enumerate(reader, start=1) if any(cell.strip() for cell in r)]
+    except csv.Error as error:
+        raise _invalid(_unreadable(str(error), reader.line_num)) from None
     header = [name.strip() for name in rows[0][1]]
     body = rows[1:]
     lines_of = [line for line, _ in body]
@@ -107,12 +112,29 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
     return studies, ignored
 
 
+def _unreadable(reason: str, line: int) -> str:
+    """The csv module's error in plain words. A very long cell almost always means a quote mark that isn't closed."""
+    if "field larger than field limit" in reason:
+        return f"A cell starting by line {line} is far too long: check for a quote mark (\") that isn't closed."
+    return f'The file can\'t be read as CSV near line {line}. Save it again from your spreadsheet as "CSV UTF-8".'
+
+
 def _separated(cell: str, i: int, name: str, problems: list[FieldError]) -> Any:
-    """Refuse thousands separators (1,234 or 1.234), which would otherwise be read as a different number."""
+    """A count written like 1,234 or 2.500: refused, since it may hold a thousands separator or a decimal part.
+
+    Either way it isn't a plain whole number, and reading it as one could give a different number.
+    """
     if SEPARATED.fullmatch(cell.strip()) and not WHOLE.fullmatch(cell.strip()):
-        problems.append(FieldError(path=f"data.{i}.{name}", message="Write the number without thousands separators."))
+        message = "Must be a whole number, written without thousands separators."
+        problems.append(FieldError(path=f"data.{i}.{name}", message=message))
         return None
     return _count(cell)
+
+
+def _short(label: str, most: int = 40) -> str:
+    """A label as it can be shown in a message: on one line, and cut if long (an unclosed quote can make it huge)."""
+    flat = " ".join(label.split())
+    return flat if len(flat) <= most else flat[: most - 1].rstrip() + "…"
 
 
 def _name_row(problem: FieldError, labels: list[Any], lines_of: list[int]) -> FieldError:
@@ -122,7 +144,7 @@ def _name_row(problem: FieldError, labels: list[Any], lines_of: list[int]) -> Fi
     if len(parts) < 2 or parts[0] != "data" or not parts[1].isdigit():
         return problem
     i = int(parts[1])
-    label = labels[i] if i < len(labels) and labels[i] else None
+    label = _short(labels[i]) if i < len(labels) and labels[i] else None
     where = f"Row {lines_of[i]}" + (f" ({label})" if label else "") + (f", column {parts[2]}" if len(parts) > 2 else "")
     # check_data points at other studies by path ("the label of data.0"); in a file that is a row number
     message = re.sub(r"\bdata\.(\d+)\b", lambda m: f"row {lines_of[int(m.group(1))]}", problem.message)
