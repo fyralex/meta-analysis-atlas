@@ -180,6 +180,10 @@ SOURCES: dict[str, tuple[str, str]] = {
     ),
     "MULTINMA": ("multinma, nma()", "https://dmphillippo.github.io/multinma/reference/nma.html"),
     "MULTINMA-ipd": ("multinma, set_ipd()", "https://dmphillippo.github.io/multinma/reference/set_ipd.html"),
+    "MULTINMA-pw": (
+        "multinma, beta blockers example (a pairwise meta-analysis with nma())",
+        "https://dmphillippo.github.io/multinma/articles/example_blocker.html",
+    ),
 }
 
 # --------------------------------------------------------------------------
@@ -561,10 +565,12 @@ METHODS: dict[str, Method] = {
         "pairwise",
         ["ipd"],
         [RANDOM],
-        [STD, SUB, REG],
-        ["CH-26", "MULTINMA", "MULTINMA-ipd"],
-        note="Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma, as a network of two treatments; its "
-        "likelihoods give the odds ratio, mean difference and rate ratio, and its hazard ratio is to check (#25).",
+        [STD, REG],
+        ["CH-26", "MULTINMA", "MULTINMA-ipd", "MULTINMA-pw"],
+        note="Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma as a network of two treatments: its "
+        "beta blockers example sets up a pairwise meta-analysis this way from aggregate data, and the map applies the "
+        "same set-up to participant data. Its likelihoods give the odds ratio, mean difference and rate ratio; its "
+        "hazard ratio is to check (#25).",
     ),
     # network
     "NM_GT": meth(
@@ -3423,10 +3429,11 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
         ),
         (
             "use",
-            "Cochrane notes it needs mixed-effects or multilevel regression software. The map names multinma, which "
-            "fits participant data (set_ipd()) in Stan with fixed or random treatment effects; two groups are a "
-            "network of two treatments.",
-            "CH-26 s26.4.5, MULTINMA-ipd, MULTINMA",
+            "Cochrane notes it typically requires mixed-effects or multilevel regression software. The map names "
+            "multinma, which fits participant data (set_ipd()) in Stan with fixed or random treatment effects. Its "
+            "beta blockers example fits a pairwise meta-analysis as a network of two treatments, from aggregate data; "
+            "the map applies that set-up to participant data.",
+            "CH-26 s26.4.5, MULTINMA-ipd, MULTINMA, MULTINMA-pw",
         ),
         (
             "use",

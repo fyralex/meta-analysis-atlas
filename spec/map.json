@@ -172,6 +172,10 @@
   "MULTINMA-ipd": [
    "multinma, set_ipd()",
    "https://dmphillippo.github.io/multinma/reference/set_ipd.html"
+  ],
+  "MULTINMA-pw": [
+   "multinma, beta blockers example (a pairwise meta-analysis with nma())",
+   "https://dmphillippo.github.io/multinma/articles/example_blocker.html"
   ]
  },
  "branches": [
@@ -2568,16 +2572,16 @@
    ],
    "analysis": [
     "standard",
-    "subgroup",
     "meta-regression"
    ],
    "src": [
     "CH-26",
     "MULTINMA",
-    "MULTINMA-ipd"
+    "MULTINMA-ipd",
+    "MULTINMA-pw"
    ],
    "metrics": null,
-   "note": "Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma, as a network of two treatments; its likelihoods give the odds ratio, mean difference and rate ratio, and its hazard ratio is to check (#25).",
+   "note": "Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma as a network of two treatments: its beta blockers example sets up a pairwise meta-analysis this way from aggregate data, and the map applies the same set-up to participant data. Its likelihoods give the odds ratio, mean difference and rate ratio; its hazard ratio is to check (#25).",
    "added": false,
    "verified": true,
    "added_models": [],

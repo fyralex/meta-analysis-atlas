@@ -7,7 +7,11 @@ Decided by the owner, 2026-11-19 (#25).
 - **The pairwise one-stage method (`IPD1`):** the map names
   `multinma::nma()` with `set_ipd()`, fitting two groups as a network of two
   treatments. This is the same package as the network method (decision in
-  #59).
+  #59). multinma's beta blockers example sets up a pairwise meta-analysis
+  this way, from aggregate data; the map applies the same set-up to
+  participant data, which the owner accepted.
+- **Analysis types:** standard and meta-regression (through `nma()`'s
+  `regression` argument), as for the network method.
 - **The branches:** the participant-data branches for two groups and for
   networks are confirmed. Their odds ratio, mean difference and rate ratio
   leave "to check".
@@ -21,7 +25,8 @@ Decided by the owner, 2026-11-19 (#25).
 
 - **Cochrane Handbook 26.4.2:** a one-stage model is a regression that
   estimates intervention effects while stratifying by study.
-- **26.4.5:** it needs mixed-effects or multilevel regression software, and
+- **26.4.5:** it typically requires mixed-effects or multilevel regression
+  software, and
   the chapter names no one-stage R package.
 - **multinma:**
   - `set_ipd()` takes participant data for binary, continuous, count and
