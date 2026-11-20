@@ -1,0 +1,93 @@
+[
+ {
+  "study": "Aronson 1948",
+  "ai": 4,
+  "n1i": 123,
+  "ci": 11,
+  "n2i": 139
+ },
+ {
+  "study": "Ferguson & Simes 1949",
+  "ai": 6,
+  "n1i": 306,
+  "ci": 29,
+  "n2i": 303
+ },
+ {
+  "study": "Rosenthal et al 1960",
+  "ai": 3,
+  "n1i": 231,
+  "ci": 11,
+  "n2i": 220
+ },
+ {
+  "study": "Hart & Sutherland 1977",
+  "ai": 62,
+  "n1i": 13598,
+  "ci": 248,
+  "n2i": 12867
+ },
+ {
+  "study": "Frimodt-Moller et al 1973",
+  "ai": 33,
+  "n1i": 5069,
+  "ci": 47,
+  "n2i": 5808
+ },
+ {
+  "study": "Stein & Aronson 1953",
+  "ai": 180,
+  "n1i": 1541,
+  "ci": 372,
+  "n2i": 1451
+ },
+ {
+  "study": "Vandiviere et al 1973",
+  "ai": 8,
+  "n1i": 2545,
+  "ci": 10,
+  "n2i": 629
+ },
+ {
+  "study": "TPT Madras 1980",
+  "ai": 505,
+  "n1i": 88391,
+  "ci": 499,
+  "n2i": 88391
+ },
+ {
+  "study": "Coetzee & Berjak 1968",
+  "ai": 29,
+  "n1i": 7499,
+  "ci": 45,
+  "n2i": 7277
+ },
+ {
+  "study": "Rosenthal et al 1961",
+  "ai": 17,
+  "n1i": 1716,
+  "ci": 65,
+  "n2i": 1665
+ },
+ {
+  "study": "Comstock et al 1974",
+  "ai": 186,
+  "n1i": 50634,
+  "ci": 141,
+  "n2i": 27338
+ },
+ {
+  "study": "Comstock & Webster 1969",
+  "ai": 5,
+  "n1i": 2498,
+  "ci": 3,
+  "n2i": 2341
+ },
+ {
+  "study": "Comstock et al 1976",
+  "ai": 27,
+  "n1i": 16913,
+  "ci": 29,
+  "n2i": 17854
+ }
+]
