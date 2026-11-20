@@ -14,3 +14,6 @@ frontend/dist/
 # Playwright (#83)
 frontend/playwright-report/
 frontend/test-results/
+
+# the Proof page's data, written by each validation run (#163); a release takes it from CI, not from git
+frontend/public/proof.json

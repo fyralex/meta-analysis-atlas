@@ -93,7 +93,8 @@ if [ -z "$up" ]; then
   cat "$R_LOG" >&2
   exit 1
 fi
-R_SERVICE_URL="http://127.0.0.1:$PORT" "$PY" -m pytest -m integration
+# the run also writes the Proof page's data (#163): every check RUNNABLE names, with its outcome and values
+R_SERVICE_URL="http://127.0.0.1:$PORT" ATLAS_PROOF_OUT=frontend/public/proof.json "$PY" -m pytest -m integration
 kill "$R_PID" 2>/dev/null || true
 wait "$R_PID" 2>/dev/null || true
 trap - EXIT

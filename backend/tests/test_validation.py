@@ -35,6 +35,7 @@ from app.examples import Examples, Published
 from app.main import create_app
 from app.map_data import MapData
 
+from . import proof
 from .support import SUPPORTED_PATHWAYS, pathway, ref
 
 pytestmark = pytest.mark.integration
@@ -111,6 +112,11 @@ def run(client: TestClient, path: dict[str, str], rows: list[dict[str, Any]], **
 
 
 def close(got: float | None, want: float | None, what: str) -> None:
+    if want is None or got is None:
+        same = got is None and want is None
+    else:
+        same = bool(got == pytest.approx(want, rel=REL, abs=ABS))
+    proof.record(what, got, want, same)
     if want is None:
         assert got is None, f"{what}: the service gave {got}, metafor has no value"
         return
@@ -202,6 +208,10 @@ def assert_published(out: dict[str, Any], entry: Published) -> None:
     assert entry.values
     for item in entry.values:
         part, key = item.quantity.split(".")
+        ours = out[part][key]
+        proof.record(
+            item.quantity, ours, item.value, bool(ours == pytest.approx(item.value, abs=half_unit(item.places)))
+        )
         assert out[part][key] == pytest.approx(item.value, abs=half_unit(item.places)), (entry.where, item.quantity)
 
 
