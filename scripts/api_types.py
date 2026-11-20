@@ -90,9 +90,29 @@ def _doc(text: str | None, indent: str) -> list[str]:
     return [f"{indent}/**", *(f"{indent} * {line}".rstrip() for line in lines), f"{indent} */"]
 
 
+def _keys(node: Any) -> set[str]:
+    """Every key used anywhere in a schema node: keywords, not words inside descriptions."""
+    if isinstance(node, dict):
+        found = set(node)
+        for value in node.values():
+            found |= _keys(value)
+        return found
+    if isinstance(node, list):
+        return set().union(*(_keys(item) for item in node)) if node else set()
+    return set()
+
+
 def render(spec: dict[str, Any]) -> str:
     out = [HEADER]
     for name, node in sorted(spec["components"]["schemas"].items()):
+        if not name.isidentifier():
+            # e.g. FastAPI's Model-Input / Model-Output when a model differs between request and response
+            raise ValueError(f"the schema {name!r} is not a TypeScript name; extend scripts/api_types.py for it")
+        unsupported = {"allOf", "prefixItems", "not", "if"} & _keys(node)
+        if unsupported:
+            raise ValueError(
+                f"the schema {name!r} uses {sorted(unsupported)}, which scripts/api_types.py doesn't cover"
+            )
         out += _doc(node.get("description"), "")
         if node.get("type") == "object" and "properties" in node:
             out.append(f"export interface {name} {{")

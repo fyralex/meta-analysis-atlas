@@ -50,7 +50,15 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
     throw new ApiError(0, { code: "network_error", message: "The server could not be reached." });
   }
   if (response.ok) {
-    return (await response.json()) as T;
+    try {
+      return (await response.json()) as T;
+    } catch {
+      // a 2xx that isn't the API's JSON, such as a dev server's HTML fallback page (#177 audit)
+      throw new ApiError(response.status, {
+        code: "http_error",
+        message: "The server's answer was not the API's JSON. Is VITE_API_BASE pointing at the backend?",
+      });
+    }
   }
   let body: unknown = null;
   try {

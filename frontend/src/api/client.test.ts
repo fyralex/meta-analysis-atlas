@@ -65,6 +65,13 @@ describe("the API client", () => {
     expect([error.status, error.code]).toEqual([413, "http_error"]);
   });
 
+  it("gives a 2xx page that isn't the API's JSON an http_error, not a raw parse error", async () => {
+    answer(200, "<!doctype html><html></html>", false);
+    const error = (await api.examples().catch((e: unknown) => e)) as ApiError;
+    expect(error).toBeInstanceOf(ApiError);
+    expect([error.status, error.code]).toEqual([200, "http_error"]);
+  });
+
   it("says when the server can't be reached", async () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("Failed to fetch")));
     const error = (await api.health().catch((e: unknown) => e)) as ApiError;

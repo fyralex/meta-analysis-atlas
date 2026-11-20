@@ -153,6 +153,15 @@ test `RUNNABLE` in `spec/build_map.py` names for it:
 | `R_SERVICE_URL` | `http://localhost:8000` | the R service (`r_service/`) |
 | `ATLAS_CORS_ORIGINS` | none | comma-separated origins allowed to call the API from a browser |
 
+## The frontend's client
+
+`frontend/src/api/client.ts` calls this API with types generated from its OpenAPI schema
+(`scripts/api_types.py` writes `frontend/src/types/api.ts`; `scripts/check.sh` fails if it isn't
+current). It calls the API at `VITE_API_BASE`, set when the frontend is built; empty, the default,
+means the same origin, as behind the Docker Compose stack's nginx. For `npm run dev`, set it to
+the backend's address (`VITE_API_BASE=http://localhost:8080`, with `ATLAS_CORS_ORIGINS` allowing
+the dev server's origin).
+
 ## Running it
 
 ```bash
