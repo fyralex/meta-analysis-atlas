@@ -683,8 +683,11 @@ def test_branch_card_flags(all_cards: list[bm.Card]) -> None:
     assert (f1["added"], f1["verified"]) == (False, True)
     dta = _card(all_cards, "framework:diagnostic-test-accuracy")  # not in v11, accepted; both branches confirmed
     assert (dta["added"], dta["new"], dta["verified"]) == (True, False, True)  # accepted (#21)
-    ipd = _card(all_cards, "datatype:individual-participant-data")  # none confirmed
-    assert ipd["verified"] is False
+    # participant data: two-group and network branches confirmed (#25), the one-group branch not
+    ipd = _card(all_cards, "datatype:individual-participant-data")
+    assert ipd["verified"] is True
+    ipd_branches = [b for b in bm.BRANCHES if b["datatype"] == bm.IPD]
+    assert any(b["verified"] for b in ipd_branches) and not all(b["verified"] for b in ipd_branches)
     assert {
         "label": "Branches under it",
         "items": ["2 in all: 2 confirmed, 0 still to check; 0 new, not yet accepted"],

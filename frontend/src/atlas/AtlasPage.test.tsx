@@ -459,9 +459,10 @@ describe("the Atlas's 2D view", PAGE, () => {
     });
 
     it("shows a chosen node's flags next to its card's summary", () => {
-      renderAtlas("?datatype=Individual%20participant%20data");
-      const summary = screen.getByText(/^About Individual participant data/);
-      expect(summary.textContent).toMatch(/Individual participant data to check$/);
+      // pooling participant data from single groups has no confirmed source yet (#25)
+      renderAtlas("?metric=I_P");
+      const summary = screen.getByText(/^About Pooled proportion \(logit scale\)/);
+      expect(summary.textContent).toMatch(/to check$/);
     });
   });
 });

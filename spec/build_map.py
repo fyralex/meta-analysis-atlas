@@ -180,6 +180,10 @@ SOURCES: dict[str, tuple[str, str]] = {
     ),
     "MULTINMA": ("multinma, nma()", "https://dmphillippo.github.io/multinma/reference/nma.html"),
     "MULTINMA-ipd": ("multinma, set_ipd()", "https://dmphillippo.github.io/multinma/reference/set_ipd.html"),
+    "MULTINMA-pw": (
+        "multinma, beta blockers example (a pairwise meta-analysis with nma())",
+        "https://dmphillippo.github.io/multinma/articles/example_blocker.html",
+    ),
 }
 
 # --------------------------------------------------------------------------
@@ -241,9 +245,18 @@ METRICS: dict[str, Metric] = {
     "MPRD": m("Matched-pairs marginal risk difference", E % "MPRD", added=True),
     "MPORC": m("Matched-pairs conditional odds ratio (log)", E % "MPORC", added=True),
     # IPD one-stage: the coefficient of the regression
-    "I_OR": m("Odds ratio from the treatment coefficient", "logistic mixed model", "CH-26", verified=False),
-    "I_MD": m("Mean difference from the treatment coefficient", "linear mixed model", "CH-26", verified=False),
-    "I_IRR": m("Rate ratio from the treatment coefficient", "Poisson mixed model", "CH-26", verified=False),
+    # One-stage participant data, with multinma (#25): its likelihood and link give each measure.
+    "I_OR": m(
+        "Odds ratio from the treatment coefficient", 'nma(network, likelihood="bernoulli", link="logit")', "MULTINMA"
+    ),
+    "I_MD": m(
+        "Mean difference from the treatment coefficient",
+        'nma(network, likelihood="normal", link="identity")',
+        "MULTINMA",
+    ),
+    "I_IRR": m(
+        "Rate ratio from the treatment coefficient", 'nma(network, likelihood="poisson", link="log")', "MULTINMA"
+    ),
     "I_HR": m(
         "Hazard ratio from the treatment coefficient",
         "Cox model stratified by study or with frailty",
@@ -548,14 +561,16 @@ METHODS: dict[str, Method] = {
     ),
     "IPD1": meth(
         "One-stage regression on participant data (pairwise)",
-        "mixed-effects or multilevel regression",
+        "multinma::nma() with set_ipd()",
         "pairwise",
         ["ipd"],
         [RANDOM],
-        [STD, SUB, REG],
-        ["CH-26"],
-        verified=False,
-        note="Stratify by study (Cochrane 26.4.2, 26.4.5). R packages still to confirm.",
+        [STD, REG],
+        ["CH-26", "MULTINMA", "MULTINMA-ipd", "MULTINMA-pw"],
+        note="Stratify by study (Cochrane 26.4.2, 26.4.5). Fitted with multinma as a network of two treatments: its "
+        "beta blockers example sets up a pairwise meta-analysis this way from aggregate data, and the map applies the "
+        "same set-up to participant data. Its likelihoods give the odds ratio, mean difference and rate ratio; its "
+        "hazard ratio is to check (#25).",
     ),
     # network
     "NM_GT": meth(
@@ -770,7 +785,7 @@ for o, ms in {
     "Count / person-time": ["I_IRR"],
     "Time-to-event": ["I_HR"],
 }.items():
-    br(F1, G2, IPD, "ipd", o, "one row per participant", ms, verified=False, src=["CH-26"])
+    br(F1, G2, IPD, "ipd", o, "one row per participant", ms, src=["CH-26", "MULTINMA-ipd"])
 br(
     F1,
     G3,
@@ -814,7 +829,7 @@ br(
     src=["NM"],
 )
 for o, ms in {"Binary": ["N_OR"], "Continuous": ["N_MD"], "Time-to-event": ["N_HR"]}.items():
-    br(F1, G4, IPD, "ipd", o, "one row per participant", ms, domain="network", verified=False, src=["CH-26"])
+    br(F1, G4, IPD, "ipd", o, "one row per participant", ms, domain="network", src=["CH-26", "MULTINMA-ipd"])
 
 F2 = "2. Diagnostic test accuracy"
 br(
@@ -1304,7 +1319,7 @@ CROSS: list[tuple[str, str, str]] = [
 ]
 
 OPEN = [
-    "Confirm the R package for one-stage IPD, pairwise (network: multinma, #59).",
+    "Confirm a source for pooling participant data from single groups (the one-group IPD branch).",
     "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
     "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
     "(Cohen's d, R31).",
@@ -1472,6 +1487,10 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
         "N_SMD",
     ): "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)",
 }
+UNCONFIRMED[("IPD1", "I_HR")] = (
+    "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page "
+    "doesn't say which give a hazard ratio (#25)"
+)
 UNCONFIRMED[("NM_IPD", "N_HR")] = (
     "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page "
     "doesn't say which give a hazard ratio (#59)"
@@ -3407,6 +3426,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "Analyses the participant data of all studies in one regression model, stratified by study. The two-stage "
             "alternative analyses each study separately and then pools the summaries.",
             "CH-26 s26.4.2",
+        ),
+        (
+            "use",
+            "Cochrane notes it typically requires mixed-effects or multilevel regression software. The map names "
+            "multinma, which fits participant data (set_ipd()) in Stan with fixed or random treatment effects. Its "
+            "beta blockers example fits a pairwise meta-analysis as a network of two treatments, from aggregate data; "
+            "the map applies that set-up to participant data.",
+            "CH-26 s26.4.5, MULTINMA-ipd, MULTINMA, MULTINMA-pw",
         ),
         (
             "use",
