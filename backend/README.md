@@ -52,6 +52,14 @@ Mantel-Haenszel with OR, RR and RD, and Peto.
   back-transformed from the log scale), `studies` (estimate, variance and weight of each),
   `left_out` (studies the model didn't use, such as studies with no events in either arm for a
   ratio), `steps` (cumulative or leave-one-out rows, on the log scale for ratios) and `r_code`.
+- **Interpretation** (`interpretation`, #160): one fixed sentence saying what the pooled result
+  means, with its `sources` (Cochrane Handbook sections, metafor's `escalc` page). For example:
+  "On average across the 13 studies, the risk of tuberculosis in the vaccinated groups was 0.49
+  times the risk in the unvaccinated groups (95% CI 0.34 to 0.70). This is the average of effects
+  that may differ between studies, not one shared effect." The optional `labels` (`outcome`,
+  `treatment`, `control`; plain text, one line, 60/40/40 characters at most) fill in the words;
+  without them it says "the treatment groups" and "the control groups". No LLM writes it, and it
+  never says "statistically significant" (Handbook 15.3.2).
 - **R code:** rendered from the plan that ran, so it can't differ from it. It is shown only: the
   backend never runs it, and the R service accepts plans, not code (decision 0018).
 - **Errors:** a pathway the map doesn't have is `422 unknown_pathway`; one that isn't runnable is

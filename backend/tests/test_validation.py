@@ -351,6 +351,20 @@ def test_every_pathway_equals_metafor_called_by_hand(
         close(summary[key], want[key], key)
 
 
+# ---- the interpretation sentence on real numbers (#160) -------------------------------------------------------------
+
+
+def test_the_bcg_sentence_states_the_published_risk_ratio(client: TestClient, bcg: list[dict[str, Any]]) -> None:
+    # rma.uni reference page: log RR -0.7145 (-1.0669 to -0.3622), i.e. RR 0.49 (0.34 to 0.70)
+    labels = {"outcome": "tuberculosis", "treatment": "vaccinated", "control": "unvaccinated"}
+    out = run(client, pathway(plans.RANDOM, "IV", "RR"), bcg, labels=labels)
+    assert out["interpretation"]["text"] == (
+        "On average across the 13 studies, the risk of tuberculosis in the vaccinated groups was 0.49 times the risk"
+        " in the unvaccinated groups (95% CI 0.34 to 0.70). This is the average of effects that may differ between"
+        " studies, not one shared effect."
+    )
+
+
 # ---- failures --------------------------------------------------------------------------------------------------------
 
 

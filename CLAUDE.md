@@ -354,7 +354,7 @@ r_service: Plumber, R 4.5
 | GET | `/api/v1/meta-analysis/spec` | The columns a runnable pathway's study table needs, in plain words, and the checks made; one spec in `backend/app/data_spec.py` feeds this, the template, the upload check and `/run` |
 | GET | `/api/v1/meta-analysis/template` | A CSV template for a runnable pathway |
 | POST | `/api/v1/meta-analysis/import` | Check an uploaded CSV against the pathway's column spec; returns the parsed studies or field-level errors naming each row, study and column |
-| POST | `/api/v1/meta-analysis/run` | Run a **runnable** pathway (with analysis type, estimator and options); returns estimates, CIs, heterogeneity, weights, plot data and the R code |
+| POST | `/api/v1/meta-analysis/run` | Run a **runnable** pathway (with analysis type, estimator and options); returns estimates, CIs, heterogeneity, weights, plot data, a fixed interpretation sentence with its sources, and the R code |
 | POST | `/api/v1/advisor/chat` | Methods advisor over SSE (only when an API key is set) |
 | GET | `/health` | Backend health, whether `r_service` is reachable, and whether the advisor is enabled |
 
