@@ -67,6 +67,9 @@ def read(text: str, spec: DataSpec) -> tuple[list[dict[str, Any]], list[str]]:
         rows = [(n, r) for n, r in enumerate(reader, start=1) if any(cell.strip() for cell in r)]
     except csv.Error as error:
         raise _invalid(_unreadable(str(error), reader.line_num)) from None
+    if not rows:
+        # only empty cells, e.g. a line of "" (#171 audit, round 2)
+        raise _invalid("The file is empty.")
     header = [name.strip() for name in rows[0][1]]
     body = rows[1:]
     lines_of = [line for line, _ in body]

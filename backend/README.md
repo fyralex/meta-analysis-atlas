@@ -72,6 +72,9 @@ and checked against the same column spec as `/run`, so a file that passes here p
   a study's problems under `/run`'s paths (`data.3.ai`), each message naming the file's row, the
   study and the column ("Row 5 (Aronson 1948), column ai: Must be between 0 and n1i (123).").
   Thousands separators (`1,234`) and a file that isn't UTF-8 text get their own messages.
+- **Size:** the backend reads at most 2 MB of the file. In the Docker Compose stack, nginx refuses
+  a request over 3 MB before it reaches the backend, with `413` and the same JSON shape
+  (`code: too_large`); a host without that proxy needs its own limit (#168).
 - **Nothing is kept** (decision 0006).
 
 ## Settings

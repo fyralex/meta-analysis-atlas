@@ -132,7 +132,9 @@ def test_quoted_labels_with_commas_are_kept() -> None:
     assert out["studies"][0]["study"] == "Smith, Jones 2001"
 
 
-@pytest.mark.parametrize("text", ["", "\n\n  \n"], ids=["empty", "blank-lines"])
+@pytest.mark.parametrize(
+    "text", ["", "\n\n  \n", '""\n', '"",""\n" "\n'], ids=["empty", "blank-lines", "quotes", "quoted-blanks"]
+)
 def test_an_empty_file_is_refused(text: str) -> None:
     assert problems(text) == [("file", "The file is empty.")]
 
