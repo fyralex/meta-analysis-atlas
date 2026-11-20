@@ -14,6 +14,7 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from .data_spec import TWO_GROUP_BINARY, DataSpec, check_data
 from .errors import ApiError, FieldError
 
 AnalysisType = Literal["standard", "cumulative", "leave-one-out"]
@@ -39,11 +40,6 @@ SUPPORTED: dict[tuple[str, str], tuple[str, ...]] = {
 }
 # metrics on the ratio scale: the estimate is a log ratio, and the result also gives it back-transformed
 RATIOS = ("OR", "RR", "PETO")
-# the study table the request must carry (metafor's own argument names, which the R code shows)
-COLUMNS = ("study", "ai", "n1i", "ci", "n2i")
-COUNT_COLUMNS = ("ai", "n1i", "ci", "n2i")
-MIN_STUDIES = 2
-MAX_STUDIES = 2000
 DEFAULT_LEVEL = 95.0
 
 POST_STEPS: dict[str, str] = {"cumulative": "cumul", "leave-one-out": "leave1out"}
@@ -180,63 +176,15 @@ def check_options(pathway: PathwayRef, analysis_type: str, options: Options, all
         raise ApiError(422, "invalid_option", "An option does not apply to this pathway.", errors)
 
 
-def check_data(rows: list[dict[str, Any]]) -> dict[str, list[Any]]:
-    """The study table as columns, or a 422 `invalid_data` with a path for every problem found."""
-    errors: list[FieldError] = []
-    if len(rows) < MIN_STUDIES:
-        errors.append(FieldError(path="data", message=f"At least {MIN_STUDIES} studies are needed; got {len(rows)}."))
-    if len(rows) > MAX_STUDIES:
-        errors.append(FieldError(path="data", message=f"At most {MAX_STUDIES} studies are accepted; got {len(rows)}."))
-    columns: dict[str, list[Any]] = {name: [] for name in COLUMNS}
-    labels: dict[str, int] = {}
-    for i, row in enumerate(rows[:MAX_STUDIES]):
-        for name in COLUMNS:
-            path = f"data.{i}.{name}"
-            if name not in row or row[name] is None or row[name] == "":
-                errors.append(FieldError(path=path, message="Required."))
-                columns[name].append(None)
-            elif name == "study":
-                label = row[name]
-                if isinstance(label, bool) or not isinstance(label, (str, int)):
-                    errors.append(FieldError(path=path, message="Must be a text label."))
-                    columns[name].append(None)
-                    continue
-                label = str(label).strip()
-                if label in labels:
-                    errors.append(FieldError(path=path, message=f"Duplicates the label of data.{labels[label]}."))
-                labels.setdefault(label, i)
-                columns[name].append(label)
-            else:
-                columns[name].append(_whole_number(row[name], path, errors))
-    for i in range(min(len(rows), MAX_STUDIES)):
-        for events, total in (("ai", "n1i"), ("ci", "n2i")):
-            e, n = columns[events][i], columns[total][i]
-            if e is not None and n is not None and not 0 <= e <= n:
-                errors.append(FieldError(path=f"data.{i}.{events}", message=f"Must be between 0 and {total} ({n})."))
-            if n is not None and n < 1:
-                errors.append(FieldError(path=f"data.{i}.{total}", message="Must be at least 1."))
-    if errors:
-        raise ApiError(422, "invalid_data", "The study table is not valid for this pathway.", errors)
-    return columns
-
-
-def _whole_number(value: Any, path: str, errors: list[FieldError]) -> int | None:
-    """A count: a whole number, not a boolean, not negative. JSON 5.0 is accepted as 5."""
-    if isinstance(value, bool) or not isinstance(value, (int, float)):
-        errors.append(FieldError(path=path, message="Must be a whole number."))
-        return None
-    if isinstance(value, float) and not (math.isfinite(value) and value.is_integer()):
-        errors.append(FieldError(path=path, message="Must be a whole number."))
-        return None
-    if value < 0:
-        errors.append(FieldError(path=path, message="Must not be negative."))
-        return None
-    return int(value)
+def data_spec(pathway: PathwayRef) -> DataSpec:
+    """The study table a supported pathway reads (#158). All 12 read the same counts."""
+    check_pathway(pathway)
+    return TWO_GROUP_BINARY
 
 
 def build_plan(pathway: PathwayRef, analysis_type: AnalysisType, options: Options) -> dict[str, Any]:
     """The R service plan for a supported pathway (README of r_service/ for the format)."""
-    counts = {name: _col(name) for name in COUNT_COLUMNS}
+    counts = {c.name: _col(c.name) for c in TWO_GROUP_BINARY.columns if c.kind == "count"}
     study = _col("study")
     plan: dict[str, Any] = {}
     if pathway.method == "IV":
@@ -274,7 +222,7 @@ def prepare(request: RunRequest, allowed_analyses: list[str]) -> Prepared:
     """Check a request that names a runnable pathway, and build its plan. Nothing here reaches the network."""
     check_pathway(request.pathway)
     check_options(request.pathway, request.analysis_type, request.options, allowed_analyses)
-    columns = check_data(request.data)
+    columns = check_data(request.data, data_spec(request.pathway))
     plan = build_plan(request.pathway, request.analysis_type, request.options)
     return Prepared(plan=plan, columns=columns, options=request.options)
 

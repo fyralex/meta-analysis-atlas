@@ -129,4 +129,11 @@ def test_the_spec_directory_comes_from_the_environment(monkeypatch: pytest.Monke
 
 def test_the_openapi_schema_lists_the_endpoints() -> None:
     paths = client().get("/openapi.json").json()["paths"]
-    assert set(paths) == {"/health", "/api/v1/map", "/api/v1/pathways", "/api/v1/meta-analysis/run"}
+    assert set(paths) == {
+        "/health",
+        "/api/v1/map",
+        "/api/v1/pathways",
+        "/api/v1/meta-analysis/run",
+        "/api/v1/meta-analysis/spec",
+        "/api/v1/meta-analysis/template",
+    }
