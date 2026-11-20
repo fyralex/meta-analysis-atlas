@@ -413,6 +413,9 @@ check isn't opened. The script runs:
 5. **frontend:** ESLint, `tsc --noEmit`, Vitest, and the production build.
 6. **R service:** its testthat tests (validation against metafor) and lintr.
    The script fails if R isn't installed.
+7. **validation tests:** it starts the R service on a free port, runs
+   `pytest -m integration` (`/run` against metafor run directly and against
+   its documented values), and stops the service.
 
 **At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
 same script in a clean environment only when a milestone is closed, a `v*`
@@ -437,6 +440,7 @@ scripts/check.sh                              # every local check for a PR
 npm --prefix frontend run e2e                 # the browser tests (Playwright; run at releases)
 (cd r_service && Rscript tests/testthat.R)    # the R service's tests (check.sh runs them too)
 (cd r_service && Rscript run.R)               # the R service, at http://localhost:8000 (R_SERVICE_PORT)
+R_SERVICE_URL=http://localhost:8000 .venv/bin/pytest -m integration   # the validation tests, against that service (check.sh starts its own)
 .venv/bin/uvicorn app.main:app --app-dir backend --port 8080   # the backend, at http://localhost:8080
 docker compose up --build                     # apps, backend and R service, at http://localhost:8080
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
