@@ -4,6 +4,58 @@ Each release lists what changed, with the pull requests behind it. The map
 itself changes only through audited pull requests, and each map change
 explains its effect on the pathways.
 
+## 0.1.2 (2026-11-19)
+
+The map's review: every open methodology issue is decided, and every source
+it needs has been read. 540 pathways (was 564): 444 planned, 86 specified and
+10 to check (was 99). Nothing is runnable yet. The 10 left to check are
+tracked in #133, #134 and #135.
+
+### Decisions on the map
+
+- **New entries accepted:** the owner accepted the corrections to taxonomy
+  v11 (#9 to #15) and every family of new entries: change and matched pairs,
+  ordinal and O − E and V data, extra escalc metrics, netmeta and netmetabin,
+  penalised logistic regression, the network arcsine difference, and the
+  diagnostic accuracy, prognosis, association and reliability frameworks
+  (#109, #110, #112, #128). Accepted entries lose the "new" badge; only 3
+  pathways stay new.
+- **gemtc networks:** they take only the measures their likelihoods give
+  (rule R33, #118). Contrast-level data and the arm-level SMD are confirmed
+  from gemtc's source (#132).
+- **The network SMD:** it must stay consistent within multi-arm studies.
+  netmeta gives Cohen's d; gemtc, from arm-level data, a Hedges' g corrected
+  once per study (rule R31, decisions 0003 and 0017).
+- **Prognosis:** confirmed from Riley et al. 2019 and Debray et al. 2017.
+  Prognostic factors are pooled with random effects only (rule R34, #129).
+- **Diagnostic accuracy:** confirmed from the Cochrane DTA Handbook, Ch. 9
+  and 10. The bivariate model uses `lme4::glmer`. The diagnostic odds ratio
+  and likelihood ratios come from its summary point, and univariate pooling
+  is removed (rule R35, #130).
+- **Exposure and outcome:** confirmed from Cochrane Ch. 24, by analogy
+  (#127).
+- **Named R implementations:**
+  - dtametaTMB for the HSROC model, and metafor for O − E and V data (#126);
+  - multinma for one-stage participant data (#122, #131).
+- **Cards:**
+  - the inverse-variance card explains the variance estimators and the
+    Hartung-Knapp interval (#115);
+  - the rma.mv card says when it applies (#114);
+  - network metric cards name each engine's call (#117, #124).
+- **Cochrane chapters:** each chapter's source gives its date. Ch. 10 and 23
+  changed in November 2026, and their cited sections were rechecked (#125).
+- **The reliability group** is now "One group (one instrument)" (#116).
+
+Decision records 0008 to 0017 are in `docs/decisions/`.
+
+### Apps
+
+- **Atlas, metric families:** the metric step groups its dots by family:
+  clusters on the 3D map, and headings in the side panel and the text view
+  (#119, #120).
+- **Browser tests:** Playwright checks every app at three widths and in both
+  themes. They run at releases (#121).
+
 ## 0.1.1 (2026-11-18)
 
 A redesign for first-time visitors (#92), and four corrections to the
