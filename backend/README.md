@@ -9,6 +9,8 @@ and holds no rules of its own: `spec/build_map.py` decides what is valid.
 | GET | `/api/v1/map` | the tiers, sources, branches, rules, cross-cutting sections, metrics, methods and cards |
 | GET | `/api/v1/pathways` | `count` and `pathways`; filter by any tier (`framework`, `group`, `datatype`, `outcome`, `model`, `method`, `metric`, each written as in the map) and by `status` |
 | POST | `/api/v1/meta-analysis/run` | Runs a **runnable** pathway on a study table: the summary, the studies, the studies left out and the R code |
+| GET | `/api/v1/meta-analysis/spec` | What a runnable pathway's study table must hold: each column in plain words, with an example, and the checks made |
+| GET | `/api/v1/meta-analysis/template` | A CSV template for a runnable pathway: the header and one example row |
 
 Errors are JSON: `{"code": ..., "message": ..., "fields": [{"path": ..., "message": ...}], "details": {...}}`.
 A filter value the map doesn't have is `422 unknown_value`; a malformed request is
@@ -37,7 +39,9 @@ Mantel-Haenszel with OR, RR and RD, and Peto.
   people in the intervention arm), `ci` and `n2i` (the same in the control arm), metafor's own
   argument names. Counts are whole numbers, `0 <= events <= total`, totals at least 1, and there
   are 2 to 2000 studies. Other columns are ignored. A problem is `422 invalid_data`, with a path
-  for each (`data.3.ai`).
+  for each (`data.3.ai`). These rules live in one place, `app/data_spec.py` (#158): `/run`'s check,
+  `GET /spec` and `GET /template` all read it. Both GETs take the pathway's seven tiers as query
+  parameters and answer `422 unknown_pathway` or `409 pathway_not_runnable` as `/run` does.
 - **Options:** `estimator` (REML by default; DL, HE, HS, HSk, SJ, ML, EB, PM and PMM also) and
   `interval` (`z`, the Wald interval, by default, or `knha`, Hartung-Knapp-Sidik-Jonkman) apply to
   random-effects inverse variance only; `level` is a percentage. `GENQ` and `GENQM` aren't offered:
