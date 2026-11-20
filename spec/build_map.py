@@ -145,6 +145,19 @@ SOURCES: dict[str, tuple[str, str]] = {
     "NM-bin": ("netmeta, netmetabin()", "https://rdrr.io/cran/netmeta/man/netmetabin.html"),
     "GEMTC": ("gemtc, mtc.model()", "https://rdrr.io/cran/gemtc/man/mtc.model.html"),
     "GEMTC-net": ("gemtc, mtc.network()", "https://rdrr.io/cran/gemtc/man/mtc.network.html"),
+    # gemtc's source code (CRAN mirror), where its help pages are silent (#25)
+    "GEMTC-re": (
+        "gemtc source: the likelihood for contrast-level data (inst/gemtc.releffect.likelihood.r2.txt)",
+        "https://github.com/cran/gemtc/blob/master/inst/gemtc.releffect.likelihood.r2.txt",
+    ),
+    "GEMTC-smd": (
+        "gemtc source: the SMD likelihood (R/ll.normal.smd.R)",
+        "https://github.com/cran/gemtc/blob/master/R/ll.normal.smd.R",
+    ),
+    "GEMTC-re-m": (
+        "gemtc source: the likelihood for multi-arm contrast-level data (inst/gemtc.releffect.likelihood.rm.txt)",
+        "https://github.com/cran/gemtc/blob/master/inst/gemtc.releffect.likelihood.rm.txt",
+    ),
     "NM-man": ("netmeta manual", "https://cran.r-project.org/web/packages/netmeta/refman/netmeta.html"),
     "META-bin": ("meta, metabin()", "https://rdrr.io/cran/meta/man/metabin.html"),
     "META-pw": ("meta, pairwise(), Details", "https://rdrr.io/cran/meta/man/pairwise.html"),
@@ -272,7 +285,7 @@ METRICS: dict[str, Metric] = {
     "N_RD": m("Risk difference (network)", 'netmeta(sm="RD")', "NM"),
     "N_ASD": m("Arcsine difference", 'netmeta(sm="ASD")', "NM", added=True),
     "N_MD": m("Mean difference (network)", 'netmeta(sm="MD")', "NM"),
-    "N_SMD": m("Standardized mean difference (Cohen's d)", 'netmeta(sm="SMD")', "META-pw"),
+    "N_SMD": m("Standardized mean difference (network)", 'netmeta(sm="SMD")', "META-pw"),
     "N_ROM": m("Ratio of means", 'netmeta(sm="ROM")', "NM"),
     # netmeta's examples fit both from arm-level events and person-time, via pairwise(event, time, sm=...)
     "N_IRR": m("Incidence rate ratio", 'netmeta(sm="IRR")', "NM"),
@@ -405,6 +418,19 @@ GEMTC_CALLS: dict[str, str] = {
     "N_RR": 'mtc.model(network, likelihood="binom", link="log")',
     "N_MD": 'mtc.model(network, likelihood="normal", link="identity")',
     "N_IRR": 'mtc.model(network, likelihood="poisson", link="log")',
+    "N_SMD": 'mtc.model(network, likelihood="normal", link="smd")',
+}
+# Contrast-level data: gemtc models each diff as normal around the linear predictor (two-arm and multi-arm templates;
+# a multi-arm study also gives the reference arm's std.err), so diff must be on the scale of the link named, which
+# also sets the scale gemtc reports (mtc.model()). For the log HR, binom/cloglog is used; poisson/log is labelled a
+# hazard ratio too and would fit the same model (#25).
+GEMTC_RE_CALLS: dict[str, str] = {
+    "N_OR": 'mtc.model(network, likelihood="binom", link="logit")  # diff = log OR',
+    "N_RR": 'mtc.model(network, likelihood="binom", link="log")  # diff = log RR',
+    "N_MD": 'mtc.model(network, likelihood="normal", link="identity")  # diff = MD',
+    "N_SMD": 'mtc.model(network, likelihood="normal", link="smd")  # diff = SMD',
+    "N_IRR": 'mtc.model(network, likelihood="poisson", link="log")  # diff = log rate ratio',
+    "N_HR": 'mtc.model(network, likelihood="binom", link="cloglog")  # diff = log HR',
 }
 MULTINMA_CALLS: dict[str, str] = {
     "N_OR": 'nma(network, likelihood="bernoulli", link="logit")',
@@ -414,6 +440,7 @@ MULTINMA_CALLS: dict[str, str] = {
 NETWORK_ENGINE_CALLS: list[tuple[str, str, str, str, dict[str, str]]] = [
     (NETWORK_ESCALC_LABEL, "MF-escalc", "NM_MV", "Arm-level summary data", NETWORK_ESCALC),
     ("With gemtc, from arm-level data", "GEMTC", "NM_BAYES", "Arm-level summary data", GEMTC_CALLS),
+    ("With gemtc, from contrast-level data", "GEMTC-re", "NM_BAYES", "Contrast-level estimates", GEMTC_RE_CALLS),
     ("With multinma, from participant data", "MULTINMA", "NM_IPD", "Individual participant data", MULTINMA_CALLS),
 ]
 
@@ -616,12 +643,14 @@ METHODS: dict[str, Method] = {
         ["arm", "est"],
         [COMMON, RANDOM],
         [STD, REG],
-        ["DMA", "CH-11", "GEMTC", "GEMTC-net"],
+        ["DMA", "CH-11", "GEMTC", "GEMTC-net", "GEMTC-re", "GEMTC-re-m", "GEMTC-smd"],
         metrics={"N_OR", "N_RR", "N_MD", "N_SMD", "N_IRR", "N_HR"},
         added_models=[COMMON],
         note='Supports meta-regression. linearModel="fixed" fits a fixed-effect model. Its likelihoods give the odds '
         "ratio, risk ratio, mean difference and standardized mean difference; from events and exposure, its "
-        "Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level input is to check.",
+        "Poisson model gives a rate ratio, which gemtc labels a hazard ratio. Contrast-level data (diff, std.err) are "
+        "read on the chosen link's scale. From arm-level data its SMD is Hedges' g, consistent within multi-arm "
+        "studies; contrast-level SMDs are taken as given (#25).",
     ),
     "NM_IPD": meth(
         "One-stage regression on participant data (network)",
@@ -1252,11 +1281,13 @@ RULES: list[tuple[str, str, str, str]] = [
     ),
     (
         "R31",
-        "A network's standardized mean difference is Cohen's d. From arm-level data, pairwise() computes it that way "
-        "for netmeta, since the small-sample correction of Hedges' g would make a multi-arm study's comparisons "
-        "disagree; contrast-level estimates should be Cohen's d for the same reason. The map offers one network SMD.",
+        "A network's standardized mean difference must stay consistent within multi-arm studies. From arm-level data, "
+        "pairwise() computes Cohen's d for netmeta, since a separate small-sample correction for each comparison "
+        "would make them disagree; gemtc, from arm-level data, gives Hedges' g with one pooled SD and one correction per study, "
+        "which stays consistent. Contrast-level estimates are taken as given, so each study's SMDs should share one "
+        "standard deviation and one small-sample correction (or none). The map offers one network SMD.",
         "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
-        "META-pw",
+        "META-pw, GEMTC-smd, GEMTC-re",
     ),
     (
         "R32",
@@ -1320,9 +1351,7 @@ CROSS: list[tuple[str, str, str]] = [
 
 OPEN = [
     "Confirm a source for pooling participant data from single groups (the one-group IPD branch).",
-    "Confirm how gemtc reads contrast-level data (the scale of diff, and its likelihood).",
-    "Confirm from metafor's and gemtc's documentation how their networks take a standardized mean difference "
-    "(Cohen's d, R31).",
+    "Confirm from metafor's documentation how rma.mv networks take a standardized mean difference (R31).",
 ]
 
 
@@ -1482,10 +1511,6 @@ UNCONFIRMED: dict[tuple[str, str], str] = {
         "NM_MV",
         "N_SMD",
     ): "R31's source covers netmeta; how rma.mv networks take an SMD is still to read in metafor's documentation",
-    (
-        "NM_BAYES",
-        "N_SMD",
-    ): "gemtc fits an SMD (normal/smd likelihood), but its help page doesn't say whether it is Cohen's d (R31)",
 }
 UNCONFIRMED[("IPD1", "I_HR")] = (
     "multinma's survival likelihoods include accelerated failure time models, which give time ratios; its help page "
@@ -1496,10 +1521,7 @@ UNCONFIRMED[("NM_IPD", "N_HR")] = (
     "doesn't say which give a hazard ratio (#59)"
 )
 # Pairs of a method and an input it reads (a branch kind) whose pairing is not confirmed: their pathways are to check.
-UNCONFIRMED_INPUT: dict[tuple[str, str], str] = {
-    ("NM_BAYES", "est"): "gemtc takes contrast-level data as diff and std.err, but its help pages don't say what scale "
-    "diff is on or how it is matched to a likelihood (issue #40)",
-}
+UNCONFIRMED_INPUT: dict[tuple[str, str], str] = {}  # gemtc's contrast-level input was confirmed from its source (#25)
 
 
 def pathways() -> list[Pathway]:
@@ -2492,8 +2514,8 @@ RULE_PLAIN: dict[str, str] = {
     "R29": "Trim and fill and selection models work on rma.uni models only, and trim and fill also needs a model "
     "without moderators.",
     "R30": "Meta-regression is generally not advised with fewer than ten studies.",
-    "R31": "In a network, the standardized mean difference is Cohen's d, without the small-sample correction of "
-    "Hedges' g, so that a study with three or more groups gives comparisons that agree.",
+    "R31": "In a network, a study with three or more groups must give standardized mean differences that agree: "
+    "netmeta uses Cohen's d, and gemtc, from arm-level data, a Hedges' g corrected once per study.",
     "R32": "In this map, the Peto odds ratio comes only with Peto's method, the method Cochrane presents it with.",
     "R33": "gemtc's network models give odds ratios, risk ratios, mean differences, standardized mean differences "
     "and rate ratios; not risk or rate differences, arcsine differences or ratios of means.",
@@ -3962,6 +3984,14 @@ TEACH: dict[str, list[tuple[str, str, str]]] = {
             "caution",
             "pairwise() computes Cohen's d rather than Hedges' g, because Hedges' g is not consistent within multi-arm studies.",
             "META-pw",
+        ),
+        (
+            "caution",
+            "From arm-level data, gemtc's SMD is Hedges' g: its likelihood scales each study by one standard "
+            "deviation pooled across all its arms and applies one small-sample correction per study, so a multi-arm "
+            "study's comparisons still agree, and the result isn't on exactly netmeta's scale. Contrast-level SMDs "
+            "are taken as given, so compute them consistently within each study (R31).",
+            "GEMTC-smd, GEMTC-re",
         ),
     ],
     "metric:N_ROM": [

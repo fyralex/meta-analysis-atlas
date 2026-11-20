@@ -49,3 +49,10 @@ No pathway is added or removed (564).
 
 - meta, `pairwise()` help page, Details: https://rdrr.io/cran/meta/man/pairwise.html (read 2026-11-16).
 - Crippa A, Orsini N (2016). Dose-response meta-analysis of differences in means. *BMC Medical Research Methodology* 16:91. Cited by `pairwise()`; not read for this decision.
+
+## Later
+
+Amended by decision 0017 (2026-11-19, #25): gemtc gives a Hedges' g that
+stays consistent within multi-arm studies (one pooled SD and one small-sample
+correction per study), so R31 now covers both and the network SMD is labelled
+"Standardized mean difference (network)". rma.mv networks remain to check.
