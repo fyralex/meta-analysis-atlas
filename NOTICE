@@ -27,6 +27,13 @@ citation("<package>") in R.
   metamisc    https://cran.r-project.org/package=metamisc
   dosresmeta  https://cran.r-project.org/package=dosresmeta
 
+The R service (r_service/) also uses these R packages, pinned in
+r_service/renv.lock:
+
+  plumber     https://cran.r-project.org/package=plumber
+  jsonlite    https://cran.r-project.org/package=jsonlite
+  metadat     https://cran.r-project.org/package=metadat (the datasets its tests use)
+
 The methodological content of the map cites the Cochrane Handbook for
 Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-and-manuals/handbook),
 the Cochrane Handbook for Systematic Reviews of Diagnostic Test Accuracy,

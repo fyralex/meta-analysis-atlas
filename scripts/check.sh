@@ -48,6 +48,18 @@ npm --prefix frontend run -s typecheck
 npm --prefix frontend run -s test
 npm --prefix frontend run -s build >/dev/null
 
+echo "== R service (tests, lint)"
+# The R service's tests compare its plans with metafor called directly and with metafor's documented values.
+if ! command -v Rscript >/dev/null 2>&1; then
+  echo "Rscript is missing: install R 4.5 and the packages in r_service/renv.lock." >&2
+  exit 1
+fi
+(
+  cd r_service
+  Rscript tests/testthat.R
+  Rscript -e 'l <- lintr::lint_dir("."); print(l); quit(status = as.integer(length(l) > 0))'
+)
+
 echo "== private name scan"
 if [ -n "${ATLAS_PRIVATE_SCAN:-}" ]; then
   "$ATLAS_PRIVATE_SCAN"
