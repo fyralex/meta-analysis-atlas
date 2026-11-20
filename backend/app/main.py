@@ -5,16 +5,23 @@ Run it with `uvicorn app.main:app --app-dir backend --port 8080`.
 
 from typing import Annotated, Any
 
-from fastapi import Depends, FastAPI, Query, Request, Response
+from fastapi import Depends, FastAPI, File, Form, Query, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 
-from . import errors, plans
+from . import csv_import, errors, plans
 from .config import Settings
 from .data_spec import DataSpec, template_csv
 from .errors import ApiError, ErrorBody, FieldError
 from .map_data import TIERS, MapData, Pathway, Status
 from .r_service import RService
+
+
+class ImportResult(BaseModel):
+    pathway: plans.PathwayRef
+    count: int
+    studies: list[dict[str, Any]]
+    ignored_columns: list[str]
 
 
 class Health(BaseModel):
@@ -162,6 +169,40 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             media_type="text/csv; charset=utf-8",
             headers={"Content-Disposition": f'attachment; filename="{filename}"'},
         )
+
+    @app.post("/api/v1/meta-analysis/import", tags=["analysis"], responses=SPEC_ERRORS)
+    async def import_csv(
+        file: Annotated[UploadFile, File(description="A CSV file, UTF-8, one row per study.")],
+        data: Annotated[MapData, Depends(get_map)],
+        framework: Annotated[str, Form()],
+        group: Annotated[str, Form()],
+        datatype: Annotated[str, Form()],
+        outcome: Annotated[str, Form()],
+        model: Annotated[str, Form()],
+        method: Annotated[str, Form()],
+        metric: Annotated[str, Form()],
+    ) -> ImportResult:
+        """Check an uploaded CSV against a **runnable** pathway's column spec, and return its studies ready for `/run`.
+
+        Problems are `422 invalid_data`: missing columns under `file.columns.<name>`, a study's problems under
+        `/run`'s paths (`data.3.ai`), each message naming the file's row and the study. Nothing is kept.
+        """
+        # the tiers come as separate form fields: a form model would count the file as an extra field
+        pathway = plans.PathwayRef(
+            framework=framework,
+            group=group,
+            datatype=datatype,
+            outcome=outcome,
+            model=model,
+            method=method,
+            metric=metric,
+        )
+        runnable_pathway(data, pathway)
+        spec = plans.data_spec(pathway)
+        # one byte over the cap is enough to know the file is too large, without reading it all
+        raw = await file.read(csv_import.MAX_BYTES + 1)
+        studies, ignored = csv_import.read(csv_import.decode(raw), spec)
+        return ImportResult(pathway=pathway, count=len(studies), studies=studies, ignored_columns=ignored)
 
     return app
 

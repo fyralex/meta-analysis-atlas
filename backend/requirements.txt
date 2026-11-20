@@ -4,6 +4,8 @@ fastapi==0.162.0
 pydantic==2.14.3
 uvicorn==0.54.0
 httpx==0.28.1
+# CSV uploads to /api/v1/meta-analysis/import (#159); 0.0.34 was under two weeks old when this was pinned
+python-multipart==0.0.33
 
 # what the four above depend on
 annotated-doc==0.0.5
