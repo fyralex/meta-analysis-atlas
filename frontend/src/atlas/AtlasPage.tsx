@@ -115,7 +115,32 @@ export function AtlasPage() {
       </p>
 
       {/* Outside "Display options", so a visitor shown the text view instead of the map sees why at once. */}
-      {!webgl && <p className="note">This browser can&apos;t draw the 3D map (no WebGL 2), so the Atlas shows the text view.</p>}
+      {!webgl && (
+        <div className="note">
+          <p>This browser can&apos;t draw the 3D map (no WebGL 2), so the Atlas shows the text view.</p>
+          {/* Often graphics acceleration is off: Chrome then reports WebGL as disabled (#140). */}
+          <details>
+            <summary>How to turn on the 3D map</summary>
+            <ol>
+              <li>
+                Turn on your browser&apos;s graphics acceleration. In Chrome: Settings, System, &quot;Use graphics
+                acceleration when available&quot;, then Relaunch.
+              </li>
+              <li>
+                In Chrome, open <code>chrome://gpu</code>: WebGL should say &quot;Hardware accelerated&quot;. If it
+                still says Disabled, quit Chrome completely and reopen it.
+              </li>
+              <li>
+                Check that your browser can draw WebGL 2 at all at{" "}
+                <a href="https://get.webgl.org/webgl2/" target="_blank" rel="noreferrer">
+                  get.webgl.org/webgl2
+                </a>
+                , then reload this page.
+              </li>
+            </ol>
+          </details>
+        </div>
+      )}
       {webgl && failed3d && (
         <p className="note" role="status">
           The 3D map couldn&apos;t be drawn here, so the Atlas shows the text view.
