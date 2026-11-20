@@ -70,8 +70,16 @@ DATASETS = {
 
 
 def dataset_of(test_id: str) -> str:
-    """The by-hand checks run on both data sets ([...-bcg], [...-double zero]); the others on the BCG trials."""
-    return "double zero" if test_id.endswith("-double zero]") else "bcg"
+    """The by-hand checks run on both data sets ([...-bcg], [...-double zero]); the others on the BCG trials only.
+
+    An id that names no known data set is an error, not a guess (#176 audit).
+    """
+    if kind_of(test_id) != "by_hand":
+        return "bcg"
+    for dataset in DATASETS:
+        if test_id.endswith(f"-{dataset}]"):
+            return dataset
+    raise ValueError(f"no data set in {test_id}")
 
 
 def check_passed(check: dict[str, Any]) -> bool:

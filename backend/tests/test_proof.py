@@ -2,6 +2,7 @@
 
 import datetime
 from collections import defaultdict
+from pathlib import Path
 from typing import Any
 
 import build_map as bm
@@ -148,11 +149,20 @@ def test_the_outcome_hook_never_turns_a_failure_into_a_pass(
     assert proof.outcomes == {"x::t": expected}
 
 
-def test_a_new_run_removes_the_last_runs_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Any) -> None:
+def test_a_new_run_removes_the_last_runs_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
     from . import conftest
 
     old = tmp_path / "proof.json"
     old.write_text("{}", encoding="utf-8")
     monkeypatch.setenv(proof.OUT_ENV, str(old))
+    # the hook reads only the environment, so no real pytest.Session is needed here
     conftest.pytest_sessionstart(None)  # type: ignore[arg-type]
     assert not old.exists()
+
+
+def test_a_by_hand_check_must_name_its_data_set() -> None:
+    by_hand = "backend/tests/test_validation.py::test_every_pathway_equals_metafor_called_by_hand"
+    assert proof.dataset_of(f"{by_hand}[Common effect-IV-OR-bcg]") == "bcg"
+    assert proof.dataset_of(f"{by_hand}[Common effect-IV-OR-double zero]") == "double zero"
+    with pytest.raises(ValueError, match="no data set"):
+        proof.dataset_of(f"{by_hand}[Common effect-IV-OR-another]")
