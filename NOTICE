@@ -34,6 +34,16 @@ r_service/renv.lock:
   jsonlite    https://cran.r-project.org/package=jsonlite
   metadat     https://cran.r-project.org/package=metadat (the datasets its tests use)
 
+The backend (backend/) uses these Python packages, pinned in
+backend/requirements.txt with the packages they depend on. Those are under
+MIT, BSD-3-Clause or Apache-2.0, except certifi (MPL-2.0) and
+typing_extensions (PSF-2.0); all are compatible with the GPL:
+
+  FastAPI     https://fastapi.tiangolo.com (MIT)
+  Pydantic    https://docs.pydantic.dev (MIT)
+  Uvicorn     https://www.uvicorn.org (BSD-3-Clause)
+  HTTPX       https://www.python-httpx.org (BSD-3-Clause)
+
 The methodological content of the map cites the Cochrane Handbook for
 Systematic Reviews of Interventions (https://www.cochrane.org/authors/handbooks-and-manuals/handbook),
 the Cochrane Handbook for Systematic Reviews of Diagnostic Test Accuracy,

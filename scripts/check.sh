@@ -15,7 +15,7 @@ echo "== lint and format (ruff)"
 echo "== types (mypy --strict)"
 "$PY" -m mypy
 
-echo "== map tests (pytest)"
+echo "== map and backend tests (pytest)"
 "$PY" -m pytest
 
 echo "== generated map files are current"

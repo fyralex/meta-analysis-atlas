@@ -377,7 +377,7 @@ committed, and the checks confirm that it's current.
 description lists the checks that ran and their results. A PR with a failing
 check isn't opened. The script runs:
 1. **lint, format, types and tests:** ruff, mypy `--strict`, and the map
-   tests (pytest).
+   and backend tests (pytest).
 2. **map files current:** regenerating `spec/` changes nothing.
 3. **npm licence record current:** regenerating `docs/npm-licences.md` from
    `frontend/package-lock.json` changes nothing, and every dependency of the
@@ -412,6 +412,8 @@ scripts/check.sh                              # every local check for a PR
 npm --prefix frontend run e2e                 # the browser tests (Playwright; run at releases)
 (cd r_service && Rscript tests/testthat.R)    # the R service's tests (check.sh runs them too)
 (cd r_service && Rscript run.R)               # the R service, at http://localhost:8000 (R_SERVICE_PORT)
+.venv/bin/uvicorn app.main:app --app-dir backend --port 8080   # the backend, at http://localhost:8080
+docker compose up --build                     # apps, backend and R service, at http://localhost:8080
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
 gh workflow run CI                            # start CI by hand (it also runs at releases)
 ```

@@ -37,16 +37,16 @@ repos:
         files: ^(frontend/package-lock\.json|scripts/npm_licences\.py)$
         pass_filenames: false
       - id: map-types
-        name: map types (mypy --strict)
+        name: map and backend types (mypy --strict)
         entry: .venv/bin/mypy
         language: system
-        files: ^(spec|tests|scripts)/.*\.py$
+        files: ^(spec|tests|scripts|backend)/.*\.py$
         pass_filenames: false
       - id: map-tests
-        name: map tests (pytest)
+        name: map and backend tests (pytest)
         entry: .venv/bin/pytest
         language: system
-        files: ^(spec/|tests/)
+        files: ^(spec/|tests/|backend/)
         pass_filenames: false
       - id: frontend-quick
         name: frontend lint and types
