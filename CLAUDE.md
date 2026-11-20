@@ -417,7 +417,8 @@ check isn't opened. The script runs:
    The script fails if R isn't installed.
 7. **validation tests:** it starts the R service on a free port, runs
    `pytest -m integration` (`/run` against metafor run directly and against
-   its documented values), and stops the service.
+   its documented values), and stops the service. The run writes the Proof
+   page's data to `frontend/public/proof.json` (git-ignored; CI keeps it).
 
 **At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
 same script in a clean environment only when a milestone is closed, a `v*`

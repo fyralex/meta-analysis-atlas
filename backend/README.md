@@ -116,6 +116,30 @@ doesn't run with.
 The first example is the BCG vaccine trials, written from `metadat::dat.bcg` by R (a
 validation test checks the file still equals it).
 
+## Proof data
+
+When `ATLAS_PROOF_OUT` names a file, the validation run (`pytest -m integration`) writes the
+Proof page's data there (#163); `scripts/check.sh` writes `frontend/public/proof.json`
+(git-ignored) and CI keeps it as the `proof` artifact. For each runnable pathway it lists every
+test `RUNNABLE` in `spec/build_map.py` names for it:
+
+```json
+{"version": 1, "passed": 12, "total": 12,
+ "run": {"date": "...", "r": "4.5.3", "metafor": "5.0.1", "python": "...", "commit": "...", "uncommitted_changes": false},
+ "pathways": [{"pathway": {"framework": "...", "model": "Common effect", "method": "IV", "metric": "OR", ...},
+   "status": "passed",
+   "checks": [{"test": "backend/tests/test_validation.py::...", "kind": "r_code", "outcome": "passed",
+     "tolerance": "relative difference under 1e-10 (absolute 1e-12 near zero)",
+     "values": [{"quantity": "estimate", "ours": -0.436139..., "compared": -0.436139..., "passed": true}]}]}]}
+```
+
+- `kind` is `published` (metafor's reference pages), `by_hand` (metafor called directly in the
+  test) or `r_code` (the R code `/run` shows).
+- A named test that didn't run is `missing`, never a pass; a test `RUNNABLE` doesn't name isn't
+  listed. A pathway is `passed` only if all its checks passed.
+- The versions come from the R service's `/health`; if it can't be asked, they are `null`, not
+  guessed.
+
 ## Settings
 
 | Variable | Default | |
