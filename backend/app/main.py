@@ -141,7 +141,12 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         allowed = data.raw["methods"][found.method]["analysis"]
         prepared = plans.prepare(request, allowed)
         results = await r_service.execute(prepared.plan, prepared.columns)
-        return plans.build_response(request, prepared, results)
+        # random effects: also fit the common effect, the funnel's centre (decision 0020)
+        ce_plan = plans.common_effect_plan(prepared.plan)
+        common_effect = None
+        if ce_plan is not None:
+            common_effect = (await r_service.execute(ce_plan, prepared.columns))["summary"]["estimate"]
+        return plans.build_response(request, prepared, results, common_effect)
 
     @app.get("/api/v1/meta-analysis/spec", tags=["analysis"], responses=SPEC_ERRORS)
     def data_spec(

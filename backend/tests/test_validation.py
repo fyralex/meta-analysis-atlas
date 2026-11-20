@@ -53,7 +53,10 @@ def rscript(code: str, tmp_path: Path) -> Any:
     """Run R code that ends by printing one JSON value, and return it."""
     script = tmp_path / "check.R"
     script.write_text(code, encoding="utf-8")
-    done = subprocess.run(["Rscript", str(script)], capture_output=True, text=True, timeout=180, check=False)
+    # run in the temporary directory: the shown code's funnel() writes Rplots.pdf where R runs
+    done = subprocess.run(
+        ["Rscript", str(script)], capture_output=True, text=True, timeout=180, check=False, cwd=tmp_path
+    )
     assert done.returncode == 0, done.stderr
     return json.loads(done.stdout.strip().splitlines()[-1])
 
@@ -88,6 +91,7 @@ if (exists("pred")) {
   out$pi_upper <- n(pred$pi.ub)
 }
 if (exists("steps")) out$steps_estimate <- as.numeric(steps$estimate)
+out$funnel_centre <- if (exists("ce")) n(ce$b) else n(fit$b)
 cat(jsonlite::toJSON(out, digits = NA, auto_unbox = TRUE, na = "null"))
 """
 
@@ -116,6 +120,8 @@ def assert_matches_r(out: dict[str, Any], tmp_path: Path) -> None:
         elif key in ("pi_lower", "pi_upper"):
             # on the ratio scale for ratios; for a difference there is no `pred` and no key here
             close(out["ratio_scale"][key], want, key)
+        elif key == "funnel_centre":
+            close(out["funnel"]["centre"], want, key)
         elif key == "steps_estimate":
             assert [s["estimate"] for s in out["steps"]] == pytest.approx(want, rel=REL, abs=ABS)
         else:
@@ -349,6 +355,22 @@ def test_every_pathway_equals_metafor_called_by_hand(
     want = by_hand[dataset][pid(p)]
     for key in HAND_KEYS:
         close(summary[key], want[key], key)
+
+
+# ---- the funnel plot's centre (#161, decision 0020) -------------------------------------------------------------
+
+
+@pytest.mark.parametrize("metric", ["OR", "RR", "RD", "AS"])
+def test_a_random_effects_funnel_is_centred_on_metafors_common_effect_estimate(
+    client: TestClient,
+    bcg: list[dict[str, Any]],
+    by_hand: dict[str, dict[str, dict[str, float | None]]],
+    metric: str,
+) -> None:
+    out = run(client, pathway(plans.RANDOM, "IV", metric), bcg)
+    close(out["funnel"]["centre"], by_hand["bcg"][f"Common effect-IV-{metric}"]["estimate"], "centre")
+    assert out["funnel"]["centre"] != pytest.approx(out["summary"]["estimate"])
+    assert len(out["funnel"]["points"]) == 13
 
 
 # ---- the interpretation sentence on real numbers (#160) -------------------------------------------------------------
