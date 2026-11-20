@@ -1287,7 +1287,7 @@ RULES: list[tuple[str, str, str, str]] = [
         "which stays consistent. Contrast-level estimates are taken as given, so each study's SMDs should share one "
         "standard deviation and one small-sample correction (or none). The map offers one network SMD.",
         "v11 wrong: offers d and g separately for rma.mv and gemtc networks",
-        "META-pw, GEMTC-smd",
+        "META-pw, GEMTC-smd, GEMTC-re",
     ),
     (
         "R32",
