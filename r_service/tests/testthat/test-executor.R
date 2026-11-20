@@ -151,3 +151,70 @@ test_that("a malformed plan is a plan error, not an R error", {
   ref <- list(yi = list(column = "yi", extra = 1), vi = list(column = "vi"))
   expect_match(execute_plan(rr_plan(model = list(fn = "rma.uni", args = ref)), bcg())$error, "column reference")
 })
+
+# Study rows and the prediction interval (#146): checked against metafor called directly on the same data.
+zeros <- function() {
+  list(
+    study = c("A", "B", "C", "D"),
+    ai = c(0, 2, 0, 4), n1i = c(10, 10, 10, 12), ci = c(0, 3, 1, 6), n2i = c(10, 10, 10, 11)
+  )
+}
+COUNT_ARGS <- list(
+  ai = list(column = "ai"), n1i = list(column = "n1i"), ci = list(column = "ci"), n2i = list(column = "n2i"),
+  slab = list(column = "study")
+)
+
+test_that("each study's estimate, variance and weight are those metafor gives", {
+  out <- execute_plan(rr_plan(), bcg())
+  rows <- out$results$studies
+  fit <- metafor::rma(measure = "RR", ai = tpos, bi = tneg, ci = cpos, di = cneg, data = metadat::dat.bcg)
+  expect_equal(nrow(rows), 13L)
+  expect_equal(rows$study, as.character(metadat::dat.bcg$trial))
+  expect_equal(rows$yi, as.numeric(fit$yi), tolerance = 1e-10)
+  expect_equal(rows$vi, as.numeric(fit$vi), tolerance = 1e-10)
+  expect_equal(rows$weight, unname(weights(fit)), tolerance = 1e-10)
+  expect_true(all(rows$used))
+})
+
+test_that("the prediction interval is predict()'s, and null where the model has none", {
+  s <- execute_plan(rr_plan(), bcg())$results$summary
+  p <- predict(metafor::rma(measure = "RR", ai = tpos, bi = tneg, ci = cpos, di = cneg, data = metadat::dat.bcg))
+  expect_equal(c(s$pi_lower, s$pi_upper), c(p$pi.lb, p$pi.ub), tolerance = 1e-10)
+  mh <- list(model = list(fn = "rma.mh", args = c(list(measure = "OR"), COUNT_ARGS)))
+  s <- suppressWarnings(execute_plan(mh, zeros()))$results$summary # study A is double-zero
+  expect_true(is.na(s$pi_lower) && is.na(s$pi_upper))
+  expect_equal(s$tau2, 0) # rma.mh stores tau2 as 0: a common-effect model
+})
+
+test_that("a double-zero study left out by drop00 has no weight and isn't used", {
+  plan <- list(
+    effect = list(fn = "escalc", args = c(list(measure = "OR", drop00 = TRUE), COUNT_ARGS)),
+    model = list(fn = "rma.uni", args = list(
+      yi = list(column = "yi"), vi = list(column = "vi"), slab = list(column = "study")
+    ))
+  )
+  rows <- suppressWarnings(execute_plan(plan, zeros()))$results$studies
+  d <- as.data.frame(zeros())
+  e <- metafor::escalc(measure = "OR", ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d, drop00 = TRUE)
+  fit <- suppressWarnings(metafor::rma.uni(yi, vi, data = e, slab = study))
+  expect_equal(rows$study, c("A", "B", "C", "D"))
+  expect_equal(rows$used, c(FALSE, TRUE, TRUE, TRUE))
+  expect_true(is.na(rows$weight[[1]]) && is.na(rows$yi[[1]]))
+  expect_equal(rows$weight[2:4], unname(weights(fit)), tolerance = 1e-10)
+})
+
+test_that("Mantel-Haenszel and Peto give a double-zero study zero weight", {
+  for (fn in c("rma.mh", "rma.peto")) {
+    args <- if (fn == "rma.mh") c(list(measure = "OR"), COUNT_ARGS) else COUNT_ARGS
+    rows <- suppressWarnings(execute_plan(list(model = list(fn = fn, args = args)), zeros()))$results$studies
+    d <- as.data.frame(zeros())
+    fit <- suppressWarnings(if (fn == "rma.mh") {
+      metafor::rma.mh(measure = "OR", ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d, slab = study)
+    } else {
+      metafor::rma.peto(ai = ai, n1i = n1i, ci = ci, n2i = n2i, data = d, slab = study)
+    })
+    expect_equal(rows$weight, unname(weights(fit)), tolerance = 1e-10)
+    expect_equal(rows$used, c(FALSE, TRUE, TRUE, TRUE))
+    expect_equal(rows$yi, as.numeric(fit$yi.f), tolerance = 1e-10)
+  }
+})
