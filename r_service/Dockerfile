@@ -1,0 +1,25 @@
+# The R service (decision 0006). Packages are pinned in renv.lock.
+FROM rocker/r-ver:4.5.3
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends libcurl4-openssl-dev libssl-dev libsodium-dev zlib1g-dev curl \
+ && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+COPY renv.lock DESCRIPTION ./
+RUN R -q -e 'install.packages("renv", repos = "https://cloud.r-project.org")' \
+ && R -q -e 'renv::restore(lockfile = "renv.lock", library = .libPaths()[1], prompt = FALSE)'
+
+COPY R ./R
+COPY tests ./tests
+COPY plumber.R run.R .lintr ./
+
+# the tests run in the image, so it never ships with failing ones
+RUN Rscript tests/testthat.R
+
+ENV R_SERVICE_PORT=8000
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+  CMD curl -fsS http://localhost:8000/health || exit 1
+USER 1000
+CMD ["Rscript", "run.R"]

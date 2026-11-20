@@ -406,6 +406,8 @@ python3 spec/build_map.py --lock              # also rewrite spec/pathways.lock.
 npm --prefix frontend run dev                 # the apps, at http://localhost:5173
 scripts/check.sh                              # every local check for a PR
 npm --prefix frontend run e2e                 # the browser tests (Playwright; run at releases)
+(cd r_service && Rscript tests/testthat.R)    # the R service's tests (check.sh runs them too)
+(cd r_service && Rscript run.R)               # the R service, at http://localhost:8000 (R_SERVICE_PORT)
 .venv/bin/pre-commit run --all-files          # the quick per-commit checks
 gh workflow run CI                            # start CI by hand (it also runs at releases)
 ```

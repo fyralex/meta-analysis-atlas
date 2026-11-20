@@ -1,0 +1,14 @@
+Package: atlasrservice
+Title: R service that runs structured meta-analysis plans
+Version: 0.2.0
+License: GPL (>= 3)
+Description: Runs the plans the Meta-Analysis Atlas backend builds from its map, with metafor, and returns numbers only.
+Imports:
+    plumber,
+    metafor,
+    metadat,
+    jsonlite
+Suggests:
+    testthat,
+    lintr,
+    styler
