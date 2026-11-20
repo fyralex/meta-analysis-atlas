@@ -25,6 +25,13 @@ def pytest_runtest_logreport(report: pytest.TestReport) -> None:
         proof.outcomes[report.nodeid] = "skipped"
 
 
+def pytest_sessionstart(session: pytest.Session) -> None:
+    # a run that never reaches a validation test must not leave the previous run's file in place (#176 audit)
+    out = os.environ.get(proof.OUT_ENV)
+    if out:
+        Path(out).unlink(missing_ok=True)
+
+
 def pytest_sessionfinish(session: pytest.Session) -> None:
     out = os.environ.get(proof.OUT_ENV)
     if out and any("test_validation.py::" in node for node in proof.outcomes):

@@ -128,15 +128,19 @@ test `RUNNABLE` in `spec/build_map.py` names for it:
  "run": {"date": "...", "r": "4.5.3", "metafor": "5.0.1", "python": "...", "commit": "...", "uncommitted_changes": false},
  "pathways": [{"pathway": {"framework": "...", "model": "Common effect", "method": "IV", "metric": "OR", ...},
    "status": "passed",
-   "checks": [{"test": "backend/tests/test_validation.py::...", "kind": "r_code", "outcome": "passed",
+   "checks": [{"test": "backend/tests/test_validation.py::...", "kind": "r_code", "dataset": "bcg",
+     "dataset_label": "BCG vaccine trials", "outcome": "passed",
      "tolerance": "relative difference under 1e-10 (absolute 1e-12 near zero)",
      "values": [{"quantity": "estimate", "ours": -0.436139..., "compared": -0.436139..., "passed": true}]}]}]}
 ```
 
 - `kind` is `published` (metafor's reference pages), `by_hand` (metafor called directly in the
   test) or `r_code` (the R code `/run` shows).
+- `dataset` is `bcg` (the BCG example) or `double zero` (the same with one study that has no
+  events in either group; the by-hand checks run on both).
 - A named test that didn't run is `missing`, never a pass; a test `RUNNABLE` doesn't name isn't
-  listed. A pathway is `passed` only if all its checks passed.
+  listed. A pathway is `passed` only if every check passed, compared at least one value, and every
+  value passed. Each run first deletes the last run's file, so a run that stops early leaves none.
 - The versions come from the R service's `/health`; if it can't be asked, they are `null`, not
   guessed.
 

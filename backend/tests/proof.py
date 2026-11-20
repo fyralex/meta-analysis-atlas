@@ -62,6 +62,24 @@ def kind_of(test_id: str) -> Kind:
     raise ValueError(f"no kind of check for {test_id}")
 
 
+# the data each check runs on: the BCG example, or the copy with one study that has no events in either group
+DATASETS = {
+    "bcg": "BCG vaccine trials",
+    "double zero": "BCG vaccine trials plus one study with no events in either group",
+}
+
+
+def dataset_of(test_id: str) -> str:
+    """The by-hand checks run on both data sets ([...-bcg], [...-double zero]); the others on the BCG trials."""
+    return "double zero" if test_id.endswith("-double zero]") else "bcg"
+
+
+def check_passed(check: dict[str, Any]) -> bool:
+    """A check passed only if pytest says so and it compared at least one value, every one of them passed."""
+    found = check["values"]
+    return check["outcome"] == "passed" and bool(found) and all(v["passed"] for v in found)
+
+
 def build(
     found_outcomes: dict[str, str], found_values: dict[str, list[dict[str, Any]]], run: dict[str, Any]
 ) -> dict[str, Any]:
@@ -72,16 +90,19 @@ def build(
         checks = []
         for test_id in tests:
             kind = kind_of(test_id)
+            dataset = dataset_of(test_id)
             checks.append(
                 {
                     "test": test_id,
                     "kind": kind,
+                    "dataset": dataset,
+                    "dataset_label": DATASETS[dataset],
                     "outcome": found_outcomes.get(test_id, "missing"),
                     "tolerance": TOLERANCE[kind],
                     "values": found_values.get(test_id, []),
                 }
             )
-        status = "passed" if all(c["outcome"] == "passed" for c in checks) else "not passed"
+        status = "passed" if checks and all(check_passed(c) for c in checks) else "not passed"
         pathways.append(
             {
                 "pathway": {

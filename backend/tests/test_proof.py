@@ -30,8 +30,15 @@ def test_a_check_that_did_not_run_is_missing_never_a_pass() -> None:
     assert {c["outcome"] for p in content["pathways"] for c in p["checks"]} == {"missing"}
 
 
+PASSED_VALUE = [{"quantity": "estimate", "ours": 1.0, "compared": 1.0, "passed": True}]
+
+
+def all_values() -> dict[str, list[dict[str, Any]]]:
+    return {test: PASSED_VALUE for test in NAMED}
+
+
 def test_all_passed() -> None:
-    content = proof.build(dict.fromkeys(NAMED, "passed"), {}, RUN)
+    content = proof.build(dict.fromkeys(NAMED, "passed"), all_values(), RUN)
     assert content["passed"] == content["total"] == 12
     assert content["run"] == RUN and content["version"] == proof.VERSION
 
@@ -40,7 +47,7 @@ def test_all_passed() -> None:
 def test_one_check_not_passed_marks_its_pathway(outcome: str) -> None:
     found = dict.fromkeys(NAMED, "passed")
     found[NAMED[0]] = outcome
-    content = proof.build(found, {}, RUN)
+    content = proof.build(found, all_values(), RUN)
     assert content["passed"] == 11
     bad = [p for p in content["pathways"] if p["status"] != "passed"]
     assert len(bad) == 1 and bad[0]["checks"][0]["outcome"] == outcome
@@ -89,3 +96,63 @@ def test_every_named_test_has_a_kind() -> None:
     assert {proof.kind_of(test) for test in NAMED} == {"published", "by_hand", "r_code"}
     with pytest.raises(ValueError):
         proof.kind_of("backend/tests/test_validation.py::test_unrelated")
+
+
+def test_a_pass_needs_its_values_and_every_value_passed() -> None:
+    found = dict.fromkeys(NAMED, "passed")
+    no_values = all_values() | {NAMED[0]: []}
+    assert proof.build(found, no_values, RUN)["passed"] == 11
+    one_off = all_values() | {NAMED[0]: [*PASSED_VALUE, {"quantity": "se", "ours": 1, "compared": 2, "passed": False}]}
+    assert proof.build(found, one_off, RUN)["passed"] == 11
+
+
+def test_each_check_says_which_data_it_ran_on() -> None:
+    content = proof.build({}, {}, RUN)
+    for p in content["pathways"]:
+        by_hand = [c["dataset"] for c in p["checks"] if c["kind"] == "by_hand"]
+        assert sorted(by_hand) == ["bcg", "double zero"]
+        assert all(c["dataset"] == "bcg" for c in p["checks"] if c["kind"] != "by_hand")
+        assert all(c["dataset_label"] == proof.DATASETS[c["dataset"]] for c in p["checks"])
+
+
+# ---- the conftest hooks: outcomes from pytest's own reports ------------------------------------------------------
+
+
+def report(nodeid: str, when: str, outcome: str) -> Any:
+    from types import SimpleNamespace
+
+    return SimpleNamespace(
+        nodeid=nodeid, when=when, outcome=outcome, failed=outcome == "failed", skipped=outcome == "skipped"
+    )
+
+
+@pytest.mark.parametrize(
+    ("reports", "expected"),
+    [
+        ([("setup", "passed"), ("call", "passed"), ("teardown", "passed")], "passed"),
+        ([("setup", "passed"), ("call", "failed"), ("teardown", "passed")], "failed"),
+        ([("setup", "failed")], "error"),
+        ([("setup", "skipped")], "skipped"),
+        ([("setup", "passed"), ("call", "passed"), ("teardown", "failed")], "error"),
+    ],
+    ids=["passed", "failed", "setup-error", "skipped", "teardown-error"],
+)
+def test_the_outcome_hook_never_turns_a_failure_into_a_pass(
+    monkeypatch: pytest.MonkeyPatch, reports: list[tuple[str, str]], expected: str
+) -> None:
+    from . import conftest
+
+    monkeypatch.setattr(proof, "outcomes", {})
+    for when, outcome in reports:
+        conftest.pytest_runtest_logreport(report("x::t", when, outcome))
+    assert proof.outcomes == {"x::t": expected}
+
+
+def test_a_new_run_removes_the_last_runs_file(monkeypatch: pytest.MonkeyPatch, tmp_path: Any) -> None:
+    from . import conftest
+
+    old = tmp_path / "proof.json"
+    old.write_text("{}", encoding="utf-8")
+    monkeypatch.setenv(proof.OUT_ENV, str(old))
+    conftest.pytest_sessionstart(None)  # type: ignore[arg-type]
+    assert not old.exists()
