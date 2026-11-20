@@ -27,7 +27,7 @@ worked examples or on the user's own CSV, with the exact R code shown.
 
 The app is stateless: there are no accounts and no database.
 
-This file is committed to a repository that will be made **public**. Keep it
+This file is committed to a **public** repository. Keep it
 free of personal details (names, absolute home-directory paths, machine names)
 and of claims about any institution's involvement.
 
@@ -67,12 +67,32 @@ and of claims about any institution's involvement.
    tokens and passwords.
 10. **When you're unsure, stop and ask** instead of guessing. This covers
     statistical choices (defaults, estimators, continuity corrections), map
-    changes and licensing.
+    changes and licensing. Ask when the work reaches the question, not in
+    batches: give the options and the source, then record the answer on the
+    issue.
+
+### Starting a session
+
+Where the work stands lives on GitHub, so any machine with a clone can
+continue:
+
+```bash
+git switch main && git pull --ff-only
+gh pr list                                   # anything waiting for the owner, or for fixes
+gh issue list --milestone <current>          # the open milestone's issues; the lowest number goes first
+gh issue view <n> --comments                 # its design and the decisions taken on it
+```
+
+- Continue the open PR if there is one. Otherwise take the next open issue
+  in the current milestone.
+- When the owner decides something in a conversation, add it to the issue as
+  a comment straight away. Methodology decisions then get their record in
+  `docs/decisions/`.
+- Each PR updates the README and the docs it affects.
 
 ### Git and GitHub
 
-Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
-public). Commits are authored with the owner's GitHub noreply address, set in
+Remote: `github.com/fyralex/meta-analysis-atlas` (public). Commits are authored with the owner's GitHub noreply address, set in
 the repo's git config.
 
 **Tools needed:** `git`, Python 3.11 or later, Node 22 or later, R 4.5 with the
@@ -138,7 +158,12 @@ asks for changes, the agent pushes them to the same branch and reports again.
 
 ### Audit loop
 
-The builder runs the `auditor` agent on the PR. The auditor works in a fresh
+The builder runs the `auditor` agent on the PR. If the `auditor` agent type
+isn't available in the session, a general-purpose agent is told to read and
+follow `.claude/agents/auditor.md`; it is then read-only by instruction. It
+posts its comment with a single plain `gh pr comment`; if posting is denied,
+the builder gives the comment's text to the owner rather than posting it.
+The auditor works in a fresh
 context with read-only tools and checks the PR against the `audit-pr` skill's
 checklist. That covers:
 - statistical correctness (right formula, right defaults, justified
