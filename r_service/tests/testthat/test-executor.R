@@ -116,3 +116,38 @@ test_that("an error inside metafor is reported as such", {
   expect_false(out$success)
   expect_equal(out$kind, "r")
 })
+
+test_that("arguments metafor evaluates as code are refused, so a plan can't run code (#143 audit)", {
+  marker <- tempfile()
+  code <- sprintf("file.create('%s')", marker)
+  model_with <- function(extra) {
+    rr_plan(model = list(fn = "rma.uni", args = c(list(yi = list(column = "yi"), vi = list(column = "vi")), extra)))
+  }
+  hostile <- list(
+    rr_plan(post = list(fn = "leave1out", args = list(code1 = code))),
+    rr_plan(post = list(fn = "cumul", args = list(code2 = code))),
+    model_with(list(outlist = code)),
+    model_with(list(outlistx = code)),
+    model_with(list(mods = "~ 1")),
+    rr_plan(post = list(fn = "leave1out", args = list(transf = "exp")))
+  )
+  for (plan in hostile) {
+    out <- execute_plan(plan, bcg())
+    expect_false(out$success)
+    expect_equal(out$kind, "plan")
+    expect_match(out$error, "does not take")
+  }
+  expect_false(file.exists(marker))
+})
+
+test_that("a malformed plan is a plan error, not an R error", {
+  expect_equal(execute_plan(list(model = "system"), bcg())$kind, "plan")
+  expect_equal(execute_plan(list(model = list(fn = "rma.uni", args = list(), extra = 1)), bcg())$kind, "plan")
+  out <- execute_plan(c(rr_plan(), list(sneaky = list(fn = "system"))), bcg())
+  expect_equal(out$kind, "plan")
+  expect_match(out$error, "only these keys")
+  # no partial matching: "mod" isn't "model"
+  expect_match(execute_plan(list(mod = list(fn = "rma.uni")), bcg())$error, "only these keys")
+  ref <- list(yi = list(column = "yi", extra = 1), vi = list(column = "vi"))
+  expect_match(execute_plan(rr_plan(model = list(fn = "rma.uni", args = ref)), bcg())$error, "column reference")
+})

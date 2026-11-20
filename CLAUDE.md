@@ -75,13 +75,15 @@ Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
 public). Commits are authored with the owner's GitHub noreply address, set in
 the repo's git config.
 
-**Tools needed:** `git`, Python 3.11 or later, Node 22 or later, and the GitHub CLI `gh`
-(logged in with `gh auth login`). Once per clone:
+**Tools needed:** `git`, Python 3.11 or later, Node 22 or later, R 4.5 with the
+packages in `r_service/renv.lock`, and the GitHub CLI `gh` (logged in with
+`gh auth login`). Once per clone:
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
 .venv/bin/pre-commit install
 npm ci --prefix frontend
+Rscript -e 'install.packages("renv"); renv::restore(lockfile = "r_service/renv.lock", library = .libPaths()[1])'
 export ATLAS_PRIVATE_SCAN=<path to the owner's private scan script>   # e.g. in your shell profile
 ```
 
@@ -384,6 +386,8 @@ check isn't opened. The script runs:
 4. **private name scan:** `$ATLAS_PRIVATE_SCAN` prints nothing. The script
    fails if it isn't set.
 5. **frontend:** ESLint, `tsc --noEmit`, Vitest, and the production build.
+6. **R service:** its testthat tests (validation against metafor) and lintr.
+   The script fails if R isn't installed.
 
 **At releases, in CI (GitHub Actions).** `.github/workflows/ci.yml` runs the
 same script in a clean environment only when a milestone is closed, a `v*`

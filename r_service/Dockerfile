@@ -2,12 +2,14 @@
 FROM rocker/r-ver:4.5.3
 
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libcurl4-openssl-dev libssl-dev libsodium-dev zlib1g-dev curl \
+ && apt-get install -y --no-install-recommends \
+      libcurl4-openssl-dev libssl-dev libsodium-dev libxml2-dev zlib1g-dev curl \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY renv.lock DESCRIPTION ./
-RUN R -q -e 'install.packages("renv", repos = "https://cloud.r-project.org")' \
+# renv itself at the version renv.lock records
+RUN R -q -e 'install.packages("https://cloud.r-project.org/src/contrib/Archive/renv/renv_1.2.4.tar.gz", repos = NULL, type = "source")' \
  && R -q -e 'renv::restore(lockfile = "renv.lock", library = .libPaths()[1], prompt = FALSE)'
 
 COPY R ./R

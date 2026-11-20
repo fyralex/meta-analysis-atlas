@@ -7,7 +7,7 @@ source("R/executor.R")
 
 #* Whether the service is up, and the versions of R and metafor it runs.
 #* @get /health
-#* @serializer unboxedJSON list(digits = NA)
+#* @serializer unboxedJSON list(digits = I(17))
 function() {
   list(
     status = "ok",
@@ -19,7 +19,7 @@ function() {
 #* Runs a plan on the data sent with it.
 #* Body: {"plan": {...}, "data": {"<column>": [...], ...}}
 #* @post /execute
-#* @serializer unboxedJSON list(digits = NA)
+#* @serializer unboxedJSON list(digits = I(17))
 function(req, res) {
   body <- tryCatch(
     jsonlite::fromJSON(req$postBody, simplifyVector = TRUE, simplifyDataFrame = FALSE),

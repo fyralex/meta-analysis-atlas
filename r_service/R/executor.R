@@ -15,18 +15,36 @@
 #                     run on the fitted model
 #   outputs optional  names of the summary values to return (OUTPUTS); all by default
 
+# Each allowed function, with the only argument names a plan may give it. Arguments that take
+# formulas, functions, data frames or R code (data, subset, mods, scale, transf, targs, control,
+# cluster, outlist, code1, code2, and anything passed through ...) are never allowed: metafor
+# evaluates some of them as code.
+COUNTS <- c("ai", "bi", "ci", "di", "n1i", "n2i", "x1i", "x2i", "t1i", "t2i")
 ALLOWED <- list(
-  effect = list(escalc = metafor::escalc),
+  effect = list(
+    escalc = list(fn = metafor::escalc, args = c(
+      "measure", COUNTS, "m1i", "m2i", "sd1i", "sd2i", "xi", "mi", "ri", "ti", "fi", "pi", "sdi", "r2i", "ni",
+      "yi", "vi", "sei", "slab", "flip", "add", "to", "drop00", "vtype", "correct"
+    ))
+  ),
   model = list(
-    rma.uni = metafor::rma.uni,
-    rma.mh = metafor::rma.mh,
-    rma.peto = metafor::rma.peto
+    rma.uni = list(fn = metafor::rma.uni, args = c(
+      "yi", "vi", "sei", "weights", "ni", "slab", "method", "weighted", "test", "level", "tau2"
+    )),
+    rma.mh = list(fn = metafor::rma.mh, args = c(
+      COUNTS, "measure", "slab", "add", "to", "drop00", "correct", "level"
+    )),
+    rma.peto = list(fn = metafor::rma.peto, args = c(
+      "ai", "bi", "ci", "di", "n1i", "n2i", "slab", "add", "to", "drop00", "level"
+    ))
   ),
   post = list(
-    cumul = metafor::cumul,
-    leave1out = metafor::leave1out
+    cumul = list(fn = metafor::cumul, args = c("order", "collapse")),
+    leave1out = list(fn = metafor::leave1out, args = character(0))
   )
 )
+PLAN_KEYS <- c("effect", "model", "post", "outputs")
+STEP_KEYS <- c("fn", "args")
 
 # The summary values a fitted model can return, by name.
 OUTPUTS <- list(
@@ -48,9 +66,12 @@ plan_error <- function(message) {
   structure(class = c("plan_error", "error", "condition"), list(message = message, call = NULL))
 }
 
-# A step's function, from the allow-list for its kind.
-step_function <- function(kind, step) {
-  fn <- step$fn
+# A step's entry in the allow-list: the function and the argument names it accepts.
+step_entry <- function(kind, step) {
+  if (!is.list(step) || is.null(names(step)) || !all(names(step) %in% STEP_KEYS)) {
+    stop(plan_error(sprintf("The %s step must be an object with fn and args only.", kind)))
+  }
+  fn <- step[["fn"]]
   if (!is.character(fn) || length(fn) != 1) {
     stop(plan_error(sprintf("The %s step must name one function.", kind)))
   }
@@ -64,18 +85,25 @@ step_function <- function(kind, step) {
 }
 
 # A step's arguments: plain values as they are, column references taken from the data.
-step_arguments <- function(args, data) {
-  if (is.null(args)) {
+step_arguments <- function(args, data, entry, fn) {
+  if (is.null(args) || length(args) == 0) {
     return(list())
   }
-  if (!is.list(args) || (length(args) > 0 && is.null(names(args))) || any(names(args) == "")) {
+  if (!is.list(args) || is.null(names(args)) || any(names(args) == "")) {
     stop(plan_error("A step's arguments must be named."))
+  }
+  unknown <- setdiff(names(args), entry$args)
+  if (length(unknown) > 0) {
+    stop(plan_error(sprintf(
+      "%s does not take %s in a plan; allowed: %s.", fn, paste(unknown, collapse = ", "),
+      if (length(entry$args) > 0) paste(entry$args, collapse = ", ") else "no arguments"
+    )))
   }
   lapply(names(args), function(name) {
     value <- args[[name]]
     if (is.list(value)) {
-      column <- value$column
-      if (length(value) != 1 || !is.character(column) || length(column) != 1) {
+      column <- value[["column"]]
+      if (length(value) != 1 || !identical(names(value), "column") || !is.character(column) || length(column) != 1) {
         stop(plan_error(sprintf("Argument %s: a list must be a column reference, list(column = \"<name>\").", name)))
       }
       if (!column %in% names(data)) {
@@ -135,22 +163,27 @@ post_rows <- function(result, fn) {
 execute_plan <- function(plan, data) {
   tryCatch(
     {
-      if (!is.list(plan) || is.null(plan$model)) {
+      if (!is.list(plan) || (length(plan) > 0 && (is.null(names(plan)) || !all(names(plan) %in% PLAN_KEYS)))) {
+        stop(plan_error(sprintf("A plan is an object with only these keys: %s.", paste(PLAN_KEYS, collapse = ", "))))
+      }
+      if (is.null(plan[["model"]])) {
         stop(plan_error("A plan needs a model step."))
       }
       frame <- as_data(data)
-      if (!is.null(plan$effect)) {
-        fn <- step_function("effect", plan$effect)
-        effects <- do.call(fn, step_arguments(plan$effect$args, frame))
+      if (!is.null(plan[["effect"]])) {
+        entry <- step_entry("effect", plan[["effect"]])
+        args <- step_arguments(plan[["effect"]][["args"]], frame, entry, plan[["effect"]][["fn"]])
+        effects <- do.call(entry$fn, args)
         # keep the data's own columns (labels, moderators) beside yi and vi
         frame <- cbind(frame[setdiff(names(frame), names(effects))], as.data.frame(effects))
       }
-      fit <- do.call(step_function("model", plan$model), step_arguments(plan$model$args, frame))
-      results <- list(summary = summary_values(fit, plan$outputs))
-      if (!is.null(plan$post)) {
-        fn <- step_function("post", plan$post)
-        rows <- do.call(fn, c(list(fit), step_arguments(plan$post$args, frame)))
-        results$steps <- post_rows(rows, plan$post$fn)
+      entry <- step_entry("model", plan[["model"]])
+      fit <- do.call(entry$fn, step_arguments(plan[["model"]][["args"]], frame, entry, plan[["model"]][["fn"]]))
+      results <- list(summary = summary_values(fit, plan[["outputs"]]))
+      if (!is.null(plan[["post"]])) {
+        entry <- step_entry("post", plan[["post"]])
+        args <- step_arguments(plan[["post"]][["args"]], frame, entry, plan[["post"]][["fn"]])
+        results$steps <- post_rows(do.call(entry$fn, c(list(fit), args)), plan[["post"]][["fn"]])
       }
       list(success = TRUE, results = results)
     },
