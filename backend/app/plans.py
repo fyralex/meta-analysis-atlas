@@ -339,7 +339,10 @@ def build_response(
             upper=upper,
             labels=request.labels,
         )
-    centre = common_effect if common_effect is not None else summary["estimate"]
+    # a random-effects plan is centred on its common-effect fit only; without that estimate there is no funnel,
+    # rather than one centred on the wrong estimate (#173 audit)
+    random_effects = common_effect_plan(prepared.plan) is not None
+    centre = common_effect if random_effects else summary["estimate"]
     plot = None
     if centre is not None:
         plot = funnel(

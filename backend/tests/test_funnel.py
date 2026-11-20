@@ -110,7 +110,7 @@ def test_the_caption_says_what_the_handbook_says(metric: str) -> None:
     shape = funnel(centre=0.0, ratio=metric in ("OR", "RR", "PETO"), odds=odds, studies=studies(12))
     text = shape.caption
     assert "around the common-effect estimate" in text
-    assert "Asymmetry does not by itself show publication bias" in text
+    assert "Asymmetry does not by itself show non-reporting bias (such as publication bias)" in text
     assert ("For odds ratios, the estimate and its standard error are related" in text) == odds
     assert "No test for asymmetry is run here." in text
     assert "significan" not in text.lower()
@@ -132,3 +132,37 @@ def test_studies_left_out_or_without_an_estimate_are_not_points() -> None:
     rows = [("A", -0.1, 0.04, True), ("B", None, None, False), ("C", 0.2, 0.09, False), ("D", None, 0.1, True)]
     shape = funnel(centre=0.0, ratio=False, odds=False, studies=rows)
     assert [(p.study, p.sei) for p in shape.points] == [("A", math.sqrt(0.04))]
+
+
+def test_a_random_effects_run_without_a_common_effect_estimate_has_no_funnel() -> None:
+    class NoCentre(TwoAnswers):
+        def __call__(self, request: httpx.Request) -> httpx.Response:
+            plan = json.loads(request.content)["plan"]
+            if plan.get("outputs") == ["estimate"]:
+                self.plans.append(plan)
+                body = {"success": True, "results": {"summary": {"estimate": None}, "studies": []}}
+                return httpx.Response(200, json=body)
+            return super().__call__(request)
+
+    answers = NoCentre()
+    app = create_app(Settings(spec_dir=DEFAULT_SPEC_DIR, r_service_url="http://r"))
+    app.dependency_overrides[get_r_service] = lambda: RService("http://r", transport=httpx.MockTransport(answers))
+    body = {"pathway": pathway(plans.RANDOM, "IV", "OR"), "data": DATA}
+    out = TestClient(app).post("/api/v1/meta-analysis/run", json=body).json()
+    assert out["funnel"] is None
+    assert out["summary"]["estimate"] == MAIN  # the analysis itself is still returned
+
+
+def test_if_the_common_effect_fit_fails_the_run_fails() -> None:
+    def answer(request: httpx.Request) -> httpx.Response:
+        if json.loads(request.content)["plan"].get("outputs") == ["estimate"]:
+            return httpx.Response(422, json={"success": False, "error": "did not converge", "kind": "r"})
+        return TwoAnswers()(request)
+
+    app = create_app(Settings(spec_dir=DEFAULT_SPEC_DIR, r_service_url="http://r"))
+    app.dependency_overrides[get_r_service] = lambda: RService("http://r", transport=httpx.MockTransport(answer))
+    response = TestClient(app).post(
+        "/api/v1/meta-analysis/run", json={"pathway": pathway(plans.RANDOM, "IV", "OR"), "data": DATA}
+    )
+    assert response.status_code == 422
+    assert response.json()["code"] == "analysis_failed"

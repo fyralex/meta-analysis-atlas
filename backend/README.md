@@ -64,7 +64,9 @@ Mantel-Haenszel with OR, RR and RD, and Peto.
   error), the centre of the 95% region and a caption with its sources (Cochrane Handbook 13.3.4.2 to
   13.3.4.5). The centre is the common-effect estimate (decision 0020): for a random-effects result
   the R service makes a second fit with `method = "EE"`, which the R code shows with `funnel(ce)`.
-  The region is centre ± 1.96 × SE, always 95%. No test for asymmetry is run.
+  The region is centre ± 1.96 × SE, always 95%. No test for asymmetry is run. The two fits are
+  one analysis: if the common-effect fit fails, `/run` fails with the same error as the main fit,
+  since both read the same data and a failure there means something is wrong.
 - **R code:** rendered from the plan that ran, so it can't differ from it. It is shown only: the
   backend never runs it, and the R service accepts plans, not code (decision 0018).
 - **Errors:** a pathway the map doesn't have is `422 unknown_pathway`; one that isn't runnable is

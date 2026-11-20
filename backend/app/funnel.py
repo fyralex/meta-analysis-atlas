@@ -53,8 +53,8 @@ def funnel(
         "Each point is a study: its estimate across, its standard error down, so larger studies are at the top.",
         "The triangle is where 95% of studies would fall around the common-effect estimate if there were no bias"
         " and no heterogeneity.",
-        "Asymmetry does not by itself show publication bias: differences between studies, bias in smaller studies"
-        " and chance can all cause it.",
+        "Asymmetry does not by itself show non-reporting bias (such as publication bias): differences between"
+        " studies, bias in smaller studies and chance can all cause it.",
     ]
     sources = [
         SourceRef(key="CH-13", section="13.3.4.2"),
