@@ -406,6 +406,8 @@ check isn't opened. The script runs:
 1. **lint, format, types and tests:** ruff, mypy `--strict`, and the map
    and backend tests (pytest).
 2. **map files current:** regenerating `spec/` changes nothing.
+   The frontend's API types (`frontend/src/types/api.ts`, from
+   `scripts/api_types.py`) are current too.
 3. **npm licence record current:** regenerating `docs/npm-licences.md` from
    `frontend/package-lock.json` changes nothing, and every dependency of the
    app has a GPL-compatible licence. Advisories `npm audit` reports that can't

@@ -29,6 +29,10 @@ if [ -n "$(git status --porcelain -- spec/)" ]; then
   exit 1
 fi
 
+echo "== frontend API types are current"
+# frontend/src/types/api.ts is generated from the backend's OpenAPI schema (#164; CLAUDE.md, "API").
+"$PY" -W ignore scripts/api_types.py --check
+
 echo "== npm licence record is current"
 # Regenerate docs/npm-licences.md from frontend/package-lock.json; this also fails if a
 # dependency of the app has a licence that isn't GPL-compatible (#35).
