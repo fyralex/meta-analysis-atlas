@@ -69,6 +69,28 @@ and of claims about any institution's involvement.
     statistical choices (defaults, estimators, continuity corrections), map
     changes and licensing.
 
+### Starting a session
+
+Where the work stands lives on GitHub, so any machine with a clone can
+continue:
+
+```bash
+git switch main && git pull --ff-only
+gh pr list                                   # anything waiting for the owner, or for fixes
+gh issue list --milestone <current>          # the open milestone's issues; the lowest number goes first
+gh issue view <n> --comments                 # its design and the decisions taken on it
+```
+
+- Continue the open PR if there is one. Otherwise take the next open issue
+  in the current milestone.
+- When the owner decides something in a conversation, add it to the issue as
+  a comment straight away. Methodology decisions then get their record in
+  `docs/decisions/`.
+- Each PR updates the README and the docs it affects.
+- The owner keeps private notes (names never to use, local paths) outside
+  this repository, next to the private name scan. Read them if they are
+  there.
+
 ### Git and GitHub
 
 Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
