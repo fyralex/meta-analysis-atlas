@@ -94,8 +94,7 @@ function ChooseAnalysis({ problem }: { problem?: string }) {
       {problem && <p>{problem}</p>}
       <p>
         <Link to="/pathfinder">Answer Pathfinder&apos;s questions</Link> to find the analysis that fits your review, or
-        choose one of the {RUNNABLE.length} that can be run now. Each is for two groups compared on a yes-or-no
-        outcome, from counts for each group.
+        choose one of the {RUNNABLE.length} that can be run now.
       </p>
       <RunnableList />
     </section>
@@ -450,8 +449,6 @@ function SettingsFold({
             Confidence level (%)
             <input
               type="number"
-              min={1}
-              max={99.9}
               step="any"
               value={Number.isNaN(settings.level) ? "" : settings.level}
               aria-invalid={!levelOk}
@@ -471,7 +468,7 @@ function SettingsFold({
               REML and the Wald interval are this release&apos;s defaults (
               <a href={`${REPO}/blob/main/docs/decisions/0019-two-group-binary-defaults.md`}>decision 0019</a>). The
               Cochrane Handbook discusses the choice of estimator and the Hartung-Knapp-Sidik-Jonkman interval, and
-              says no single estimator is best in every case; metafor documents each option.
+              reports that no single estimator is best in every case; metafor documents each option.
             </p>
             <Sources src="CH-10 s10.10.4.4, MF-uni" />
           </>
