@@ -67,7 +67,9 @@ and of claims about any institution's involvement.
    tokens and passwords.
 10. **When you're unsure, stop and ask** instead of guessing. This covers
     statistical choices (defaults, estimators, continuity corrections), map
-    changes and licensing.
+    changes and licensing. Ask when the work reaches the question, not in
+    batches: give the options and the source, then record the answer on the
+    issue.
 
 ### Starting a session
 
@@ -87,9 +89,6 @@ gh issue view <n> --comments                 # its design and the decisions take
   a comment straight away. Methodology decisions then get their record in
   `docs/decisions/`.
 - Each PR updates the README and the docs it affects.
-- The owner keeps private notes (names never to use, local paths) outside
-  this repository, next to the private name scan. Read them if they are
-  there.
 
 ### Git and GitHub
 
@@ -159,7 +158,12 @@ asks for changes, the agent pushes them to the same branch and reports again.
 
 ### Audit loop
 
-The builder runs the `auditor` agent on the PR. The auditor works in a fresh
+The builder runs the `auditor` agent on the PR. If the `auditor` agent type
+isn't available in the session, a general-purpose agent is told to read and
+follow `.claude/agents/auditor.md`; it is then read-only by instruction. It
+posts its comment with a single plain `gh pr comment`; if posting is denied,
+the builder gives the comment's text to the owner rather than posting it.
+The auditor works in a fresh
 context with read-only tools and checks the PR against the `audit-pr` skill's
 checklist. That covers:
 - statistical correctness (right formula, right defaults, justified
