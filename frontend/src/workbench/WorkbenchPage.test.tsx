@@ -5,6 +5,7 @@ import { App } from "../App";
 import { map } from "../map";
 import orKnha from "./fixtures/run-or-knha-double-zero.json";
 import orMh from "./fixtures/run-bcg-or-mh.json";
+import orMhZero from "./fixtures/run-or-mh-double-zero.json";
 import rrRandom from "./fixtures/run-bcg-rr-random.json";
 import { workbenchHref } from "./pathway";
 
@@ -407,6 +408,45 @@ describe("the Workbench, step 3", PAGE, () => {
     expect(within(het).queryByText(/τ²/)).toBeNull();
     expect(within(het).getByText(/metafor/)).toBeInTheDocument();
     expect(screen.getByRole("img", { name: /^Forest plot/ }).querySelector("line.plot-pi")).toBeNull();
+  });
+
+  it("gives Q the degrees of freedom metafor uses, without a double-zero study (#180 audit)", async () => {
+    // rma.mh counts the double-zero study in k (5) but not in Q, whose df is 3, as metafor prints
+    expect(orMhZero.summary.k).toBe(5);
+    serve(healthy(undefined, { status: 200, body: orMhZero }));
+    renderAt(workbenchHref({ ...RR_RANDOM, model: "Common effect", method: "MH", metric: "OR" }));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    await screen.findByRole("heading", { name: "Pooled odds ratio" });
+    const het = screen.getByRole("region", { name: "How much the studies differ" });
+    expect(within(het).getByText("1.0 on 3 df")).toBeInTheDocument();
+  });
+
+  it("ignores an answer that arrives after its inputs changed (#180 audit)", async () => {
+    let answer: (r: Response) => void = () => undefined;
+    const route = healthy();
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((url: string, init?: RequestInit) => {
+        if (url === "/api/v1/meta-analysis/run") return new Promise<Response>((resolve) => { answer = resolve; });
+        const a = route(url, init);
+        if (a === "offline") return Promise.reject(new TypeError("Failed to fetch"));
+        return Promise.resolve(new Response(JSON.stringify(a.body), { status: a.status }));
+      }),
+    );
+    renderAt(workbenchHref(RR_RANDOM));
+    fireEvent.click(await screen.findByRole("button", { name: "Load the example" }));
+    await screen.findByRole("heading", { name: "2 studies ready to run" });
+    fireEvent.click(screen.getByRole("button", { name: "Run the analysis" }));
+    expect(await screen.findByRole("button", { name: "Running…" })).toBeDisabled();
+    fireEvent.change(screen.getByRole("combobox", { name: /Between-study variance/ }), { target: { value: "DL" } });
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeEnabled();
+    answer(new Response(JSON.stringify(rrRandom), { status: 200 }));
+    // let the stale answer settle; it must not show under the new settings
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(screen.queryByRole("heading", { name: "Pooled risk ratio" })).toBeNull();
+    expect(screen.getByRole("button", { name: "Run the analysis" })).toBeEnabled();
   });
 
   it("clears the result when a setting changes", async () => {

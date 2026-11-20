@@ -128,8 +128,9 @@ function Heterogeneity({ res, random, pooledValues: p }: { res: RunResponse; ran
   const metric = res.pathway.metric;
   const name = measureName(metric);
   const places = placesFor(metric);
-  const k = s["k"];
-  const df = k != null ? `${String(k - 1)} df` : "";
+  // metafor's own count: rma.mh and rma.peto keep double-zero studies in k but not in Q (#180 audit)
+  const qDf = s["q_df"];
+  const df = qDf != null ? `${String(qDf)} df` : "";
   const qValue = s["q"] ?? null;
   const q = qValue !== null ? `Q = ${num(qValue, 1)} on ${df}` : null;
   const i2 = s["i2"];
@@ -155,7 +156,7 @@ function Heterogeneity({ res, random, pooledValues: p }: { res: RunResponse; ran
             label={`Prediction interval (${levelText(res.options.level ?? 95)})`}
             value={`${num(pi.lower, places)} to ${num(pi.upper, places)}`}
           >
-            Where the {name} of a new study like these is expected to fall. It {piIncludes ? "includes" : "does not include"}{" "}
+            Where the true {name} of a new study like these is expected to fall. It {piIncludes ? "includes" : "does not include"}{" "}
             {String(none)}, no difference. <Link to={cardHref("term:prediction-interval")}>Prediction intervals in Cards</Link>
           </Tile>
         )}

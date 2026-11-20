@@ -157,20 +157,27 @@ function Analysis(props: { pathway: PathwayRef }) {
   const [runProblem, setRunProblem] = useState<{ message: string; fields: FieldError[] } | null>(null);
   const step2 = useRef<HTMLHeadingElement>(null);
   const step3 = useRef<HTMLHeadingElement>(null);
+  // each run's number: an answer is shown only if no newer run, or change to its inputs, came after it (#180 audit)
+  const latestRun = useRef(0);
 
   // a result belongs to the studies, settings and words it ran with: changing any of them clears it
-  function setTable(next: StudyTable | null) {
-    setTableOnly(next);
+  function clearResult() {
+    latestRun.current += 1;
     setResult(null);
     setRunProblem(null);
+    setRunning(false);
+  }
+  function setTable(next: StudyTable | null) {
+    setTableOnly(next);
+    clearResult();
   }
   function setSettings(next: Settings) {
     setSettingsOnly(next);
-    setResult(null);
+    clearResult();
   }
   function setLabels(next: Labels) {
     setLabelsOnly(next);
-    setResult(null);
+    clearResult();
   }
 
   useEffect(() => {
@@ -250,6 +257,9 @@ function Analysis(props: { pathway: PathwayRef }) {
     if (!table?.studies) return;
     const studiesSent = table.studies;
     const labelsSent = labelsToSend(labels);
+    latestRun.current += 1;
+    const thisRun = latestRun.current;
+    const current = () => thisRun === latestRun.current;
     setRunning(true);
     setRunProblem(null);
     try {
@@ -260,12 +270,12 @@ function Analysis(props: { pathway: PathwayRef }) {
         data: studiesSent,
         labels: labelsSent,
       });
-      setResult({ response, studies: studiesSent, labels: labelsSent });
+      if (current()) setResult({ response, studies: studiesSent, labels: labelsSent });
     } catch (error) {
       if (!(error instanceof ApiError)) throw error;
-      setRunProblem({ message: error.message, fields: error.fields });
+      if (current()) setRunProblem({ message: error.message, fields: error.fields });
     } finally {
-      setRunning(false);
+      if (current()) setRunning(false);
     }
   }
 
