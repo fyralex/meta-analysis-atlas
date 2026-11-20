@@ -114,10 +114,17 @@ describe("explaining a greyed-out node", () => {
   });
 });
 
+/** A copy of the map in which only Peto's pathways are runnable (the real map has others since #149). */
+function onlyPetoRunnable(): Pathway[] {
+  return map.pathways.map(
+    (p): Pathway => ({ ...p, status: p.method === "PETO" ? "runnable" : p.status === "runnable" ? "planned" : p.status }),
+  );
+}
+
 describe("why not, with only runnable pathways shown", () => {
   it("says a node fits only through pathways that aren't runnable", () => {
     // In a copy of the map where only Peto's pathways are runnable, inverse variance fits nothing shown.
-    const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
+    const some = onlyPetoRunnable();
     // With the Peto odds ratio chosen, a choice blocks inverse variance first (rule R32), runnable or not.
     const why = explain(some, { metric: "PETO" }, "method", "IV", { hideNew: false, runnableOnly: true });
     expect(why.kind).toBe("blocked");
@@ -126,7 +133,7 @@ describe("why not, with only runnable pathways shown", () => {
 
   it("names both settings when a node fits only through pathways both of them hide", () => {
     // NM_IPD's common-effect pathways are all marked new (#59), and none is runnable.
-    const some = map.pathways.map((p): Pathway => (p.method === "PETO" ? { ...p, status: "runnable" } : p));
+    const some = onlyPetoRunnable();
     const ipdCommon = map.pathways.filter((p) => p.method === "NM_IPD" && p.model === "Common effect");
     expect(ipdCommon.every((p) => p.new && p.status !== "runnable")).toBe(true);
     expect(explain(some, { method: "NM_IPD" }, "model", "Common effect", { hideNew: true, runnableOnly: true }).kind).toBe(
