@@ -84,6 +84,9 @@ def test_every_runnable_pathway_has_its_spec_and_template(p: dict[str, Any]) -> 
     spec = c.get("/api/v1/meta-analysis/spec", params=ref(p))
     assert spec.status_code == 200, spec.text
     assert spec.json() == SPEC.model_dump(mode="json")
+    # the template's header is exactly what /run's check requires, for this pathway's own spec
+    own = plans.data_spec(plans.PathwayRef.model_validate(ref(p)))
+    assert parse(data_spec.template_csv(own))[0] == required_columns(own)
     template = c.get("/api/v1/meta-analysis/template", params=ref(p))
     assert template.status_code == 200
     assert template.headers["content-type"].startswith("text/csv")
@@ -116,3 +119,12 @@ def test_a_missing_or_unknown_query_field_is_an_invalid_request(endpoint: str) -
         response = client().get(f"/api/v1/meta-analysis/{endpoint}", params=params)
         assert response.status_code == 422
         assert response.json()["code"] == "invalid_request"
+
+
+def test_spec_and_template_do_not_document_an_r_service_error() -> None:
+    # neither calls the R service (#170 audit)
+    paths = client().get("/openapi.json").json()["paths"]
+    for path in ("/api/v1/meta-analysis/spec", "/api/v1/meta-analysis/template"):
+        codes = set(paths[path]["get"]["responses"])
+        assert "502" not in codes and {"409", "422"} <= codes, (path, codes)
+    assert "502" in paths["/api/v1/meta-analysis/run"]["post"]["responses"]

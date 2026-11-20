@@ -39,7 +39,7 @@ class DataSpec(BaseModel):
     events_totals: tuple[EventsTotal, ...] = Field(description="Pairs where the events can't exceed the total.")
     min_studies: int
     max_studies: int
-    rules: tuple[str, ...] = Field(description="The checks, in plain words, in the order they are made.")
+    rules: tuple[str, ...] = Field(description="The checks, in plain words.")
 
 
 def _rules(columns: tuple[SpecColumn, ...], pairs: tuple[EventsTotal, ...], least: int, most: int) -> tuple[str, ...]:

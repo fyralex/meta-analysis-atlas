@@ -49,6 +49,8 @@ RUN_ERRORS: dict[int | str, dict[str, Any]] = {
     501: {"model": ErrorBody, "description": "The map says the pathway is runnable but the plan builder has no plan"},
     502: {"model": ErrorBody, "description": "The R service did not answer, or answered something unusable"},
 }
+# /spec and /template read the map and the spec only: they never call the R service, so no 502
+SPEC_ERRORS = {code: answer for code, answer in RUN_ERRORS.items() if code != 502}
 
 
 def get_map(request: Request) -> MapData:
@@ -134,7 +136,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         results = await r_service.execute(prepared.plan, prepared.columns)
         return plans.build_response(request, prepared, results)
 
-    @app.get("/api/v1/meta-analysis/spec", tags=["analysis"], responses=RUN_ERRORS)
+    @app.get("/api/v1/meta-analysis/spec", tags=["analysis"], responses=SPEC_ERRORS)
     def data_spec(
         pathway: Annotated[plans.PathwayRef, Query()], data: Annotated[MapData, Depends(get_map)]
     ) -> DataSpec:
@@ -148,7 +150,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     @app.get(
         "/api/v1/meta-analysis/template",
         tags=["analysis"],
-        responses={**RUN_ERRORS, 200: {"content": {"text/csv": {}}, "description": "A CSV template"}},
+        responses={**SPEC_ERRORS, 200: {"content": {"text/csv": {}}, "description": "A CSV template"}},
         response_class=Response,
     )
     def template(pathway: Annotated[plans.PathwayRef, Query()], data: Annotated[MapData, Depends(get_map)]) -> Response:
