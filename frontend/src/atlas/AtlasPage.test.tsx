@@ -244,6 +244,9 @@ describe("the Atlas's 2D view", PAGE, () => {
     expect(screen.getByRole("radio", { name: /^3D map/ })).toBeDisabled();
     expect(screen.getByRole("radio", { name: /^Text view/ })).toBeChecked();
     const notice = screen.getByText(/can't draw the 3D map \(no WebGL 2\), so the Atlas shows the text view/);
+    // it says how to turn WebGL on (#140)
+    expect(screen.getByText("How to turn on the 3D map")).toBeInTheDocument();
+    expect(screen.getByText("chrome://gpu")).toBeInTheDocument();
     expect(notice.closest("details")).toBeNull();
     expect(screen.queryByRole("region", { name: "The map in 3D" })).toBeNull();
     for (const tier of TIERS) expect(layer(tier)).toBeInTheDocument();
