@@ -4,14 +4,15 @@ Each template states only what its source says about the measure and the model, 
 response. Sources (Cochrane Handbook, current version, read 2026-11-20; metafor's escalc() reference page):
 
 - Risk ratio: the risk in one group as a multiple of the risk in the other (Handbook 6.4.1.2).
-- Odds ratio: the same for odds, which are not risks; reading an OR as an RR is a common error (6.4.1.1, 10.4.3).
+- Odds ratio: the same for odds, which are not risks; an OR is not an RR, and reading it as one is a common error
+  (6.4.1.1, 6.4.1.3, 10.4.3).
 - Peto odds ratio: an approximation to the OR that works well when events are rare, effects small and groups of
   similar size (10.4.2).
-- Risk difference: a difference in risks (6.4.1); shown here in percentage points (the proportion times 100).
+- Risk difference: a difference in risks (6.4.1.4); shown here in percentage points (the proportion times 100).
 - Arcsine difference: asin(sqrt(p1)) - asin(sqrt(p2)); twice it is Cohen's h; positive means the event is more
   common in group 1 (metafor escalc(), measure "AS").
 - Common effect: assumes every study estimates one shared effect (10.3.1). Random effects: assumes the studies'
-  effects differ but are related, and estimates their average (10.3.2).
+  effects differ but are related (10.3.2), and its summary is their average (10.10.4.1).
 
 The sentences never say "statistically significant" (Handbook 15.3.2, not yet a source in the map, so cited here
 only) and make no causal claim. Labels a person
@@ -66,14 +67,16 @@ def _interval(level: float, lower: float, upper: float, places: int, unit: str =
     return f"{shown}% CI {_num(lower, places)}{unit} to {_num(upper, places)}{unit}"
 
 
-def _opening(model: str, k: int) -> tuple[str, SourceRef]:
+def _opening(model: str, k: int) -> tuple[str, list[SourceRef]]:
     studies = f"{k} studies"
     if k == 1:
         # double-zero studies dropped from a ratio can leave one; nothing is shared or averaged then
-        return "From the 1 study used,", SourceRef(key="CH-10", section="10.3.1" if model == COMMON else "10.3.2")
+        return "From the 1 study used,", [SourceRef(key="CH-10", section="10.3.1" if model == COMMON else "10.3.2")]
     if model == RANDOM:
-        return f"On average across the {studies},", SourceRef(key="CH-10", section="10.3.2")
-    return f"Assuming one effect shared by all {studies},", SourceRef(key="CH-10", section="10.3.1")
+        # different but related effects (10.3.2), whose average the summary is (10.10.4.1; #172 audit)
+        averaged = [SourceRef(key="CH-10", section="10.3.2"), SourceRef(key="CH-10", section="10.10.4.1")]
+        return f"On average across the {studies},", averaged
+    return f"Assuming one effect shared by all {studies},", [SourceRef(key="CH-10", section="10.3.1")]
 
 
 def sentence(
@@ -111,7 +114,11 @@ def sentence(
             f" ({_interval(level, lower, upper, 2)})."
             " Odds are not risks, so this is not a risk ratio; the two differ most when the event is common."
         )
-        sources = [SourceRef(key="CH-6", section="6.4.1.1"), SourceRef(key="CH-10", section="10.4.3")]
+        sources = [
+            SourceRef(key="CH-6", section="6.4.1.1"),
+            SourceRef(key="CH-6", section="6.4.1.3"),
+            SourceRef(key="CH-10", section="10.4.3"),
+        ]
         if metric == "PETO":
             body += (
                 " Peto's method gives an approximation to the odds ratio that works well when events are rare,"
@@ -128,7 +135,7 @@ def sentence(
             f" the risk{of} in the {treatment} groups {change} in the {control} groups"
             f" ({_interval(level, lower * 100, upper * 100, 1)} percentage points)."
         )
-        sources = [SourceRef(key="CH-6", section="6.4.1")]
+        sources = [SourceRef(key="CH-6", section="6.4.1.4")]
     elif metric == "AS":
         body = (
             f" the arcsine difference{of} between the {treatment} and {control} groups was {_num(estimate, 3)}"
@@ -139,4 +146,4 @@ def sentence(
         sources = [SourceRef(key="MF-escalc", section='measure "AS"')]
     else:
         raise ValueError(f"no sentence for metric {metric!r}")
-    return Interpretation(text=opening + body + tail, sources=[*sources, model_source])
+    return Interpretation(text=opening + body + tail, sources=[*sources, *model_source])

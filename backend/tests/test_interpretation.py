@@ -48,6 +48,12 @@ def make(p: dict[str, Any], labels: Labels | None = None, k: int = 13) -> str:
 @pytest.mark.parametrize("p", SUPPORTED_PATHWAYS, ids=pid)
 def test_every_metric_and_model_has_its_sentence(p: dict[str, Any], labelled: bool) -> None:
     text = make(p, LABELS if labelled else None)
+    estimate, lower, upper = VALUES[p["metric"]]
+    refs = sentence(metric=p["metric"], model=p["model"], k=13, level=95, estimate=estimate, lower=lower, upper=upper)
+    sections = {r.section for r in refs.sources}
+    # the averaging is cited where the Handbook reads the summary as an average (#172 audit)
+    assert ({"10.3.2", "10.10.4.1"} <= sections) == (p["model"] == plans.RANDOM)
+    assert ("10.3.1" in sections) == (p["model"] == plans.COMMON)
     if p["model"] == plans.RANDOM:
         assert text.startswith("On average across the 13 studies,")
         assert text.endswith("This is the average of effects that may differ between studies, not one shared effect.")
