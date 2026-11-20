@@ -9,7 +9,7 @@ from fastapi import Depends, FastAPI, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 
-from . import errors
+from . import errors, plans
 from .config import Settings
 from .errors import ApiError, ErrorBody, FieldError
 from .map_data import TIERS, MapData, Pathway, Status
@@ -42,6 +42,12 @@ class PathwayFilters(BaseModel):
 
 
 ERRORS: dict[int | str, dict[str, Any]] = {422: {"model": ErrorBody, "description": "The request is not valid"}}
+RUN_ERRORS: dict[int | str, dict[str, Any]] = {
+    **ERRORS,
+    409: {"model": ErrorBody, "description": "The pathway is not runnable yet"},
+    501: {"model": ErrorBody, "description": "The map says the pathway is runnable but the plan builder has no plan"},
+    502: {"model": ErrorBody, "description": "The R service did not answer, or answered something unusable"},
+}
 
 
 def get_map(request: Request) -> MapData:
@@ -59,7 +65,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app = FastAPI(
         title="Meta-Analysis Atlas API",
         version="0.2.0",
-        description="Reads the map of analysis pathways. Running analyses comes in a later step.",
+        description="Reads the map of analysis pathways and runs the pathways the map marks as runnable.",
     )
     app.state.map = MapData(settings.spec_dir)
     app.state.r_service = RService(settings.r_service_url)
@@ -92,6 +98,39 @@ def create_app(settings: Settings | None = None) -> FastAPI:
             raise ApiError(422, "unknown_value", "A filter names a value the map doesn't have.", unknown)
         found = [p for p in data.pathways if all(getattr(p, k) == v for k, v in asked.items())]
         return PathwayList(count=len(found), pathways=found)
+
+    @app.post("/api/v1/meta-analysis/run", tags=["analysis"], responses=RUN_ERRORS)
+    async def run(
+        request: plans.RunRequest,
+        data: Annotated[MapData, Depends(get_map)],
+        r_service: Annotated[RService, Depends(get_r_service)],
+    ) -> plans.RunResponse:
+        """Run a **runnable** pathway on a study table, and return the estimates, the studies and the R code.
+
+        The request is checked against the map first: a pathway the map doesn't have is `422 unknown_pathway`; one
+        that isn't runnable is `409 pathway_not_runnable`, with its status and milestone.
+        """
+        found = next(
+            (p for p in data.pathways if p.model_dump(include=set(TIERS)) == request.pathway.model_dump()), None
+        )
+        if found is None:
+            raise ApiError(
+                422,
+                "unknown_pathway",
+                "The map has no pathway with these choices.",
+                details=plans.pathway_facts(request.pathway),
+            )
+        if found.status != "runnable":
+            raise ApiError(
+                409,
+                "pathway_not_runnable",
+                f"This pathway is {found.status.replace('_', ' ')}, not runnable (milestone {found.milestone}).",
+                details={"status": found.status, "milestone": found.milestone},
+            )
+        allowed = data.raw["methods"][found.method]["analysis"]
+        prepared = plans.prepare(request, allowed)
+        results = await r_service.execute(prepared.plan, prepared.columns)
+        return plans.build_response(request, prepared, results)
 
     return app
 

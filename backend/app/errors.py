@@ -21,13 +21,22 @@ class ErrorBody(BaseModel):
     code: str
     message: str
     fields: list[FieldError] = []
+    # extra facts a client can read, such as a pathway's status and milestone
+    details: dict[str, Any] = {}
 
 
 class ApiError(Exception):
-    def __init__(self, status: int, code: str, message: str, fields: list[FieldError] | None = None) -> None:
+    def __init__(
+        self,
+        status: int,
+        code: str,
+        message: str,
+        fields: list[FieldError] | None = None,
+        details: dict[str, Any] | None = None,
+    ) -> None:
         super().__init__(message)
         self.status = status
-        self.body = ErrorBody(code=code, message=message, fields=fields or [])
+        self.body = ErrorBody(code=code, message=message, fields=fields or [], details=details or {})
 
 
 def _response(status: int, body: ErrorBody) -> JSONResponse:
