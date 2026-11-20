@@ -60,6 +60,44 @@ fi
   Rscript -e 'l <- lintr::lint_dir("."); print(l); quit(status = as.integer(length(l) > 0))'
 )
 
+echo "== validation tests (pytest -m integration, against the running R service)"
+# /run's results are compared with metafor run directly and with its documented values. The service starts on a
+# free port and is stopped afterwards, whatever happens.
+# plumber accepts ports up to 49151 only, so the port is chosen from 20000 to 49151
+PORT=$("$PY" - <<'PYEOF'
+import random
+import socket
+
+while True:
+    port = random.randint(20000, 49151)
+    with socket.socket() as s:
+        try:
+            s.bind(("127.0.0.1", port))
+        except OSError:
+            continue
+        print(port)
+        break
+PYEOF
+)
+R_LOG=$(mktemp)
+(cd r_service && R_SERVICE_PORT="$PORT" exec Rscript run.R >"$R_LOG" 2>&1) &
+R_PID=$!
+trap 'kill "$R_PID" 2>/dev/null || true' EXIT
+up=""
+for _ in $(seq 1 60); do
+  if curl -sf "http://127.0.0.1:$PORT/health" >/dev/null 2>&1; then up=yes; break; fi
+  sleep 1
+done
+if [ -z "$up" ]; then
+  echo "The R service did not start on port $PORT:" >&2
+  cat "$R_LOG" >&2
+  exit 1
+fi
+R_SERVICE_URL="http://127.0.0.1:$PORT" "$PY" -m pytest -m integration
+kill "$R_PID" 2>/dev/null || true
+wait "$R_PID" 2>/dev/null || true
+trap - EXIT
+
 echo "== private name scan"
 if [ -n "${ATLAS_PRIVATE_SCAN:-}" ]; then
   "$ATLAS_PRIVATE_SCAN"

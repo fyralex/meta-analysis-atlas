@@ -28,6 +28,9 @@ files = ["spec", "tests", "scripts", "backend"]
 [tool.pytest.ini_options]
 testpaths = ["tests", "backend/tests"]
 pythonpath = ["spec", "scripts", "backend"]
-addopts = "-q"
+addopts = "-q --strict-markers -m 'not integration'"
+markers = [
+    "integration: validation tests that call the running R service (R_SERVICE_URL); scripts/check.sh runs them with `-m integration`",
+]
 # Starlette 1.10's test client asks for httpx2; the backend pins httpx 0.28 (backend/requirements.txt), which still works.
 filterwarnings = ["ignore:Using `httpx` with `starlette.testclient` is deprecated"]

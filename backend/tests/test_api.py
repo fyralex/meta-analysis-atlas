@@ -99,7 +99,12 @@ def test_an_unexpected_failure_is_a_json_error_without_details(tmp_path: Path) -
     app = create_app(Settings(spec_dir=tmp_path))  # no map.json there
     response = TestClient(app, raise_server_exceptions=False).get("/api/v1/pathways")
     assert response.status_code == 500
-    assert response.json() == {"code": "internal_error", "message": "Something went wrong on the server.", "fields": []}
+    assert response.json() == {
+        "code": "internal_error",
+        "message": "Something went wrong on the server.",
+        "fields": [],
+        "details": {},
+    }
 
 
 def test_the_map_has_everything_but_the_pathway_list() -> None:
@@ -124,4 +129,4 @@ def test_the_spec_directory_comes_from_the_environment(monkeypatch: pytest.Monke
 
 def test_the_openapi_schema_lists_the_endpoints() -> None:
     paths = client().get("/openapi.json").json()["paths"]
-    assert set(paths) == {"/health", "/api/v1/map", "/api/v1/pathways"}
+    assert set(paths) == {"/health", "/api/v1/map", "/api/v1/pathways", "/api/v1/meta-analysis/run"}
