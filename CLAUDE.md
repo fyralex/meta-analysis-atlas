@@ -27,7 +27,7 @@ worked examples or on the user's own CSV, with the exact R code shown.
 
 The app is stateless: there are no accounts and no database.
 
-This file is committed to a repository that will be made **public**. Keep it
+This file is committed to a **public** repository. Keep it
 free of personal details (names, absolute home-directory paths, machine names)
 and of claims about any institution's involvement.
 
@@ -93,8 +93,7 @@ gh issue view <n> --comments                 # its design and the decisions take
 
 ### Git and GitHub
 
-Remote: `github.com/fyralex/meta-analysis-atlas` (private for now, to be made
-public). Commits are authored with the owner's GitHub noreply address, set in
+Remote: `github.com/fyralex/meta-analysis-atlas` (public). Commits are authored with the owner's GitHub noreply address, set in
 the repo's git config.
 
 **Tools needed:** `git`, Python 3.11 or later, Node 22 or later, R 4.5 with the
